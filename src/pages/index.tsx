@@ -1,16 +1,15 @@
 import styled from "styled-components";
-import BasicLayout from "../layout/Basic";
-
-const Title = styled.h1`
-  color: blue;
-`;
+import BasicLayout from "../layout/GlobalStyle";
+//import IndexLayout from "../styles/pages";
+import Header from "../components/molecules/Header";
+import GlobalStyle from "../layout/GlobalStyle";
 
 const Home = () => {
   return (
-    <BasicLayout>
-      <h1>hello</h1>
-      <Title>Salve Salve Familia</Title>
-    </BasicLayout>
+    <div>
+      <GlobalStyle/>
+      <Header/>
+    </div>
   );
 };
 
