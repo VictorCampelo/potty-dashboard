@@ -6,6 +6,7 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: 470px;
+  max-width: 470px;
   display: flex;
   flex-direction: column;
 

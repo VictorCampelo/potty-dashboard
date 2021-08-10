@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-    padding: 30px 20px ;
+    padding: 30px 20px;
+    width: 100%;
     
     background: var(--background);
 
