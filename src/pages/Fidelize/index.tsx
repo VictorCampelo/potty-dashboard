@@ -5,7 +5,6 @@ import GlobalStyle from "../../layout/GlobalStyle";
 const Fidelize = () => {
   return (
     <div>
-      <GlobalStyle/>
       <Header/>
     </div>
   );
