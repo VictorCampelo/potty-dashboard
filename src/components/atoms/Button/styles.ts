@@ -10,5 +10,15 @@ export const Container = styled.button`
   color: var(--white);
   font-weight: 700;
   font-size: 1.125rem;
-  background-color: var(--gray-300);
+  background-color: var(--green-confirmation);
+  transition: 0.2s background;
+
+  :hover {
+    background-color: var(--green-confirmation-darker);
+  }
+
+  :disabled{
+    background-color: var(--gray-300);
+    cursor: not-allowed;
+  } 
 `

@@ -5,7 +5,7 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  width: 470px;
+  width: auto;
   max-width: 470px;
   display: flex;
   flex-direction: column;
@@ -25,13 +25,7 @@ export const Container = styled.div<ContainerProps>`
     span {
       color: var(--red);
       font-size: 0.875rem;
-      font-weight: bold;
-      text-decoration: underline;
-      transition: 0.2s color;
-
-      &:hover {
-        color: var(--blue-darker-secondary);
-      }
+      font-weight: 500;
     }
   }
 

@@ -7,11 +7,17 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    width: 100vw;
+    height: 100vh;
+  }
+
   :root {
     --white: #FFFFFF;
     --background: #FEFAEF;
     --black-1000: #000000;
     --black-800: #363F4E;
+    --black-500: #55637b;
 
     --red: #FF4D4B;
 
@@ -22,6 +28,7 @@ export default createGlobalStyle`
 
     --yellow-600: #F7EAD5;
     --green-confirmation: #2DD1AC;
+    --green-confirmation-darker: #24a78a;
 
     --wave-1: #F9EFDC;
     --wave-2: #F5E7CD;
@@ -55,5 +62,10 @@ export default createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+    transition: 0.2s;
+
+    &:hover {
+      color: var(--black-500);
+    }
   }
 `;

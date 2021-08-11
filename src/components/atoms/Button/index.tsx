@@ -1,6 +1,6 @@
 import { Container } from "./styles"
 
-interface ButtonProps extends React.HTMLAttributes<ButtonProps> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
   title: string;
 }
 
