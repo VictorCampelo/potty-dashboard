@@ -9,6 +9,7 @@ interface Input extends React.InputHTMLAttributes<HTMLInputElement>{
   password?: boolean;
   forgetPassword?: boolean;
   error?: boolean;
+  textError?: string;
   icon?: ReactElement;
 }
 
@@ -17,6 +18,7 @@ export const Input = ({
   password, 
   icon, 
   error,
+  textError = '',
   ...rest 
 }: Input) => {
   const [isInputVisible, setIsInputVisible] = useState(true);
@@ -28,7 +30,7 @@ export const Input = ({
           {label} 
         </label>
 
-        {error && <span>Email ou senha inválidos</span> }
+        {error && textError && <span>{textError}</span> }
       </section>
       
       <label className="inputContainter">

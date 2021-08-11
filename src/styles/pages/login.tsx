@@ -1,26 +1,24 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 100%;
-  height: 100vh;
-`;
+export const Container = styled.main`
+  width: auto;
+  height: auto;
 
-export const Content = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
+  padding: 4rem 0;
 
   form {
-    width: 570px;
+    width: 550px;
     background: var(--white);
     border-radius: 30px;
-    box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2), inset 0px 0px 4px rgba(54, 63, 78, 0.2);
+    box-shadow: 0px 0px 18px -4px #CCCCCC;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 4rem;
-    margin-top: 4rem;
+    /* margin-top: 4rem; */
 
     .title {
       width: 100%;
@@ -34,8 +32,9 @@ export const Content = styled.main`
 
     .inputContainer {
       display: flex;
+      width: 100%;
       flex-direction: column;
-      gap: 2rem
+      gap: 1.5rem
     }
 
     .buttonContainer {
@@ -71,15 +70,11 @@ export const Content = styled.main`
 
     .register {
       font-size: 1rem;
-      margin-top: 4rem;
+      margin-top: 1.5rem;
 
       a {
         font-weight: 600;
         text-decoration: underline;
-
-        :hover {
-          color: black;
-        }
       }
     }
   }

@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
-export const Container = styled.section`
+export const Container = styled.header`
     padding: 30px 20px;
-    width: 100%;
-    
     background: var(--background);
 
     display: flex;
@@ -18,22 +16,19 @@ export const Container = styled.section`
         cursor: pointer;
     }
 
-    ul{
+    nav{
         width: 80%;
         display: flex;
         align-items: center;
         justify-content: flex-end;
         list-style-type: none;
 
-        li{
+        a{
             text-decoration: none;
             cursor: pointer;       
             margin-left: 3rem;
-
-            a{
-                font-size: 1.625rem;
-                color: var(--black-1000); 
-            }
+            font-size: 1.5rem;
+            color: var(--black-1000); 
         }
 
         button {
@@ -49,9 +44,14 @@ export const Container = styled.section`
             font-family: Poppins;
             font-style: normal;
             font-weight: normal;
-            font-size: 26px;
+            font-size: 1.5rem;
+            transition: 0.2s background;
       
             color: #FFFFFF;
-          }
+
+            :hover {
+                background: var(--green-confirmation-darker);
+            }
+        }
     }
 `;

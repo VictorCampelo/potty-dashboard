@@ -7,29 +7,19 @@ const  Header: React.FC = () => {
     return (
         <Container>
             <div className="logo"></div>
-            <ul>
-                <li>
-                    <Link href="/Venda"><a>Venda</a></Link>
-                </li>
-                
-                <li>
-                    <Link href="/Fidelize"><a>Fidelize</a></Link>
-                </li>
+            <nav>
+                <Link href="/Venda"><a>Venda</a></Link>
+            
+                <Link href="/Fidelize"><a>Fidelize</a></Link>
 
-                <li>
-                    <Link href="/Planos"><a>Planos</a></Link>
-                </li>
+                <Link href="/Planos"><a>Planos</a></Link>
 
-                <li>
-                    <Link href="/Gerencie"><a>Gerencie</a></Link>
-                </li>
+                <Link href="/Gerencie"><a>Gerencie</a></Link>
 
-                <li>
-                    <Link href="/Ajuda"><a>Ajuda</a></Link>
-                </li>
+                <Link href="/Ajuda"><a>Ajuda</a></Link>
                 
                 <button>Começar</button>
-            </ul>
+            </nav>
         </Container>
     );
 };
