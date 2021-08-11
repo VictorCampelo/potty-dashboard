@@ -8,15 +8,25 @@ const  Header: React.FC = () => {
         <Container>
             <div className="logo"></div>
             <nav>
-                <Link href="/Venda"><a>Venda</a></Link>
+                <Link href="/Venda">
+                    <a>Venda</a>
+                </Link>
             
-                <Link href="/Fidelize"><a>Fidelize</a></Link>
+                <Link href="/Fidelize">
+                    <a>Fidelize</a>
+                </Link>
 
-                <Link href="/Planos"><a>Planos</a></Link>
+                <Link href="/Planos">
+                    <a>Planos</a>
+                </Link>
 
-                <Link href="/Gerencie"><a>Gerencie</a></Link>
+                <Link href="/Gerencie">
+                    <a>Gerencie</a>
+                </Link>
 
-                <Link href="/Ajuda"><a>Ajuda</a></Link>
+                <Link href="/Ajuda">
+                    <a>Ajuda</a>
+                </Link>
                 
                 <button>Começar</button>
             </nav>

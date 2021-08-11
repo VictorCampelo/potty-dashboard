@@ -1,24 +1,20 @@
 import styled from 'styled-components';
 
 export const Container = styled.main`
-  width: auto;
-  height: auto;
-
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4rem 0;
 
   form {
-    width: 550px;
+    width: 530px;
     background: var(--white);
     border-radius: 30px;
     box-shadow: 0px 0px 18px -4px #CCCCCC;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4rem;
-    /* margin-top: 4rem; */
+    padding: 3rem;
 
     .title {
       width: 100%;

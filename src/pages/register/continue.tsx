@@ -1,18 +1,15 @@
 import Header from "../../components/molecules/Header";
 import Link from "next/link";
 import Head from "next/head";
-import { Container } from "../../styles/pages/login";
+import { Container } from "../../styles/pages/preLogin";
 
 import { FiUser } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
-import { useState } from "react";
 import { Button } from "../../components/atoms/Button";
 import { FaFacebook } from 'react-icons/fa';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 
 const ContinueRegister = () => {
-  const [confirm, setConfirm] = useState(false);
-
   return (
     <>
       <Head>
