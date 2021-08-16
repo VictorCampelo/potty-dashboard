@@ -3,14 +3,15 @@ import Link from "next/link";
 import Head from "next/head";
 import { Container } from "../../styles/pages/preLogin";
 
-import { FiUser } from 'react-icons/fi';
+import { VscKey } from 'react-icons/vsc';
+import { FiLock } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
 import { Button } from "../../components/atoms/Button";
 import { FaFacebook } from 'react-icons/fa';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 import { useRouter } from "next/router";
 
-const ContinueRegister = () => {
+const SendTokenRegister = () => {
   const router = useRouter()
 
   function handleRegister(e: React.FormEvent<HTMLFormElement>) {
@@ -29,34 +30,34 @@ const ContinueRegister = () => {
       <Container>
         <form onSubmit={handleRegister}>
           <div className="title">
-            <h1>Cadastro</h1>
+            <h1>Alteração de senha</h1>
+            <p>Insira o token de segurança que foi enviado para o seu email e crie uma nova senha.</p>
           </div>
 
           <div className="inputContainer">
-            <Input label="Nome" icon={<FiUser size={20} color="var(--black-800);" />} />
-            <Input label="Sobrenome" icon={<FiUser size={20} color="var(--black-800);" />} />
+            <Input 
+              label="Token" 
+              placeholder="12345" 
+              icon={<VscKey size={20} color="var(--black-800);" />} 
+            />
+
+            <Input 
+              label="Nova senha" 
+              placeholder="********" 
+              password 
+              icon={<FiLock size={20} color="var(--black-800);" />} 
+            />
+
+            <Input 
+              label="Repetir senha" 
+              placeholder="********" 
+              password 
+              icon={<FiLock size={20} color="var(--black-800);" />} 
+            />
           </div>
           
           <div className="buttonContainer">
-            <Button type="submit" title="CADASTRAR" />
-          </div>
-
-          <div className="divisorContainer">
-            <div className="divisor" />
-              ou
-            <div className="divisor" />
-          </div>
-
-          <div className="social">
-            <AiFillGoogleCircle size={50} color="var(--gray-700)" />
-            <FaFacebook size={50} color="var(--gray-700)" />
-          </div>
-
-          <div className="register">
-            Já possui conta?
-            <Link href="/login">
-              <a>{' '}Faça seu login!</a>
-            </Link>
+            <Button type="submit" title="CONTINUAR" />
           </div>
         </form>
       </Container>
@@ -64,4 +65,4 @@ const ContinueRegister = () => {
   );
 };
 
-export default ContinueRegister;
+export default SendTokenRegister;

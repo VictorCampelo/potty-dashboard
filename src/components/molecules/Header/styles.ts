@@ -23,12 +23,17 @@ export const Container = styled.header`
         justify-content: flex-end;
         list-style-type: none;
 
-        a{
+        a {
             text-decoration: none;
             cursor: pointer;       
             margin-left: 3rem;
-            font-size: 1.5rem;
-            color: var(--black-1000); 
+            font-size: 1.4rem;
+            color: var(--black-800); 
+            transition: 0.2s color;
+
+            :hover {
+                color: var(--gray-600); 
+            }
         }
 
         button {

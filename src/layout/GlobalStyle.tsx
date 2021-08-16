@@ -24,9 +24,10 @@ export default createGlobalStyle`
     --gray-100: #F2F4F3;
     --gray-200: #C4C4C4;
     --gray-300: #B2B5BA;
+    --gray-600: #6B7079;
     --gray-700: #363F4E;
-
     --yellow-600: #F7EAD5;
+
     --green-confirmation: #2DD1AC;
     --green-confirmation-darker: #24a78a;
 
@@ -65,7 +66,7 @@ export default createGlobalStyle`
     transition: 0.2s;
 
     &:hover {
-      color: var(--black-500);
+      text-decoration: underline;
     }
   }
 `;
