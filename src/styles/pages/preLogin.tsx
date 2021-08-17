@@ -4,7 +4,7 @@ export const Container = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4rem 0;
+  padding: 5rem 0;
 
   form {
     width: 530px;
@@ -23,6 +23,13 @@ export const Container = styled.main`
       h1 {
         font-size: 1.875rem;
         font-weight: 600;
+      }
+
+      p {
+        font-size: 0.875rem;
+        text-align: justify;
+        color: var(--gray-300);
+        margin-top: 0.5rem;
       }
     }
 
@@ -70,7 +77,6 @@ export const Container = styled.main`
 
       a {
         font-weight: 600;
-        text-decoration: underline;
       }
     }
   }
