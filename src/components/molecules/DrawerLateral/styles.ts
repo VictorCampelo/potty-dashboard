@@ -5,7 +5,7 @@ export const Container = styled.header`
         width: 15vw;
         height: 96vh;
 
-        margin: 20px 20px;
+        //margin: 20px 20px;
         padding: 30px 20px;
         border-radius: 19px;
         background: var(--white);
@@ -14,7 +14,7 @@ export const Container = styled.header`
         justify-content: center;  
         align-items: center;
 
-        box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2), inset 0px 0px 4px rgba(54, 63, 78, 0.2);
+        box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
         
         nav{
             width: 100%;
@@ -64,7 +64,7 @@ export const Container = styled.header`
         width: 4vw;
         height: 96vh;
 
-        margin: 20px 20px;
+        //margin: 20px 20px;
         padding: 30px 20px;
         border-radius: 19px;
         background: var(--white);
