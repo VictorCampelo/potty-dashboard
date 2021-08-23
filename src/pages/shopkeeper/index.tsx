@@ -1,13 +1,15 @@
-import styled from "styled-components";
 import DrawerLateral from "../../components/molecules/DrawerLateral";
-import GlobalStyle from "../../layout/GlobalStyle";
+import CardShop from "../../components/molecules/CardShop";
+import { Container } from "../../styles/pages/shopkeeper";
 
 const shopkeeper = () => {
   return (
-    <div>
-      <GlobalStyle/>
+    <Container>
       <DrawerLateral/>
-    </div>
+      <div className="cards-area">
+        <CardShop/>
+      </div>
+    </Container>
   );
 };
 
