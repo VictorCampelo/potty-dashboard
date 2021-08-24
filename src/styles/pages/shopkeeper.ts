@@ -10,6 +10,11 @@ export const Container = styled.div`
 
     div.cards-area {
         margin-left: 20px;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        
     }
 `;
 
