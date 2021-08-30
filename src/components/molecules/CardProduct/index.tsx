@@ -5,6 +5,8 @@ interface CardProduct extends React.InputHTMLAttributes<HTMLInputElement>{
     name?: string;
     cod?: string;
     quant?: string;
+    tipo?: number;
+    preco?: string;
   }
 
 const  CardProduct = ({
@@ -12,6 +14,8 @@ const  CardProduct = ({
     name,
     cod,
     quant, 
+    tipo = 1,
+    preco,
     ...rest 
 }: CardProduct) => {
     return (
@@ -27,7 +31,11 @@ const  CardProduct = ({
                     </div>
                 </div>
 
-                <p>{"Qnt.: " + quant}</p>
+                <div>
+                    <p>{"Qnt.: " + quant}</p>
+
+                    {tipo == 2? <span>{"Un.: R$" + preco}</span> : null}
+                </div>
             </div>
 
         </Container>

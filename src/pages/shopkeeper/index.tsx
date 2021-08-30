@@ -11,9 +11,9 @@ const shopkeeper = () => {
       <div className="cards-area">
         <CardShop title="Produtos mais vendidos" dataSelector>
                 <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
-                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
-                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
-                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
+                <CardProduct srcImg="/images/cheese-bread.png" name="Pão de queijo" cod="cod: 5686" quant="4.860"/>
+                <CardProduct srcImg="/images/coffee2.png" name="Cappuccino" cod="cod: 583" quant="2.956"/>
+                <CardProduct srcImg="/images/coffee1.png" name="Chá verde" cod="cod: 6972" quant="1.658"/>
         </CardShop>
 
         <CardShop title="Rendimentos" dataSelector>
@@ -42,9 +42,10 @@ const shopkeeper = () => {
         </CardShop>
 
         <CardShop title="Últimos produtos vendidos">
-                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
-                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
-                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
+                <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569" tipo={2} preco="2,00"/>
+                <CardProduct srcImg="/images/cheese-bread.png" name="Pão de queijo" cod="cod: 6932" quant="10.569" tipo={2} preco="3,00"/>
+                <CardProduct srcImg="/images/coffee2.png" name="Cappuccino" cod="cod: 6932" quant="10.569" tipo={2} preco="10,00"/>
+                <CardProduct srcImg="/images/coffee1.png" name="Chá verde" cod="cod: 6932" quant="10.569" tipo={2} preco="2,00"/>
                 
         </CardShop>
 
