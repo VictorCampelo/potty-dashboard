@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
     min-height: 200px;
-    max-height: 46vh;
+    max-height: 46.9vh;
     margin-right: 20px;
 
     background: #FFFFFF;

@@ -33,7 +33,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <IoHomeOutline className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--green-confirmation)"
                             />
                             {active ? <a  >Home</a> : null}
                         </div>
