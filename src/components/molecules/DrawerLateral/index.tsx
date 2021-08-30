@@ -20,11 +20,11 @@ const  DrawerLateral: React.FC = () => {
                         {active ? 
                             <IoMdContract className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />:
                             <AiOutlineExpand className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             /> 
                         }
                     </div>
@@ -33,7 +33,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <IoHomeOutline className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />
                             {active ? <a  >Home</a> : null}
                         </div>
@@ -43,7 +43,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <BiStore className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />
                             {active ? <a>Análise da loja</a> : null}
                             
@@ -54,7 +54,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <BiExtension className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />
                             {active ? <a>Categoria</a> : null}
                             
@@ -65,7 +65,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <BiClipboard className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />
                             {active ? <a>Pedidos</a> : null}
                             
@@ -76,7 +76,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <FiBox className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />
                             {active ? <a>Produtos</a> : null}
                             
@@ -87,7 +87,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <IoPersonOutline className="icon"
                                 size={35} 
-                                color="var(--black-800);" 
+                                color="var(--black-800)" 
                             />
                             {active ? <a>Meus dados</a> : null}
                             
