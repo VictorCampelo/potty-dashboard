@@ -11,14 +11,34 @@ import { Button } from "../../components/atoms/Button";
 import { FaFacebook } from 'react-icons/fa';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 import { useRouter } from "next/router";
+import { signUp } from "../../services/api";
 
 const Register = () => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+
   const router = useRouter();
 
-  function handleNavigateToContinueRegister(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function handleSignUp(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
 
-    router.push('register/continue');
+    try {
+      const user = {
+        email,
+        name, 
+        password,
+        passwordConfirmation
+      }
+
+      const res = await signUp(user);
+
+      console.log(res);
+    } catch(e){
+      console.log(e);
+    }
+    // router.push('register/shopkeeper');
   }
 
   return (
@@ -35,13 +55,41 @@ const Register = () => {
           </div>
 
           <div className="inputContainer">
-            <Input label="Email" type="password" icon={<FiMail size={20} color="var(--black-800);" />} />
-            <Input label="Senha" password icon={<FiLock size={20} color="var(--black-800);" />} />
-            <Input  label="Repetir senha" password icon={<FiLock size={20} color="var(--black-800);" />} />
+            <Input 
+              label="Nome" 
+              value={name}
+              onChange={e => setName(e.target.value)}
+              icon={<FiMail size={20} 
+              color="var(--black-800)" />} 
+            />
+
+            <Input 
+              label="Email" 
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              icon={<FiMail size={20} 
+              color="var(--black-800)" />} 
+            />
+
+            <Input 
+              label="Senha" 
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              password 
+              icon={<FiLock size={20} color="var(--black-800)" />} 
+            />
+            
+            <Input 
+              label="Repetir senha" 
+              password 
+              value={passwordConfirmation}
+              onChange={e => setPasswordConfirmation(e.target.value)}
+              icon={<FiLock size={20} color="var(--black-800)" />} 
+            />
           </div>
           
           <div className="buttonContainer">
-            <Button onClick={handleNavigateToContinueRegister} title="CONTINUAR" />
+            <Button onClick={handleSignUp} title="CONTINUAR" />
           </div>
 
           <div className="divisorContainer">

@@ -47,13 +47,13 @@ export const Input = ({
           <AiOutlineEyeInvisible 
             onClick={() => setIsInputVisible(false)} 
             size={24} 
-            color="var(--black-800);" 
+            color="var(--black-800)" 
           />
           ) : (
           <AiOutlineEye 
             onClick={() => setIsInputVisible(true)} 
             size={24} 
-            color="var(--black-800);" 
+            color="var(--black-800)" 
           />
           )  
         )}
