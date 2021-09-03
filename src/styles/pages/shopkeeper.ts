@@ -9,7 +9,22 @@ export const Container = styled.div`
     display: flex;
 
     div.cards-area {
+        width: 100%;
         margin-left: 20px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .top-area{
+            display: flex;
+            
+        }
+
+        .bottom-area{
+            display: flex;
+
+        }
     }
 `;
 

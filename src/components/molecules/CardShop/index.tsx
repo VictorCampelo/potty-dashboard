@@ -1,72 +1,37 @@
+import { AiFillPropertySafety } from 'react-icons/ai';
+import CardProduct from '../CardProduct';
 import { Container } from './styles'; 
 
+interface CardShop extends React.InputHTMLAttributes<HTMLInputElement>{
+    title?: string;
+    dataSelector?: boolean;
+  }
 
-const  DrawerLateral: React.FC = () => {
+const  CardShop = ({
+    title,
+    dataSelector = false, 
+    ...rest 
+}: CardShop) => {
     return (
         <Container>
-            <h1>Produtos mais vendidos</h1>   
+            <h1>{title}</h1>   
 
-            <select name="select" id="select-data-info">
-                <option value="diario">Diário</option>
-                <option value="semanal" selected>Semanal</option>
-                <option value="mensal">Mensal</option>
-            </select>
+            { dataSelector? 
+                <select name="select" id="select-data-info">
+                    <option value="diario">Diário</option>
+                    <option value="semanal" selected>Semanal</option>
+                    <option value="mensal">Mensal</option>
+                </select> : null
+            }
 
             <div className="product">
 
-                <div className="info">
-                    <div className="left-area">
-                        <img src="/images/coffee.png"/>
-
-                        <div className="titles">
-                            <h2>café preto</h2>
-                            <h3>cod: 6932</h3>
-                        </div>
-                    </div>
-
-                    <p>Qnt.: 10.569</p>
-                </div>
-                <div className="info">
-                    <div className="left-area">
-                        <img src="/images/coffee.png"/>
-
-                        <div className="titles">
-                            <h2>café preto</h2>
-                            <h3>cod: 6932</h3>
-                        </div>
-                    </div>
-
-                    <p>Qnt.: 10.569</p>
-                </div>
-                <div className="info">
-                    <div className="left-area">
-                        <img src="/images/coffee.png"/>
-
-                        <div className="titles">
-                            <h2>café preto</h2>
-                            <h3>cod: 6932</h3>
-                        </div>
-                    </div>
-
-                    <p>Qnt.: 10.569</p>
-                </div>
-                <div className="info">
-                    <div className="left-area">
-                        <img src="/images/coffee.png"/>
-
-                        <div className="titles">
-                            <h2>café preto</h2>
-                            <h3>cod: 6932</h3>
-                        </div>
-                    </div>
-                    
-                    <p>Qnt.: 10.569</p>
-                </div>
-
+                {rest.children}
+                
             </div>
 
         </Container>
     );
 };
 
-export default DrawerLateral;
+export default CardShop;

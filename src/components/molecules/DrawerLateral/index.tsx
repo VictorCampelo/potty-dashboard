@@ -32,8 +32,9 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <IoHomeOutline className="icon"
-                                size={35} 
-                                color="var(--black-800)" 
+                                size={35}
+                                color="var(--green-confirmation)"
+
                             />
                             {active ? <a  >Home</a> : null}
                         </div>
