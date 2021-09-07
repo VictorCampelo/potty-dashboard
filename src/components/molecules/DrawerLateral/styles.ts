@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.header`
+    
+
     .showNames{
         width: 15vw;
         height: 96vh;
@@ -126,20 +128,7 @@ export const Container = styled.header`
             }    
         } 
     }
+
+    
+
 `;
-
-/*#Accordion .accordion-container {
-    width: 100%;
-    margin-top: 10px;
-
-    overflow: hidden;
-
-    transition: all 0.4s ease-in-out;
-}
-
-#Accordion .noShow {
-    overflow: hidden;
-    height: 0;
-    opacity: 0;
-    transition: all 0.4s ease-in-out;
-}*/

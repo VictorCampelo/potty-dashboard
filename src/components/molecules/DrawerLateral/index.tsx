@@ -8,8 +8,12 @@ import { BiStore, BiClipboard, BiExtension } from 'react-icons/bi';
 import {FiBox} from 'react-icons/fi';
 import { AiOutlineExpand } from 'react-icons/ai';
 
+import Modal from "../Modal";
+
 const  DrawerLateral: React.FC = () => {
     const [active, setActive] = useState(false);
+    const [modal, setModal] = useState(false);
+
     return (
         <Container>
             <section className={(active ? "showNames" : "noShowNames")}>
@@ -94,16 +98,32 @@ const  DrawerLateral: React.FC = () => {
                         </div>
                     </Link>
                     
-                    <Link href="/">
-                        <div className="option">
-                        <IoExitOutline className="icon"
-                                size={35} 
-                                color="var(--red)"
-                        />
-                        {active ? <a className="red-option">Sair</a> : null}
-                        
-                        </div>
-                    </Link>
+                    
+                    <div className="option" onClick={() => setModal(true)}>
+                    <IoExitOutline className="icon"
+                            size={35} 
+                            color="var(--red)"
+                    />
+                    {active ? <a className="red-option">Sair</a> : null}
+                    
+                    
+                    </div>
+
+                    {modal ? 
+                        <Modal title="Realmente deseja sair da plataforma?" buttons modalVisible={modal}>
+                            <div className="bottom-area">
+                                <div className="buttons">
+                                    <Link href="/">
+                                        <button className="red-button" >SAIR</button>
+                                    </Link>
+                                    <button onClick={() => setModal(false)}>VOLTAR</button>
+                                </div>
+                            </div>
+                            
+                        </Modal>
+                    : null
+                    }
+                    
                 </nav>
             </section>
         </Container>

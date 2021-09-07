@@ -14,6 +14,9 @@ const shopkeeper = () => {
   return (
     <Container>
       <DrawerLateral/>
+
+      
+
       <div className="cards-area">
 
         <div className="top-area">
@@ -60,6 +63,7 @@ const shopkeeper = () => {
           </CardShop>
 
           <CardShop title="Quantidade de acessos a loja" dataSelector>
+          
           <Chart
             width={'500px'}
             height={'300px'}
