@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.header`
+
     .background-modal {
 
         position:absolute;
         background: rgba(0, 0, 0, 0.5);
-        top: 0;
-        left: 0;
+        top: -20px;
+        left: -20px;
         width: 100vw;
         height: 100vh;
         z-index: 2;
@@ -15,8 +16,9 @@ export const Container = styled.header`
     .modal{
         z-index: 3;
         position: absolute;
-        top: 40%;
-        left: 35%;
+        top: 35vh;
+        left: 30vw;
+        
 
         padding: 30px 40px;
         box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
@@ -29,8 +31,8 @@ export const Container = styled.header`
             font-family: Poppins;
             font-style: normal;
             font-weight: normal;
-            font-size: 30px;
-            line-height: 45px;
+            font-size: 1.5rem;
+            
             text-align: center;
 
             color: #363F4E;
@@ -44,13 +46,13 @@ export const Container = styled.header`
                 margin-top: 30px;
                 display: flex;
                 justify-content: space-between;
-                width: 70%;
+                width: 90%;
 
                 button{
                     font-family: Poppins;
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 18px;
+                    font-size: 1rem;
 
                     display: flex;
                     align-items: center;
@@ -59,8 +61,8 @@ export const Container = styled.header`
 
                     color: #FFFFFF;
                     
-                    height: 45px;
-                    width: 140px;
+                    height: 2.5rem;
+                    width: 10rem;
 
                     border: none;
                     background: #2DD1AC;
@@ -69,6 +71,7 @@ export const Container = styled.header`
 
                 .red-button{
                     background: #FF4D4B;
+                    margin-right: 20px;
                 }
             }
         }
