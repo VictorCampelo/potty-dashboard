@@ -28,7 +28,30 @@ const shopkeeper = () => {
           </CardShop>
 
           <CardShop title="Rendimentos" dataSelector>
-                  <img src="/images/grafico.png" id="imagem-grafico"/>
+          <Chart
+              width={'600px'}
+              height={'170px'}
+              chartType="LineChart"
+              loader={<div>Loading Chart</div>}
+              data={[
+                ['Mês', 'Valores'],
+                ["Fev", 10360],
+                ["Mar", 13405],
+                ["Abr", 12580],
+                ["Mai", 12900],
+                ["Jun", 14562],
+                ["Jul", 16892],
+              ]}
+              options={{
+                hAxis: {
+                  title: 'mês',
+                },
+                vAxis: {
+                  title: 'vendas',
+                },
+              }}
+              rootProps={{ 'data-testid': '1' }}
+            />
           </CardShop>
         </div>
 
