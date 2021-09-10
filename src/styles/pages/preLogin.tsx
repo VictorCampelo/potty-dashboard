@@ -79,5 +79,13 @@ export const Container = styled.main`
         font-weight: 600;
       }
     }
+
+    .inputRow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem
+
+    }
   }
 `

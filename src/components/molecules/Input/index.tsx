@@ -11,6 +11,7 @@ interface Input extends React.InputHTMLAttributes<HTMLInputElement>{
   error?: boolean;
   textError?: string;
   icon?: ReactElement;
+  flex?: number;
 }
 
 export const Input = ({ 
@@ -19,12 +20,13 @@ export const Input = ({
   icon, 
   error,
   textError = '',
+  flex = 1,
   ...rest 
 }: Input) => {
   const [isInputVisible, setIsInputVisible] = useState(true);
 
   return (
-    <Container error={error} >
+    <Container flex={flex} error={error} >
       <section className="labelContent">
         <label> 
           {label} 
