@@ -23,12 +23,14 @@ const  DrawerLateral: React.FC = () => {
                     <div className="option" onClick={() => setActive(!active)} >
                         {active ? 
                             <IoMdContract className="icon"
+
                                 size={25} 
                                 color="var(--black-800);" 
                             />:
                             <AiOutlineExpand className="icon"
                                 size={25} 
                                 color="var(--black-800);" 
+
                             /> 
                         }
                     </div>
@@ -38,6 +40,7 @@ const  DrawerLateral: React.FC = () => {
                             <IoHomeOutline className="icon"
                                 size={25} 
                                 color="var(--green-confirmation)"
+
                             />
                             {active ? <a  >Home</a> : null}
                         </div>
@@ -46,6 +49,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <BiStore className="icon"
+
                                 size={25} 
                                 color="var(--black-800);" 
                             />
@@ -70,6 +74,7 @@ const  DrawerLateral: React.FC = () => {
                             <BiClipboard className="icon"
                                 size={25} 
                                 color="var(--black-800);" 
+
                             />
                             {active ? <a>Pedidos</a> : null}
                             
@@ -90,8 +95,10 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <IoPersonOutline className="icon"
+
                                 size={25} 
                                 color="var(--black-800);" 
+
                             />
                             {active ? <a>Meus dados</a> : null}
                             

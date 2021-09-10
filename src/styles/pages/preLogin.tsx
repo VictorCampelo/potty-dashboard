@@ -4,7 +4,7 @@ export const Container = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5rem 0;
+  padding-top: 2rem;
 
   form {
     width: 530px;
@@ -14,11 +14,11 @@ export const Container = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3rem;
+    padding: 2.5rem 3rem 2rem 3rem;
 
     .title {
       width: 100%;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       
       h1 {
         font-size: 1.875rem;
@@ -37,11 +37,11 @@ export const Container = styled.main`
       display: flex;
       width: 100%;
       flex-direction: column;
-      gap: 1.5rem
+      gap: 1rem
     }
 
     .buttonContainer {
-      margin-top: 3rem;
+      margin-top: 2rem;
     }
 
     .divisorContainer {
@@ -49,7 +49,7 @@ export const Container = styled.main`
       width: 100%;
       align-items: center;
       justify-content: center;
-      margin-top: 2rem;
+      margin-top: 1.5rem;
     }
 
     .divisor {
@@ -78,6 +78,14 @@ export const Container = styled.main`
       a {
         font-weight: 600;
       }
+    }
+
+    .inputRow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem
+
     }
   }
 `
