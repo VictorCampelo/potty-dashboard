@@ -2,14 +2,14 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
     min-height: 200px;
-    max-height: 46.9vh;
+    max-height: 45vh;
     margin-right: 20px;
 
     background: #FFFFFF;
 
     box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
     border-radius: 30px;
-    padding: 15px 20px;
+    padding: 15px 10px;
 
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@ export const Container = styled.section`
         font-family: Poppins;
         font-style: normal;
         font-weight: normal;
-        font-size: 24px;
+        font-size: 1.1rem;
         line-height: 36px;
 
         text-align: center;
@@ -29,12 +29,19 @@ export const Container = styled.section`
     }
 
     select {
-        width: 140px;
+        width: 6.2rem;
         border: 1px solid #D8D9DD;
         box-sizing: border-box;
         border-radius: 8px;
 
+        font-style: normal;
+        font-weight: normal;
+        font-size: 0.85rem;
+
+        color: #363F4E;
+
         outline: none;
+
     }
 
     
@@ -43,9 +50,22 @@ export const Container = styled.section`
         margin-top: 40px;
         
         max-height: 50vh;
-        overflow-y: auto;    
+        overflow-y: auto; 
+
+        scrollbar-width: thin;
+        scrollbar-color: #C4C4C4 transparent;
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
         
-        padding-right: 10px;
+        ::-webkit-scrollbar-thumb {
+            background-color: #C4C4C4;    
+            border-radius: 20px;       
+        }
+
+        
+        padding-right: 15px;
     }    
 `;
 

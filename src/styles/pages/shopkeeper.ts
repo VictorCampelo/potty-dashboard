@@ -10,16 +10,21 @@ export const Container = styled.div`
 
     div.cards-area {
         width: 100%;
-        margin-left: 20px;
+        margin-left: 70px;
 
         display: flex;
         flex-direction: column;
         justify-content: space-between;
 
+        #imagem-grafico {
+            width: 500px;
+            height: 150px;
+        }
         .top-area{
             display: flex;
             
         }
+        
 
         .bottom-area{
             display: flex;

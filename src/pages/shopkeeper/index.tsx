@@ -14,6 +14,9 @@ const shopkeeper = () => {
   return (
     <Container>
       <DrawerLateral/>
+
+      
+
       <div className="cards-area">
 
         <div className="top-area">
@@ -25,7 +28,30 @@ const shopkeeper = () => {
           </CardShop>
 
           <CardShop title="Rendimentos" dataSelector>
-                  <img src="/images/grafico.png" />
+          <Chart
+              width={'600px'}
+              height={'170px'}
+              chartType="LineChart"
+              loader={<div>Loading Chart</div>}
+              data={[
+                ['Mês', 'Valores'],
+                ["Fev", 10360],
+                ["Mar", 13405],
+                ["Abr", 12580],
+                ["Mai", 12900],
+                ["Jun", 14562],
+                ["Jul", 16892],
+              ]}
+              options={{
+                hAxis: {
+                  title: 'mês',
+                },
+                vAxis: {
+                  title: 'vendas',
+                },
+              }}
+              rootProps={{ 'data-testid': '1' }}
+            />
           </CardShop>
         </div>
 
@@ -60,13 +86,14 @@ const shopkeeper = () => {
           </CardShop>
 
           <CardShop title="Quantidade de acessos a loja" dataSelector>
+          
           <Chart
-            width={'500px'}
-            height={'300px'}
-            chartType="Bar"
+            width={'350px'}
+            height={'150px'}
+            chartType="ColumnChart"
             loader={<div>Loading Chart</div>}
             data={[
-              ['Dia', 'Vendas', { role: 'style' }],
+              ['', '', { role: 'style' }],
               ['Qua', 995, ' #6598D9'],
               ['Qui', 440, ' #01AC8A'],
               ['Sex', 1200, ' #6598D9'],
