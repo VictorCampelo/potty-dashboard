@@ -16,10 +16,15 @@ export const Container = styled.div`
         flex-direction: column;
         justify-content: space-between;
 
+        #imagem-grafico {
+            width: 500px;
+            height: 150px;
+        }
         .top-area{
             display: flex;
             
         }
+        
 
         .bottom-area{
             display: flex;

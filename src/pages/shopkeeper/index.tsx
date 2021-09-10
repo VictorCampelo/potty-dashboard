@@ -28,7 +28,7 @@ const shopkeeper = () => {
           </CardShop>
 
           <CardShop title="Rendimentos" dataSelector>
-                  <img src="/images/grafico.png" />
+                  <img src="/images/grafico.png" id="imagem-grafico"/>
           </CardShop>
         </div>
 
@@ -65,12 +65,12 @@ const shopkeeper = () => {
           <CardShop title="Quantidade de acessos a loja" dataSelector>
           
           <Chart
-            width={'500px'}
-            height={'300px'}
-            chartType="Bar"
+            width={'350px'}
+            height={'150px'}
+            chartType="ColumnChart"
             loader={<div>Loading Chart</div>}
             data={[
-              ['Dia', 'Vendas', { role: 'style' }],
+              ['', '', { role: 'style' }],
               ['Qua', 995, ' #6598D9'],
               ['Qui', 440, ' #01AC8A'],
               ['Sex', 1200, ' #6598D9'],
