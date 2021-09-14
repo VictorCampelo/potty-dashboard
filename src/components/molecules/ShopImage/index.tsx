@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 
 import { Container } from './styles'
 
-interface ShopImage extends React.InputHTMLAttributes<HTMLInputElement>{
+interface ShopImage {
   btnIcon: ReactElement;
   icon: ReactElement;
   image?: string;
@@ -14,7 +14,7 @@ const imageConfig = {
   height: "500",
 }
 
-export const ShopImage = ({icon, image, btnIcon, ...rest}: ShopImage) => {
+export const ShopImage = ({icon, image, btnIcon}: ShopImage) => {
   return (
     <Container>
       <div className="imageContainer">
