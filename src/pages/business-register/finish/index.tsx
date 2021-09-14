@@ -2,21 +2,16 @@ import Header from "../../../components/molecules/Header";
 import Head from "next/head";
 import { Container } from "../../../styles/pages/preLogin";
 
-import { FiMail, FiUser } from 'react-icons/fi';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
-import { Input } from "../../../components/molecules/Input";
+import { DescriptionInput } from "../../../components/molecules/DescriptionInput";
+import { ShopImage } from "../../../components/molecules/ShopImage"
 import { useState } from "react";
 import { Button } from "../../../components/atoms/Button";
-import { FaHome } from "react-icons/fa";
-import { BiBuildings, BiMapAlt } from "react-icons/bi";
+import { AiFillShop, AiFillCamera } from "react-icons/ai";
 import Router from "next/router";
-import { AiFillFacebook, AiFillLinkedin, AiFillPhone, AiOutlineWhatsApp } from "react-icons/ai";
 
 const BusinessRegister = () => {
-  const [number, setNumber] = useState('');
-  const [facebookUrl , setFacebookUrl] = useState('');
-  const [linkedinUrl, setLinkedinUrl] = useState('');
-  const [whatsappUrl, setWhatsappUrl] = useState('');
+  const [desc, setDesc] = useState('');
+  
 
   function handleFinishRegister() {
     Router.push('/')
@@ -35,8 +30,21 @@ const BusinessRegister = () => {
             <h1> Registro de Negócio </h1>
           </div>
 
+          <div className="imageContainer">
+            <ShopImage 
+            // image={"/images/shop-test.png"} // Imagem para o perfil do Shop
+            icon={<AiFillShop size={70} color="var(--white)" />}
+            btnIcon={<AiFillCamera size={23} color="var(--white)"/>}
+            />
+          </div>
+
           <div className="inputContainer">
-           
+            <DescriptionInput
+            label="Descrição do negócio"  
+            placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
+            value={desc}
+            onChange={text => setDesc(text.target.value)}
+            />
           </div>
 
           <div className="buttonContainer">
