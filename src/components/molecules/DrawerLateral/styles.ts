@@ -8,7 +8,7 @@ export const Container = styled.header`
         height: 96vh;
 
         //margin: 20px 20px;
-        padding: 25px 15px;
+        padding: 1vw 1.2vw;
         border-radius: 19px;
         background: var(--white);
 
@@ -32,13 +32,18 @@ export const Container = styled.header`
                 align-items: center;
                 cursor: pointer;
 
+                svg {
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    margin-bottom: 0.2rem;
+                }
+
                 a{
                     margin-left: 10px;
                     font-family: Poppins;
                     font-style: normal;
                     font-weight: normal;
                     font-size: 0.9rem;
-                    line-height: 22px;
 
                     color: #363F4E;
 
@@ -51,7 +56,6 @@ export const Container = styled.header`
                     font-style: normal;
                     font-weight: normal;
                     font-size: 0.9rem;
-                    line-height: 22px;
 
 
                     color: var(--red);
@@ -66,7 +70,7 @@ export const Container = styled.header`
         height: 96vh;
 
         //margin: 20px 20px;
-        padding: 25px 0px 25px 15px;
+        padding: 1vw 1.2vw;
         border-radius: 19px;
         background: var(--white);
 
@@ -90,16 +94,23 @@ export const Container = styled.header`
                 align-items: center;
                 cursor: pointer;
 
+                svg {
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    margin-bottom: 0.2rem;
+                }
+
                 a{
                     overflow: hidden;
                     height: 0;
                     width: 0;
                     opacity: 0;
                     transition: all 0.1s ease-in-out;
+                    margin-left: 0px;
                 }
 
                 .red-option {
-
+                    margin-left: 0px;
                     overflow: hidden;
                     height: 0;
                     width: 0;
