@@ -33,7 +33,7 @@ const  DrawerLateral: React.FC = () => {
                         }
                     </div>
 
-                    <Link href="/">
+                    <Link href="/shopkeeper">
                         <div className="option">
                             <IoHomeOutline className="icon"
                                 
@@ -44,7 +44,7 @@ const  DrawerLateral: React.FC = () => {
                         </div>
                     </Link>
                 
-                    <Link href="/">
+                    <Link href="/shop">
                         <div className="option">
                             <BiStore className="icon"
                                 
