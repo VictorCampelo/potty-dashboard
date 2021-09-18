@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface ContainerProps {
   error: boolean;
+  flex: number;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -9,6 +10,7 @@ export const Container = styled.div<ContainerProps>`
   max-width: 470px;
   display: flex;
   flex-direction: column;
+  ${(props) => 'flex: '+ props.flex + ';'}
 
   .labelContent {
     display: flex;

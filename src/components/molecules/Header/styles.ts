@@ -37,9 +37,9 @@ export const Container = styled.header`
         }
 
         button {
-            padding: 2px 20px;
+            padding: 8px 24px;
             
-            border-radius: 15px;
+            border-radius: 30px;
             border: none;
             background: var(--green-confirmation);
             margin-right: 4rem;

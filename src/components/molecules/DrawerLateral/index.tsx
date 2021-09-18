@@ -38,6 +38,7 @@ const  DrawerLateral: React.FC = () => {
                             <IoHomeOutline className="icon"
                                 
                                 color="var(--green-confirmation)"
+
                             />
                             {active ? <a  >Home</a> : null}
                         </div>
@@ -70,6 +71,7 @@ const  DrawerLateral: React.FC = () => {
                             <BiClipboard className="icon"
                                 
                                 color="var(--black-800);" 
+
                             />
                             {active ? <a>Pedidos</a> : null}
                             
@@ -92,6 +94,7 @@ const  DrawerLateral: React.FC = () => {
                             <IoPersonOutline className="icon"
                                 
                                 color="var(--black-800);" 
+
                             />
                             {active ? <a>Meus dados</a> : null}
                             
