@@ -23,14 +23,12 @@ const  DrawerLateral: React.FC = () => {
                     <div className="option" onClick={() => setActive(!active)} >
                         {active ? 
                             <IoMdContract className="icon"
-
-                                size={25} 
-                                color="var(--black-800);" 
+                                
+                                color="var(--black-800)" 
                             />:
                             <AiOutlineExpand className="icon"
-                                size={25} 
-                                color="var(--black-800);" 
-
+                                
+                                color="var(--black-800)" 
                             /> 
                         }
                     </div>
@@ -38,7 +36,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <IoHomeOutline className="icon"
-                                size={25} 
+                                
                                 color="var(--green-confirmation)"
 
                             />
@@ -49,8 +47,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <BiStore className="icon"
-
-                                size={25} 
+                                
                                 color="var(--black-800);" 
                             />
                             {active ? <a>Análise da loja</a> : null}
@@ -61,7 +58,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <BiExtension className="icon"
-                                size={25} 
+                                
                                 color="var(--black-800);" 
                             />
                             {active ? <a>Categoria</a> : null}
@@ -72,7 +69,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <BiClipboard className="icon"
-                                size={25} 
+                                
                                 color="var(--black-800);" 
 
                             />
@@ -84,7 +81,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <FiBox className="icon"
-                                size={25} 
+                                
                                 color="var(--black-800);" 
                             />
                             {active ? <a>Produtos</a> : null}
@@ -95,8 +92,7 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/">
                         <div className="option">
                             <IoPersonOutline className="icon"
-
-                                size={25} 
+                                
                                 color="var(--black-800);" 
 
                             />
@@ -108,7 +104,7 @@ const  DrawerLateral: React.FC = () => {
                     
                     <div className="option" onClick={() => setModal(true)}>
                     <IoExitOutline className="icon"
-                            size={25} 
+                            
                             color="var(--red)"
                     />
                     {active ? <a className="red-option">Sair</a> : null}

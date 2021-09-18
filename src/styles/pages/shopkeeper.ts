@@ -10,7 +10,7 @@ export const Container = styled.div`
 
     div.cards-area {
         width: 100%;
-        margin-left: 70px;
+        margin-left: 5vw;
 
         display: flex;
         flex-direction: column;
