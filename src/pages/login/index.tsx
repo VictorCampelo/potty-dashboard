@@ -1,7 +1,7 @@
 import Header from "../../components/molecules/Header";
 import Link from "next/link";
 import Head from "next/head";
-import { Container } from "../../styles/pages/preLogin";
+import { Container, Wrapper } from "../../styles/pages/preLogin";
 
 import { FiLock, FiMail } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
@@ -37,7 +37,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title>Login | Último</title>
       </Head>
@@ -91,7 +91,7 @@ const Login = () => {
           </div>
         </form>
       </Container>
-    </>
+    </Wrapper>
   );
 };
 

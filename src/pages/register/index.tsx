@@ -1,7 +1,7 @@
 import Header from "../../components/molecules/Header";
 import Link from "next/link";
 import Head from "next/head";
-import { Container } from "../../styles/pages/preLogin";
+import { Container, Wrapper } from "../../styles/pages/preLogin";
 
 import { FiLock, FiMail } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
@@ -42,7 +42,7 @@ const Register = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title>Registro | Último</title>
       </Head>
@@ -111,7 +111,7 @@ const Register = () => {
           </div>
         </form>
       </Container>
-    </>
+    </Wrapper>
   );
 };
 

@@ -1,7 +1,7 @@
 import Header from "../../components/molecules/Header";
 import Link from "next/link";
 import Head from "next/head";
-import { Container } from "../../styles/pages/preLogin";
+import { Container, Wrapper } from "../../styles/pages/preLogin";
 
 import { VscKey } from 'react-icons/vsc';
 import { FiLock } from 'react-icons/fi';
@@ -21,7 +21,7 @@ const SendTokenRegister = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title>Registro | Último</title>
       </Head>
@@ -61,7 +61,7 @@ const SendTokenRegister = () => {
           </div>
         </form>
       </Container>
-    </>
+    </Wrapper>
   );
 };
 

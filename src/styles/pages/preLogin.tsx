@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+`
+
 export const Container = styled.main`
   display: flex;
   justify-content: center;
@@ -15,6 +21,7 @@ export const Container = styled.main`
     flex-direction: column;
     align-items: center;
     padding: 2.5rem 3rem 2rem 3rem;
+    overflow-x: hidden;
 
     .title {
       width: 100%;
