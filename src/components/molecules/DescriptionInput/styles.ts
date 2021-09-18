@@ -33,8 +33,7 @@ export const Container = styled.div<ContainerProps>`
 
   .inputContainter {
     width: 100%;
-    height: 329px;
-    max-height: 329px;
+    height: 10rem;
 
     display: flex;
     justify-content: center;

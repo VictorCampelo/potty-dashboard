@@ -1,6 +1,6 @@
 import Header from "../../components/molecules/Header";
 import Head from "next/head";
-import { Container } from "../../styles/pages/preLogin";
+import { Container, Wrapper } from "../../styles/pages/preLogin";
 
 import { FiMail, FiUser } from "react-icons/fi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -30,7 +30,7 @@ const BusinessRegister = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title> Registro de Negócio | Último</title>
       </Head>
@@ -139,7 +139,7 @@ const BusinessRegister = () => {
           </div>
         </form>
       </Container>
-    </>
+    </Wrapper>
   );
 };
 

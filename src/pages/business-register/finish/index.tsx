@@ -1,6 +1,6 @@
 import Header from "../../../components/molecules/Header";
 import Head from "next/head";
-import { Container } from "../../../styles/pages/preLogin";
+import { Container, Wrapper } from "../../../styles/pages/preLogin";
 
 import { DescriptionInput } from "../../../components/molecules/DescriptionInput";
 import { ShopImage } from "../../../components/molecules/ShopImage"
@@ -18,7 +18,7 @@ const BusinessRegister = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title> Registro de Negócio | Último</title>
       </Head>
@@ -32,18 +32,18 @@ const BusinessRegister = () => {
 
           <div className="imageContainer">
             <ShopImage 
-            // image={"/images/shop-test.png"} // Imagem para o perfil do Shop
-            icon={<AiFillShop size={70} color="var(--white)" />}
-            btnIcon={<AiFillCamera size={23} color="var(--white)"/>}
+              // image={"/images/shop-test.png"} // Imagem para o perfil do Shop
+              icon={<AiFillShop size={70} color="var(--white)" />}
+              btnIcon={<AiFillCamera size={23} color="var(--white)"/>}
             />
           </div>
 
           <div className="inputContainer">
             <DescriptionInput
-            label="Descrição do negócio"  
-            placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
-            value={desc}
-            onChange={text => setDesc(text.target.value)}
+              label="Descrição do negócio"  
+              placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
+              value={desc}
+              onChange={text => setDesc(text.target.value)}
             />
           </div>
 
@@ -52,7 +52,7 @@ const BusinessRegister = () => {
           </div>
         </form>
       </Container>
-    </>
+    </Wrapper>
   );
 };
 
