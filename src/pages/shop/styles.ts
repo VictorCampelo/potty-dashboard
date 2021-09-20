@@ -13,87 +13,41 @@ export const Container = styled.div`
         margin-left: 5vw;
 
         display: flex;
-        justify-content: space-between;
+        
         
         .left-area{
             display: flex;
             flex-direction: column;
+            align-items: center;
+
             height: 95vh;
 
-            .card{
-                width: 30vw;
-                
-                background: #FFFFFF;
-                box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
-                border-radius: 20px;
-                
-                .top{
-                    display: flex;
-                    justify-content: space-between;
-                    margin: 20px 20px;
+            margin-right: 20px;
 
-                    .icon{
-                        margin-left: 5vw;
-                        
+            .config-button{
+                width: 23vw;
+                height: 6vh;
+                margin-top: 20px;
 
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        img{
-                            width: 100px;
-                            height: 100px;
-                        }
+                background: #2DD1AC;
+                border-radius: 30px;
+                border: none;
 
-                        h1{
-                            font-style: normal;
-                            font-weight: normal;
-                            font-size: 24px;
-                            line-height: 36px;
-                            text-align: center;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 1rem;
 
-                            color: #000000;
-                        }
-                    }
+                color: #FFFFFF;
+            }
+        }
 
-                    button{
-                        width: 100px;
-                        height: 35px;
-                        background: transparent;
+        .right-area{
+            display: flex;
+            flex-direction: column;
+            height: 95vh;
 
-                        border: 2px solid #2DD1AC;
-                        box-sizing: border-box;
-                        border-radius: 30px;
-
-                        font-style: normal;
-                        font-weight: normal;
-                        font-size: 1rem;
-
-                        color: #2DD1AC;
-
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                }
-
-                .bottom{
-                    margin: 30px 25px;
-                    h1{
-                        font-style: normal;
-                        font-weight: 600;
-                        font-size: 24px;
-
-                        color: #01AC8A;
-                    }
-
-                    p{
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 12px;
-                        line-height: 18px;
-                    }
-                }
+            section + section{
+                margin-top: 20px;
             }
         }
     }

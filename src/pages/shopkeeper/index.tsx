@@ -13,9 +13,7 @@ const shopkeeper = () => {
   
   return (
     <Container>
-      <DrawerLateral/>
-
-      
+      <DrawerLateral greenOption={0}/>
 
       <div className="cards-area">
 

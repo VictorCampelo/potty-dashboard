@@ -10,7 +10,14 @@ import { AiOutlineExpand } from 'react-icons/ai';
 
 import Modal from "../Modal";
 
-const  DrawerLateral: React.FC = () => {
+interface DrawerLateral extends React.InputHTMLAttributes<HTMLInputElement>{
+    greenOption?: number; 
+}
+
+const  DrawerLateral = ({
+    greenOption,
+    ...rest 
+}: DrawerLateral ) => {
     const [active, setActive] = useState(false);
     const [modal, setModal] = useState(false);
 
@@ -36,8 +43,8 @@ const  DrawerLateral: React.FC = () => {
                     <Link href="/shopkeeper">
                         <div className="option">
                             <IoHomeOutline className="icon"
-                                
-                                color="var(--green-confirmation)"
+
+                                color={greenOption === 0 ? "var(--green-confirmation)" : "var(--black-800)" } 
 
                             />
                             {active ? <a  >Home</a> : null}
@@ -48,7 +55,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <BiStore className="icon"
                                 
-                                color="var(--black-800);" 
+                                color={greenOption === 1 ? "var(--green-confirmation)" : "var(--black-800)" } 
                             />
                             {active ? <a>Análise da loja</a> : null}
                             
@@ -59,7 +66,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <BiExtension className="icon"
                                 
-                                color="var(--black-800);" 
+                                color={greenOption === 2 ? "var(--green-confirmation)" : "var(--black-800)" } 
                             />
                             {active ? <a>Categoria</a> : null}
                             
@@ -70,7 +77,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <BiClipboard className="icon"
                                 
-                                color="var(--black-800);" 
+                                color={greenOption === 3 ? "var(--green-confirmation)" : "var(--black-800)" } 
 
                             />
                             {active ? <a>Pedidos</a> : null}
@@ -82,7 +89,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <FiBox className="icon"
                                 
-                                color="var(--black-800);" 
+                                color={greenOption === 4 ? "var(--green-confirmation)" : "var(--black-800)" } 
                             />
                             {active ? <a>Produtos</a> : null}
                             
@@ -93,7 +100,7 @@ const  DrawerLateral: React.FC = () => {
                         <div className="option">
                             <IoPersonOutline className="icon"
                                 
-                                color="var(--black-800);" 
+                                color={greenOption === 5 ? "var(--green-confirmation)" : "var(--black-800)" } 
 
                             />
                             {active ? <a>Meus dados</a> : null}
