@@ -15,7 +15,8 @@ import { signUp } from "../../services/api";
 
 const Register = () => {
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
@@ -27,7 +28,8 @@ const Register = () => {
     try {
       const user = {
         email,
-        name, 
+        firstName, 
+        lastName, 
         password,
         passwordConfirmation
       }
@@ -35,6 +37,7 @@ const Register = () => {
       const res = await signUp(user);
 
       console.log(res);
+      router.push('login');
     } catch(e){
       console.log(e);
     }
@@ -56,9 +59,17 @@ const Register = () => {
 
           <div className="inputContainer">
             <Input 
-              label="Nome" 
-              value={name}
-              onChange={e => setName(e.target.value)}
+              label="Primeiro Nome" 
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
+              icon={<FiMail size={20} 
+              color="var(--black-800)" />} 
+            />
+
+            <Input 
+              label="Sobrenome" 
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
               icon={<FiMail size={20} 
               color="var(--black-800)" />} 
             />
