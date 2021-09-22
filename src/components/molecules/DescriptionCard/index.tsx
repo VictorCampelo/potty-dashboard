@@ -1,8 +1,14 @@
-import { Container } from './styles'; 
+import { Container, Modal } from './styles';
+import React, { useState } from 'react'; 
 
 import { RiPencilFill } from 'react-icons/ri';
 import { AiFillStar } from 'react-icons/ai';
 import { AiOutlineStar } from 'react-icons/ai';
+
+import { AiFillCamera } from 'react-icons/ai';
+import { IoCloseSharp } from 'react-icons/io5';
+import { FaBuilding } from 'react-icons/fa';
+
 
 interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement>{
     title?: string;
@@ -30,30 +36,79 @@ const  DescriptionCard = ({
     }
     //adicionando estrelas preenchidas e vazias ao vetor
 
+    const [modal, setModal] = useState(false);
+
     return (
         <Container>
             <div className="top">
-            <div></div>
+                <div></div>
 
-            <div className="icon">
-                <img src={imgSrc} alt="icone da loja"/>
-                <h1>{title}</h1>
-                <div>{ stars }</div>
-            </div> 
-            
-            <button>
-                Editar 
-                <RiPencilFill size={15} />
-            </button>
+                <div className="icon">
+                    <img src={imgSrc} alt="icone da loja"/>
+                    <h1>{title}</h1>
+                    <div>{ stars }</div>
+                </div> 
+                
+                <button onClick={() => setModal(true)}>
+                    Editar 
+                    <RiPencilFill size={15} />
+                </button>
             </div>
 
             <div className="bottom">
-            <h1>Descrição</h1>
-            <p>
-                {description}    
-            </p>
+                <h1>Descrição</h1>
+                <p>
+                    {description}    
+                </p>
             </div>
 
+            {modal ? 
+                <Modal> 
+                    <div className="corpo-modal">
+                        <div className="topo">
+                            <h1>Descrição</h1>
+                            <div id="close" onClick={ ()=> setModal(false)}><IoCloseSharp size={20} /></div>
+
+                            <div className="icon">
+                                <img src={imgSrc} alt="icone da loja"/>
+                                <button >
+                                    <AiFillCamera size={15} color="white"/>
+                                </button>
+                            </div> 
+                        </div>
+
+                        <div className="corpo">
+                            <div className="inputs">
+                                <h2>Nome do negócio</h2>
+                                <div className="nome">
+                                    <FaBuilding size={12}/> 
+                                    <input type="text" value="Café da Maria"></input>
+                                </div>
+                            </div>
+                            
+                            <div className="inputs">
+                                <h2>Descrição do negócio</h2>
+                                <textarea maxLength={600} value=" Café da Maria
+
+                                    Horário de funcionamento: 
+                                    Seg - Sex: 6h - 20h
+                                    Sáb e Dom: 7h - 14h
+
+                                    Os mais diversos tipos de petiscos para saborear com 
+                                    todos as nossas deliciosas receitas com café!"
+                                >
+                                    
+                                </textarea>
+                            </div>
+
+                            <button> Confirmar </button>
+                        </div>
+                    </div>
+
+                    <div id="background-black" onClick={ ()=> setModal(false)}></div>
+                </Modal>
+            
+            : null}
         </Container>
     );
 };
