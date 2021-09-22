@@ -5,7 +5,8 @@ export const api = axios.create({
 })
 
 interface SignUpProps {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   passwordConfirmation: string;
