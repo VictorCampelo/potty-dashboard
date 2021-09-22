@@ -7,7 +7,7 @@ import { AiFillStar } from "react-icons/ai";
 
 const Products = () => {
   return (
-    <Wrapper>
+    <>
       <Head>
         <title>Products | Último</title>
       </Head>
@@ -125,7 +125,7 @@ const Products = () => {
           </div>
         </section>
       </Container>
-    </Wrapper>
+    </>
   );
 };
 

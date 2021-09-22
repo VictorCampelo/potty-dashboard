@@ -8,10 +8,12 @@ export const Wrapper = styled.div`
 
 export const Container = styled.main`
   display: flex;
+  width: 100vw;
+  overflow-x: hidden;
   justify-content: center;
   align-items: center;
-  padding-top: 2rem;
   flex-direction: column;
+  overflow-x: scroll;
 
   .descriptionContainer {
     width: 100%;
@@ -44,7 +46,7 @@ export const Container = styled.main`
       .productWrapper {
         display: flex;
         flex-wrap: wrap;
-        gap: 1.5rem;
+        gap: 1rem;
       }
     }
 
