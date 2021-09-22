@@ -30,6 +30,10 @@ export default createGlobalStyle`
 
     --green-confirmation: #2DD1AC;
     --green-confirmation-darker: #24a78a;
+    --green-primary-dark: #01AC8A;
+
+    --blue-primary: #3C8EFC;
+    --blue-dark: #2A78E1;
 
     --wave-1: #F9EFDC;
     --wave-2: #F5E7CD;
@@ -54,6 +58,10 @@ export default createGlobalStyle`
   body, input, textarea, select, button {
     font: 400 1rem "Poppins", sans-serif;
     color: var(--black-800);
+  }
+  
+  p {
+    color: var(--gray-600);
   }
 
   button {
