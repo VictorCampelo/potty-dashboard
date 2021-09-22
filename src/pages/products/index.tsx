@@ -112,15 +112,70 @@ const Products = () => {
             </div>
 
             <div className="productWrapper">
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard /> 
-              <ProductCard />
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              
             </div>
           </div>
         </section>
@@ -132,14 +187,69 @@ const Products = () => {
 export default Products;
 
 export const ProductCard = styled.div`
-  width: 240px;
-  height: 380px;
+  width: 320px;
+  height: 460px;
   border-radius: 30px;
   background: var(--white);
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.5rem;
   display: flex;
   align-items: center;
+  flex-direction: column;
+
+  img {
+    width: 80%;
+    height: 180px;
+    resize: cover;
+  }
+
+  .title {
+    font-size: 1.125rem;
+    margin: 0.5rem 0;
+    font-weight: 600;
+  }
+
+  .price {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    span {
+      font-size: 1.75rem;
+      color: var(--green-confirmation);
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    
+    small {
+      font-weight: 600;
+      text-decoration: line-through;
+      color: var(--gray-200);
+      padding-bottom: 0.25rem;
+    }
+  }
+
+  .score {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin-top: 0.5rem;
+
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+
+  p {
+    width: 100%;
+    text-align: justify;
+    color: var(--black-800);
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 export const DescriptionCard = styled.div`
