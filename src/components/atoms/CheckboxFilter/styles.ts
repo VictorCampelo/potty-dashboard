@@ -1,0 +1,39 @@
+import styled from 'styled-components';
+
+interface ContainerProps {
+  confirm: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .btn {
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 4px;
+    border: 1px solid var(--black-800);
+    background: var(--white);
+    
+    margin-right: 10px;
+    padding: 4px;
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+
+    label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin-left: 0.2rem;
+    }
+  }
+`;

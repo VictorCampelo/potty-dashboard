@@ -27,6 +27,7 @@ export default createGlobalStyle`
     --gray-600: #6B7079;
     --gray-700: #363F4E;
     --yellow-600: #F7EAD5;
+    --gold: #ffe249;
 
     --green-confirmation: #2DD1AC;
     --green-confirmation-darker: #24a78a;

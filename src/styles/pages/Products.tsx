@@ -27,6 +27,31 @@ export const Container = styled.main`
     padding: 0 2rem;
     display: flex;
 
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+
+    .products {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-left: 1.5rem;
+
+      .filterWrapper {
+        display: flex;
+        flex: 1;
+        margin-bottom: 1.5rem;
+      }
+
+      .productWrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+    }
+
+    .categoriesContainer {
+      width: 220px;
+      height: 100%;
+      display: flex;
+    }
   }
 `

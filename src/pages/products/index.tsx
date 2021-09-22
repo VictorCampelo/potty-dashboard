@@ -2,6 +2,8 @@ import Header from "../../components/molecules/Header";
 import Head from "next/head";
 import { Container, Wrapper } from "../../styles/pages/Products";
 import styled from 'styled-components';
+import { CheckboxFilter } from "../../components/atoms/CheckboxFilter";
+import { AiFillStar } from "react-icons/ai";
 
 const Products = () => {
   return (
@@ -25,6 +27,7 @@ const Products = () => {
           </DescriptionCard>
           <StatusCard>
             <div className="status">
+              <div className="statusDot" />
               <span>
                 Aberto agora
               </span>
@@ -40,66 +43,104 @@ const Products = () => {
         </section>
 
         <section className="productsContainer">
-          <CategoriesCard>
-            <div className="title">
-              <span>
-                Categorias da loja:
-              </span>
+          <div className="categoriesContainer">
+            <CategoriesCard>
+              <div className="title">
+                <span>
+                  Categorias da loja:
+                </span>
+              </div>
+
+              <div className="item">
+                <a>
+                  Todas as categorias
+                </a>
+              </div>
+
+              <div className="item">
+                <a>
+                  Cozinha
+                </a>
+              </div>
+
+              <div className="item">
+                <a>
+                  Quartos
+                </a>
+              </div>
+
+              <div className="item">
+                <a className="active">
+                  Sala de estar
+                </a>
+              </div>
+            </CategoriesCard>
+          </div>
+
+          <div className="products">
+            <div className="filterWrapper">
+              <FilterCard>
+                <span className="orderBy">Ordenar por: </span>
+
+                <button>
+                  <span className="item active">Melhor resultado</span>
+                </button>
+
+                <button>
+                  <span className="item">Mais pedidos</span>
+                </button>
+
+                <button>
+                  <span className="item">Mais recente</span>
+                </button>
+
+                <button>
+                  <span className="item">Preço</span>
+                </button>
+              </FilterCard>
+
+              <FilterCardSecondary>
+                <CheckboxFilter  confirm={false} toggleConfirm={() => {}} >
+                  <AiFillStar size={24} color="var(--gold)" />
+                  <label>4.0 ou mais</label>
+                </CheckboxFilter>
+
+                <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
+                  <label>Frete grátis</label>
+                </CheckboxFilter>
+              </FilterCardSecondary>
             </div>
 
-            <div className="item">
-              <a>
-                Todas as categorias
-              </a>
+            <div className="productWrapper">
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard /> 
+              <ProductCard />
             </div>
-
-            <div className="item">
-              <a>
-                Cozinha
-              </a>
-            </div>
-
-            <div className="item">
-              <a>
-                Quartos
-              </a>
-            </div>
-
-            <div className="item">
-              <a className="active">
-                Sala de estar
-              </a>
-            </div>
-          </CategoriesCard>
-
-          <FilterCard>
-            <span className="orderBy">Ordenar por: </span>
-
-            <button>
-              <span className="item active">Melhor resultado</span>
-            </button>
-
-            <button>
-              <span className="item">Mais pedidos</span>
-            </button>
-
-            <button>
-              <span className="item">Mais recente</span>
-            </button>
-
-            <button>
-              <span className="item">Preço</span>
-            </button>
-          </FilterCard>
-
+          </div>
         </section>
-
       </Container>
     </Wrapper>
   );
 };
 
 export default Products;
+
+export const ProductCard = styled.div`
+  width: 240px;
+  height: 380px;
+  border-radius: 30px;
+  background: var(--white);
+  box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+`;
 
 export const DescriptionCard = styled.div`
   width: 45%;
@@ -140,12 +181,23 @@ export const StatusCard = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
   
   .status {
     width: 100%;
     padding: 1rem 1.5rem;
     border-radius: 30px;
     box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
+    display: flex;
+    align-items: center;
+    
+    .statusDot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--green-primary-dark);
+      margin-right: 0.5rem;
+    }
 
     span {
       color: var(--green-primary-dark);
@@ -170,6 +222,7 @@ export const StatusCard = styled.div`
 
 export const CategoriesCard = styled.div`
   width: 220px;
+  height: auto;
   border-radius: 30px;
   background: var(--white);
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
@@ -191,7 +244,7 @@ export const CategoriesCard = styled.div`
   
   .item {
     width: calc(100% - 1.5rem);
-    padding: 1rem 0;
+    padding: 1rem 0.5rem;
     border-bottom: 1px solid var(--gray-100);
     
     :hover {
@@ -221,16 +274,17 @@ export const FilterCard = styled.div`
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
   overflow: hidden;
   display: flex;
+  flex: 4;
+  justify-content: center;
   align-items: center;
-  margin-left: 2rem;
-  padding-left: 1.5rem;
-
+  padding: 0 1.5rem;
+  
   .orderBy {
     font-weight: 600;
     font-size: 1.125rem;
     margin-right: 1rem;
   }
-
+  
   button {
     display: flex;
     align-items: center;
@@ -246,7 +300,12 @@ export const FilterCard = styled.div`
         color: var(--gray-800);
       }
     }
+
+    &:last-child {
+      border: none;
+    }
   }
+
   
   .item {
     font-weight: bold;
@@ -259,3 +318,18 @@ export const FilterCard = styled.div`
     
   }
 `;
+
+export const FilterCardSecondary = styled.div`
+  height: 80px;
+  border-radius: 30px;
+  background: var(--white);
+  box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex: 2;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1.5rem;
+  padding: 0 1.5rem;
+  gap: 1rem;
+`
