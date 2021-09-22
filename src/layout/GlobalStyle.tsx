@@ -75,6 +75,7 @@ export default createGlobalStyle`
 
     &:hover {
       text-decoration: underline;
+      cursor: pointer;
     }
   }
 `;

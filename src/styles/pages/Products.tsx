@@ -11,13 +11,22 @@ export const Container = styled.main`
   justify-content: center;
   align-items: center;
   padding-top: 2rem;
+  flex-direction: column;
 
   .descriptionContainer {
     width: 100%;
-    padding: 0 5rem;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
 
     margin-top: 10rem;
+  }
+
+  .productsContainer {
+    width: 100%;
+    padding: 0 2rem;
+    display: flex;
+
+    margin-top: 2rem;
   }
 `
