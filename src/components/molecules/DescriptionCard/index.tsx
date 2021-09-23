@@ -43,7 +43,7 @@ const  DescriptionCard = ({
             
             <button>
                 Editar 
-                <RiPencilFill size={15} />
+                <RiPencilFill size={15} className="btn-icon" />
             </button>
             </div>
 
