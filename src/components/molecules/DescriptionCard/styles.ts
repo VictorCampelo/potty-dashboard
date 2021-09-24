@@ -123,7 +123,7 @@ export const Modal = styled.div`
                     height: 100px;
                 }
 
-                button{
+                label{
                     margin-top: -25px;
                     margin-right: -70px;
                     background: #6C7079;
@@ -137,6 +137,12 @@ export const Modal = styled.div`
                     display:flex;
                     justify-content: center;
                     align-items: center ;
+
+                    cursor: pointer;
+                }
+
+                input[type=file]{
+                    display: none;
                 }
             }
         }

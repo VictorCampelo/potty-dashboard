@@ -1,5 +1,5 @@
 import { Container, Modal } from './styles';
-import React, { useState } from 'react'; 
+import React, { useState, ChangeEvent } from 'react'; 
 
 import { RiPencilFill } from 'react-icons/ri';
 import { AiFillStar } from 'react-icons/ai';
@@ -37,6 +37,24 @@ const  DescriptionCard = ({
     //adicionando estrelas preenchidas e vazias ao vetor
 
     const [modal, setModal] = useState(false);
+    const [image, setImage] = useState<File[]>([]);
+    const [previewImage,  setPreviewImage] = useState<string[]>([]);
+
+    function handleSelectImage(event: ChangeEvent<HTMLInputElement>){
+        if (!event.target.files) {
+            return;
+        }
+
+        const selectedImage = Array.from(event.target.files);
+        
+        setImage(selectedImage);
+
+        const selectedImagePreview = selectedImage.map( image => {
+            return URL.createObjectURL(image);
+        })
+
+        setPreviewImage(selectedImagePreview);
+    }
 
     return (
         <Container>
@@ -70,10 +88,13 @@ const  DescriptionCard = ({
                             <div id="close" onClick={ ()=> setModal(false)}><IoCloseSharp size={20} /></div>
 
                             <div className="icon">
-                                <img src={imgSrc} alt="icone da loja"/>
-                                <button >
+                                <img key={previewImage[0]} src={previewImage[0]} alt="icone da loja" />
+                                <label htmlFor="image[]">
+                                    
                                     <AiFillCamera size={15} color="white"/>
-                                </button>
+                                </label>
+
+                                <input type="file" onChange={(event) => handleSelectImage(event)} id="image[]"/>
                             </div> 
                         </div>
 
