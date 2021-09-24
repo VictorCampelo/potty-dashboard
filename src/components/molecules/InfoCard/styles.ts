@@ -42,6 +42,10 @@ export const Container = styled.section`
             display: flex;
             justify-content: center;
             align-items: center;
+
+            .icon {
+                margin-left: 4px;
+            }
         }
     }
 

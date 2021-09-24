@@ -2,11 +2,12 @@ import { Container } from "./styles"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
   title: string;
+  border?: boolean;
 }
 
-export function Button({ title, ...rest}: ButtonProps) {
+export function Button({ title, border, ...rest}: ButtonProps) {
   return (
-    <Container {...rest}>
+    <Container border={border} {...rest}>
       {title}
     </Container>
   )

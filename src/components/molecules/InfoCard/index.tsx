@@ -21,6 +21,8 @@ interface InfoCard extends React.InputHTMLAttributes<HTMLInputElement>{
     category?: string; // nome do tipo category
     
     local?: string; // endereço do tipo local
+
+    button?: any;
   }
   //atributos aceitos para que o card consiga abrangir todos os tipos de informações trabalhadas
 
@@ -35,6 +37,8 @@ const  InfoCard = ({
     category,
     
     local,
+
+    button,
     
     ...rest 
 
@@ -48,9 +52,9 @@ const  InfoCard = ({
                 
                 <h1>{title}</h1>
                 
-                <button>
+                <button onClick={button}>
                     Editar 
-                    <RiPencilFill size={15} />
+                    <RiPencilFill size={15} className="icon" />
                 </button>
 
             </div>

@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 
 export const Container = styled.header`
-
     .background-modal {
 
-        position:absolute;
+        position: absolute;
         background: rgba(0, 0, 0, 0.5);
         top: -20px;
         left: -20px;
@@ -16,9 +15,12 @@ export const Container = styled.header`
     .modal{
         z-index: 3;
         position: absolute;
-        top: 35vh;
-        left: 30vw;
-        
+
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%);
 
         padding: 30px 40px;
         box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);

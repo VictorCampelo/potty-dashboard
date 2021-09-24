@@ -1,35 +1,37 @@
-import { Container } from './styles'; 
-import React, { useState } from 'react';
+import { Container } from "./styles";
+import React, { useEffect, useState } from "react";
 
-interface Modal extends React.InputHTMLAttributes<HTMLInputElement>{
-    title?: string;
-    buttons: boolean; 
-    modalVisible: boolean;
-  }
+interface Modal extends React.InputHTMLAttributes<HTMLInputElement> {
+  title?: string;
+  buttons: boolean;
+  modalVisible: boolean;
+}
 
-const  Modal = ({
-    title,
-    buttons = false, 
-    ...rest 
+const Modal = ({
+  title,
+  buttons = false,
+  modalVisible,
+  ...rest
 }: Modal) => {
-    const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
-    if(visible === true){
-    return ( 
-            <Container>
-                <div className="modal">
-                <h1>{title}</h1>
+  useEffect(() => {
+    setVisible(modalVisible);
+  }, [modalVisible]);
 
-                    {rest.children}
-                </div>
-                <div className="background-modal"> </div>
-            </Container> );
-    }else{
-    return (
-        null
-    )
+    if (visible === true) {
+      return (
+        <Container>
+          <div className="modal">
+          <h1>{title}</h1>
+            {rest.children}
+          </div>
+          <div className="background-modal"> </div>
+        </Container>
+      );
+    } else {
+      return null;
     }
-    
 };
 
 export default Modal;
