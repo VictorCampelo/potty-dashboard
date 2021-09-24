@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: auto;
-  max-width: 470px;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   ${(props) => 'flex: '+ props.flex + ';'}

@@ -65,7 +65,6 @@ export const ModalContainer = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
-
     h1 {
       font-family: "Poppins";
       font-style: normal;
@@ -125,6 +124,53 @@ export const ModalContainer = styled.div`
         outline: none;
 
         text-align: center;
+      }
+    }
+  }
+
+  .categories-container {
+    width: 500px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 30px;
+  }
+
+  .category-container {
+    width: auto;
+    max-width: 500px;
+    height: auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .inputRow {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+    > * {
+      &:first-child {
+        margin-right: 24px
+      }
+    }
+  }
+
+  .last-inputRow {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    > * {
+      &:first-child {
+        margin-right: 24px
       }
     }
   }
