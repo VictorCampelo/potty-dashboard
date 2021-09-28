@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.button`
+interface ContainerProp {
+  border: boolean;
+}
+
+export const Container = styled.button<ContainerProp>`
   height: 3.375rem;
   width: auto;
   border: none;
@@ -13,8 +17,17 @@ export const Container = styled.button`
   background-color: var(--green-confirmation);
   transition: 0.2s background;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${props => props.border && "border: 2px solid var(--green-confirmation);"}
+  ${props => props.border && "color: var(--green-confirmation);"}
+  ${props => props.border && "background-color: var(--white);"}
+
   :hover {
     background-color: var(--green-confirmation-darker);
+    ${props => props.border && "background-color: #eeeeee;"}
   }
 
   :disabled{

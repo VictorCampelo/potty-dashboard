@@ -10,6 +10,7 @@ export default createGlobalStyle`
   html {
     width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
   }
 
   :root {
@@ -27,6 +28,7 @@ export default createGlobalStyle`
     --gray-600: #6B7079;
     --gray-700: #363F4E;
     --yellow-600: #F7EAD5;
+    --gold: #ffe249;
 
     --green-confirmation: #2DD1AC;
     --green-confirmation-darker: #24a78a;
@@ -75,6 +77,7 @@ export default createGlobalStyle`
 
     &:hover {
       text-decoration: underline;
+      cursor: pointer;
     }
   }
 `;

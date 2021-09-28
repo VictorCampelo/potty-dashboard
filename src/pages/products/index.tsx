@@ -1,19 +1,19 @@
 import Header from "../../components/molecules/Header";
-import Link from "next/link";
 import Head from "next/head";
-import { Container, Wrapper } from "../../styles/pages/Products";
-import styled from 'styled-components';
+import { CategoriesCard, Container, DescriptionCard, FilterCard, FilterCardSecondary, Footer, ProductCard, StatusCard } from "../../styles/pages/Products";
+import { CheckboxFilter } from "../../components/atoms/CheckboxFilter";
+import { AiFillFacebook, AiFillPhone, AiFillStar, AiOutlineWhatsApp } from "react-icons/ai";
 
 const Products = () => {
   return (
-    <Wrapper>
+    <>
       <Head>
         <title>Products | Último</title>
       </Head>
 
       <Header/>
       <Container>
-        <div className="descriptionContainer">
+        <section className="descriptionContainer">
           <DescriptionCard >
             <img src="https://img.elo7.com.br/product/zoom/315F8D5/logo-loja-semi-pronta-logomarca.jpg" alt="logo" />
 
@@ -26,6 +26,7 @@ const Products = () => {
           </DescriptionCard>
           <StatusCard>
             <div className="status">
+              <div className="statusDot" />
               <span>
                 Aberto agora
               </span>
@@ -38,78 +39,228 @@ const Products = () => {
               </p>
             </div>
           </StatusCard>
-        </div>
+        </section>
 
+        <section className="productsContainer">
+          <div className="categoriesContainer">
+            <CategoriesCard>
+              <div className="title">
+                <span>
+                  Categorias da loja:
+                </span>
+              </div>
+
+              <div className="item">
+                <a>
+                  Todas as categorias
+                </a>
+              </div>
+
+              <div className="item">
+                <a>
+                  Cozinha
+                </a>
+              </div>
+
+              <div className="item">
+                <a>
+                  Quartos
+                </a>
+              </div>
+
+              <div className="item">
+                <a className="active">
+                  Sala de estar
+                </a>
+              </div>
+            </CategoriesCard>
+          </div>
+
+          <div className="products">
+            <div className="filterWrapper">
+              <FilterCard>
+                <span className="orderBy">Ordenar por: </span>
+
+                <button>
+                  <span className="item active">Melhor resultado</span>
+                </button>
+
+                <button>
+                  <span className="item">Mais pedidos</span>
+                </button>
+
+                <button>
+                  <span className="item">Mais recente</span>
+                </button>
+
+                <button>
+                  <span className="item">Preço</span>
+                </button>
+              </FilterCard>
+
+              <FilterCardSecondary>
+                <CheckboxFilter  confirm={false} toggleConfirm={() => {}} >
+                  <AiFillStar size={24} color="var(--gold)" />
+                  <label>4.0 ou mais</label>
+                </CheckboxFilter>
+
+                <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
+                  <label>Frete grátis</label>
+                </CheckboxFilter>
+              </FilterCardSecondary>
+            </div>
+
+            <div className="productWrapper">
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>             
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>
+                    R$ 2.999,00
+                  </span>  
+                  <small>
+                    R$ 4.999,00
+                  </small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>
+                    5.0 | 5412 Pedidos
+                  </span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+            </div>
+          </div>
+        </section>
+
+        <Footer>
+          <h1>Contato</h1>
+          <span>
+            <AiFillPhone size={24} color="var(--gray-700)" />
+            (89) 8854-2341
+          </span>
+
+          <span>
+            <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+            (89) 8854-2341
+          </span>
+
+          <a href="facebook.com">
+            <AiFillFacebook size={24} color="var(--gray-700)" />
+            Facebook
+          </a>
+        </Footer>
       </Container>
-    </Wrapper>
+    </>
   );
 };
 
 export default Products;
-
-export const DescriptionCard = styled.div`
-  width: 45%;
-  height: 200px;
-  border-radius: 30px;
-  background: var(--white);
-  box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
-  padding: 1.5rem 2rem;
-  display: flex;
-  align-items: center;
-
-  img {
-    width: 164px;
-    height: 164px;
-    border-radius: 50%;
-    margin-right: 2rem;
-  }
-
-  p {
-    color: var(--gray-800);
-  }
-
-  a {
-    display: inline;
-    color: var(--blue-primary);
-    
-    :hover {
-      color: var(--blue-dark);
-    }
-  }
-`
-
-export const StatusCard = styled.div`
-  height: 200px;
-  border-radius: 30px;
-  background: var(--white);
-  box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  
-  .status {
-    width: 100%;
-    padding: 1.5rem;
-    border-radius: 30px;
-    box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
-
-    span {
-      color: var(--green-primary-dark);
-      font-weight: bold;
-      font-size: 1.125rem;
-    }
-  }
-
-  .text {
-    width: 100%;
-    height: 100%;
-    padding: 0 1.5rem;
-    display: flex;
-    align-items: center;
-
-    p {
-      line-height: 2rem;
-      font-weight: bold;
-    }
-  }
-`

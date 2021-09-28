@@ -71,6 +71,7 @@ const  DescriptionCard = ({
                     Editar 
                     <RiPencilFill size={15} />
                 </button>
+
             </div>
 
             <div className="bottom">
