@@ -85,13 +85,13 @@ const  DrawerLateral = ({
                         </div>
                     </Link>
 
-                    <Link href="/">
+                    <Link href="/catalog">
                         <div className="option">
                             <FiBox className="icon"
                                 
                                 color={greenOption === 4 ? "var(--green-confirmation)" : "var(--black-800)" } 
                             />
-                            {active ? <a>Produtos</a> : null}
+                            {active ? <a>Catálogo</a> : null}
                             
                         </div>
                     </Link>
