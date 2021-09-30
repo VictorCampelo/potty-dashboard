@@ -40,6 +40,8 @@ const  DescriptionCard = ({
     const [image, setImage] = useState<File[]>([]);
     const [previewImage,  setPreviewImage] = useState<string[]>([]);
 
+    previewImage.push(imgSrc);
+
     function handleSelectImage(event: ChangeEvent<HTMLInputElement>){
         if (!event.target.files) {
             return;
