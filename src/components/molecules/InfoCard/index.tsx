@@ -4,7 +4,7 @@ import { RiPencilFill } from 'react-icons/ri';
 
 import { IoMdCall } from 'react-icons/io';
 import { FaFacebook } from 'react-icons/fa';
-import { AiFillLinkedin } from 'react-icons/ai';
+import { FiInstagram,} from 'react-icons/fi';
 import { IoLogoWhatsapp } from 'react-icons/io5';
 
 import { GiKnifeFork } from 'react-icons/gi';
@@ -14,7 +14,7 @@ interface InfoCard extends React.InputHTMLAttributes<HTMLInputElement>{
     title?: string; //titulo padrao de todo card
     type?: string; // tipo de card (contact, timetable, category, local)
 
-    cell?: string; facebook?: string; linkedin?: string; whatsApp?: string; // tipo contact
+    cell?: string; facebook?: string; instagram?: string; whatsApp?: string; // tipo contact
     
     dom?: any; seg?: any; ter?: any; qua?: any; qui?: any; sex?: any; sab?: any; // tipo timetable
     
@@ -30,7 +30,7 @@ const  InfoCard = ({
     title,
     type,
 
-    cell = "", facebook = "", linkedin = "", whatsApp = "",
+    cell = "", facebook = "", instagram = "", whatsApp = "",
 
     dom, seg, ter, qua, qui, sex, sab,
 
@@ -65,7 +65,7 @@ const  InfoCard = ({
                     
                         {cell !== "" ? <div className="contact-info"> <IoMdCall size={15} /> <h2>{cell}</h2> </div> : null }
                         {facebook !== "" ? <div className="contact-info"> <FaFacebook size={15} /> <h2>{facebook}</h2> </div> : null }
-                        {linkedin !== "" ? <div className="contact-info"> <AiFillLinkedin size={15} /> <h2>{linkedin}</h2> </div> : null}
+                        {instagram !== "" ? <div className="contact-info"> <FiInstagram size={15} /> <h2>{instagram}</h2> </div> : null}
                         {whatsApp !== "" ? <div className="contact-info"> <IoLogoWhatsapp size={15} /> <h2>{whatsApp}</h2> </div> : null}
                     
                     </div> : null
