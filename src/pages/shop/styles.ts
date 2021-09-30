@@ -187,4 +187,36 @@ export const ModalContainer = styled.div`
       width: 132px;
     }
   }
+
+  .contact-container{
+    > * {
+        &:first-child {
+          margin-bottom: 24px;
+        }
+    }
+
+    .top-inputs{
+      display: flex;
+      
+      justify-content: space-between;
+      > * {
+        &:first-child {
+          margin-right: 24px;
+        }
+      }
+    }
+
+    .bottom-inputs{
+      display: flex;
+      
+      justify-content: space-between;
+      > * {
+        &:first-child {
+          margin-right: 24px;
+        }
+      }
+    }
+  }
+
+
 `;
