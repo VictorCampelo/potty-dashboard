@@ -37,8 +37,15 @@ const  DescriptionCard = ({
     //adicionando estrelas preenchidas e vazias ao vetor
 
     const [modal, setModal] = useState(false);
+
+    const [valueTitle, setValueTitle] = useState(title);
+    const [valueDescription, setValueDescription] = useState(description);
+
     const [image, setImage] = useState<File[]>([]);
     const [previewImage,  setPreviewImage] = useState<string[]>([]);
+
+
+    previewImage.push(imgSrc);
 
     function handleSelectImage(event: ChangeEvent<HTMLInputElement>){
         if (!event.target.files) {
@@ -77,7 +84,9 @@ const  DescriptionCard = ({
             <div className="bottom">
                 <h1>Descrição</h1>
                 <p>
-                    {description}    
+                    { description }  
+                    
+
                 </p>
             </div>
 
@@ -104,20 +113,13 @@ const  DescriptionCard = ({
                                 <h2>Nome do negócio</h2>
                                 <div className="nome">
                                     <FaBuilding size={12}/> 
-                                    <input type="text" value="Café da Maria"></input>
+                                    <input type="text" value={valueTitle} onChange={(e) => setValueTitle(e.target.value)}></input>
                                 </div>
                             </div>
                             
                             <div className="inputs">
                                 <h2>Descrição do negócio</h2>
-                                <textarea maxLength={600} value=" Café da Maria
-
-                                    Horário de funcionamento: 
-                                    Seg - Sex: 6h - 20h
-                                    Sáb e Dom: 7h - 14h
-
-                                    Os mais diversos tipos de petiscos para saborear com 
-                                    todos as nossas deliciosas receitas com café!"
+                                <textarea maxLength={600} value={valueDescription} onChange={(e) => setValueDescription(e.target.value)}
                                 >
                                     
                                 </textarea>

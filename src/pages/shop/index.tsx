@@ -26,7 +26,7 @@ const shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
   const [locationModal, setLocationModal] = useState(false);
-  const [contactModal, setContactModal] = useState(true);
+  const [contactModal, setContactModal] = useState(false);
 
   const [businessState, setBusinessState] = useState("");
   const [businessCity, setBusinessCity] = useState("");
