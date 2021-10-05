@@ -100,40 +100,40 @@ const shop = () => {
               <div className="left-container">
                 <div className="dates">
                   <p>Segunda:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
                 <div className="dates">
                   <p>Terça:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
                 <div className="dates">
                   <p>Quarta:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
                 <div className="dates">
                   <p>Quinta:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
               </div>
               <div className="right-container">
                 <div className="dates">
                   <p>Sexta:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
                 <div className="dates">
                   <p>Sabado:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
                 <div className="dates">
                   <p>Domingo:</p>
-                  <input type="datetime" name="time" id="1" />
-                  <input type="datetime" name="time" id="2" />
+                  <input type="datetime" placeholder="00:00" name="time" id="1" />
+                  <input type="datetime" placeholder="00:00" name="time" id="2" />
                 </div>
               </div>
             </div>
