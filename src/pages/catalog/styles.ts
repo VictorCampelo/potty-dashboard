@@ -82,6 +82,16 @@ export const Container = styled.div`
 
     height: 100%;
   }
+
+  .categories-container {
+    padding: 20px 70px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    height: 100%;
+  }
 `;
 
 export const ModalContainer = styled.div`
