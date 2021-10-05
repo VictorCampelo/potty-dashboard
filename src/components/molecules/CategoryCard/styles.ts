@@ -49,6 +49,8 @@ export const Container = styled.div`
 
       margin-right: 2px;
 
+      cursor: pointer;
+
       .wrap {
         width: 2px;
         height: 100%;
