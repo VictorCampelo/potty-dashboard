@@ -13,79 +13,96 @@ export const Container = styled.div<ContainerProp>`
   display: flex;
   align-items: center;
 
+  margin-bottom: 16px;
+
   .card-container {
     display: flex;
     flex-direction: row;
     align-items: center;
 
-    .icon {
-      width: 60px;
-      height: 60px;
-
-      border-radius: 5px;
-
-      margin-right: 55px;
-    }
-
-    .desc-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
+    .color {
+      width: 785px;
       height: 76px;
-      border-radius: 0;
 
-      tr {
-        display: flex;
-        flex-direction: row;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      background: rgba(216, 217, 221, 0.28);
+      border-radius: 8px;
+
+      margin-right: 25px;
+
+      .icon {
+        width: 60px;
+        height: 60px;
+
+        border-radius: 5px;
+
+        margin-left: 10px;
+        margin-right: 55px;
       }
 
-      .title {
-        width: 86px;
-        height: 16px;
-
+      .desc-container {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
 
-        margin-right: 55px;
-        margin-bottom: 3px;
+        height: 76px;
+        border-radius: 0;
 
-        background: rgba(216, 217, 221, 0.48);
+        tr {
+          display: flex;
+          flex-direction: row;
+        }
 
-        font-family: "Poppins";
-        font-style: normal;
-        font-weight: normal;
-        font-size: 13px;
-        line-height: 19px;
-        display: flex;
-        align-items: center;
-        text-align: center;
+        .title {
+          width: 86px;
+          height: 16px;
 
-        color: #6c7079;
-      }
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-      .children {
-        width: 86px;
-        height: 24px;
+          margin-right: 55px;
+          margin-bottom: 3px;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+          background: rgba(216, 217, 221, 0.48);
 
-        margin-right: 55px;
+          font-family: "Poppins";
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 19px;
+          display: flex;
+          align-items: center;
+          text-align: center;
 
-        font-family: "Poppins";
-        font-style: normal;
-        font-weight: normal;
-        font-size: 16px;
-        line-height: 24px;
-        display: flex;
-        align-items: center;
-        text-align: center;
+          color: #6c7079;
+        }
 
-        color: #363F4E;
+        .children {
+          width: 86px;
+          height: 24px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          margin-right: 55px;
+
+          font-family: "Poppins";
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 24px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+
+          color: #363f4e;
+        }
       }
     }
 
@@ -99,7 +116,7 @@ export const Container = styled.div<ContainerProp>`
 
       padding: 0 15px;
 
-      background: #FFFFFF;
+      background: #ffffff;
       box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
       border-radius: 30px;
 
@@ -108,19 +125,18 @@ export const Container = styled.div<ContainerProp>`
       font-weight: normal;
       font-size: 15px;
       line-height: 22px;
-      
+
       &:first-child {
         margin-right: 16px;
       }
     }
 
     .edit-btn {
-      ${props => props.isGreen && "color: #2DD1AC;"}
+      ${(props) => props.isGreen && "color: #2DD1AC;"}
     }
 
     .close-btn {
-      ${props => props.isRed && "color: #FF4D4B;"}
+      ${(props) => props.isRed && "color: #FF4D4B;"}
     }
-
   }
 `;
