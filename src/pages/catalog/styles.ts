@@ -84,7 +84,7 @@ export const Container = styled.div`
   }
 
   .categories-container {
-    padding: 20px 70px;
+    padding: 20px 85px;
 
     display: flex;
     flex-direction: column;

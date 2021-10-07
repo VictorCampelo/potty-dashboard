@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { FiPlus, FiSearch } from "react-icons/fi";
-import { IoTrashBinOutline } from "react-icons/io5";
+import { BsFilePlus } from 'react-icons/bs';
+import { FiPlus, FiSearch } from 'react-icons/fi';
+import { IoSearch, IoTrashBinOutline } from "react-icons/io5";
+import { RiFileSearchFill } from 'react-icons/ri';
 import CatalogTabs from "../../components/molecules/CatalogTabs";
+import { CategoryListCard } from "../../components/molecules/CategoryListCard";
 import CustomModal from "../../components/molecules/CustomModal";
 
 import DrawerLateral from "../../components/molecules/DrawerLateral";
@@ -50,6 +53,77 @@ const catalog = () => {
     },
   ];
 
+  const FakeAPI2 = [
+    {
+      id: 1,
+      category: "Cozinha e Decoração",
+      data: [
+        {
+          name: "Refrigerador Brastemp",
+          amount: "7",
+        },
+        {
+          name: "Refrigerador Brastemp",
+          amount: "2",
+        }
+      ]
+    },
+    {
+      id: 2,
+      category: "Informática",
+      data: [
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        }
+      ]
+    },
+    {
+      id: 3,
+      category: "Informática",
+      data: [
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        }
+      ]
+    },
+    {
+      id: 4,
+      category: "Informática",
+      data: [
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        }
+      ]
+    },
+    // {
+    //   id: 3,
+    //   category: "Cozinha e Decoração",
+    //   name: "Refrigerador Brastemp",
+    //   amount: "2",
+    // },
+    // {
+    //   id: 4,
+    //   category: "Cozinha e Decoração",
+    //   name: "Refrigerador Brastemp",
+    //   amount: "15",
+    // },
+  ];
+
   const [excludeProductsModal, setExcludeProductsModal] = useState(false);
   const [confirmExcludeProduct, setConfirmExcludeProduct] = useState(false);
 
@@ -64,7 +138,7 @@ const catalog = () => {
   }
 
   function handleContinueExcludeProductsModal() {
-    setConfirmExcludeProduct(!confirmExcludeProduct)
+    setConfirmExcludeProduct(!confirmExcludeProduct);
   }
 
   return (
@@ -83,7 +157,12 @@ const catalog = () => {
                 </div>
                 <h1 className="desc">Produto excluído com sucesso!</h1>
                 <div className="btn">
-                  <button onClick={handleContinueExcludeProductsModal} className="continue-btn">Continuar</button>
+                  <button
+                    onClick={handleContinueExcludeProductsModal}
+                    className="continue-btn"
+                  >
+                    Continuar
+                  </button>
                 </div>
               </>
             ) : (
@@ -156,7 +235,22 @@ const catalog = () => {
               }
               content2={
                 <div className="categories-container">
-                  <h1>Categorias</h1>
+                  {FakeAPI2.map((product, index) => {
+                    return (
+                      <CategoryListCard
+                        key={product.id + "-" + index}
+                        date={product.data.map((data) => ({
+                          name: data.name,
+                          amount: data.amount
+                        }))}
+                        category={product.category}
+                        excludeBtn={1}
+                        editBtn={2}
+                        isGreen={true}
+                        isRed={true}
+                      />
+                    );
+                  })}
                 </div>
               }
             />
