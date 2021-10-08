@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { BsFilePlus } from "react-icons/bs";
 import { FiPlus, FiSearch } from "react-icons/fi";
-import { IoTrashBinOutline } from "react-icons/io5";
+import { IoSearch, IoTrashBinOutline } from "react-icons/io5";
+import { RiFileSearchFill } from "react-icons/ri";
 import CatalogTabs from "../../components/molecules/CatalogTabs";
+import { CategoryListCard } from "../../components/molecules/CategoryListCard";
 import CustomModal from "../../components/molecules/CustomModal";
 
 import DrawerLateral from "../../components/molecules/DrawerLateral";
@@ -50,21 +53,150 @@ const catalog = () => {
     },
   ];
 
-  const [excludeProductsModal, setExcludeProductsModal] = useState(false);
-  const [confirmExcludeProduct, setConfirmExcludeProduct] = useState(false);
+  const FakeAPI2 = [
+    {
+      id: 1,
+      category: "Cozinha e Decoração",
+      data: [
+        {
+          name: "Refrigerador Brastemp",
+          amount: "7",
+        },
+        {
+          name: "Refrigerador Brastemp",
+          amount: "2",
+        },
+      ],
+    },
+    {
+      id: 2,
+      category: "Informática",
+      data: [
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        },
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        },
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        },
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7213123313123132132132131",
+          amount: "2",
+        },
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        },
+        {
+          name: "Processador Ryzen 7213123313123132132132131",
+          amount: "2",
+        },
+        {
+          name: "Processador Ryzen 7213123313123132132132131",
+          amount: "2",
+        },
+        {
+          name: "Processador Ryzen 7213123313123132132132131",
+          amount: "2",
+        },
+        {
+          name: "Processador Ryzen 7213123313123132132132131",
+          amount: "2",
+        },
+      ],
+    },
+    {
+      id: 3,
+      category: "Informática",
+      data: [
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        },
+      ],
+    },
+    {
+      id: 4,
+      category: "Informática",
+      data: [
+        {
+          name: "Computador Dell",
+          amount: "7",
+        },
+        {
+          name: "Processador Ryzen 7",
+          amount: "2",
+        },
+      ],
+    },
+    // {
+    //   id: 3,
+    //   category: "Cozinha e Decoração",
+    //   name: "Refrigerador Brastemp",
+    //   amount: "2",
+    // },
+    // {
+    //   id: 4,
+    //   category: "Cozinha e Decoração",
+    //   name: "Refrigerador Brastemp",
+    //   amount: "15",
+    // },
+  ];
+
+  const [excludeModal, setExcludeModal] = useState(false);
+  const [confirmExclude, setConfirmExclude] = useState(false);
+
+  const [isCategory, setIsCategory] = useState(false);
 
   // Modal de exclusao produtos
 
-  function handleOpenExcludeProductsModal() {
-    setExcludeProductsModal(true);
+  function handleOpenExcludeModal() {
+    setIsCategory(false);
+    setExcludeModal(true);
   }
 
-  function toggleExcludeProductsModal() {
-    setExcludeProductsModal(!excludeProductsModal);
+  function toggleExcludeModal() {
+    setExcludeModal(!excludeModal);
   }
 
-  function handleContinueExcludeProductsModal() {
-    setConfirmExcludeProduct(!confirmExcludeProduct)
+  function handleContinueExcludeModal() {
+    setConfirmExclude(!confirmExclude);
+  }
+
+  // Modal de esclusao categoria
+
+  function handleOpenCategoryExcludeModal() {
+    setIsCategory(true);
+    setExcludeModal(true);
   }
 
   return (
@@ -72,44 +204,96 @@ const catalog = () => {
       <Container>
         <CustomModal
           buttons={false}
-          setModalOpen={toggleExcludeProductsModal}
-          modalVisible={excludeProductsModal}
+          setModalOpen={toggleExcludeModal}
+          modalVisible={excludeModal}
         >
-          <ModalContainer>
-            {confirmExcludeProduct ? (
-              <>
-                <div className="icon">
-                  <IoTrashBinOutline size={120} color="#FF4D4B" />
-                </div>
-                <h1 className="desc">Produto excluído com sucesso!</h1>
-                <div className="btn">
-                  <button onClick={handleContinueExcludeProductsModal} className="continue-btn">Continuar</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h1>
-                  Realmente deseja excluir <strong>definitivamente</strong> esse
-                  produto?
-                </h1>
+          {isCategory ? (
+            <>
+              <ModalContainer>
+                {confirmExclude ? (
+                  <>
+                    <div className="icon">
+                      <IoTrashBinOutline size={120} color="#FF4D4B" />
+                    </div>
+                    <h1 className="desc">Categoria excluído com sucesso!</h1>
+                    <div className="btn">
+                      <button
+                        onClick={handleContinueExcludeModal}
+                        className="continue-btn"
+                      >
+                        Continuar
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h1>
+                      Realmente deseja excluir <strong>definitivamente</strong>{" "}
+                      essa categoria?
+                    </h1>
 
-                <div className="btn-container">
-                  <button
-                    onClick={() => setConfirmExcludeProduct(true)}
-                    className="exclude-btn"
-                  >
-                    Confirmar
-                  </button>
-                  <button
-                    onClick={toggleExcludeProductsModal}
-                    className="cancel-btn"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </>
-            )}
-          </ModalContainer>
+                    <div className="btn-container">
+                      <button
+                        onClick={() => setConfirmExclude(true)}
+                        className="exclude-btn"
+                      >
+                        Confirmar
+                      </button>
+                      <button
+                        onClick={toggleExcludeModal}
+                        className="cancel-btn"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </>
+                )}
+              </ModalContainer>
+            </>
+          ) : (
+            <>
+              <ModalContainer>
+                {confirmExclude ? (
+                  <>
+                    <div className="icon">
+                      <IoTrashBinOutline size={120} color="#FF4D4B" />
+                    </div>
+                    <h1 className="desc">Produto excluído com sucesso!</h1>
+                    <div className="btn">
+                      <button
+                        onClick={handleContinueExcludeModal}
+                        className="continue-btn"
+                      >
+                        Continuar
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h1>
+                      Realmente deseja excluir <strong>definitivamente</strong>{" "}
+                      esse produto?
+                    </h1>
+
+                    <div className="btn-container">
+                      <button
+                        onClick={() => setConfirmExclude(true)}
+                        className="exclude-btn"
+                      >
+                        Confirmar
+                      </button>
+                      <button
+                        onClick={toggleExcludeModal}
+                        className="cancel-btn"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </>
+                )}
+              </ModalContainer>
+            </>
+          )}
         </CustomModal>
 
         <DrawerLateral greenOption={4} />
@@ -145,7 +329,7 @@ const catalog = () => {
                         category={product.category}
                         amount={product.amount}
                         price={product.price}
-                        excludeBtn={handleOpenExcludeProductsModal}
+                        excludeBtn={handleOpenExcludeModal}
                         editBtn={2}
                         isRed={true}
                         isGreen={true}
@@ -156,7 +340,22 @@ const catalog = () => {
               }
               content2={
                 <div className="categories-container">
-                  <h1>Categorias</h1>
+                  {FakeAPI2.map((product, index) => {
+                    return (
+                      <CategoryListCard
+                        key={product.id + "-" + index}
+                        date={product.data.map((data) => ({
+                          name: data.name,
+                          amount: data.amount,
+                        }))}
+                        category={product.category}
+                        excludeBtn={handleOpenCategoryExcludeModal}
+                        editBtn={2}
+                        isGreen={true}
+                        isRed={true}
+                      />
+                    );
+                  })}
                 </div>
               }
             />
