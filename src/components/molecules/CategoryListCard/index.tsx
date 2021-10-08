@@ -1,12 +1,13 @@
-import { IoIosArrowDown} from 'react-icons/io'
-import { IoTrashBinOutline } from 'react-icons/io5'
-import { RiPencilFill } from 'react-icons/ri'
-import { Container } from './styles'
+import { IoIosArrowDown } from "react-icons/io";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { RiPencilFill } from "react-icons/ri";
+import { Container } from "./styles";
 import EllipsisText from "react-ellipsis-text";
-import { useState } from 'react';
-import Fade from 'react-reveal/Fade';
+import { useState } from "react";
+import Fade from "react-reveal/Fade";
 
-interface CategoryListCardProps extends React.AllHTMLAttributes<HTMLAllCollection> {
+interface CategoryListCardProps
+  extends React.AllHTMLAttributes<HTMLAllCollection> {
   category: string;
   excludeBtn: any;
   editBtn: any;
@@ -15,7 +16,7 @@ interface CategoryListCardProps extends React.AllHTMLAttributes<HTMLAllCollectio
   date: Array<{
     name: string;
     amount: string;
-  }>
+  }>;
 }
 
 export const CategoryListCard = ({
@@ -26,10 +27,10 @@ export const CategoryListCard = ({
   isGreen,
   date,
 }: CategoryListCardProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   function handletoggle() {
-    setIsOpen(!isOpen)
+    setIsOpen(!isOpen);
   }
   return (
     <Container isRed={isRed} isGreen={isGreen} isOpen={isOpen}>
@@ -42,24 +43,30 @@ export const CategoryListCard = ({
           <div className="children-container">
             {date.map((data) => {
               return (
-                <p className="items"><EllipsisText text={data.name} length={25} /><span className="spacer"/>{data.amount} un.</p>
-              )
+                <p className="items">
+                  <div className="text">
+                    <EllipsisText text={data.name} length={25} />
+                  </div>
+                  <span className="spacer" />
+                  {data.amount} un.
+                </p>
+              );
             })}
           </div>
         </Fade>
       </div>
       <div className="edit-btn">
-          <button onClick={editBtn} className="edit-btn">
-            <RiPencilFill size={20} />
-            Editar
-          </button>
-        </div>
+        <button onClick={editBtn} className="edit-btn">
+          <RiPencilFill size={20} />
+          Editar
+        </button>
+      </div>
       <div className="exclude-btn">
-          <button onClick={excludeBtn} className="close-btn">
-            <IoTrashBinOutline size={20} />
-            Excluir
-          </button>
-        </div>   
+        <button onClick={excludeBtn} className="close-btn">
+          <IoTrashBinOutline size={20} />
+          Excluir
+        </button>
+      </div>
     </Container>
-  )
-}
+  );
+};

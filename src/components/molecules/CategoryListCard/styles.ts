@@ -9,7 +9,6 @@ interface ContainerProp {
 export const Container = styled.div<ContainerProp>`
   width: auto;
   max-width: 1050px;
-  max-height: 400px;
 
   display: flex;
   align-items: flex-start;
@@ -20,9 +19,6 @@ export const Container = styled.div<ContainerProp>`
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    height: auto;
-    max-height: 400px;
 
     margin-right: 22px;
 
@@ -93,12 +89,12 @@ export const Container = styled.div<ContainerProp>`
 
         color: #000000;
 
-        EllipsisText {
-          width: 250px;
+        .text {
+          width: 170px;
         }
 
         .spacer {
-          width: 15px;
+          width: 5px;
         }
       }
 
