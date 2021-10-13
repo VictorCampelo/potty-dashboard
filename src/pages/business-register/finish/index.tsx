@@ -9,12 +9,15 @@ import { Button } from "../../../components/atoms/Button";
 import { AiFillShop, AiFillCamera } from "react-icons/ai";
 import Router from "next/router";
 
+import { createBusiness } from "../../../services/bussiness.services"
+
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('');
   
 
   function handleFinishRegister() {
     Router.push('/')
+    let response = await createBusiness();
   }
 
   return (

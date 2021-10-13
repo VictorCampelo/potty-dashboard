@@ -11,7 +11,7 @@ import { Button } from "../../components/atoms/Button";
 import { FaFacebook } from 'react-icons/fa';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 import { useRouter } from "next/router";
-import { signUp } from "../../services/api";
+import { signUp } from "../../services/auth.services";
 
 const Register = () => {
   const [email, setEmail] = useState('');

@@ -14,6 +14,8 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Router from "next/router";
 
+import { loginUser } from "../../services/auth.services";
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
