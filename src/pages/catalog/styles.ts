@@ -35,7 +35,7 @@ export const Container = styled.div`
 
       border-radius: 30px 30px 0 0;
       padding: 20px;
-      
+
       .addBtn {
         width: 123px;
         height: 2.5rem;
@@ -68,7 +68,7 @@ export const Container = styled.div`
       .input-container {
         width: 313px;
 
-        margin-right: 28px
+        margin-right: 28px;
       }
     }
   }
@@ -103,6 +103,27 @@ export const ModalContainer = styled.div`
   align-items: center;
   justify-content: center;
 
+  .exit-container {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    h1 {
+      font-family: "Poppins";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 36px;
+
+      color: #01ac8a;
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
   h1 {
     font-family: "Poppins";
     font-style: normal;
@@ -111,9 +132,41 @@ export const ModalContainer = styled.div`
     line-height: 45px;
     text-align: center;
 
-    color: #363F4E;
+    color: #363f4e;
 
     margin-bottom: 70px;
+  }
+
+  .category-container {
+    width: 500px;
+    height: 130px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .category-btn-container {
+    button {
+      margin-top: 20px;
+      width: 132px;
+      height: 54px;
+      background: transparent;
+
+      border: 2px solid #2dd1ac;
+      box-sizing: border-box;
+      border-radius: 30px;
+
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1rem;
+
+      color: #2dd1ac;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .btn-container {
@@ -136,7 +189,7 @@ export const ModalContainer = styled.div`
       line-height: 27px;
       text-align: center;
 
-      color: #FFFFFF;
+      color: #ffffff;
 
       border-radius: 30px;
       border: none;
@@ -144,11 +197,11 @@ export const ModalContainer = styled.div`
     }
 
     .exclude-btn {
-      background: #FF4D4B;
+      background: #ff4d4b;
     }
 
     .cancel-btn {
-      background: #2DD1AC;
+      background: #2dd1ac;
     }
   }
 
@@ -163,7 +216,7 @@ export const ModalContainer = styled.div`
 
     border-radius: 100%;
 
-    border: 10px solid #FF4D4B;
+    border: 10px solid #ff4d4b;
   }
 
   .desc {
@@ -179,7 +232,7 @@ export const ModalContainer = styled.div`
     line-height: 45px;
     text-align: center;
 
-    color: #363F4E;
+    color: #363f4e;
   }
 
   .btn {
@@ -201,7 +254,7 @@ export const ModalContainer = styled.div`
       line-height: 27px;
       text-align: center;
 
-      color: #FFFFFF;
+      color: #ffffff;
 
       border-radius: 30px;
       border: none;
@@ -209,7 +262,7 @@ export const ModalContainer = styled.div`
     }
 
     .continue-btn {
-      background: #2DD1AC;
+      background: #2dd1ac;
     }
   }
-`
+`;

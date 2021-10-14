@@ -40,7 +40,7 @@ export const Container = styled.div<ContainerProp>`
         border-radius: 5px;
 
         margin-left: 10px;
-        margin-right: 55px;
+        margin-right: 35px;
       }
 
       .desc-container {
