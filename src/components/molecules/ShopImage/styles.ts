@@ -14,11 +14,17 @@ export const Container = styled.div`
     justify-content: center;
 
     border-radius: 50%;
+    border: 1px solid #fff;
 
     color: var(--white);
     background-color: var(--green-confirmation);
+
     .image {
+      width: 132px;
+      height: 132px;
+      
       border-radius: 50%;
+      object-fit: cover;
     }
   }
   .imageBtn {
@@ -37,5 +43,13 @@ export const Container = styled.div`
 
       border-radius: 50%;
       border: 4px solid var(--white);
+
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        cursor: pointer;
+      }
     }
 `

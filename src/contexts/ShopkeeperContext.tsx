@@ -7,6 +7,7 @@ type ShopkeeperStore = {
   address?: string,
   city?: string,
   state?: string,
+  image?: string,
   description?: string,
   facebook_link?: string,
   instagram_link?: string,
