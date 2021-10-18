@@ -31,7 +31,7 @@ const Login = () => {
 
       console.log(res);
 
-      Router.push('/shopkeeper')
+      Router.push('/shopkeeper');
 
     } catch (e) { 
       console.log(e);

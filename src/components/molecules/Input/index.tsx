@@ -35,7 +35,7 @@ export const Input = ({
         {error && textError && <span>{textError}</span> }
       </section>
       
-      <label className="inputContainter">
+      <div className="inputContainter">
 
         { !!icon && icon }
 
@@ -59,7 +59,7 @@ export const Input = ({
           />
           )  
         )}
-      </label>
+      </div>
     </Container>
   )
 }

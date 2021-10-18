@@ -1,21 +1,38 @@
-import Header from "../../components/molecules/Header";
+import Header from "../../../components/molecules/Header";
 import Link from "next/link";
 import Head from "next/head";
-import { Container, Wrapper } from "../../styles/pages/preLogin";
+import { Container, Wrapper } from "../../../styles/pages/preLogin";
 
 import { VscKey } from 'react-icons/vsc';
 import { FiLock } from 'react-icons/fi';
-import { Input } from "../../components/molecules/Input";
-import { Button } from "../../components/atoms/Button";
-import { FaFacebook } from 'react-icons/fa';
-import { AiFillGoogleCircle } from 'react-icons/ai';
+import { Input } from "../../../components/molecules/Input";
+import { Button } from "../../../components/atoms/Button";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { recoverPasswordConfirmation } from "../../../services/auth.services";
 
 const SendTokenRegister = () => {
   const router = useRouter()
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [token, setToken] = useState(router.query.id as string);
 
-  function handleRegister(e: React.FormEvent<HTMLFormElement>) {
+  async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const body = {
+      password,
+      passwordConfirmation,
+      token
+    }
+
+    try {
+      const res = await recoverPasswordConfirmation(body);
+
+      router.push('/login')
+    } catch (e) {
+      console.error(e)
+    }
 
     router.push('/login')
   }
@@ -36,12 +53,16 @@ const SendTokenRegister = () => {
 
           <div className="inputContainer">
             <Input 
-              label="Token" 
+              value={token}
+              onChange={e => setToken(e.target.value)}
+              label="Token"
               placeholder="12345" 
               icon={<VscKey size={20} color="var(--black-800);" />} 
-            />
+              />
 
             <Input 
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               label="Nova senha" 
               placeholder="********" 
               password 
@@ -49,6 +70,8 @@ const SendTokenRegister = () => {
             />
 
             <Input 
+              value={passwordConfirmation}
+              onChange={e => setPasswordConfirmation(e.target.value)}
               label="Repetir senha" 
               placeholder="********" 
               password 

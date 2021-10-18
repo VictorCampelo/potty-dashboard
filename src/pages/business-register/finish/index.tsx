@@ -13,11 +13,10 @@ import { createBusiness } from "../../../services/bussiness.services"
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('');
-  
 
-  function handleFinishRegister() {
-    Router.push('/')
-    let response = await createBusiness();
+  async function handleFinishRegister() {
+    Router.push('/');
+    // let response = await createBusiness();
   }
 
   return (
