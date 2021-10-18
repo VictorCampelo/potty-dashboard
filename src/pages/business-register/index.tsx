@@ -9,10 +9,10 @@ import { Checkbox } from "../../components/atoms/Checkbox";
 import { useState } from "react";
 import { Button } from "../../components/atoms/Button";
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
 import { FaHome } from "react-icons/fa";
 import { BiBuildings, BiMapAlt } from "react-icons/bi";
 import Router from "next/router";
+import { ShopkeeperContext } from "../../contexts/ShopkeeperContext";
 
 const BusinessRegister = () => {
   const [businessName, setBusinessName] = useState("");
@@ -25,7 +25,20 @@ const BusinessRegister = () => {
   const [district, setDistrict] = useState("");
   const [cep, setCep] = useState("");
 
+  const { setStore } = useContext(ShopkeeperContext);
+
   function handleContinueRegister() {
+
+    const store = { 
+      name: businessName,
+      cpfCnpj,
+      address: `${publicPlace}, n° ${number}, ${district}, CEP: ${cep}`,
+      city: businessCity,
+      state: businessState,
+    }
+
+    setStore(store)
+
     Router.push("/business-register/continue");
   }
 
@@ -49,14 +62,6 @@ const BusinessRegister = () => {
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
               icon={<FiMail size={20} color="var(--black-800)" />}
-            />
-
-            <Input
-              label="Nome do empresário"
-              placeholder="Nome"
-              value={businessperson}
-              onChange={(e) => setBusinessperson(e.target.value)}
-              icon={<FiUser size={20} color="var(--black-800)" />}
             />
 
             <Input

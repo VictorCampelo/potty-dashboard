@@ -4,19 +4,43 @@ import { Container, Wrapper } from "../../../styles/pages/preLogin";
 
 import { DescriptionInput } from "../../../components/molecules/DescriptionInput";
 import { ShopImage } from "../../../components/molecules/ShopImage"
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../../../components/atoms/Button";
 import { AiFillShop, AiFillCamera } from "react-icons/ai";
 import Router from "next/router";
 
-import { createBusiness } from "../../../services/bussiness.services"
+import { ShopkeeperContext } from "../../../contexts/ShopkeeperContext";
+import { api } from "../../../services/apiClient";
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('');
 
+  const { userDto, storeDto } = useContext(ShopkeeperContext);
+
   async function handleFinishRegister() {
-    Router.push('/');
-    // let response = await createBusiness();
+    const body = {
+      userDto: {
+        ...userDto
+      }, 
+      storeDto: {
+        ...storeDto,
+        description: desc,
+      }
+    }
+
+    console.log(body);
+    
+
+    try {
+      const { data } = await api.post('auth/signup-store', body)
+
+      console.log(data);
+      
+      Router.push(`/shop/${data.user.storeId}`);
+    } catch(e) {
+      console.error(e);
+    }
+
   }
 
   return (

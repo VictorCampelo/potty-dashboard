@@ -21,6 +21,9 @@ import { IoMdCall } from 'react-icons/io';
 import { FaFacebook } from 'react-icons/fa';
 import { IoLogoWhatsapp } from 'react-icons/io5';
 import { FiInstagram } from 'react-icons/fi';
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { api } from "../../services/apiClient";
 
 const shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
@@ -39,6 +42,11 @@ const shop = () => {
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
   const [whatsApp, setWhatsApp] = useState("");
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  console.log('quey: ', id);
 
   // Categorias
   const [category, setCategory] = useState("");
@@ -82,6 +90,21 @@ const shop = () => {
   function toggleContactModal() {
     setContactModal(!contactModal);
   }
+
+  async function loadData() {
+    try {
+      const res = await api.get(`stores/${id}`);
+
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    if(id)
+      loadData();
+  }, [id])
 
   return (
     <>
