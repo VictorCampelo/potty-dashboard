@@ -31,18 +31,24 @@ const shop = () => {
   const [locationModal, setLocationModal] = useState(false);
   const [contactModal, setContactModal] = useState(false);
 
-  const [businessState, setBusinessState] = useState("");
-  const [businessCity, setBusinessCity] = useState("");
-  const [publicPlace, setPublicPlace] = useState("");
-  const [number, setNumer] = useState("");
-  const [district, setDistrict] = useState("");
-  const [cep, setCep] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [stars, setStars] = useState();
   const [desc, setDesc] = useState("");
 
   const [telefone, setTelefone] = useState("");
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
   const [whatsApp, setWhatsApp] = useState("");
+
+  const [businessAddress, setBusinessAddress] = useState("");
+
+  const [businessState, setBusinessState] = useState("");
+  const [businessCity, setBusinessCity] = useState("");
+  const [publicPlace, setPublicPlace] = useState("");
+  const [number, setNumer] = useState("");
+  const [district, setDistrict] = useState("");
+  const [cep, setCep] = useState("");
+
 
   const router = useRouter();
   const { id } = router.query;
@@ -92,9 +98,22 @@ const shop = () => {
 
   async function loadData() {
     try {
-      const res = await getBusiness({id})
+      const res = await getBusiness(`${id}`)
 
       console.log(res)
+
+      const data = res.data
+
+      setBusinessName(data.name)
+      setStars(data.avgStars)
+      setDesc(data.description)
+
+      setTelefone(data.phone)
+      setFacebook(data.facebook_link)
+      setInstagram(data.instagram_link)
+      setWhatsApp(data.whatsapp_link)
+
+      setBusinessAddress(data.address)
 
     } catch (e) {
       console.error(e);
@@ -433,18 +452,18 @@ const shop = () => {
           <div className="left-area">
             <DescriptionCard
               imgSrc="/images/coffe-place.png"
-              title="Café da Maria"
-              quantStar={5}
+              title={businessName}
+              quantStar={stars}
               description={desc}
             />
 
             <InfoCard
               title="Informações de Contato"
               type="contact"
-              cell="(00)0000-0000"
-              facebook="facebook.com/exemplo"
-              instagram="instagram.com/exemplo"
-              whatsApp="wa.me/5000000000"
+              cell={telefone}
+              facebook={facebook}
+              instagram={instagram}
+              whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
             />
           </div>
@@ -474,7 +493,7 @@ const shop = () => {
               title="Localização"
               type="local"
               button={() => handleOpenLocationModal()}
-              local="Avenida Paulista, 63892, São Paulo - SP, 000.000-000"
+              local={businessAddress}
             />
           </div>
         </div>
