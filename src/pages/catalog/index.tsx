@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { BsFilePlus } from "react-icons/bs";
 import { FiPlus, FiSearch } from "react-icons/fi";
+import { IoIosClose } from "react-icons/io";
 import { IoSearch, IoTrashBinOutline } from "react-icons/io5";
 import { IoMdCamera } from "react-icons/io";
 import { RiFileSearchFill } from "react-icons/ri";
+
 import { FiBox } from "react-icons/fi";
 import { VscSearch } from "react-icons/vsc";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdUpload, MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from 'react-icons/md';
+
+
+import { Button } from '../../components/atoms/Button';
 
 import CatalogTabs from "../../components/molecules/CatalogTabs";
 import { CategoryListCard } from "../../components/molecules/CategoryListCard";
@@ -185,6 +190,8 @@ const catalog = () => {
   const [excludeModal, setExcludeModal] = useState(false);
   const [confirmExclude, setConfirmExclude] = useState(false);
 
+  const [editCategoryModal, setEditCategoryModal] = useState(false);
+
   const [isCategory, setIsCategory] = useState(false);
   const [contCateg, setContCateg] = useState(0);
 
@@ -203,12 +210,13 @@ const catalog = () => {
     setConfirmExclude(!confirmExclude);
   }
 
-  // Modal de esclusao categoria
+  // Modal de exclusao categoria
 
   function handleOpenCategoryExcludeModal() {
     setIsCategory(true);
     setExcludeModal(true);
   }
+
 
   //Modal de adição de produtos
   const [addModal, setAddModal] = useState(true);
@@ -225,6 +233,16 @@ const catalog = () => {
 
   function handleOpenCategoryAddModal() {
     setExcludeModal(true);
+
+  // Modal de edição de categoria
+
+  function handleOpenEditCategoryModal() {
+    setEditCategoryModal(true);
+  }
+
+  function toggleEditCategoryModal() {
+    setEditCategoryModal(!editCategoryModal);
+
   }
 
   return (
@@ -324,6 +342,7 @@ const catalog = () => {
           )}
         </CustomModal>
 
+
                   {/*Modal de add produto */}
         <CustomModal
           buttons={false}
@@ -387,6 +406,33 @@ const catalog = () => {
           </ModalContainer>
       
         
+
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleEditCategoryModal}
+          modalVisible={editCategoryModal}
+        >
+          <ModalContainer>
+            <div className="exit-container">
+              <h1>Editar Categoria</h1>
+              <IoIosClose
+                onClick={toggleEditCategoryModal}
+                size={36}
+                color={"black"}
+              />
+            </div>
+            <div className="category-container">
+              <Input
+                label="Nome da categoria"
+                placeholder="Categoria"
+                icon={<FiSearch size={20} color="var(--black-800)" />}
+              ></Input>
+            </div>
+            <div className="category-btn-container">
+              <button>Confirmar</button>
+            </div>
+          </ModalContainer>
+
         </CustomModal>
 
         <DrawerLateral greenOption={4} />
@@ -443,7 +489,7 @@ const catalog = () => {
                         }))}
                         category={product.category}
                         excludeBtn={handleOpenCategoryExcludeModal}
-                        editBtn={2}
+                        editBtn={handleOpenEditCategoryModal}
                         isGreen={true}
                         isRed={true}
                       />

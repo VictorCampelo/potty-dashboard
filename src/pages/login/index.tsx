@@ -14,6 +14,8 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Router from "next/router";
 
+import { loginUser } from "../../services/auth.services";
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +31,7 @@ const Login = () => {
 
       console.log(res);
 
-      Router.push('/shopkeeper')
+      Router.push('/shopkeeper');
 
     } catch (e) { 
       console.log(e);

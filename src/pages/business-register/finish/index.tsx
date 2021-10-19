@@ -3,19 +3,61 @@ import Head from "next/head";
 import { Container, Wrapper } from "../../../styles/pages/preLogin";
 
 import { DescriptionInput } from "../../../components/molecules/DescriptionInput";
-import { ShopImage } from "../../../components/molecules/ShopImage"
-import { useState } from "react";
+import { ShopImage } from "../../../components/molecules/ShopImage";
+import { useContext, useState } from "react";
 import { Button } from "../../../components/atoms/Button";
 import { AiFillShop, AiFillCamera } from "react-icons/ai";
 import Router from "next/router";
 
-const BusinessRegister = () => {
-  const [desc, setDesc] = useState('');
-  
+import { ShopkeeperContext } from "../../../contexts/ShopkeeperContext";
+import { api } from "../../../services/apiClient";
 
-  function handleFinishRegister() {
-    Router.push('/')
+const BusinessRegister = () => {
+  const [desc, setDesc] = useState("");
+  const [imageSrc, setImageSrc] = useState(null);
+
+  const { userDto, storeDto } = useContext(ShopkeeperContext);
+
+  async function handleFinishRegister() {
+    const body = {
+      userDto: {
+        ...userDto,
+      },
+      storeDto: {
+        ...storeDto,
+        image: imageSrc,
+        description: desc,
+      },
+    };
+
+    console.log(body);
+
+    try {
+      const { data } = await api.post("auth/signup-store", body);
+
+      console.log(data);
+
+      Router.push(`/shop/${data.user.storeId}`);
+    } catch (e) {
+      console.error(e);
+    }
   }
+
+  function readFile(file: File) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => resolve(reader.result), false);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const onFileChange = async (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      let imageDataUrl = await readFile(file);
+      setImageSrc(imageDataUrl);
+    }
+  };
 
   return (
     <Wrapper>
@@ -23,7 +65,7 @@ const BusinessRegister = () => {
         <title> Registro de Negócio | Último</title>
       </Head>
 
-      <Header/>
+      <Header />
       <Container>
         <form onSubmit={() => {}}>
           <div className="title">
@@ -31,24 +73,39 @@ const BusinessRegister = () => {
           </div>
 
           <div className="imageContainer">
-            <ShopImage 
-              // image={"/images/shop-test.png"} // Imagem para o perfil do Shop
+            <ShopImage
+              imageSrc={imageSrc} // Imagem para o perfil do Shop
               icon={<AiFillShop size={70} color="var(--white)" />}
-              btnIcon={<AiFillCamera size={23} color="var(--white)"/>}
+              btnIcon={<AiFillCamera size={23} color="var(--white)" />}
+              btn={
+                <input
+                  type="file"
+                  id="image[]"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  onChange={onFileChange}
+                  style={{ display: "none" }}
+                />
+              }
             />
           </div>
 
           <div className="inputContainer">
             <DescriptionInput
-              label="Descrição do negócio"  
+              label="Descrição do negócio"
               placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
               value={desc}
-              onChange={text => setDesc(text.target.value)}
+              onChange={(text) => setDesc(text.target.value)}
             />
           </div>
 
           <div className="buttonContainer">
-            <Button type="button" onClick={handleFinishRegister} title="FINALIZAR" />
+            <Button
+              type="button"
+              onClick={handleFinishRegister}
+              title="FINALIZAR"
+            />
           </div>
         </form>
       </Container>

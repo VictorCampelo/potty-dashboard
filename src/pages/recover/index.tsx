@@ -6,12 +6,25 @@ import { FiMail } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
 import { Button } from "../../components/atoms/Button";
 import { useRouter } from "next/router";
+import { recoverPassword } from "../../services/auth.services";
+import { useState } from "react";
 
 const Register = () => {
+  const [email, setEmail] = useState('');
   const router = useRouter();
 
-  function handleNavigateToContinueRecover(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function handleNavigateToContinueRecover(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
+
+    try {
+      const res = await recoverPassword(email)
+
+      console.log(res);
+
+      router.push('/recover/token');
+    } catch (e) {
+      console.error(e)
+    }
 
     router.push('recover/token');
   }
@@ -32,10 +45,12 @@ const Register = () => {
 
           <div className="inputContainer">
             <Input 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               label="Email" 
               type="email" 
               placeholder="example@gmail.com"
-              icon={<FiMail size={20} color="var(--black-800);" />} 
+              icon={<FiMail size={20} color="var(--black-800);" />}
             />
           </div>
           

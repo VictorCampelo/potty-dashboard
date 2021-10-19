@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from 'nookies';
 import Router from "next/router";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { AxiosResponse } from "axios";
 
 type SignInCredentials = {
@@ -82,7 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setCookie(undefined, 'ultimo.auth.token', token, {
       maxAge: 60 * 60 * 24 * 30, // 1 month
       path: '/',
-      //secure: true,
+      secure: true,
     });
 
     setUser({

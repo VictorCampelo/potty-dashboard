@@ -12,6 +12,8 @@ import { FaFacebook } from 'react-icons/fa';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 import { useRouter } from "next/router";
 import { signUp } from "../../services/auth.services";
+import { useContext } from "react";
+import { ShopkeeperContext } from "../../contexts/ShopkeeperContext";
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -21,6 +23,8 @@ const Register = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   const router = useRouter();
+
+  const { setUser } = useContext(ShopkeeperContext);
 
   async function handleSignUp(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
@@ -34,27 +38,25 @@ const Register = () => {
         passwordConfirmation
       }
 
-      const res = await signUp(user);
+      setUser(user);
 
-      console.log(res);
-      router.push('login');
+      router.push('/business-register');
     } catch(e){
       console.log(e);
     }
-    // router.push('register/shopkeeper');
   }
 
   return (
     <Wrapper>
       <Head>
-        <title>Registro | Último</title>
+        <title>Registro Lojista | Último</title>
       </Head>
 
       <Header/>
       <Container>
         <form>
           <div className="title">
-            <h1>Cadastro</h1>
+            <h1>Cadastro lojista</h1>
           </div>
 
           <div className="inputContainer">

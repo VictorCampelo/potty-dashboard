@@ -5,20 +5,32 @@ import { Container, Wrapper } from "../../../styles/pages/preLogin";
 import { FiMail, FiUser } from 'react-icons/fi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { Input } from "../../../components/molecules/Input";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../../../components/atoms/Button";
 import { FaHome } from "react-icons/fa";
-import { BiBuildings, BiMapAlt } from "react-icons/bi";
 import Router from "next/router";
 import { AiFillFacebook, AiFillLinkedin, AiFillPhone, AiOutlineWhatsApp } from "react-icons/ai";
+import { ShopkeeperContext } from "../../../contexts/ShopkeeperContext";
 
 const BusinessRegister = () => {
   const [number, setNumber] = useState('');
   const [facebookUrl , setFacebookUrl] = useState('');
-  const [linkedinUrl, setLinkedinUrl] = useState('');
+  const [instagramUrl, setInstagramUrl] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState('');
 
+  const { setStore, storeDto } = useContext(ShopkeeperContext);
+
   function handleFinishRegister() {
+    const store = { 
+      ...storeDto,
+      phone: number,
+      facebook_link: facebookUrl,
+      instagram_link: instagramUrl,
+      whatsapp_link: whatsappUrl,
+    }
+
+    setStore(store)
+
     Router.push('/business-register/finish')
   }
 
@@ -53,10 +65,10 @@ const BusinessRegister = () => {
             />
 
             <Input 
-              label="Linkedin"  
-              placeholder="linkedin.com/in/exemplo"  
-              value={linkedinUrl}
-              onChange={e => setLinkedinUrl(e.target.value)}
+              label="Instagram"  
+              placeholder="instagram.com/exemplo"  
+              value={instagramUrl}
+              onChange={e => setInstagramUrl(e.target.value)}
               icon={<AiFillLinkedin size={20} color="var(--black-800)" />} 
             />
 
