@@ -11,19 +11,19 @@ import { Button } from "../../components/atoms/Button";
 import { Input } from "../../components/molecules/Input";
 import { FiSearch } from "react-icons/fi";
 import { CategoryCard } from "../../components/molecules/CategoryCard";
-import { IoCellular, IoFastFood } from 'react-icons/io5';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
-import { BiBuildings, BiMapAlt } from 'react-icons/bi';
-import { FaRoad } from 'react-icons/fa';
-
-
-import { IoMdCall } from 'react-icons/io';
-import { FaFacebook } from 'react-icons/fa';
-import { IoLogoWhatsapp } from 'react-icons/io5';
-import { FiInstagram } from 'react-icons/fi';
+import { IoCellular, IoFastFood } from "react-icons/io5";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { BiBuildings, BiMapAlt } from "react-icons/bi";
+import { FaRoad } from "react-icons/fa";
+import { IoMdCall } from "react-icons/io";
+import { FaFacebook } from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io5";
+import { FiInstagram } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { api } from "../../services/apiClient";
+import { setupApiClient } from "../../services/api";
+import { getBusiness } from "../../services/bussiness.services";
 
 const shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
@@ -37,6 +37,7 @@ const shop = () => {
   const [number, setNumer] = useState("");
   const [district, setDistrict] = useState("");
   const [cep, setCep] = useState("");
+  const [desc, setDesc] = useState("");
 
   const [telefone, setTelefone] = useState("");
   const [instagram, setInstagram] = useState("");
@@ -45,8 +46,6 @@ const shop = () => {
 
   const router = useRouter();
   const { id } = router.query;
-
-  console.log('quey: ', id);
 
   // Categorias
   const [category, setCategory] = useState("");
@@ -93,18 +92,18 @@ const shop = () => {
 
   async function loadData() {
     try {
-      const res = await api.get(`stores/${id}`);
+      const res = await getBusiness({id})
 
-      console.log(res);
+      console.log(res)
+
     } catch (e) {
       console.error(e);
     }
   }
 
   useEffect(() => {
-    if(id)
-      loadData();
-  }, [id])
+    if (id) loadData();
+  }, [id]);
 
   return (
     <>
@@ -123,40 +122,110 @@ const shop = () => {
               <div className="left-container">
                 <div className="dates">
                   <p>Segunda:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
                 <div className="dates">
                   <p>Terça:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
                 <div className="dates">
                   <p>Quarta:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
                 <div className="dates">
                   <p>Quinta:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
               </div>
               <div className="right-container">
                 <div className="dates">
                   <p>Sexta:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
                 <div className="dates">
                   <p>Sabado:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
                 <div className="dates">
                   <p>Domingo:</p>
-                  <input type="datetime" placeholder="00:00" name="time" id="1" />
-                  <input type="datetime" placeholder="00:00" name="time" id="2" />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="1"
+                  />
+                  <input
+                    type="datetime"
+                    placeholder="00:00"
+                    name="time"
+                    id="2"
+                  />
                 </div>
               </div>
             </div>
@@ -306,52 +375,49 @@ const shop = () => {
                 color={"black"}
               />
             </div>
-            
+
             <div className="contact-container">
               <div className="top-inputs">
                 <Input
-                    label="Telefone"
-                    placeholder="(00)0000-0000"
-                    value={telefone}
-                    flex={2}
-                    type="numeric"
-                    maxLength={14}
-                    onChange={(e) => setTelefone(e.target.value)}
-                    icon={<IoMdCall size={20} color="var(--black-800)" />}
+                  label="Telefone"
+                  placeholder="(00)0000-0000"
+                  value={telefone}
+                  flex={2}
+                  type="numeric"
+                  maxLength={14}
+                  onChange={(e) => setTelefone(e.target.value)}
+                  icon={<IoMdCall size={20} color="var(--black-800)" />}
                 />
 
                 <Input
-                    label="Instagram do negócio"
-                    placeholder="instagram.com/exemplo"
-                    value={instagram}
-                    flex={2}
-                    type="text"
-                    
-                    onChange={(e) => setInstagram(e.target.value)}
-                    icon={<FiInstagram size={20} color="var(--black-800)" />}
+                  label="Instagram do negócio"
+                  placeholder="instagram.com/exemplo"
+                  value={instagram}
+                  flex={2}
+                  type="text"
+                  onChange={(e) => setInstagram(e.target.value)}
+                  icon={<FiInstagram size={20} color="var(--black-800)" />}
                 />
               </div>
 
               <div className="bottom-inputs">
                 <Input
-                      label="Facebook do negócio"
-                      placeholder="facebook.com/exemplo"
-                      value={facebook}
-                      flex={2}
-                      type="text"
-                      
-                      onChange={(e) => setFacebook(e.target.value)}
-                      icon={<FaFacebook size={20} color="var(--black-800)" />}
+                  label="Facebook do negócio"
+                  placeholder="facebook.com/exemplo"
+                  value={facebook}
+                  flex={2}
+                  type="text"
+                  onChange={(e) => setFacebook(e.target.value)}
+                  icon={<FaFacebook size={20} color="var(--black-800)" />}
                 />
                 <Input
-                      label="WhatsApp do negócio"
-                      placeholder="whatsApp.com/exemplo"
-                      value={whatsApp}
-                      flex={2}
-                      type="text"
-                    
-                      onChange={(e) => setWhatsApp(e.target.value)}
-                      icon={<IoLogoWhatsapp size={20} color="var(--black-800)" />}
+                  label="WhatsApp do negócio"
+                  placeholder="whatsApp.com/exemplo"
+                  value={whatsApp}
+                  flex={2}
+                  type="text"
+                  onChange={(e) => setWhatsApp(e.target.value)}
+                  icon={<IoLogoWhatsapp size={20} color="var(--black-800)" />}
                 />
               </div>
             </div>
@@ -369,14 +435,7 @@ const shop = () => {
               imgSrc="/images/coffe-place.png"
               title="Café da Maria"
               quantStar={5}
-              description="Café da Maria
-                
-                Horário de funcionamento: 
-                Seg - Sex: 6h - 20h
-                Sáb e Dom: 7h - 14h
-                
-                Os mais diversos tipos de petiscos para saborear com todos as nossas deliciosas receitas com café!
-            "
+              description={desc}
             />
 
             <InfoCard
