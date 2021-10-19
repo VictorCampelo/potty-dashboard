@@ -82,7 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setCookie(undefined, 'ultimo.auth.token', token, {
       maxAge: 60 * 60 * 24 * 30, // 1 month
       path: '/',
-      secure: true,
+      //secure: true,
     });
 
     setUser({

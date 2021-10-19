@@ -1,8 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { BsFilePlus } from "react-icons/bs";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { IoSearch, IoTrashBinOutline } from "react-icons/io5";
+import { IoMdCamera } from "react-icons/io";
 import { RiFileSearchFill } from "react-icons/ri";
+import { FiBox } from "react-icons/fi";
+import { VscSearch } from "react-icons/vsc";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { MdUpload, MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from 'react-icons/md';
+
 import CatalogTabs from "../../components/molecules/CatalogTabs";
 import { CategoryListCard } from "../../components/molecules/CategoryListCard";
 import CustomModal from "../../components/molecules/CustomModal";
@@ -12,6 +18,10 @@ import { Input } from "../../components/molecules/Input";
 import { ProductListCard } from "../../components/molecules/ProductListCard";
 
 import { Container, ModalContainer } from "./styles";
+import { FaMoneyBill, FaPercentage, FaCoins } from "react-icons/fa";
+import { GoArrowRight, GoArrowLeft } from "react-icons/go";
+import { TextArea } from "../../components/molecules/TextArea";
+
 
 const catalog = () => {
   const FakeAPI = [
@@ -176,6 +186,7 @@ const catalog = () => {
   const [confirmExclude, setConfirmExclude] = useState(false);
 
   const [isCategory, setIsCategory] = useState(false);
+  const [contCateg, setContCateg] = useState(0);
 
   // Modal de exclusao produtos
 
@@ -196,6 +207,23 @@ const catalog = () => {
 
   function handleOpenCategoryExcludeModal() {
     setIsCategory(true);
+    setExcludeModal(true);
+  }
+
+  //Modal de adição de produtos
+  const [addModal, setAddModal] = useState(true);
+
+  function handleOpenAddModal() {
+    setAddModal(true);
+  }
+
+  function toggleAddModal() {
+    setAddModal(!addModal);
+  }
+
+  // Modal de esclusao categoria
+
+  function handleOpenCategoryAddModal() {
     setExcludeModal(true);
   }
 
@@ -296,11 +324,76 @@ const catalog = () => {
           )}
         </CustomModal>
 
+                  {/*Modal de add produto */}
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleAddModal}
+          modalVisible={addModal}
+        >
+          
+          <ModalContainer>
+            <h1 id="titulo-cadastro">Cadastrar Produto</h1>
+
+            <div id="input-infos">
+                  <div className="left-area">
+                    
+                    <Input label="Nome do produto" icon={<FiBox/>} placeholder="Nome do produto" />
+                    
+                    <TextArea label="Descição do produto" maxLength={600} placeholder="Descricao" icon={<GiHamburgerMenu/>}/>
+                    
+                    <Input label="Preço" icon={<FaMoneyBill/>} placeholder="R$ 0" />
+
+                    <div className="desconto">
+                      <Input label="Desconto" icon={<FaPercentage/>} placeholder="0.0%" />
+                      <div className="arrows">
+                        <GoArrowRight size={20}/>< GoArrowLeft size={20} id="left-arrow"/>
+                      </div>
+                      <Input label="Preço com desconto" icon={<FaMoneyBill/>} placeholder="R$ 0" />
+                    </div>
+                  </div>
+
+                  <div className="right-area">
+                    <Input label="Quantidade atual" icon={<FaCoins/>} placeholder="0" />
+
+                    <Input label="Categoria" icon={<VscSearch/>} placeholder="Categoria" />
+                    <h3>{"Categorias adicionadas: " + contCateg}</h3>
+
+                    <h2>Foto do produto</h2>
+
+                    <div className="foto">
+                      <div className="title-foto">Foto</div>
+                      <button>
+                        Enviar foto
+                        <MdUpload size={20}/>
+                      </button>
+                    </div>
+
+                    <div className="array-fotos">
+                      <MdOutlineArrowBackIosNew />
+                      <div className="card-image">
+                        <IoMdCamera size={25} color="#6C7079"/>
+                      </div>
+                      <div className="card-image">
+                        <IoMdCamera size={25} color="#6C7079"/>
+                      </div>
+                      <div className="card-image">
+                        <IoMdCamera size={25} color="#6C7079"/>
+                      </div>
+                      < MdOutlineArrowForwardIos/> 
+                    </div>
+
+                  </div>
+            </div>
+          </ModalContainer>
+      
+        
+        </CustomModal>
+
         <DrawerLateral greenOption={4} />
 
         <div className="list-container">
           <header className="header">
-            <button className="addBtn">
+            <button className="addBtn" onClick={() => setAddModal(true)}>
               <FiPlus size={20} color="var(--white)" />
               Adicionar
             </button>
