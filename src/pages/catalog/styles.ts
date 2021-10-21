@@ -17,7 +17,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
 
-    margin-left: 110px;
+    margin-left: 320px;
 
     background: #ffffff;
 

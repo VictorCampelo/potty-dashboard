@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from '../contexts/AuthContext'
 import { ShopkeeperProvider } from '../contexts/ShopkeeperContext'
 import GlobalStyle from '../layout/GlobalStyle'
@@ -8,6 +10,17 @@ function MyApp({ Component, pageProps }) {
       <ShopkeeperProvider>
         <GlobalStyle />
         <Component {...pageProps} />
+        <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       </ShopkeeperProvider>
     </AuthProvider>
   ) 

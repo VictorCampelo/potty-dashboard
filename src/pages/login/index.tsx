@@ -1,42 +1,103 @@
-import Header from "../../components/molecules/Header";
 import Link from "next/link";
 import Head from "next/head";
 import { Container, Wrapper } from "../../styles/pages/preLogin";
-
-import { FiLock, FiMail } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
 import { Checkbox } from "../../components/atoms/Checkbox";
-import { FormEvent, useState } from "react";
 import { Button } from "../../components/atoms/Button";
-import { FaFacebook } from 'react-icons/fa';
-import { AiFillGoogleCircle } from 'react-icons/ai';
-import { useContext } from "react";
+import Header from "../../components/molecules/Header";
+
 import { AuthContext } from "../../contexts/AuthContext";
-import Router from "next/router";
+import { useState, useContext } from "react";
+
+import { FiLock, FiMail } from "react-icons/fi";
+import { FaFacebook } from "react-icons/fa";
+import { AiFillGoogleCircle } from "react-icons/ai";
+
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import { loginUser } from "../../services/auth.services";
+import { useRouter } from "next/router";
+import { toast, ToastContainer } from "react-toastify";
+
+type ToastProps = {
+  newMessage?: string;
+};
+
+type SignInFormData = {
+  email: string;
+  password: string;
+};
+
+const signInFormSchema = yup.object().shape({
+  email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
+  password: yup
+    .string()
+    .required("Senha obrigatória")
+    .min(8, "Usuário ou senha icorretos"),
+});
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(signInFormSchema),
+  });
+
+  const [rememberUser, setRememberUser] = useState(false);
+
+  const router = useRouter()
 
   const { signIn } = useContext(AuthContext);
 
-  async function handleSignIn(e: FormEvent) {
-    e.preventDefault();
-
-    try {  
-      const res = await signIn({ email, password });
-
-      console.log(res);
-
-      Router.push('/shopkeeper');
-
-    } catch (e) { 
-      console.log(e);
-    }
+  function toggleRememberUser() {
+    setRememberUser(!rememberUser);
   }
+
+  const handleSignIn: SubmitHandler<SignInFormData> = async (values, event) => {
+    try {
+      const user = {
+        email: values.email,
+        password: values.password,
+      }
+
+      const res = await signIn(user);
+
+      if (res.status === 200 || 201) {
+        router.push("/shopkeeper");
+      }
+    } catch (e) {
+      if (e.message.includes("401") || e.message.includes("404")) {
+        handleSendErrorToast({ newMessage: "Email ou senha incorretos" });
+      } else {
+        if (e.message.includes("412")) {
+          return router.push("/register/confirmation-token");
+        }
+        handleSendErrorToast({
+          newMessage: "Erro interno, tente novamente mais tarde",
+        });
+      }
+    }
+  };
+
+  const handleSendErrorToast = ({ newMessage }: ToastProps) => {
+    let message =
+      newMessage || errors?.email?.message || errors?.password?.message;
+    if (message)
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+  };
 
   return (
     <Wrapper>
@@ -44,39 +105,46 @@ const Login = () => {
         <title>Login | Último</title>
       </Head>
 
-      <Header/>
+      <Header />
+
       <Container>
-        <form onSubmit={handleSignIn}>
+        <form onSubmit={handleSubmit(handleSignIn)}>
           <div className="title">
             <h1>Login</h1>
           </div>
 
           <div className="inputContainer">
-            <Input 
-              label="Email" 
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              icon={<FiMail size={20} color="var(--black-800)" />} 
+            <Input
+              label="Email"
+              type="email"
+              error={errors.email !== undefined}
+              icon={<FiMail size={20} color="var(--black-800)" />}
+              {...register("email")}
             />
 
-            <Input 
-              label="Senha" 
-              password 
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              icon={<FiLock size={20} color="var(--black-800)" />} 
+            <Input
+              label="Senha"
+              password
+              textError={"Email ou senha incorretos"}
+              error={errors.password !== undefined}
+              icon={<FiLock size={20} color="var(--black-800)" />}
+              {...register("password")}
             />
           </div>
-          
-          <Checkbox label="Lembrar usuário" confirm={confirm} toggleConfirm={() => setConfirm(!confirm)} />
+
+          <Checkbox
+            label="Lembrar usuário"
+            confirm={rememberUser}
+            toggleConfirm={toggleRememberUser}
+          />
 
           <div className="buttonContainer">
-            <Button type="submit" title="ENTRAR" />
+            <Button isLoading={isSubmitting} type="submit" title="Entrar" />
           </div>
 
           <div className="divisorContainer">
             <div className="divisor" />
-              ou
+            ou
             <div className="divisor" />
           </div>
 
@@ -88,13 +156,13 @@ const Login = () => {
           <div className="register">
             Não possui conta?
             <Link href="/register">
-              <a>{' '}Cadastre-se!</a>
+              <a> Cadastre-se!</a>
             </Link>
           </div>
         </form>
       </Container>
     </Wrapper>
   );
-};
+}
 
 export default Login;
