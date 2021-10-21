@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { forwardRef, ForwardRefRenderFunction, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 import { Container } from './styles';
@@ -14,7 +14,7 @@ interface Input extends React.InputHTMLAttributes<HTMLInputElement>{
   flex?: number;
 }
 
-export const Input = ({ 
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = ({ 
   label, 
   password, 
   icon, 
@@ -22,7 +22,7 @@ export const Input = ({
   textError = '',
   flex = 1,
   ...rest 
-}: Input) => {
+}: Input, ref) => {
   const [isInputVisible, setIsInputVisible] = useState(true);
 
   return (
@@ -41,6 +41,7 @@ export const Input = ({
 
         <input 
           type={ password && isInputVisible ? "password" : "text" }
+          ref={ref}
           {...rest} 
         />
 
@@ -63,3 +64,5 @@ export const Input = ({
     </Container>
   )
 }
+
+export const Input = forwardRef(InputBase);

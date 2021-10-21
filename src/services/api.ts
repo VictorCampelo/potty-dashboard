@@ -7,7 +7,7 @@ export function setupApiClient(ctx = undefined) {
   let cookies = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: 'http://10f4-2804-28c8-8211-8140-d07-1677-c2f7-f721.ngrok.io/',
+    baseURL: 'http://4a0a-2804-ad8-c002-7100-2806-86fb-8555-8ab6.ngrok.io',
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${cookies['atrium.auth.token']}`

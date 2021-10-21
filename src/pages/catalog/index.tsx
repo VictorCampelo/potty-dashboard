@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -25,6 +25,8 @@ import { AddProductModalContainer, Container, EditCategoryModalContainer, Exclud
 import { FaMoneyBill, FaPercentage, FaCoins } from "react-icons/fa";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { TextArea } from "../../components/molecules/TextArea";
+import { api } from '../../services/apiClient';
+import { getProducts } from '../../services/bussiness.services';
 
 const catalog = () => {
   const FakeAPI = [
@@ -193,6 +195,21 @@ const catalog = () => {
 
   const [addModal, setAddModal] = useState(false);
   const [contCateg, setContCateg] = useState(0);
+
+  const [products, setProducts] = useState({})
+
+  useEffect(() => {
+    try {
+      const productsData = getProducts("7e5608a9-becd-43ef-b417-22b8f0dc498f")
+
+      console.log(productsData)
+
+      setProducts(productsData)
+
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   // Modal de adição de produtos
 
@@ -452,7 +469,7 @@ const catalog = () => {
           </AddProductModalContainer>
         </CustomModal>
 
-        <DrawerLateral greenOption={4} />
+        <DrawerLateral activated={true} greenOption={4} />
 
         <div className="list-container">
           <header className="header">
