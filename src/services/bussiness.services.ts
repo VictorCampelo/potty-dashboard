@@ -13,17 +13,12 @@ type createBusinessType = {
   "whatsapp_link": string
 }
 
-type queryIdType = {
-  "id": any,
-}
-
-
 export async function createBusiness(data: createBusinessType){ 
   const res = await api.post('/auth/createUserAndStore', data);
   return res
 }
 
-export async function getBusiness(id: queryIdType){ 
+export async function getBusiness(id: string){ 
   const res = await api.get(`/stores/${id}`);
   return res
 }
