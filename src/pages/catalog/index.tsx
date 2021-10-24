@@ -198,9 +198,9 @@ const catalog = () => {
 
   const [products, setProducts] = useState({})
 
-  useEffect(() => {
+  const loadData = async () => {
     try {
-      const productsData = getProducts("7e5608a9-becd-43ef-b417-22b8f0dc498f")
+      const productsData = await getProducts("7e5608a9-becd-43ef-b417-22b8f0dc498f")
 
       console.log(productsData)
 
@@ -209,6 +209,10 @@ const catalog = () => {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  useEffect(() => {
+    loadData()
   }, []);
 
   // Modal de adição de produtos

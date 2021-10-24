@@ -21,8 +21,6 @@ import { IoLogoWhatsapp } from "react-icons/io5";
 import { FiInstagram } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { api } from "../../services/apiClient";
-import { setupApiClient } from "../../services/api";
 import { getBusiness } from "../../services/bussiness.services";
 
 const shop = () => {
@@ -99,8 +97,6 @@ const shop = () => {
   async function loadData() {
     try {
       const res = await getBusiness(`${id}`)
-
-      console.log(res)
 
       const data = res.data
 

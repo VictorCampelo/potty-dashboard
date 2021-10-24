@@ -22,7 +22,6 @@ export const Container = styled.div`
         }
         .top-area{
             display: flex;
-            
         }
         
 

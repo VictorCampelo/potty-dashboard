@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import DrawerLateral from "../../components/molecules/DrawerLateral";
 import CardShop from "../../components/molecules/CardShop";
 import { Container } from "../../styles/pages/shopkeeper";
@@ -5,7 +6,6 @@ import CardProduct from "../../components/molecules/CardProduct";
 import CardFeedback from "../../components/molecules/CardFeedback";
 
 import { Chart} from "react-google-charts";
-import React, { useState } from 'react';
 
 const shopkeeper = () => {
   const [options, setOptions] = useState({});
@@ -19,13 +19,41 @@ const shopkeeper = () => {
 
         <div className="top-area">
           <CardShop title="Produtos mais vendidos" dataSelector>
-                  <CardProduct srcImg="/images/coffee.png" name="Café Preto" cod="cod: 6932" quant="10.569"/>
-                  <CardProduct srcImg="/images/cheese-bread.png" name="Pão de queijo" cod="cod: 5686" quant="4.860"/>
-                  <CardProduct srcImg="/images/coffee2.png" name="Cappuccino" cod="cod: 583" quant="2.956"/>
-                  <CardProduct srcImg="/images/coffee1.png" name="Chá verde" cod="cod: 6972" quant="1.658"/>
+            <CardProduct 
+              srcImg="/images/coffee.png" 
+              name="Café Preto" 
+              cod="cod: 6932" 
+              quant="10.569"
+            />
+            
+            <CardProduct 
+              srcImg="/images/cheese-bread.png" 
+              name="Pão de queijo" 
+              cod="cod: 5686" 
+              quant="4.860"
+            />
+
+            <CardProduct 
+              srcImg="/images/coffee2.png" 
+              name="Cappuccino" 
+              cod="cod: 583" 
+              quant="2.956"
+            />
+
+            <CardProduct 
+              srcImg="/images/coffee1.png" 
+              name="Chá verde" 
+              cod="cod: 6972" 
+              quant="1.658"
+            />
           </CardShop>
 
-          <CardShop title="Rendimentos" dataSelector>
+          <CardShop 
+            title="Rendimentos" 
+            dataSelector 
+            style={{width: '100%'}}
+          >
+
           <Chart
               width={'600px'}
               height={'170px'}
