@@ -96,12 +96,17 @@ export const Container = styled.div`
 
 export const AddProductModalContainer = styled.div`
   width: auto;
-  max-width: 650px;
+  max-width: 850px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .buttonContainer {
+    display: flex;
+    margin-top: 24px;
+  }
 
   .exit-container {
     width: 100%;

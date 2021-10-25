@@ -25,8 +25,12 @@ import { AddProductModalContainer, Container, EditCategoryModalContainer, Exclud
 import { FaMoneyBill, FaPercentage, FaCoins } from "react-icons/fa";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { TextArea } from "../../components/molecules/TextArea";
-import { api } from '../../services/apiClient';
 import { getProducts } from '../../services/bussiness.services';
+import { Button } from "../../components/atoms/Button";
+import { createProduct } from "../../services/products.services";
+import { toast } from "react-toastify";
+import { api } from "../../services/apiClient";
+import { parseCookies } from "nookies";
 
 const catalog = () => {
   const FakeAPI = [
@@ -197,6 +201,10 @@ const catalog = () => {
   const [contCateg, setContCateg] = useState(0);
 
   const [products, setProducts] = useState({})
+  const [titleProduct, setTitleProduct] = useState('')
+  const [priceProduct, setPriceProduct] = useState('')
+  const [descriptionProduct, setDescriptionProduct] = useState('')
+  const [inventoryProduct, setInventoryProduct] = useState('')
 
   const loadData = async () => {
     try {
@@ -255,6 +263,56 @@ const catalog = () => {
   function handleOpenCategoryExcludeModal() {
     setIsCategory(true);
     setExcludeModal(true);
+  }
+
+  async function handleCreateProduct() {
+    const body = {
+      title: titleProduct,
+      price: priceProduct,
+      description: descriptionProduct,
+      inventory: Number(inventoryProduct || '0')
+    }
+
+    try {
+      const token = parseCookies()['ultimo.auth.token'];
+      
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
+      
+      console.log(api.defaults.headers['Authorization']);
+      await createProduct(body);
+
+      toast.success("Produto criado com sucesso", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+    } catch(e) {
+      console.log(e.statusCode);
+      if(e.status == 401) {
+        return toast.error("Usuário deslogado, faça o seu login para prosseguir", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      }
+      toast.error("Erro ao criar produto", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+    }
   }
 
   return (
@@ -398,6 +456,8 @@ const catalog = () => {
                   label="Nome do produto"
                   icon={<FiBox />}
                   placeholder="Nome do produto"
+                  value={titleProduct}
+                  onChange={e => setTitleProduct(e.target.value)}
                 />
 
                 <TextArea
@@ -405,12 +465,16 @@ const catalog = () => {
                   maxLength={600}
                   placeholder="Descricao"
                   icon={<GiHamburgerMenu />}
+                  value={descriptionProduct}
+                  onChange={e => setDescriptionProduct(e.target.value)}
                 />
 
                 <Input
                   label="Preço"
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
+                  value={priceProduct}
+                  onChange={e => setPriceProduct(e.target.value)}
                 />
 
                 <div className="desconto">
@@ -436,6 +500,8 @@ const catalog = () => {
                   label="Quantidade atual"
                   icon={<FaCoins />}
                   placeholder="0"
+                  value={inventoryProduct}
+                  onChange={e => setInventoryProduct                                                                                  (e.target.value)}
                 />
 
                 <Input
@@ -469,6 +535,20 @@ const catalog = () => {
                   <MdOutlineArrowForwardIos />
                 </div>
               </div>
+            </div>
+
+            <div className="buttonContainer">
+              <Button 
+                title="Voltar" 
+                border 
+                style={{ marginRight: 16 }} 
+                onClick={toggleAddModal}
+              />
+
+              <Button 
+                title="Salvar" 
+                onClick={handleCreateProduct}
+              />
             </div>
           </AddProductModalContainer>
         </CustomModal>

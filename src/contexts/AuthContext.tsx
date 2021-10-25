@@ -89,7 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       email,
     })
 
-    api.defaults.headers['Authentication'] = `Bearer ${token}`
+    api.defaults.headers['Authorization'] = `Bearer ${token}`
 
     return res
   }
