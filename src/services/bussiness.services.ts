@@ -19,7 +19,7 @@ export async function createBusiness(data: createBusinessType) {
 }
 
 export async function getBusiness(id: string) {
-  const res = await api.get(`/stores/${id}`);
+  const res = await api.get(`/stores/id/${id}`);
   return res;
 }
 

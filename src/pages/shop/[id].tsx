@@ -47,6 +47,16 @@ const shop = () => {
   const [district, setDistrict] = useState("");
   const [cep, setCep] = useState("");
 
+  const [timeTable, setTimeTable] = useState(false);
+  const [dom, setDom] = useState([]);
+  const [seg, setSeg] = useState([]);
+  const [ter, setTer] = useState([]);
+  const [qua, setQua] = useState([]);
+  const [qui, setQui] = useState([]);
+  const [sex, setSex] = useState([]);
+  const [sab, setSab] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
   const { id } = router.query;
@@ -96,23 +106,38 @@ const shop = () => {
 
   async function loadData() {
     try {
-      const res = await getBusiness(`${id}`)
+      const res = await getBusiness(`${id}`);
 
-      const data = res.data
+      const data = res.data;
 
-      setBusinessName(data.name)
-      setStars(data.avgStars)
-      setDesc(data.description)
+      setBusinessName(data.name);
+      setStars(data.avgStars);
+      setDesc(data.description);
 
-      setTelefone(data.phone)
-      setFacebook(data.facebook_link)
-      setInstagram(data.instagram_link)
-      setWhatsApp(data.whatsapp_link)
+      if(data.schedules) {
+        setTimeTable(true)
+      } else {
+        setTimeTable(false)
+      }
 
-      setBusinessAddress(data.address)
+      setDom(data.schedules.dom);
+      setSeg(data.schedules.seg);
+      setTer(data.schedules.ter);
+      setQua(data.schedules.qua);
+      setQui(data.schedules.qui);
+      setSex(data.schedules.sex);
+      setSab(data.schedules.sab);
 
+      setTelefone(data.phone);
+      setFacebook(data.facebook_link);
+      setInstagram(data.instagram_link);
+      setWhatsApp(data.whatsapp_link);
+
+      setBusinessAddress(data.address);
     } catch (e) {
       console.error(e);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -140,12 +165,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -155,12 +182,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -170,12 +199,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -185,12 +216,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -202,12 +235,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -217,12 +252,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -232,12 +269,14 @@ const shop = () => {
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="1"
                   />
                   <input
                     type="datetime"
                     placeholder="00:00"
+                    maxLength={5}
                     name="time"
                     id="2"
                   />
@@ -461,28 +500,45 @@ const shop = () => {
               instagram={instagram}
               whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
+              isLoading={isLoading}
             />
           </div>
 
           <div className="right-area">
-            <InfoCard
-              title="Horário de funcionamento"
-              type="timetable"
-              button={() => handleOpenTimeModal()}
-              dom={["7:00", "12:00"]}
-              seg={["7:00", "12:00"]}
-              ter={["7:00", "12:00"]}
-              qua={["7:00", "12:00"]}
-              qui={["7:00", "12:00"]}
-              sex={["7:00", "12:00"]}
-              sab={["7:00", "12:00"]}
-            />
+            {!timeTable ? (
+              <>
+                <InfoCard
+                  title="Horário de funcionamento"
+                  type="timetable"
+                  button={() => handleOpenTimeModal()}
+                  voidText="Nenhum horário informado!"
+                  isLoading={isLoading}
+                />
+              </>
+            ) : (
+              <>
+                <InfoCard
+                  title="Horário de funcionamento"
+                  type="timetable"
+                  button={() => handleOpenTimeModal()}
+                  dom={dom}
+                  seg={seg}
+                  ter={ter}
+                  qua={qua}
+                  qui={qui}
+                  sex={sex}
+                  sab={sab}
+                  isLoading={isLoading}
+                />
+              </>
+            )}
 
             <InfoCard
               title="Categorias"
               type="category"
               button={() => handleOpenCategoryModal()}
               category="Alimentação"
+              isLoading={isLoading}
             />
 
             <InfoCard
@@ -490,6 +546,7 @@ const shop = () => {
               type="local"
               button={() => handleOpenLocationModal()}
               local={businessAddress}
+              isLoading={isLoading}
             />
           </div>
         </div>
