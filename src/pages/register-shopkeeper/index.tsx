@@ -5,17 +5,15 @@ import { Container, Wrapper } from "../../styles/pages/preLogin";
 
 import { FiLock, FiMail } from 'react-icons/fi';
 import { Input } from "../../components/molecules/Input";
-import { Checkbox } from "../../components/atoms/Checkbox";
 import { useState } from "react";
 import { Button } from "../../components/atoms/Button";
 import { FaFacebook } from 'react-icons/fa';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 import { useRouter } from "next/router";
-import { signUp } from "../../services/auth.services";
 import { useContext } from "react";
 import { ShopkeeperContext } from "../../contexts/ShopkeeperContext";
 
-const Register = () => {
+const RegisterShopkeeper = () => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -42,7 +40,7 @@ const Register = () => {
 
       router.push('/business-register');
     } catch(e){
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -128,4 +126,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterShopkeeper;

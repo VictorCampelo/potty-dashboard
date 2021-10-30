@@ -7,7 +7,7 @@ import CardFeedback from "../../components/molecules/CardFeedback";
 
 import { Chart} from "react-google-charts";
 
-const shopkeeper = () => {
+const Shopkeeper = () => {
   const [options, setOptions] = useState({});
 
   
@@ -141,4 +141,4 @@ const shopkeeper = () => {
   );
 };
 
-export default shopkeeper;
+export default Shopkeeper;

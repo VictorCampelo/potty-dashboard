@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Header from "../../components/molecules/Header";
-import GlobalStyle from "../../layout/GlobalStyle";
+import GlobalStyle from "../../styles/GlobalStyle";
 
-const Fidelize = () => {
+const Loyalty = () => {
   return (
     <div>
       <Header/>
@@ -10,4 +10,4 @@ const Fidelize = () => {
   );
 };
 
-export default Fidelize;
+export default Loyalty;

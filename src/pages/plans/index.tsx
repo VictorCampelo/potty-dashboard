@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Header from "../../components/molecules/Header";
 
-const Planos = () => {
+const Plans = () => {
   return (
     <div>
       <Header/>
@@ -9,4 +9,4 @@ const Planos = () => {
   );
 };
 
-export default Planos;
+export default Plans;

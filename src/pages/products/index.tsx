@@ -1,8 +1,23 @@
 import Header from "../../components/molecules/Header";
 import Head from "next/head";
-import { CategoriesCard, Container, DescriptionCard, FilterCard, FilterCardSecondary, Footer, ProductCard, StatusCard } from "../../styles/pages/Products";
+
 import { CheckboxFilter } from "../../components/atoms/CheckboxFilter";
-import { AiFillFacebook, AiFillPhone, AiFillStar, AiOutlineWhatsApp } from "react-icons/ai";
+import { 
+  AiFillFacebook, 
+  AiFillPhone, 
+  AiFillStar, 
+  AiOutlineWhatsApp 
+} from "react-icons/ai";
+import { 
+  CategoriesCard, 
+  Container, 
+  DescriptionCard, 
+  FilterCard, 
+  FilterCardSecondary, 
+  Footer, 
+  ProductCard, 
+  StatusCard 
+} from "../../styles/pages/Products";
 
 const Products = () => {
   return (

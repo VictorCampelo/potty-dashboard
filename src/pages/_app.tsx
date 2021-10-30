@@ -2,7 +2,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from '../contexts/AuthContext'
 import { ShopkeeperProvider } from '../contexts/ShopkeeperContext'
-import GlobalStyle from '../layout/GlobalStyle'
+import GlobalStyle from '../styles/GlobalStyle'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -11,16 +11,16 @@ function MyApp({ Component, pageProps }) {
         <GlobalStyle />
         <Component {...pageProps} />
         <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </ShopkeeperProvider>
     </AuthProvider>
   ) 

@@ -1,6 +1,6 @@
 import Header from "../../components/molecules/Header";
 
-const Venda = () => {
+const Sales = () => {
   return (
     <div>
       <Header/>
@@ -8,4 +8,4 @@ const Venda = () => {
   );
 };
 
-export default Venda;
+export default Sales;

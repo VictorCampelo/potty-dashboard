@@ -30,14 +30,10 @@ const BusinessRegister = () => {
       },
     };
 
-    console.log(body);
-
     try {
       const { data } = await api.post("auth/signup-store", body);
 
-      console.log(data);
-
-      Router.push(`/shop/${data.user.storeId}`);
+      Router.push(`/shop/${data.user.name}`);
     } catch (e) {
       console.error(e);
     }

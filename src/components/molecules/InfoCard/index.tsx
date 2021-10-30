@@ -64,9 +64,8 @@ const InfoCard = ({
 
   voidText,
   isLoading,
-
-  ...rest
 }: InfoCard) => {
+
   return (
     <Container>
       <div className="top">
@@ -152,12 +151,12 @@ const InfoCard = ({
                 <h2>{category}</h2>
               </div>
             ) : null}
-            {type === "local" ? (
+            {type === "local" && (
               <div id="local">
                 <BsMap size={15} />
                 <h2>{local}</h2>
               </div>
-            ) : null}
+            )}
           </>
         )}
       </div>

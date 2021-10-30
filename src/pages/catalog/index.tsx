@@ -1,196 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiSearch } from "react-icons/fi";
-import { IoIosClose } from "react-icons/io";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { IoMdCamera } from "react-icons/io";
+import { toast } from "react-toastify";
 
+import { getProducts } from '../../services/bussiness.services';
+import { createProduct } from "../../services/products.services";
+
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FiPlus, FiSearch } from "react-icons/fi";
+import { IoIosClose, IoMdCamera } from "react-icons/io";
+import { FaMoneyBill, FaPercentage, FaCoins } from "react-icons/fa";
+import { GoArrowRight, GoArrowLeft } from "react-icons/go";
+import { IoTrashBinOutline } from "react-icons/io5";
 import { FiBox } from "react-icons/fi";
 import { VscSearch } from "react-icons/vsc";
-import { GiHamburgerMenu } from "react-icons/gi";
 import {
   MdUpload,
   MdOutlineArrowBackIosNew,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 
+import { Button } from "../../components/atoms/Button";
 import CatalogTabs from "../../components/molecules/CatalogTabs";
 import { CategoryListCard } from "../../components/molecules/CategoryListCard";
 import CustomModal from "../../components/molecules/CustomModal";
-
 import DrawerLateral from "../../components/molecules/DrawerLateral";
 import { Input } from "../../components/molecules/Input";
 import { ProductListCard } from "../../components/molecules/ProductListCard";
-
-import { AddProductModalContainer, Container, EditCategoryModalContainer, ExcludeModalContainer } from "./styles";
-import { FaMoneyBill, FaPercentage, FaCoins } from "react-icons/fa";
-import { GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { TextArea } from "../../components/molecules/TextArea";
-import { getProducts } from '../../services/bussiness.services';
-import { Button } from "../../components/atoms/Button";
-import { createProduct } from "../../services/products.services";
-import { toast } from "react-toastify";
-import { api } from "../../services/apiClient";
-import { parseCookies } from "nookies";
+import { 
+  AddProductModalContainer, 
+  Container, 
+  EditCategoryModalContainer, 
+  ExcludeModalContainer 
+} from "../../styles/pages/Catalog";
+import Head from "next/head";
 
 const catalog = () => {
-  const FakeAPI = [
-    {
-      id: 1,
-      icon: "./images/coffee.png",
-      name: "Café preto",
-      code: "6932",
-      category: "Alimentação",
-      amount: "Ilimitada",
-      price: "2,00",
-    },
-    {
-      id: 2,
-      icon: "./images/coffee1.png",
-      name: "Café ouro",
-      code: "41241",
-      category: "Alimentação",
-      amount: "Ilimitada",
-      price: "8,00",
-    },
-    {
-      id: 3,
-      icon: "./images/coffee1.png",
-      name: "Café ouro",
-      code: "41241",
-      category: "Alimentação",
-      amount: "Ilimitada",
-      price: "8,00",
-    },
-    {
-      id: 4,
-      icon: "./images/coffee2.png",
-      name: "Café",
-      code: "46124",
-      category: "Alimentação",
-      amount: "80",
-      price: "15,00",
-    },
-  ];
-
-  const FakeAPI2 = [
-    {
-      id: 1,
-      category: "Cozinha e Decoração",
-      data: [
-        {
-          name: "Refrigerador Brastemp",
-          amount: "7",
-        },
-        {
-          name: "Refrigerador Brastemp",
-          amount: "2",
-        },
-      ],
-    },
-    {
-      id: 2,
-      category: "Informática",
-      data: [
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7",
-          amount: "2",
-        },
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7",
-          amount: "2",
-        },
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7",
-          amount: "2",
-        },
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7213123313123132132132131",
-          amount: "2",
-        },
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7",
-          amount: "2",
-        },
-        {
-          name: "Processador Ryzen 7213123313123132132132131",
-          amount: "2",
-        },
-        {
-          name: "Processador Ryzen 7213123313123132132132131",
-          amount: "2",
-        },
-        {
-          name: "Processador Ryzen 7213123313123132132132131",
-          amount: "2",
-        },
-        {
-          name: "Processador Ryzen 7213123313123132132132131",
-          amount: "2",
-        },
-      ],
-    },
-    {
-      id: 3,
-      category: "Informática",
-      data: [
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7",
-          amount: "2",
-        },
-      ],
-    },
-    {
-      id: 4,
-      category: "Informática",
-      data: [
-        {
-          name: "Computador Dell",
-          amount: "7",
-        },
-        {
-          name: "Processador Ryzen 7",
-          amount: "2",
-        },
-      ],
-    },
-    // {
-    //   id: 3,
-    //   category: "Cozinha e Decoração",
-    //   name: "Refrigerador Brastemp",
-    //   amount: "2",
-    // },
-    // {
-    //   id: 4,
-    //   category: "Cozinha e Decoração",
-    //   name: "Refrigerador Brastemp",
-    //   amount: "15",
-    // },
-  ];
-
   const [excludeModal, setExcludeModal] = useState(false);
   const [confirmExclude, setConfirmExclude] = useState(false);
 
@@ -209,8 +53,6 @@ const catalog = () => {
   const loadData = async () => {
     try {
       const productsData = await getProducts("7e5608a9-becd-43ef-b417-22b8f0dc498f")
-
-      console.log(productsData)
 
       setProducts(productsData)
 
@@ -274,11 +116,6 @@ const catalog = () => {
     }
 
     try {
-      const token = parseCookies()['ultimo.auth.token'];
-      
-      api.defaults.headers['Authorization'] = `Bearer ${token}`
-      
-      console.log(api.defaults.headers['Authorization']);
       await createProduct(body);
 
       toast.success("Produto criado com sucesso", {
@@ -291,7 +128,6 @@ const catalog = () => {
         progress: undefined,
       })
     } catch(e) {
-      console.log(e.statusCode);
       if(e.status == 401) {
         return toast.error("Usuário deslogado, faça o seu login para prosseguir", {
           position: "top-right",
@@ -303,6 +139,7 @@ const catalog = () => {
           progress: undefined,
         })
       }
+
       toast.error("Erro ao criar produto", {
         position: "top-right",
         autoClose: 5000,
@@ -317,8 +154,11 @@ const catalog = () => {
 
   return (
     <>
-      <Container>
+      <Head>
+        <title> Catálogo | Último </title>
+      </Head>
 
+      <Container>
         {/* ExcludeModal */}
         <CustomModal
           buttons={false}
@@ -576,7 +416,7 @@ const catalog = () => {
               tab2="Categorias"
               content1={
                 <div className="products-container">
-                  {FakeAPI.map((product, index) => {
+                  {[].map((product, index) => {
                     return (
                       <ProductListCard
                         key={product.id + "-" + index}
@@ -597,7 +437,7 @@ const catalog = () => {
               }
               content2={
                 <div className="categories-container">
-                  {FakeAPI2.map((product, index) => {
+                  {[].map((product, index) => {
                     return (
                       <CategoryListCard
                         key={product.id + "-" + index}

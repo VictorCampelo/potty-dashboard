@@ -2,7 +2,7 @@ import DrawerLateral from "../../components/molecules/DrawerLateral";
 import { IoIosClose } from "react-icons/io";
 
 import React, { useState } from "react";
-import { Container, ModalContainer } from "./styles";
+import { Container, ModalContainer } from "../../styles/pages/Shop";
 
 import DescriptionCard from "../../components/molecules/DescriptionCard";
 import InfoCard from "../../components/molecules/InfoCard";
@@ -22,8 +22,9 @@ import { FiInstagram } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getBusiness } from "../../services/bussiness.services";
+import { toast } from "react-toastify";
 
-const shop = () => {
+const Shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
   const [locationModal, setLocationModal] = useState(false);
@@ -106,36 +107,41 @@ const shop = () => {
 
   async function loadData() {
     try {
-      const res = await getBusiness(`${id}`);
+      const { data } = await getBusiness(`${id}`);
 
-      const data = res.data;
+      setBusinessName(data?.name);
+      setStars(data?.avgStars);
+      setDesc(data?.description);
 
-      setBusinessName(data.name);
-      setStars(data.avgStars);
-      setDesc(data.description);
-
-      if(data.schedules) {
+      if(data?.schedules) {
         setTimeTable(true)
+        setDom(data?.schedules?.dom);
+        setSeg(data?.schedules?.seg);
+        setTer(data?.schedules?.ter);
+        setQua(data?.schedules?.qua);
+        setQui(data?.schedules?.qui);
+        setSex(data?.schedules?.sex);
+        setSab(data?.schedules?.sab);
       } else {
         setTimeTable(false)
       }
 
-      setDom(data.schedules.dom);
-      setSeg(data.schedules.seg);
-      setTer(data.schedules.ter);
-      setQua(data.schedules.qua);
-      setQui(data.schedules.qui);
-      setSex(data.schedules.sex);
-      setSab(data.schedules.sab);
+      setTelefone(data?.phone);
+      setFacebook(data?.facebook_link);
+      setInstagram(data?.instagram_link);
+      setWhatsApp(data?.whatsapp_link);
 
-      setTelefone(data.phone);
-      setFacebook(data.facebook_link);
-      setInstagram(data.instagram_link);
-      setWhatsApp(data.whatsapp_link);
-
-      setBusinessAddress(data.address);
+      setBusinessAddress(data?.address);
     } catch (e) {
-      console.error(e);
+      toast.error("Erro ao buscar dados, tente novamente mais tarde", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
     } finally {
       setIsLoading(false);
     }
@@ -555,4 +561,4 @@ const shop = () => {
   );
 };
 
-export default shop;
+export default Shop;

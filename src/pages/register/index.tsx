@@ -34,12 +34,11 @@ const Register = () => {
         passwordConfirmation
       }
 
-      const res = await signUp(user);
+      await signUp(user);
 
-      console.log(res);
       router.push('login');
     } catch(e){
-      console.log(e);
+      console.error(e);
     }
     // router.push('register/shopkeeper');
   }

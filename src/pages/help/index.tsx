@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Header from "../../components/molecules/Header";
 
-const Ajuda = () => {
+const Help = () => {
   return (
     <div>
       <Header/>
@@ -9,4 +9,4 @@ const Ajuda = () => {
   );
 };
 
-export default Ajuda;
+export default Help;
