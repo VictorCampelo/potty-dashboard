@@ -7,6 +7,8 @@ interface CatalogProps extends React.AllHTMLAttributes<HTMLAllCollection> {
   tab2: string;
   content1: React.ReactElement;
   content2: React.ReactElement;
+  toggleState: number,
+  setToggleState: React.Dispatch<React.SetStateAction<number>>,
 }
 
 const CatalogTabs = ({
@@ -14,9 +16,10 @@ const CatalogTabs = ({
   tab2,
   content1,
   content2,
+  toggleState,
+  setToggleState,
   ...rest
 }: CatalogProps) => {
-  const [toggleState, setToggleState] = useState(1);
 
   const toggleTab = (index) => {
     setToggleState(index);

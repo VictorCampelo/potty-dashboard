@@ -16,3 +16,12 @@ export const createProduct = async ({ data }: CreateProductType) => {
 
   return res;
 }
+
+export const createCategory = async (name: string) => {
+  const res = await api.post(`/categories`, {
+    name,
+    type: name
+  })
+
+  return res;
+}

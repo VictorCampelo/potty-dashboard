@@ -426,6 +426,44 @@ export const ExcludeModalContainer = styled.div`
   }
 `
 
+export const AddCategoryModalContainer = styled.div`
+  width: auto;
+  max-width: 450px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .exit-container {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 36px;
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  .inputContainer {
+    width: 450px;
+    margin-bottom: 30px;
+  }
+
+  .buttonContainer {
+    display: flex;
+    margin-top: 24px;
+  }
+`
+
 export const EditCategoryModalContainer = styled.div`
   width: auto;
   max-width: 650px;
@@ -442,8 +480,6 @@ export const EditCategoryModalContainer = styled.div`
     justify-content: space-between;
     margin-bottom: 2rem;
     h1 {
-      font-family: "Poppins";
-      font-style: normal;
       font-weight: 600;
       font-size: 24px;
       line-height: 36px;

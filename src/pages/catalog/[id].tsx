@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { getProducts, getStoreId } from '../../services/bussiness.services';
-import { createProduct } from "../../services/products.services";
+import { createCategory, createProduct } from "../../services/products.services";
 
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FiPlus, FiSearch } from "react-icons/fi";
@@ -27,6 +27,7 @@ import { Input } from "../../components/molecules/Input";
 import { ProductListCard } from "../../components/molecules/ProductListCard";
 import { TextArea } from "../../components/molecules/TextArea";
 import { 
+  AddCategoryModalContainer,
   AddProductModalContainer, 
   Container, 
   EditCategoryModalContainer, 
@@ -62,14 +63,16 @@ const catalog = () => {
   const [isCategory, setIsCategory] = useState(false);
 
   const [addModal, setAddModal] = useState(false);
-  const [contCateg, setContCateg] = useState(0);
+  const [addCategoryModal, setCategoryAddModal] = useState(false);
 
+  const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
   const [priceProduct, setPriceProduct] = useState('')
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
   const [storeId, setStoreId] = useState('')
+  const [toggleState, setToggleState] = useState(1);
 
   const router = useRouter();
   const { id } = router.query;
@@ -106,6 +109,12 @@ const catalog = () => {
   useEffect(() => {
     if(id) loadData()
   }, [id]);
+
+  // Modal de adição de categoria
+  
+  function toggleAddCategoryModal() {
+    setCategoryAddModal(!addCategoryModal);
+  }
 
   // Modal de adição de produtos
 
@@ -149,6 +158,37 @@ const catalog = () => {
     setExcludeModal(true);
   }
 
+  async function handleCreateCategory() { 
+    try {
+      await createCategory(category)
+
+      toast.success("Categoria criada com sucesso!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+
+      setCategory('')
+      toggleAddCategoryModal()
+    } catch (e) {
+      console.error(e);
+
+      toast.error("Erro ao criar categoria", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+    }
+  }
+
   async function handleCreateProduct() {
     const body = {
       title: titleProduct,
@@ -156,8 +196,6 @@ const catalog = () => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0')  
     }
-
-    console.log(descriptionProduct, body);
 
     try {
       await createProduct({ data: body });
@@ -171,6 +209,12 @@ const catalog = () => {
         draggable: true,
         progress: undefined,
       })
+
+      setAddModal(false)
+      setTitleProduct('')
+      setPriceProduct('')
+      setDescriptionProduct('')
+      setInventoryProduct('')
     } catch(e) {
       console.error(e);
 
@@ -302,6 +346,47 @@ const catalog = () => {
           )}
         </CustomModal>
 
+        {/* Add modal category */}
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleAddCategoryModal}
+          modalVisible={addCategoryModal}
+        >
+          <AddCategoryModalContainer>
+            <div className="exit-container">
+              <h1>Adicionar Categoria</h1>
+
+              <IoIosClose
+                onClick={toggleAddCategoryModal}
+                size={36}
+                color={"black"}
+              />
+            </div>
+            
+            <div className="inputContainer">
+              <Input 
+                value={category} 
+                onChange={e => setCategory(e.target.value)}
+                label="Categoria" 
+              />
+            </div>
+
+            <div className="buttonContainer">
+              <Button 
+                title="Voltar" 
+                border 
+                style={{ marginRight: 16 }} 
+                onClick={toggleAddCategoryModal}
+                />
+
+              <Button 
+                title="Salvar" 
+                onClick={handleCreateCategory}
+              />
+            </div>
+          </AddCategoryModalContainer>
+        </CustomModal>
+
         {/* EditCategoryModal */}
         <CustomModal
           buttons={false}
@@ -397,7 +482,7 @@ const catalog = () => {
                   icon={<VscSearch />}
                   placeholder="Categoria"
                 />
-                <h3>{"Categorias adicionadas: " + contCateg}</h3>
+                <h3>{"Categorias adicionadas: " + 0}</h3>
 
                 <h2>Foto do produto</h2>
 
@@ -445,7 +530,7 @@ const catalog = () => {
 
         <div className="list-container">
           <header className="header">
-            <button className="addBtn" onClick={handleOpenAddModal}>
+            <button className="addBtn" onClick={ toggleState == 1 ? handleOpenAddModal: toggleAddCategoryModal }>
               <FiPlus size={20} color="var(--white)" />
               Adicionar
             </button>
@@ -462,6 +547,8 @@ const catalog = () => {
             <CatalogTabs
               tab1="Produtos"
               tab2="Categorias"
+              setToggleState={setToggleState}
+              toggleState={toggleState}
               content1={
                 <div className="products-container">
                   {products.map((product, index) => {
