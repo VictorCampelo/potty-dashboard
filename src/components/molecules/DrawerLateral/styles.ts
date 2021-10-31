@@ -9,7 +9,7 @@ export const Container = styled.header`
 
         //margin: 20px 20px;
         padding: 1vw 1.2vw;
-        border-radius: 19px;
+        border-radius: 30px;
         background: var(--white);
 
         display: flex;
@@ -71,7 +71,7 @@ export const Container = styled.header`
 
         //margin: 20px 20px;
         padding: 1vw 1.2vw;
-        border-radius: 19px;
+        border-radius: 30px;
         background: var(--white);
 
         display: flex;

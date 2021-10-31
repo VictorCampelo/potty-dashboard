@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { getProducts } from '../../services/bussiness.services';
+import { getProducts, getStoreId } from '../../services/bussiness.services';
 import { createProduct } from "../../services/products.services";
 
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -33,6 +33,26 @@ import {
   ExcludeModalContainer 
 } from "../../styles/pages/Catalog";
 import Head from "next/head";
+import { useRouter } from "next/router";
+
+type ProductType = {
+  avgStars: number;
+  createdAt: string;
+  deletedAt: string;
+  description: string;
+  discount: any;
+  files: [string];
+  id: string
+  inventory: number
+  lastSold: any
+  price: number;
+  sumFeedbacks: number;
+  sumOrders: number;
+  sumStars: number;
+  tags: any
+  title: string;
+  updatedAt: string;
+}
 
 const catalog = () => {
   const [excludeModal, setExcludeModal] = useState(false);
@@ -44,26 +64,48 @@ const catalog = () => {
   const [addModal, setAddModal] = useState(false);
   const [contCateg, setContCateg] = useState(0);
 
-  const [products, setProducts] = useState({})
+  const [products, setProducts] = useState<ProductType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
   const [priceProduct, setPriceProduct] = useState('')
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
+  const [storeId, setStoreId] = useState('')
+
+  const router = useRouter();
+  const { id } = router.query;
 
   const loadData = async () => {
+    let store = ''
+
     try {
-      const productsData = await getProducts("7e5608a9-becd-43ef-b417-22b8f0dc498f")
+      store = await getStoreId(String(id || ''));
+      setStoreId(store)
+    } catch(e) {
+      toast.error("Erro ao buscar loja", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+    }
 
-      setProducts(productsData)
+    try {
+      const { data } = await getProducts(store)
 
+      console.log(data);
+      
+      setProducts(data);
     } catch (e) {
       console.error(e);
     }
   }
 
   useEffect(() => {
-    loadData()
-  }, []);
+    if(id) loadData()
+  }, [id]);
 
   // Modal de adição de produtos
 
@@ -110,13 +152,15 @@ const catalog = () => {
   async function handleCreateProduct() {
     const body = {
       title: titleProduct,
-      price: priceProduct,
+      price: Number(priceProduct),
       description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0')
+      inventory: Number(inventoryProduct || '0')  
     }
 
+    console.log(descriptionProduct, body);
+
     try {
-      await createProduct(body);
+      await createProduct({ data: body });
 
       toast.success("Produto criado com sucesso", {
         position: "top-right",
@@ -128,6 +172,8 @@ const catalog = () => {
         progress: undefined,
       })
     } catch(e) {
+      console.error(e);
+
       if(e.status == 401) {
         return toast.error("Usuário deslogado, faça o seu login para prosseguir", {
           position: "top-right",
@@ -150,6 +196,8 @@ const catalog = () => {
         progress: undefined,
       })
     }
+
+    loadData()
   }
 
   return (
@@ -301,7 +349,7 @@ const catalog = () => {
                 />
 
                 <TextArea
-                  label="Descição do produto"
+                  label="Descrição do produto"
                   maxLength={600}
                   placeholder="Descricao"
                   icon={<GiHamburgerMenu />}
@@ -416,18 +464,18 @@ const catalog = () => {
               tab2="Categorias"
               content1={
                 <div className="products-container">
-                  {[].map((product, index) => {
+                  {products.map((product, index) => {
                     return (
                       <ProductListCard
-                        key={product.id + "-" + index}
-                        icon={product.icon}
-                        name={product.name}
-                        code={product.code}
-                        category={product.category}
-                        amount={product.amount}
-                        price={product.price}
+                        key={product?.id + "-" + index}
+                        icon=''
+                        name={product?.title}
+                        code={product?.id}
+                        category={product?.tags}
+                        amount={product?.inventory}
+                        price={product?.price}
                         excludeBtn={handleOpenExcludeModal}
-                        editBtn={2}
+                        editBtn={() => {}}
                         isRed={true}
                         isGreen={true}
                       />

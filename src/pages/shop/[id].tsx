@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getBusiness } from "../../services/bussiness.services";
 import { toast } from "react-toastify";
+import Head from "next/head";
 
 const Shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
@@ -153,6 +154,10 @@ const Shop = () => {
 
   return (
     <>
+      <Head>
+        <title>Loja | Último</title>
+      </Head>
+
       <Container>
         <CustomModal
           buttons={false}
@@ -488,7 +493,7 @@ const Shop = () => {
           </ModalContainer>
         </CustomModal>
 
-        <DrawerLateral greenOption={1} />
+        <DrawerLateral shopId={String(id || '')} greenOption={1} />
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard

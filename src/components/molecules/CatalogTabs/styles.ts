@@ -6,10 +6,11 @@ export const Container = styled.div`
     flex-direction: column;
 
     width: 100%;
-    height: 940px;
+    height: 100%;
 
     background: white;
     border-radius: 0 0 30px 30px;
+    overflow-y: scroll;
   }
 
   .bloc-tabs {

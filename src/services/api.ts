@@ -10,7 +10,7 @@ export function setupApiClient(ctx = undefined) {
     baseURL: 'http://localhost:3030',
     headers: {
       'Content-Type': 'application/json',
-      authorization: `Bearer ${cookies['atrium.auth.token']}`
+      'Authorization': `Bearer ${cookies['ultimo.auth.token']}`
     }
   })
 

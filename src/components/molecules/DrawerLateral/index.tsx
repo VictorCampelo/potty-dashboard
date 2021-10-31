@@ -13,9 +13,10 @@ import Modal from "../Modal";
 interface DrawerLateral extends React.InputHTMLAttributes<HTMLInputElement> {
   greenOption?: number;
   activated?: boolean;
+  shopId?: string;
 }
 
-const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
+const DrawerLateral = ({ greenOption, activated, shopId, ...rest }: DrawerLateral) => {
   const [active, setActive] = useState(false);
   const [modal, setModal] = useState(false);
 
@@ -100,7 +101,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
             </div>
           </Link>
 
-          <Link href="/catalog">
+          <Link href={`/catalog/${shopId}`}>
             <div className="option">
               <FiBox
                 className="icon"

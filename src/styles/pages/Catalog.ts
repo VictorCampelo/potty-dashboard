@@ -23,6 +23,7 @@ export const Container = styled.div`
 
     box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
     border-radius: 30px;
+    overflow-y: hidden;
 
     .header {
       width: 100%;
@@ -73,12 +74,18 @@ export const Container = styled.div`
     }
   }
 
+  main {
+    height: 100%;
+    overflow-y: scroll;
+  }
+
   .products-container {
     padding: 20px 70px;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    overflow-y: scroll;
 
     height: 100%;
   }

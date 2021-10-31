@@ -18,21 +18,18 @@ export async function createBusiness(data: createBusinessType) {
   return res;
 }
 
-export async function getBusiness(id: string) {
+export async function getBusiness(id: string) {   
   const res = await api.get(`/stores/${id}`);
   return res;
 }
 
-export async function getProducts(id: string) {
-  const body = {
-    options: {
-      limit: 0,
-      offset: 0,
-      loadRelations: true,
-      loadLastSolds: false,
-    },
-  };
+export async function getStoreId(name: string) {
+  const res = await api.get(`/stores/${name}`)
 
-  const res = await api.get(`/products/store/${id}`, { data: body });
+  return res.data.id
+}
+
+export async function                               getProducts(id: string) {
+  const res = await api.get(`/products/store/${id}?limit=10&offset=0&loadRelations=true&loadLastSolds=false`);
   return res;
 }

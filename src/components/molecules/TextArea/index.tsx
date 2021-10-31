@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-
 import { Container } from './styles';
 import { ReactElement } from 'react';
 
-interface TextArea extends React.InputHTMLAttributes<HTMLInputElement>{
+interface TextArea extends React.TextareaHTMLAttributes<HTMLTextAreaElement>{
   label: string;
   error?: boolean;
   textError?: string;
@@ -35,7 +32,7 @@ export const TextArea = ({
 
         { !!icon && icon }
 
-        <textarea placeholder={rest.placeholder} />
+        <textarea placeholder={rest.placeholder} {...rest} />
 
       </label>
     </Container>

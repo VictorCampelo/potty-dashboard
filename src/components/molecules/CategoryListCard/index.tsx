@@ -45,7 +45,7 @@ export const CategoryListCard = ({
               return (
                 <p className="items">
                   <div className="text">
-                    <EllipsisText text={data.name} length={25} />
+                    <EllipsisText text={data?.name || ''} length={25} />
                   </div>
                   <span className="spacer" />
                   {data.amount} un.
