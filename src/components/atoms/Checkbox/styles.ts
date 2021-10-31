@@ -39,5 +39,6 @@ export const Container = styled.div<ContainerProps>`
   a {
     font-size: 0.875rem;
     font-weight: 500;
+    text-decoration: underline;
   }
 `;
