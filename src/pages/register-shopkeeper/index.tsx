@@ -61,37 +61,42 @@ const RegisterShopkeeper = () => {
             <Input 
               label="Primeiro Nome" 
               value={firstName}
+              placeholder="Nome"
               onChange={e => setFirstName(e.target.value)}
               icon={<FiMail size={20} 
               color="var(--black-800)" />} 
-            />
+              />
 
             <Input 
               label="Sobrenome" 
+              placeholder="Sobrenome"
               value={lastName}
               onChange={e => setLastName(e.target.value)}
               icon={<FiMail size={20} 
               color="var(--black-800)" />} 
-            />
+              />
 
             <Input 
               label="Email" 
+              placeholder="example@gmail.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
               icon={<FiMail size={20} 
               color="var(--black-800)" />} 
-            />
+              />
 
             <Input 
               label="Senha" 
+              placeholder="********"
               value={password}
               onChange={e => setPassword(e.target.value)}
               password 
               icon={<FiLock size={20} color="var(--black-800)" />} 
-            />
+              />
             
             <Input 
               label="Repetir senha" 
+              placeholder="********"
               password 
               value={passwordConfirmation}
               onChange={e => setPasswordConfirmation(e.target.value)}

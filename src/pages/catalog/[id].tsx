@@ -351,7 +351,7 @@ const catalog = () => {
                 <TextArea
                   label="Descrição do produto"
                   maxLength={600}
-                  placeholder="Descricao"
+                  placeholder="Descrição"
                   icon={<GiHamburgerMenu />}
                   value={descriptionProduct}
                   onChange={e => setDescriptionProduct(e.target.value)}
