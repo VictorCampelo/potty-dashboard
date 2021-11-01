@@ -11,10 +11,10 @@ import { Button } from "../../components/atoms/Button";
 import { Input } from "../../components/molecules/Input";
 import { FiSearch } from "react-icons/fi";
 import { CategoryCard } from "../../components/molecules/CategoryCard";
-import { IoCellular, IoFastFood } from "react-icons/io5";
+import { IoCellular, IoCloseSharp, IoFastFood } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { BiBuildings, BiMapAlt } from "react-icons/bi";
-import { FaRoad } from "react-icons/fa";
+import { FaBuilding, FaRoad } from "react-icons/fa";
 import { IoMdCall } from "react-icons/io";
 import { FaFacebook } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io5";
@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import { getBusiness } from "../../services/bussiness.services";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import { AiFillCamera } from "react-icons/ai";
 
 const Shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
@@ -114,8 +115,8 @@ const Shop = () => {
       setStars(data?.avgStars);
       setDesc(data?.description);
 
-      if(data?.schedules) {
-        setTimeTable(true)
+      if (data?.schedules) {
+        setTimeTable(true);
         setDom(data?.schedules?.dom);
         setSeg(data?.schedules?.seg);
         setTer(data?.schedules?.ter);
@@ -124,7 +125,7 @@ const Shop = () => {
         setSex(data?.schedules?.sex);
         setSab(data?.schedules?.sab);
       } else {
-        setTimeTable(false)
+        setTimeTable(false);
       }
 
       setTelefone(data?.phone);
@@ -142,7 +143,7 @@ const Shop = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      })
+      });
     } finally {
       setIsLoading(false);
     }
@@ -493,14 +494,18 @@ const Shop = () => {
           </ModalContainer>
         </CustomModal>
 
-        <DrawerLateral shopId={String(id || '')} greenOption={1} />
+        <DrawerLateral shopId={String(id || "")} greenOption={1} />
+
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
-              imgSrc="/images/coffe-place.png"
+              // coverSrc="/images/cover.jpg"
+              // imgSrc="/images/coffe-place.png"
               title={businessName}
               quantStar={stars}
               description={desc}
+              isLoading={isLoading}
+              voidText="Nenhum descrição foi encontrada..."
             />
 
             <InfoCard
@@ -512,6 +517,7 @@ const Shop = () => {
               whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
               isLoading={isLoading}
+              voidText="Nenhum contato foi encontrada..."
             />
           </div>
 
@@ -522,8 +528,8 @@ const Shop = () => {
                   title="Horário de funcionamento"
                   type="timetable"
                   button={() => handleOpenTimeModal()}
-                  voidText="Nenhum horário informado!"
                   isLoading={isLoading}
+                  voidText="Nenhum horário foi encontrada..."
                 />
               </>
             ) : (
@@ -550,6 +556,7 @@ const Shop = () => {
               button={() => handleOpenCategoryModal()}
               category="Alimentação"
               isLoading={isLoading}
+              voidText="Nenhuma categoria foi encontrada..."
             />
 
             <InfoCard
@@ -558,6 +565,7 @@ const Shop = () => {
               button={() => handleOpenLocationModal()}
               local={businessAddress}
               isLoading={isLoading}
+              voidText="Nenhuma localização foi encontrada..."
             />
           </div>
         </div>

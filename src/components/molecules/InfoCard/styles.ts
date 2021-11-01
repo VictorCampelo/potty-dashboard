@@ -7,6 +7,24 @@ export const Container = styled.section`
   box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
   border-radius: 20px;
 
+  div#Contact,
+  div#timetable,
+  div#category,
+  div#local {
+    .voidText {
+      display: flex;
+      width: 100%;
+      
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+
+        color: #363f4e;
+      }
+    }
+  }
+
   .top {
     display: flex;
     justify-content: space-between;
