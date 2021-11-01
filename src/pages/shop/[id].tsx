@@ -114,8 +114,8 @@ const Shop = () => {
       setStars(data?.avgStars);
       setDesc(data?.description);
 
-      if(data?.schedules) {
-        setTimeTable(true)
+      if (data?.schedules) {
+        setTimeTable(true);
         setDom(data?.schedules?.dom);
         setSeg(data?.schedules?.seg);
         setTer(data?.schedules?.ter);
@@ -124,7 +124,7 @@ const Shop = () => {
         setSex(data?.schedules?.sex);
         setSab(data?.schedules?.sab);
       } else {
-        setTimeTable(false)
+        setTimeTable(false);
       }
 
       setTelefone(data?.phone);
@@ -142,7 +142,7 @@ const Shop = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      })
+      });
     } finally {
       setIsLoading(false);
     }
@@ -493,14 +493,17 @@ const Shop = () => {
           </ModalContainer>
         </CustomModal>
 
-        <DrawerLateral shopId={String(id || '')} greenOption={1} />
+        <DrawerLateral shopId={String(id || "")} greenOption={1} />
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
+              coverSrc="/images/cover.jpg"
               imgSrc="/images/coffe-place.png"
               title={businessName}
               quantStar={stars}
               description={desc}
+              isLoading={isLoading}
+              voidText="Nenhum descrição foi encontrada..."
             />
 
             <InfoCard
@@ -512,6 +515,7 @@ const Shop = () => {
               whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
               isLoading={isLoading}
+              voidText="Nenhum contato foi encontrada..."
             />
           </div>
 
@@ -522,8 +526,8 @@ const Shop = () => {
                   title="Horário de funcionamento"
                   type="timetable"
                   button={() => handleOpenTimeModal()}
-                  voidText="Nenhum horário informado!"
                   isLoading={isLoading}
+                  voidText="Nenhum horário foi encontrada..."
                 />
               </>
             ) : (
@@ -550,6 +554,7 @@ const Shop = () => {
               button={() => handleOpenCategoryModal()}
               category="Alimentação"
               isLoading={isLoading}
+              voidText="Nenhuma categoria foi encontrada..."
             />
 
             <InfoCard
@@ -558,6 +563,7 @@ const Shop = () => {
               button={() => handleOpenLocationModal()}
               local={businessAddress}
               isLoading={isLoading}
+              voidText="Nenhuma localização foi encontrada..."
             />
           </div>
         </div>

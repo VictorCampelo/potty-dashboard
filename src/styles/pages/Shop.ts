@@ -9,7 +9,8 @@ export const Container = styled.div`
   display: flex;
 
   div.cards-area {
-    width: 100%;
+    max-width: 100%;
+    width: auto;
     margin-left: 5vw;
 
     display: flex;
