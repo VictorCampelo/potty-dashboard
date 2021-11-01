@@ -84,22 +84,22 @@ export const ModalContainer = styled.div`
   .timeTables-container {
     display: flex;
     flex-direction: row;
-  
-  .left-container {
-    width: 300px;
-    margin-right: 72px;
-  }
+
+    .left-container {
+      width: 300px;
+      margin-right: 72px;
+    }
     .dates {
       display: flex;
       flex-direction: row;
       align-items: center;
 
       margin-top: 20px;
-      
+
       > * {
-          &:last-child {
-            margin-left: 32px;
-          }
+        &:last-child {
+          margin-left: 32px;
+        }
       }
 
       p {
@@ -112,7 +112,7 @@ export const ModalContainer = styled.div`
 
         color: #363f4e;
 
-        margin-right: 27px
+        margin-right: 27px;
       }
 
       input {
@@ -159,7 +159,7 @@ export const ModalContainer = styled.div`
     margin-bottom: 24px;
     > * {
       &:first-child {
-        margin-right: 24px
+        margin-right: 24px;
       }
     }
   }
@@ -171,7 +171,7 @@ export const ModalContainer = styled.div`
     justify-content: space-between;
     > * {
       &:first-child {
-        margin-right: 24px
+        margin-right: 24px;
       }
     }
   }
@@ -189,16 +189,16 @@ export const ModalContainer = styled.div`
     }
   }
 
-  .contact-container{
+  .contact-container {
     > * {
-        &:first-child {
-          margin-bottom: 24px;
-        }
+      &:first-child {
+        margin-bottom: 24px;
+      }
     }
 
-    .top-inputs{
+    .top-inputs {
       display: flex;
-      
+
       justify-content: space-between;
       > * {
         &:first-child {
@@ -207,9 +207,9 @@ export const ModalContainer = styled.div`
       }
     }
 
-    .bottom-inputs{
+    .bottom-inputs {
       display: flex;
-      
+
       justify-content: space-between;
       > * {
         &:first-child {
@@ -218,6 +218,4 @@ export const ModalContainer = styled.div`
       }
     }
   }
-
-
 `;

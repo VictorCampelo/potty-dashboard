@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.header`
     position: absolute;
-
-    z-index: 1;
     
     .showNames{
         width: 15vw;

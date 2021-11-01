@@ -114,7 +114,7 @@ export const Container = styled.section`
       display: flex;
       width: 100%;
 
-      margin-top: 7px;
+      margin-top: 3px;
 
       p {
         font-style: normal;

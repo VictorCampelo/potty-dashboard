@@ -11,10 +11,10 @@ import { Button } from "../../components/atoms/Button";
 import { Input } from "../../components/molecules/Input";
 import { FiSearch } from "react-icons/fi";
 import { CategoryCard } from "../../components/molecules/CategoryCard";
-import { IoCellular, IoFastFood } from "react-icons/io5";
+import { IoCellular, IoCloseSharp, IoFastFood } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { BiBuildings, BiMapAlt } from "react-icons/bi";
-import { FaRoad } from "react-icons/fa";
+import { FaBuilding, FaRoad } from "react-icons/fa";
 import { IoMdCall } from "react-icons/io";
 import { FaFacebook } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io5";
@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import { getBusiness } from "../../services/bussiness.services";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import { AiFillCamera } from "react-icons/ai";
 
 const Shop = () => {
   const [timeTableModal, setTimeTableModal] = useState(false);
@@ -494,6 +495,7 @@ const Shop = () => {
         </CustomModal>
 
         <DrawerLateral shopId={String(id || "")} greenOption={1} />
+
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
