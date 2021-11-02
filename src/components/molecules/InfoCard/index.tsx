@@ -67,7 +67,6 @@ const InfoCard = ({
   isLoading,
   vazio,
 }: InfoCard) => {
-
   return (
     <Container>
       <div className="top">
@@ -81,13 +80,21 @@ const InfoCard = ({
 
       <div className="bottom">
         {isLoading ? (
-          <div style={{height: "30px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <div
+            style={{
+              height: "30px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <PulseLoader size={5} color="#2dd1ac" />
           </div>
         ) : (
           <>
             {type === "contact" ? (
               <div id="Contact">
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                 {cell !== "" ? (
                   <div className="contact-info">
@@ -120,10 +127,14 @@ const InfoCard = ({
                         <h2>{"Domingo     " + dom[0] + " - " + dom[1]} </h2>{" "}
 =======
                 {!vazio ? (
+=======
+                {!voidText ? (
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                   <>
                     {cell !== "" ? (
                       <div className="contact-info">
                         <IoMdCall size={15} /> <h2>{cell}</h2>{" "}
+<<<<<<< HEAD
 >>>>>>> Stashed changes
                       </div>
                       <div className="horario">
@@ -131,33 +142,79 @@ const InfoCard = ({
                       </div>
                       <div className="horario">
                         <h2>{"Terça       " + ter[0] + " - " + ter[1]} </h2>{" "}
+=======
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                       </div>
-                      <div className="horario">
-                        <h2>{"Quarta      " + qua[0] + " - " + qua[1]} </h2>{" "}
+                    ) : null}
+                    {facebook !== "" ? (
+                      <div className="contact-info">
+                        <FaFacebook size={15} /> <h2>{facebook}</h2>{" "}
                       </div>
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                       <div className="horario">
                         <h2>{"Quinta      " + qui[0] + " - " + qui[1]} </h2>{" "}
+=======
+                    ) : null}
+                    {instagram !== "" ? (
+                      <div className="contact-info">
+                        <FiInstagram size={15} /> <h2>{instagram}</h2>{" "}
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                       </div>
-                      <div className="horario">
-                        <h2>{"Sexta       " + sex[0] + " - " + sex[1]} </h2>{" "}
+                    ) : null}
+                    {whatsApp !== "" ? (
+                      <div className="contact-info">
+                        <IoLogoWhatsapp size={15} /> <h2>{whatsApp}</h2>{" "}
                       </div>
-                      <div className="horario">
-                        <h2>{"Sabado      " + sab[0] + " - " + sab[1]} </h2>{" "}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="horario">
-                        <h2>{voidText}</h2>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <div className="voidText">
+                      <p>{voidText}</p>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : null}
+            {type === "timetable" ? (
+              <div id="timetable">
+                {!voidText ? (
+                  <>
+                    <div className="horario">
+                      <h2>{"Domingo     " + dom[0] + " - " + dom[1]} </h2>{" "}
+                    </div>
+                    <div className="horario">
+                      <h2>{"Segunda     " + seg[0] + " - " + seg[1]} </h2>{" "}
+                    </div>
+                    <div className="horario">
+                      <h2>{"Terça       " + ter[0] + " - " + ter[1]} </h2>{" "}
+                    </div>
+                    <div className="horario">
+                      <h2>{"Quarta      " + qua[0] + " - " + qua[1]} </h2>{" "}
+                    </div>
+                    <div className="horario">
+                      <h2>{"Quinta      " + qui[0] + " - " + qui[1]} </h2>{" "}
+                    </div>
+                    <div className="horario">
+                      <h2>{"Sexta       " + sex[0] + " - " + sex[1]} </h2>{" "}
+                    </div>
+                    <div className="horario">
+                      <h2>{"Sabado      " + sab[0] + " - " + sab[1]} </h2>{" "}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="voidText">
+                      <p>{voidText}</p>
+                    </div>
+                  </>
+                )}
+              </div>
             ) : null}
             {type === "category" ? (
               <div id="category">
+<<<<<<< HEAD
                 {category === "Alimentação" ? <GiKnifeFork size={15} /> : null}
                 <h2>{category}</h2>
 =======
@@ -210,6 +267,9 @@ const InfoCard = ({
             {type === "category" ? (
               <div id="category">
                 {!vazio ? (
+=======
+                {!voidText ? (
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                   <>
                     {category === "Alimentação" ? (
                       <GiKnifeFork size={15} />
@@ -223,16 +283,23 @@ const InfoCard = ({
                     </div>
                   </>
                 )}
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
               </div>
             ) : null}
             {type === "local" && (
               <div id="local">
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                 <BsMap size={15} />
                 <h2>{local}</h2>
 =======
                 {!vazio ? (
+=======
+                {!voidText ? (
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                   <>
                     <BsMap size={15} />
                     <h2>{local}</h2>
@@ -244,7 +311,10 @@ const InfoCard = ({
                     </div>
                   </>
                 )}
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
               </div>
             )}
           </>
