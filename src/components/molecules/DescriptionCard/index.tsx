@@ -1,5 +1,46 @@
+<<<<<<< Updated upstream
 import { Container, Modal } from './styles';
 import React, { useState, ChangeEvent } from 'react'; 
+=======
+import { Container, Modal } from "./styles";
+import React, { useState, ChangeEvent } from "react";
+
+import { RiPencilFill } from "react-icons/ri";
+import { AiFillStar } from "react-icons/ai";
+import { AiOutlineStar } from "react-icons/ai";
+
+import { AiFillCamera } from "react-icons/ai";
+import { IoCloseSharp } from "react-icons/io5";
+import { FaBuilding } from "react-icons/fa";
+import { PulseLoader } from "react-spinners";
+import { Button } from "../../atoms/Button";
+
+interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
+  title?: string;
+  quantStar?: number;
+  description?: string;
+  imgSrc?: string;
+  coverSrc?: string;
+  isLoading?: boolean;
+  button?: any;
+  voidText?: string;
+  vazio?: boolean;
+}
+
+const DescriptionCard = ({
+  title,
+  quantStar,
+  description,
+  imgSrc,
+  coverSrc,
+  isLoading,
+  button,
+  voidText,
+  vazio,
+  ...rest
+}: DescriptionCard) => {
+  let stars = []; //Criando um vetor de estrelas
+>>>>>>> Stashed changes
 
 import { RiPencilFill } from 'react-icons/ri';
 import { AiFillStar } from 'react-icons/ai';
@@ -80,8 +121,26 @@ const  DescriptionCard = ({
                 </button>
 
             </div>
+<<<<<<< Updated upstream
 
             <div className="bottom">
+=======
+            <button onClick={button}>
+              Editar
+              <RiPencilFill size={15} />
+            </button>
+          </div>
+          {!vazio ? (
+            <>
+              <div className="bottom">
+                <h1>Descrição</h1>
+                <p>{description}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="bottom">
+>>>>>>> Stashed changes
                 <h1>Descrição</h1>
                 <p>
                     { description }  

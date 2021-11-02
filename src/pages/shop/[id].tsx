@@ -26,6 +26,8 @@ import { toast } from "react-toastify";
 import Head from "next/head";
 
 const Shop = () => {
+  const [vazio, setVazio] = useState(false);
+
   const [timeTableModal, setTimeTableModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
   const [locationModal, setLocationModal] = useState(false);
@@ -134,6 +136,7 @@ const Shop = () => {
 
       setBusinessAddress(data?.address);
     } catch (e) {
+      setVazio(true)
       toast.error("Erro ao buscar dados, tente novamente mais tarde", {
         position: "top-right",
         autoClose: 5000,
@@ -501,6 +504,12 @@ const Shop = () => {
               title={businessName}
               quantStar={stars}
               description={desc}
+<<<<<<< Updated upstream
+=======
+              isLoading={isLoading}
+              vazio={vazio}
+              voidText="Nenhum descrição foi encontrada..."
+>>>>>>> Stashed changes
             />
 
             <InfoCard
@@ -512,6 +521,11 @@ const Shop = () => {
               whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
               isLoading={isLoading}
+<<<<<<< Updated upstream
+=======
+              vazio={vazio}
+              voidText="Nenhum contato foi encontrada..."
+>>>>>>> Stashed changes
             />
           </div>
 
@@ -524,6 +538,11 @@ const Shop = () => {
                   button={() => handleOpenTimeModal()}
                   voidText="Nenhum horário informado!"
                   isLoading={isLoading}
+<<<<<<< Updated upstream
+=======
+                  vazio={true}
+                  voidText="Nenhum horário foi encontrada..."
+>>>>>>> Stashed changes
                 />
               </>
             ) : (
@@ -539,6 +558,7 @@ const Shop = () => {
                   qui={qui}
                   sex={sex}
                   sab={sab}
+                  vazio={false}
                   isLoading={isLoading}
                 />
               </>
@@ -550,6 +570,11 @@ const Shop = () => {
               button={() => handleOpenCategoryModal()}
               category="Alimentação"
               isLoading={isLoading}
+<<<<<<< Updated upstream
+=======
+              vazio={vazio}
+              voidText="Nenhuma categoria foi encontrada..."
+>>>>>>> Stashed changes
             />
 
             <InfoCard
@@ -558,6 +583,11 @@ const Shop = () => {
               button={() => handleOpenLocationModal()}
               local={businessAddress}
               isLoading={isLoading}
+<<<<<<< Updated upstream
+=======
+              vazio={vazio}
+              voidText="Nenhuma localização foi encontrada..."
+>>>>>>> Stashed changes
             />
           </div>
         </div>
