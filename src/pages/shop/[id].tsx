@@ -28,7 +28,6 @@ import { AiFillCamera } from "react-icons/ai";
 
 const Shop = () => {
   const [vazio, setVazio] = useState(false);
-
   const [timeTableModal, setTimeTableModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
   const [locationModal, setLocationModal] = useState(false);
@@ -507,17 +506,9 @@ const Shop = () => {
               title={businessName}
               quantStar={stars}
               description={desc}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
               isLoading={isLoading}
               vazio={vazio}
               voidText="Nenhum descrição foi encontrada..."
->>>>>>> Stashed changes
-=======
-              isLoading={isLoading}
-              voidText="Nenhum descrição foi encontrada..."
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
             />
 
             <InfoCard
@@ -529,15 +520,8 @@ const Shop = () => {
               whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
               isLoading={isLoading}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
               vazio={vazio}
               voidText="Nenhum contato foi encontrada..."
->>>>>>> Stashed changes
-=======
-              voidText="Nenhum contato foi encontrada..."
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
             />
           </div>
 
@@ -549,15 +533,8 @@ const Shop = () => {
                   type="timetable"
                   button={() => handleOpenTimeModal()}
                   isLoading={isLoading}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
                   vazio={true}
                   voidText="Nenhum horário foi encontrada..."
->>>>>>> Stashed changes
-=======
-                  voidText="Nenhum horário foi encontrada..."
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                 />
               </>
             ) : (
@@ -573,8 +550,8 @@ const Shop = () => {
                   qui={qui}
                   sex={sex}
                   sab={sab}
-                  vazio={false}
                   isLoading={isLoading}
+                  vazio={false}
                 />
               </>
             )}
@@ -585,15 +562,8 @@ const Shop = () => {
               button={() => handleOpenCategoryModal()}
               category="Alimentação"
               isLoading={isLoading}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
               vazio={vazio}
               voidText="Nenhuma categoria foi encontrada..."
->>>>>>> Stashed changes
-=======
-              voidText="Nenhuma categoria foi encontrada..."
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
             />
 
             <InfoCard
@@ -602,15 +572,8 @@ const Shop = () => {
               button={() => handleOpenLocationModal()}
               local={businessAddress}
               isLoading={isLoading}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
               vazio={vazio}
               voidText="Nenhuma localização foi encontrada..."
->>>>>>> Stashed changes
-=======
-              voidText="Nenhuma localização foi encontrada..."
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
             />
           </div>
         </div>

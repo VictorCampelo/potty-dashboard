@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-import { Container, Modal } from './styles';
-import React, { useState, ChangeEvent } from 'react'; 
-=======
-=======
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
 import { Container, Modal } from "./styles";
 import React, { useState, ChangeEvent } from "react";
 
@@ -26,11 +19,8 @@ interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
   coverSrc?: string;
   isLoading?: boolean;
   button?: any;
-  voidText?: string;
-<<<<<<< HEAD
   vazio?: boolean;
-=======
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
+  voidText?: string;
 }
 
 const DescriptionCard = ({
@@ -41,39 +31,9 @@ const DescriptionCard = ({
   coverSrc,
   isLoading,
   button,
-  voidText,
-<<<<<<< HEAD
   vazio,
+  voidText,
   ...rest
-}: DescriptionCard) => {
-  let stars = []; //Criando um vetor de estrelas
->>>>>>> Stashed changes
-
-import { RiPencilFill } from 'react-icons/ri';
-import { AiFillStar } from 'react-icons/ai';
-import { AiOutlineStar } from 'react-icons/ai';
-
-import { AiFillCamera } from 'react-icons/ai';
-import { IoCloseSharp } from 'react-icons/io5';
-import { FaBuilding } from 'react-icons/fa';
-
-
-interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement>{
-    title?: string;
-    quantStar?: number;
-    description?: string;
-    imgSrc?: string;
-  }
-
-const  DescriptionCard = ({
-    title,
-    quantStar,
-    description,
-    imgSrc,
-    ...rest 
-=======
-  ...rest
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
 }: DescriptionCard) => {
   let stars = []; //Criando um vetor de estrelas
 
@@ -153,35 +113,14 @@ const  DescriptionCard = ({
                 <div>{stars}</div>
               </div>
             </div>
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-
-            <div className="bottom">
-=======
-=======
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
             <button onClick={button}>
               Editar
               <RiPencilFill size={15} />
             </button>
           </div>
-<<<<<<< HEAD
           {!vazio ? (
             <>
               <div className="bottom">
-                <h1>Descrição</h1>
-                <p>{description}</p>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="bottom">
->>>>>>> Stashed changes
-=======
-          {!voidText ? (
-            <>
-              <div className="bottom">
->>>>>>> 9fcc2eda3a98bb4fd7bd36114e99068bf552ba7d
                 <h1>Descrição</h1>
                 <p>{description}</p>
               </div>
