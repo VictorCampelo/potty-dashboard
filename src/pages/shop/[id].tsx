@@ -27,6 +27,7 @@ import Head from "next/head";
 import { AiFillCamera } from "react-icons/ai";
 
 const Shop = () => {
+  const [vazio, setVazio] = useState(false);
   const [timeTableModal, setTimeTableModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
   const [locationModal, setLocationModal] = useState(false);
@@ -135,6 +136,7 @@ const Shop = () => {
 
       setBusinessAddress(data?.address);
     } catch (e) {
+      setVazio(true)
       toast.error("Erro ao buscar dados, tente novamente mais tarde", {
         position: "top-right",
         autoClose: 5000,
@@ -505,6 +507,7 @@ const Shop = () => {
               quantStar={stars}
               description={desc}
               isLoading={isLoading}
+              vazio={vazio}
               voidText="Nenhum descrição foi encontrada..."
             />
 
@@ -517,6 +520,7 @@ const Shop = () => {
               whatsApp={whatsApp}
               button={() => handleOpenContactModal()}
               isLoading={isLoading}
+              vazio={vazio}
               voidText="Nenhum contato foi encontrada..."
             />
           </div>
@@ -529,6 +533,7 @@ const Shop = () => {
                   type="timetable"
                   button={() => handleOpenTimeModal()}
                   isLoading={isLoading}
+                  vazio={true}
                   voidText="Nenhum horário foi encontrada..."
                 />
               </>
@@ -546,6 +551,7 @@ const Shop = () => {
                   sex={sex}
                   sab={sab}
                   isLoading={isLoading}
+                  vazio={false}
                 />
               </>
             )}
@@ -556,6 +562,7 @@ const Shop = () => {
               button={() => handleOpenCategoryModal()}
               category="Alimentação"
               isLoading={isLoading}
+              vazio={vazio}
               voidText="Nenhuma categoria foi encontrada..."
             />
 
@@ -565,6 +572,7 @@ const Shop = () => {
               button={() => handleOpenLocationModal()}
               local={businessAddress}
               isLoading={isLoading}
+              vazio={vazio}
               voidText="Nenhuma localização foi encontrada..."
             />
           </div>

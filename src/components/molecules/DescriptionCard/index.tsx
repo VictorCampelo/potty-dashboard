@@ -19,6 +19,7 @@ interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
   coverSrc?: string;
   isLoading?: boolean;
   button?: any;
+  vazio?: boolean;
   voidText?: string;
 }
 
@@ -30,6 +31,7 @@ const DescriptionCard = ({
   coverSrc,
   isLoading,
   button,
+  vazio,
   voidText,
   ...rest
 }: DescriptionCard) => {
@@ -116,7 +118,7 @@ const DescriptionCard = ({
               <RiPencilFill size={15} />
             </button>
           </div>
-          {!voidText ? (
+          {!vazio ? (
             <>
               <div className="bottom">
                 <h1>Descrição</h1>

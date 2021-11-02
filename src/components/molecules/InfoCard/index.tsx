@@ -15,6 +15,7 @@ interface InfoCard extends React.InputHTMLAttributes<HTMLInputElement> {
   title?: string; //titulo padrao de todo card
   type?: string; // tipo de card (contact, timetable, category, local)
 
+  vazio?: boolean;
   voidText?: string;
   isLoading?: boolean;
 
@@ -64,6 +65,7 @@ const InfoCard = ({
 
   voidText,
   isLoading,
+  vazio,
 }: InfoCard) => {
   return (
     <Container>
@@ -92,7 +94,7 @@ const InfoCard = ({
           <>
             {type === "contact" ? (
               <div id="Contact">
-                {!voidText ? (
+                {!vazio ? (
                   <>
                     {cell !== "" ? (
                       <div className="contact-info">
@@ -126,7 +128,7 @@ const InfoCard = ({
             ) : null}
             {type === "timetable" ? (
               <div id="timetable">
-                {!voidText ? (
+                {!vazio ? (
                   <>
                     <div className="horario">
                       <h2>{"Domingo     " + dom[0] + " - " + dom[1]} </h2>{" "}
@@ -161,7 +163,7 @@ const InfoCard = ({
             ) : null}
             {type === "category" ? (
               <div id="category">
-                {!voidText ? (
+                {!vazio ? (
                   <>
                     {category === "Alimentação" ? (
                       <GiKnifeFork size={15} />
@@ -179,7 +181,7 @@ const InfoCard = ({
             ) : null}
             {type === "local" && (
               <div id="local">
-                {!voidText ? (
+                {!vazio ? (
                   <>
                     <BsMap size={15} />
                     <h2>{local}</h2>
