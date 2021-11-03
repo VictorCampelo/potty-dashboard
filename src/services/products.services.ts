@@ -11,16 +11,21 @@ type ProductType = {
   inventory: number;
 }
 
+type CreateCategory = {
+  name: string;
+  storeId: string;
+}
+
 export const createProduct = async ({ data }: CreateProductType) => {
   const res = await api.post(`/products/`, data)
 
   return res;
 }
 
-export const createCategory = async (name: string) => {
-  const res = await api.post(`/categories`, {
+export const createCategory = async ({ name, storeId }: CreateCategory) => {
+  const res = await api.post(`/categories/product`, {
     name,
-    type: name
+    storeId
   })
 
   return res;

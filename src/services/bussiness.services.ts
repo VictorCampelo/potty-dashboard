@@ -29,7 +29,12 @@ export async function getStoreId(name: string) {
   return res.data.id
 }
 
-export async function                               getProducts(id: string) {
+export async function getProducts(id: string) {
   const res = await api.get(`/products/store/${id}?limit=10&offset=0&loadRelations=true&loadLastSolds=false`);
+  return res;
+}
+
+export async function getCategories(id: string) {
+  const res = await api.get(`/categories/products/${id}`);
   return res;
 }

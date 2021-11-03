@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
-import { getProducts, getStoreId } from '../../services/bussiness.services';
+import { getCategories, getProducts, getStoreId } from '../../services/bussiness.services';
 import { createCategory, createProduct } from "../../services/products.services";
 
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -33,8 +35,15 @@ import {
   EditCategoryModalContainer, 
   ExcludeModalContainer 
 } from "../../styles/pages/Catalog";
-import Head from "next/head";
-import { useRouter } from "next/router";
+
+type CategoryType = {
+  name: string;
+  type: string;
+  id: string;
+  enabled: false;
+  createdAt: string;
+  updatedAt: string;
+}
 
 type ProductType = {
   avgStars: number;
@@ -53,6 +62,7 @@ type ProductType = {
   tags: any
   title: string;
   updatedAt: string;
+  categories: CategoryType[]
 }
 
 const catalog = () => {
@@ -67,15 +77,29 @@ const catalog = () => {
 
   const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
+  const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
   const [priceProduct, setPriceProduct] = useState('')
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
+
   const [storeId, setStoreId] = useState('')
   const [toggleState, setToggleState] = useState(1);
 
   const router = useRouter();
   const { id } = router.query;
+
+  const notify = useCallback((message:string) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+  }, [])
 
   const loadData = async () => {
     let store = ''
@@ -84,25 +108,23 @@ const catalog = () => {
       store = await getStoreId(String(id || ''));
       setStoreId(store)
     } catch(e) {
-      toast.error("Erro ao buscar loja", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
+      notify("Erro ao buscar loja");
     }
 
     try {
       const { data } = await getProducts(store)
 
-      console.log(data);
-      
       setProducts(data);
     } catch (e) {
-      console.error(e);
+      notify("Erro ao buscar produtos");
+    }
+
+    try {
+      const { data } = await getCategories(store);
+
+      setCategories(data);
+    } catch (e) {
+      notify("Erro ao buscar categorias");
     }
   }
 
@@ -158,34 +180,31 @@ const catalog = () => {
     setExcludeModal(true);
   }
 
+  const notifySuccess = useCallback((message: string) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+  }, [])
+
   async function handleCreateCategory() { 
     try {
-      await createCategory(category)
+      await createCategory({ name: category, storeId })
 
-      toast.success("Categoria criada com sucesso!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
+      notifySuccess("Categoria criada com sucesso!")
 
       setCategory('')
+      loadData()
       toggleAddCategoryModal()
     } catch (e) {
       console.error(e);
 
-      toast.error("Erro ao criar categoria", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
+      notify("Erro ao criar categoria")
     }
   }
 
@@ -572,15 +591,15 @@ const catalog = () => {
               }
               content2={
                 <div className="categories-container">
-                  {[].map((product, index) => {
+                  {categories.map((cat, index) => {
                     return (
                       <CategoryListCard
-                        key={product.id + "-" + index}
-                        date={product.data.map((data) => ({
-                          name: data.name,
-                          amount: data.amount,
+                        key={cat.id + "-" + index}
+                        date={products.filter(prd => prd.categories.includes(cat)).map((data) => ({ // ARRUMAR ESSA BUSCA
+                          name: data.title,
+                          amount: String(data.inventory),
                         }))}
-                        category={product.category}
+                        category={cat.name}
                         excludeBtn={handleOpenCategoryExcludeModal}
                         editBtn={handleOpenEditCategoryModal}
                         isGreen={true}
