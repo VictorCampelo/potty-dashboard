@@ -1,6 +1,6 @@
 import { Container } from "./styles";
 import { IoTrashBinOutline } from "react-icons/io5";
-import { RiPencilFill } from "react-icons/ri";
+import { RiPencilFill, RiCamera2Fill } from "react-icons/ri";
 import EllipsisText from "react-ellipsis-text";
 
 interface ProductListCard extends React.AllHTMLAttributes<HTMLAllCollection> {
@@ -33,8 +33,13 @@ export const ProductListCard = ({
       <div className="card-container">
         <div className="color">
           <div className="icon">
-            <img src={icon} alt="Preview" />
+            {icon ? (
+              <img src={icon} alt="Preview" />
+            ) : (
+              <RiCamera2Fill size={26} color="var(--gray-600)" />
+            )}
           </div>
+
           <div className="desc-container">
             <tr>
               <td className="title">Nome</td>

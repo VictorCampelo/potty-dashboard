@@ -36,11 +36,16 @@ export const Container = styled.div<ContainerProp>`
       .icon {
         width: 60px;
         height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 0;
 
         border-radius: 5px;
 
         margin-left: 10px;
-        margin-right: 35px;
+        margin-right: 10px;
+        background-color: white;
       }
 
       .desc-container {
