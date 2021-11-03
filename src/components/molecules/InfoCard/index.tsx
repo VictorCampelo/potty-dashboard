@@ -1,42 +1,42 @@
-import { Container } from "./styles";
+import { Container } from './styles'
 
-import { RiPencilFill } from "react-icons/ri";
+import { RiPencilFill } from 'react-icons/ri'
 
-import { IoMdCall } from "react-icons/io";
-import { FaFacebook } from "react-icons/fa";
-import { FiInstagram } from "react-icons/fi";
-import { IoLogoWhatsapp } from "react-icons/io5";
+import { IoMdCall } from 'react-icons/io'
+import { FaFacebook } from 'react-icons/fa'
+import { FiInstagram } from 'react-icons/fi'
+import { IoLogoWhatsapp } from 'react-icons/io5'
 
-import { GiKnifeFork } from "react-icons/gi";
-import { BsMap } from "react-icons/bs";
-import { PuffLoader, PulseLoader } from "react-spinners";
+import { GiKnifeFork } from 'react-icons/gi'
+import { BsMap } from 'react-icons/bs'
+import { PuffLoader, PulseLoader } from 'react-spinners'
 
 interface InfoCard extends React.InputHTMLAttributes<HTMLInputElement> {
-  title?: string; //titulo padrao de todo card
-  type?: string; // tipo de card (contact, timetable, category, local)
+  title?: string //titulo padrao de todo card
+  type?: string // tipo de card (contact, timetable, category, local)
 
-  vazio?: boolean;
-  voidText?: string;
-  isLoading?: boolean;
+  vazio?: boolean
+  voidText?: string
+  isLoading?: boolean
 
-  cell?: string;
-  facebook?: string;
-  instagram?: string;
-  whatsApp?: string; // tipo contact
+  cell?: string
+  facebook?: string
+  instagram?: string
+  whatsApp?: string // tipo contact
 
-  dom?: any;
-  seg?: any;
-  ter?: any;
-  qua?: any;
-  qui?: any;
-  sex?: any;
-  sab?: any; // tipo timetable
+  dom?: any
+  seg?: any
+  ter?: any
+  qua?: any
+  qui?: any
+  sex?: any
+  sab?: any // tipo timetable
 
-  category?: string; // nome do tipo category
+  category?: string // nome do tipo category
 
-  local?: string; // endereço do tipo local
+  local?: string // endereço do tipo local
 
-  button?: any;
+  button?: any
 }
 //atributos aceitos para que o card consiga abrangir todos os tipos de informações trabalhadas
 
@@ -44,10 +44,10 @@ const InfoCard = ({
   title,
   type,
 
-  cell = "",
-  facebook = "",
-  instagram = "",
-  whatsApp = "",
+  cell = '',
+  facebook = '',
+  instagram = '',
+  whatsApp = '',
 
   dom,
   seg,
@@ -65,7 +65,7 @@ const InfoCard = ({
 
   voidText,
   isLoading,
-  vazio,
+  vazio
 }: InfoCard) => {
   return (
     <Container>
@@ -82,38 +82,38 @@ const InfoCard = ({
         {isLoading ? (
           <div
             style={{
-              height: "30px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              height: '30px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             <PulseLoader size={5} color="#2dd1ac" />
           </div>
         ) : (
           <>
-            {type === "contact" ? (
+            {type === 'contact' ? (
               <div id="Contact">
                 {!vazio ? (
                   <>
-                    {cell !== "" ? (
+                    {cell !== '' ? (
                       <div className="contact-info">
-                        <IoMdCall size={15} /> <h2>{cell}</h2>{" "}
+                        <IoMdCall size={15} /> <h2>{cell}</h2>{' '}
                       </div>
                     ) : null}
-                    {facebook !== "" ? (
+                    {facebook !== '' ? (
                       <div className="contact-info">
-                        <FaFacebook size={15} /> <h2>{facebook}</h2>{" "}
+                        <FaFacebook size={15} /> <h2>{facebook}</h2>{' '}
                       </div>
                     ) : null}
-                    {instagram !== "" ? (
+                    {instagram !== '' ? (
                       <div className="contact-info">
-                        <FiInstagram size={15} /> <h2>{instagram}</h2>{" "}
+                        <FiInstagram size={15} /> <h2>{instagram}</h2>{' '}
                       </div>
                     ) : null}
-                    {whatsApp !== "" ? (
+                    {whatsApp !== '' ? (
                       <div className="contact-info">
-                        <IoLogoWhatsapp size={15} /> <h2>{whatsApp}</h2>{" "}
+                        <IoLogoWhatsapp size={15} /> <h2>{whatsApp}</h2>{' '}
                       </div>
                     ) : null}
                   </>
@@ -126,30 +126,30 @@ const InfoCard = ({
                 )}
               </div>
             ) : null}
-            {type === "timetable" ? (
+            {type === 'timetable' ? (
               <div id="timetable">
                 {!vazio ? (
                   <>
                     <div className="horario">
-                      <h2>{"Domingo     " + dom[0] + " - " + dom[1]} </h2>{" "}
+                      <h2>{'Segunda     ' + seg[0] + ' - ' + seg[1]} </h2>{' '}
                     </div>
                     <div className="horario">
-                      <h2>{"Segunda     " + seg[0] + " - " + seg[1]} </h2>{" "}
+                      <h2>{'Terça       ' + ter[0] + ' - ' + ter[1]} </h2>{' '}
                     </div>
                     <div className="horario">
-                      <h2>{"Terça       " + ter[0] + " - " + ter[1]} </h2>{" "}
+                      <h2>{'Quarta      ' + qua[0] + ' - ' + qua[1]} </h2>{' '}
                     </div>
                     <div className="horario">
-                      <h2>{"Quarta      " + qua[0] + " - " + qua[1]} </h2>{" "}
+                      <h2>{'Quinta      ' + qui[0] + ' - ' + qui[1]} </h2>{' '}
                     </div>
                     <div className="horario">
-                      <h2>{"Quinta      " + qui[0] + " - " + qui[1]} </h2>{" "}
+                      <h2>{'Sexta       ' + sex[0] + ' - ' + sex[1]} </h2>{' '}
                     </div>
                     <div className="horario">
-                      <h2>{"Sexta       " + sex[0] + " - " + sex[1]} </h2>{" "}
+                      <h2>{'Sábado      ' + sab[0] + ' - ' + sab[1]} </h2>{' '}
                     </div>
                     <div className="horario">
-                      <h2>{"Sabado      " + sab[0] + " - " + sab[1]} </h2>{" "}
+                      <h2>{'Domingo     ' + dom[0] + ' - ' + dom[1]} </h2>{' '}
                     </div>
                   </>
                 ) : (
@@ -161,11 +161,11 @@ const InfoCard = ({
                 )}
               </div>
             ) : null}
-            {type === "category" ? (
+            {type === 'category' ? (
               <div id="category">
                 {!vazio ? (
                   <>
-                    {category === "Alimentação" ? (
+                    {category === 'Alimentação' ? (
                       <GiKnifeFork size={15} />
                     ) : null}
                     <h2>{category}</h2>
@@ -179,7 +179,7 @@ const InfoCard = ({
                 )}
               </div>
             ) : null}
-            {type === "local" && (
+            {type === 'local' && (
               <div id="local">
                 {!vazio ? (
                   <>
@@ -199,7 +199,7 @@ const InfoCard = ({
         )}
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default InfoCard;
+export default InfoCard

@@ -1,159 +1,247 @@
-import DrawerLateral from "../../components/molecules/DrawerLateral";
-import { IoIosClose } from "react-icons/io";
+import DrawerLateral from '../../components/molecules/DrawerLateral'
+import { IoIosClose } from 'react-icons/io'
 
-import React, { useState } from "react";
-import { Container, ModalContainer } from "../../styles/pages/Shop";
+import React, { useState } from 'react'
+import { Container, ModalContainer } from '../../styles/pages/Shop'
 
-import DescriptionCard from "../../components/molecules/DescriptionCard";
-import InfoCard from "../../components/molecules/InfoCard";
-import CustomModal from "../../components/molecules/CustomModal";
-import { Button } from "../../components/atoms/Button";
-import { Input } from "../../components/molecules/Input";
-import { FiSearch } from "react-icons/fi";
-import { CategoryCard } from "../../components/molecules/CategoryCard";
-import { IoCellular, IoCloseSharp, IoFastFood } from "react-icons/io5";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { BiBuildings, BiMapAlt } from "react-icons/bi";
-import { FaBuilding, FaRoad } from "react-icons/fa";
-import { IoMdCall } from "react-icons/io";
-import { FaFacebook } from "react-icons/fa";
-import { IoLogoWhatsapp } from "react-icons/io5";
-import { FiInstagram } from "react-icons/fi";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { getBusiness } from "../../services/bussiness.services";
-import { toast } from "react-toastify";
-import Head from "next/head";
-import { AiFillCamera } from "react-icons/ai";
+import DescriptionCard from '../../components/molecules/DescriptionCard'
+import InfoCard from '../../components/molecules/InfoCard'
+import CustomModal from '../../components/molecules/CustomModal'
+import { Button } from '../../components/atoms/Button'
+import { Input } from '../../components/molecules/Input'
+import { FiSearch } from 'react-icons/fi'
+import { CategoryCard } from '../../components/molecules/CategoryCard'
+import { IoCellular, IoFastFood } from 'react-icons/io5'
+import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { BiBuildings, BiMapAlt, BiTimeFive } from 'react-icons/bi'
+import { FaRoad } from 'react-icons/fa'
+import { IoMdCall } from 'react-icons/io'
+import { FaFacebook } from 'react-icons/fa'
+import { IoLogoWhatsapp } from 'react-icons/io5'
+import { FiInstagram } from 'react-icons/fi'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import {
+  editTimeTable,
+  getBusiness,
+  getStoreId
+} from '../../services/bussiness.services'
+import { toast } from 'react-toastify'
+import Head from 'next/head'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { parseCookies } from 'nookies'
+import { api } from '../../services/apiClient'
+
+type TimeTableArrayType = {
+  [0]
+  [1]
+}
+
+type EditTimeTable = {
+  seg: Array<TimeTableArrayType>
+  ter: Array<TimeTableArrayType>
+  qua: Array<TimeTableArrayType>
+  qui: Array<TimeTableArrayType>
+  sex: Array<TimeTableArrayType>
+  sab: Array<TimeTableArrayType>
+  dom: Array<TimeTableArrayType>
+}
 
 const Shop = () => {
-  const [vazio, setVazio] = useState(false);
-  const [timeTableModal, setTimeTableModal] = useState(false);
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [locationModal, setLocationModal] = useState(false);
-  const [contactModal, setContactModal] = useState(false);
+  const [storeId, setStoreId] = useState('')
 
-  const [businessName, setBusinessName] = useState("");
-  const [stars, setStars] = useState();
-  const [desc, setDesc] = useState("");
+  const [vazio, setVazio] = useState(false)
+  const [timeTableModal, setTimeTableModal] = useState(false)
+  const [categoryModal, setCategoryModal] = useState(false)
+  const [locationModal, setLocationModal] = useState(false)
+  const [contactModal, setContactModal] = useState(false)
 
-  const [telefone, setTelefone] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [whatsApp, setWhatsApp] = useState("");
+  const [businessName, setBusinessName] = useState('')
+  const [stars, setStars] = useState()
+  const [desc, setDesc] = useState('')
 
-  const [businessAddress, setBusinessAddress] = useState("");
+  const [telefone, setTelefone] = useState('')
+  const [instagram, setInstagram] = useState('')
+  const [facebook, setFacebook] = useState('')
+  const [whatsApp, setWhatsApp] = useState('')
 
-  const [businessState, setBusinessState] = useState("");
-  const [businessCity, setBusinessCity] = useState("");
-  const [publicPlace, setPublicPlace] = useState("");
-  const [number, setNumer] = useState("");
-  const [district, setDistrict] = useState("");
-  const [cep, setCep] = useState("");
+  const [businessAddress, setBusinessAddress] = useState('')
 
-  const [timeTable, setTimeTable] = useState(false);
-  const [dom, setDom] = useState([]);
-  const [seg, setSeg] = useState([]);
-  const [ter, setTer] = useState([]);
-  const [qua, setQua] = useState([]);
-  const [qui, setQui] = useState([]);
-  const [sex, setSex] = useState([]);
-  const [sab, setSab] = useState([]);
+  const [businessState, setBusinessState] = useState('')
+  const [businessCity, setBusinessCity] = useState('')
+  const [publicPlace, setPublicPlace] = useState('')
+  const [number, setNumer] = useState('')
+  const [district, setDistrict] = useState('')
+  const [cep, setCep] = useState('')
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [timeTable, setTimeTable] = useState(false)
+  const [dom, setDom] = useState([])
+  const [seg, setSeg] = useState([])
+  const [ter, setTer] = useState([])
+  const [qua, setQua] = useState([])
+  const [qui, setQui] = useState([])
+  const [sex, setSex] = useState([])
+  const [sab, setSab] = useState([])
 
-  const router = useRouter();
-  const { id } = router.query;
+  const [isLoading, setIsLoading] = useState(true)
+
+  const router = useRouter()
+  const { id } = router.query
 
   // Categorias
-  const [category, setCategory] = useState("");
+
+  const [category, setCategory] = useState('')
 
   // Modal de horarios
 
   function handleOpenTimeModal() {
-    setTimeTableModal(true);
+    setTimeTableModal(true)
   }
 
   function toggleTimeModal() {
-    setTimeTableModal(!timeTableModal);
+    setTimeTableModal(!timeTableModal)
   }
 
-  // Modal de categorias
+  const { handleSubmit, register } = useForm()
 
-  function handleOpenCategoryModal() {
-    setCategoryModal(true);
-  }
-
-  function toggleCategoryModal() {
-    setCategoryModal(!categoryModal);
-  }
-
-  // Modal de localização
-
-  function handleOpenLocationModal() {
-    setLocationModal(true);
-  }
-
-  function toggleLocationModal() {
-    setLocationModal(!locationModal);
-  }
-
-  // Modal de contatos
-
-  function handleOpenContactModal() {
-    setContactModal(true);
-  }
-
-  function toggleContactModal() {
-    setContactModal(!contactModal);
-  }
-
-  async function loadData() {
-    try {
-      const { data } = await getBusiness(`${id}`);
-
-      setBusinessName(data?.name);
-      setStars(data?.avgStars);
-      setDesc(data?.description);
-
-      if (data?.schedules) {
-        setTimeTable(true);
-        setDom(data?.schedules?.dom);
-        setSeg(data?.schedules?.seg);
-        setTer(data?.schedules?.ter);
-        setQua(data?.schedules?.qua);
-        setQui(data?.schedules?.qui);
-        setSex(data?.schedules?.sex);
-        setSab(data?.schedules?.sab);
-      } else {
-        setTimeTable(false);
+  const handleEditTimeTable: SubmitHandler<EditTimeTable> = async (values) => {
+    const body = {
+      schedules: {
+        seg: [values.seg[0], values.seg[1]],
+        ter: [values.ter[0], values.ter[1]],
+        qua: [values.qua[0], values.qua[1]],
+        qui: [values.qui[0], values.qui[1]],
+        sex: [values.sex[0], values.sex[1]],
+        sab: [values.sab[0], values.sab[1]],
+        dom: [values.dom[0], values.dom[1]]
       }
+    }
+    try {
+      const token = parseCookies()['ultimo.auth.token']
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
+      await editTimeTable(storeId, body)
 
-      setTelefone(data?.phone);
-      setFacebook(data?.facebook_link);
-      setInstagram(data?.instagram_link);
-      setWhatsApp(data?.whatsapp_link);
-
-      setBusinessAddress(data?.address);
-    } catch (e) {
-      setVazio(true)
-      toast.error("Erro ao buscar dados, tente novamente mais tarde", {
-        position: "top-right",
+      toast.success('Horários editado(s) com sucesso!', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
-      });
+        progress: undefined
+      })
+
+      setTimeout(function () {
+        setTimeTableModal(!timeTableModal)
+      }, 2500)
+    } catch (e) {
+      if (e.message.includes('401')) {
+        return toast.error(
+          'Usuário deslogado, faça o seu login para prosseguir',
+          {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          }
+        )
+      } else {
+        toast.error('Erro ao editar horários', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      }
+    }
+  }
+
+  // Modal de categorias
+
+  function handleOpenCategoryModal() {
+    setCategoryModal(true)
+  }
+
+  function toggleCategoryModal() {
+    setCategoryModal(!categoryModal)
+  }
+
+  // Modal de localização
+
+  function handleOpenLocationModal() {
+    setLocationModal(true)
+  }
+
+  function toggleLocationModal() {
+    setLocationModal(!locationModal)
+  }
+
+  // Modal de contatos
+
+  function handleOpenContactModal() {
+    setContactModal(true)
+  }
+
+  function toggleContactModal() {
+    setContactModal(!contactModal)
+  }
+
+  async function loadData() {
+    let store = ''
+
+    try {
+      const { data } = await getBusiness(`${id}`)
+      store = await getStoreId(String(id || ''))
+      setStoreId(store)
+
+      setBusinessName(data?.name)
+      setStars(data?.avgStars)
+      setDesc(data?.description)
+
+      if (data?.schedules) {
+        setTimeTable(true)
+        setDom(data?.schedules?.dom)
+        setSeg(data?.schedules?.seg)
+        setTer(data?.schedules?.ter)
+        setQua(data?.schedules?.qua)
+        setQui(data?.schedules?.qui)
+        setSex(data?.schedules?.sex)
+        setSab(data?.schedules?.sab)
+      } else {
+        setTimeTable(false)
+      }
+
+      setTelefone(data?.phone)
+      setFacebook(data?.facebook_link)
+      setInstagram(data?.instagram_link)
+      setWhatsApp(data?.whatsapp_link)
+
+      setBusinessAddress(data?.address)
+    } catch (e) {
+      setVazio(true)
+      toast.error('Erro ao buscar dados, tente novamente mais tarde', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    if (id) loadData();
-  }, [id]);
+    if (id) loadData()
+  }, [id])
 
   return (
     <>
@@ -170,136 +258,138 @@ const Shop = () => {
           <ModalContainer>
             <div className="exit-container">
               <h1>Horário de funcionamento</h1>
-              <IoIosClose onClick={toggleTimeModal} size={36} color={"black"} />
+              <IoIosClose onClick={toggleTimeModal} size={36} color={'black'} />
             </div>
-            <div className="timeTables-container">
-              <div className="left-container">
-                <div className="dates">
-                  <p>Segunda:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
+            <form onSubmit={handleSubmit(handleEditTimeTable)}>
+              <div className="timeTables-container">
+                <div className="left-container">
+                  <div className="dates">
+                    <p>Segunda:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={seg[0]}
+                      {...register('seg[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={seg[1]}
+                      {...register('seg[1]')}
+                    />
+                  </div>
+                  <div className="dates">
+                    <p>Terça:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={ter[0]}
+                      {...register('ter[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={ter[1]}
+                      {...register('ter[1]')}
+                    />
+                  </div>
+                  <div className="dates">
+                    <p>Quarta:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={qua[0]}
+                      {...register('qua[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={qua[1]}
+                      {...register('qua[1]')}
+                    />
+                  </div>
+                  <div className="dates">
+                    <p>Quinta:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={qui[0]}
+                      {...register('qui[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={qui[1]}
+                      {...register('qui[1]')}
+                    />
+                  </div>
                 </div>
-                <div className="dates">
-                  <p>Terça:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
-                </div>
-                <div className="dates">
-                  <p>Quarta:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
-                </div>
-                <div className="dates">
-                  <p>Quinta:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
+                <div className="right-container">
+                  <div className="dates">
+                    <p>Sexta:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={sex[0]}
+                      {...register('sex[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={sex[1]}
+                      {...register('sex[1]')}
+                    />
+                  </div>
+                  <div className="dates">
+                    <p>Sabado:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={sab[0]}
+                      {...register('sab[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={sab[1]}
+                      {...register('sab[1]')}
+                    />
+                  </div>
+                  <div className="dates">
+                    <p>Domingo:</p>
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={dom[0]}
+                      {...register('dom[0]')}
+                    />
+                    <Input
+                      icon={<BiTimeFive />}
+                      mask="time"
+                      placeholder="00:00"
+                      defaultValue={dom[1]}
+                      {...register('dom[1]')}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="right-container">
-                <div className="dates">
-                  <p>Sexta:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
-                </div>
-                <div className="dates">
-                  <p>Sabado:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
-                </div>
-                <div className="dates">
-                  <p>Domingo:</p>
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="1"
-                  />
-                  <input
-                    type="datetime"
-                    placeholder="00:00"
-                    maxLength={5}
-                    name="time"
-                    id="2"
-                  />
-                </div>
+              <div className="buttons-container">
+                <Button title="Confirmar" type="submit" border={true}></Button>
               </div>
-            </div>
-            <div className="buttons-container">
-              <Button title="Confirmar" border={true}></Button>
-            </div>
+            </form>
           </ModalContainer>
         </CustomModal>
 
@@ -314,7 +404,7 @@ const Shop = () => {
               <IoIosClose
                 onClick={toggleCategoryModal}
                 size={36}
-                color={"black"}
+                color={'black'}
               />
             </div>
             <div className="categories-container">
@@ -361,7 +451,7 @@ const Shop = () => {
               <IoIosClose
                 onClick={toggleLocationModal}
                 size={36}
-                color={"black"}
+                color={'black'}
               />
             </div>
             <div className="inputRow">
@@ -418,6 +508,7 @@ const Shop = () => {
               <Input
                 label="CEP"
                 placeholder="000.000.000-00"
+                mask="cep"
                 value={cep}
                 onChange={(e) => setCep(e.target.value)}
                 icon={<BiMapAlt size={20} color="var(--black-800)" />}
@@ -440,7 +531,7 @@ const Shop = () => {
               <IoIosClose
                 onClick={toggleContactModal}
                 size={36}
-                color={"black"}
+                color={'black'}
               />
             </div>
 
@@ -448,10 +539,10 @@ const Shop = () => {
               <div className="top-inputs">
                 <Input
                   label="Telefone"
-                  placeholder="(00)0000-0000"
+                  placeholder="(00) 0000-0000"
+                  mask="phone"
                   value={telefone}
                   flex={2}
-                  type="numeric"
                   maxLength={14}
                   onChange={(e) => setTelefone(e.target.value)}
                   icon={<IoMdCall size={20} color="var(--black-800)" />}
@@ -496,13 +587,13 @@ const Shop = () => {
           </ModalContainer>
         </CustomModal>
 
-        <DrawerLateral shopId={String(id || "")} greenOption={1} />
+        <DrawerLateral shopId={String(id || '')} greenOption={1} />
 
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
-              // coverSrc="/images/cover.jpg"
-              // imgSrc="/images/coffe-place.png"
+              // coverSrc={"/////images/cover.jpg"}
+              // imgSrc={"/////images/coffe-place.png"}
               title={businessName}
               quantStar={stars}
               description={desc}
@@ -543,13 +634,13 @@ const Shop = () => {
                   title="Horário de funcionamento"
                   type="timetable"
                   button={() => handleOpenTimeModal()}
-                  dom={dom}
                   seg={seg}
                   ter={ter}
                   qua={qua}
                   qui={qui}
                   sex={sex}
                   sab={sab}
+                  dom={dom}
                   isLoading={isLoading}
                   vazio={false}
                 />
@@ -579,7 +670,7 @@ const Shop = () => {
         </div>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default Shop;
+export default Shop

@@ -1,26 +1,26 @@
-import { Container, Modal } from "./styles";
-import React, { useState, ChangeEvent } from "react";
+import { Container, Modal } from './styles'
+import React, { useState, ChangeEvent } from 'react'
 
-import { RiPencilFill } from "react-icons/ri";
-import { AiFillStar } from "react-icons/ai";
-import { AiOutlineStar } from "react-icons/ai";
+import { RiPencilFill } from 'react-icons/ri'
+import { AiFillStar } from 'react-icons/ai'
+import { AiOutlineStar } from 'react-icons/ai'
 
-import { AiFillCamera } from "react-icons/ai";
-import { IoCloseSharp } from "react-icons/io5";
-import { FaBuilding } from "react-icons/fa";
-import { PulseLoader } from "react-spinners";
-import { Button } from "../../atoms/Button";
+import { AiFillCamera } from 'react-icons/ai'
+import { IoCloseSharp } from 'react-icons/io5'
+import { FaBuilding } from 'react-icons/fa'
+import { PulseLoader } from 'react-spinners'
+import { Button } from '../../atoms/Button'
 
 interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
-  title?: string;
-  quantStar?: number;
-  description?: string;
-  imgSrc?: string;
-  coverSrc?: string;
-  isLoading?: boolean;
-  button?: any;
-  vazio?: boolean;
-  voidText?: string;
+  title?: string
+  quantStar?: number
+  description?: string
+  imgSrc?: string
+  coverSrc?: string
+  isLoading?: boolean
+  button?: any
+  vazio?: boolean
+  voidText?: string
 }
 
 const DescriptionCard = ({
@@ -35,60 +35,62 @@ const DescriptionCard = ({
   voidText,
   ...rest
 }: DescriptionCard) => {
-  let stars = []; //Criando um vetor de estrelas
+  const stars = [] //Criando um vetor de estrelas
 
-  quantStar > 5 ? (quantStar = 5) : null; //Tratativas para manter o máximo de estrelas como 5
+  quantStar > 5 ? (quantStar = 5) : null //Tratativas para manter o máximo de estrelas como 5
 
   for (let i = 0; i < quantStar; i++) {
-    stars.push(<AiFillStar size={18} color="#ffe249" />);
+    stars.push(<AiFillStar size={18} color="#ffe249" />)
   }
   for (let i = quantStar; i < 5; i++) {
-    stars.push(<AiOutlineStar size={18} color="#ffe249" />);
+    stars.push(<AiOutlineStar size={18} color="#ffe249" />)
   }
   //adicionando estrelas preenchidas e vazias ao vetor
 
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false)
 
-  const [valueTitle, setValueTitle] = useState(title);
-  const [valueDescription, setValueDescription] = useState(description);
+  const [valueTitle, setValueTitle] = useState(title)
+  const [valueDescription, setValueDescription] = useState(description)
 
-  const [image, setImage] = useState<File[]>([]);
-  const [previewImage, setPreviewImage] = useState<string[]>([]);
+  const [image, setImage] = useState<File[]>([])
+  const [previewImage, setPreviewImage] = useState<string[]>([])
 
-  previewImage.push(imgSrc);
+  previewImage.push(imgSrc)
+
+  // Random Image
+
+  const generateIcon = (query) =>
+    `https://source.unsplash.com/random/160x160/?${query}`
+
+  const generateBanner = (query) =>
+    `https://source.unsplash.com/random/?${query}`
 
   function handleSelectImage(event: ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) {
-      return;
+      return
     }
 
-    const selectedImage = Array.from(event.target.files);
+    const selectedImage = Array.from(event.target.files)
 
-    setImage(selectedImage);
+    setImage(selectedImage)
 
     const selectedImagePreview = selectedImage.map((image) => {
-      return URL.createObjectURL(image);
-    });
+      return URL.createObjectURL(image)
+    })
 
-    setPreviewImage(selectedImagePreview);
+    setPreviewImage(selectedImagePreview)
   }
-
-  const generateIcon = (query) =>
-    `https://source.unsplash.com/random/160x160/?${query}`;
-
-  const generateBanner = (query) =>
-    `https://source.unsplash.com/random/?${query}`;
 
   return (
     <Container>
       {isLoading ? (
         <div
           style={{
-            width: "100%",
-            height: "200px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            width: '100%',
+            height: '200px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
           <PulseLoader size={5} color="#2dd1ac" />
@@ -103,17 +105,17 @@ const DescriptionCard = ({
                 <div className="cover"></div>
                 <img
                   className="banner"
-                  src={coverSrc || generateBanner("shop")}
+                  src={coverSrc || generateBanner('shop')}
                   alt="banner da loja"
                 />
               </div>
               <div className="icon">
-                <img src={imgSrc || generateIcon("shop")} alt="icone da loja" />
+                <img src={imgSrc || generateIcon('shop')} alt="icone da loja" />
                 <h1>{title}</h1>
                 <div>{stars}</div>
               </div>
             </div>
-            <button onClick={button}>
+            <button onClick={/*button*/ (e) => setModal(true)}>
               Editar
               <RiPencilFill size={15} />
             </button>
@@ -138,7 +140,7 @@ const DescriptionCard = ({
         </>
       )}
 
-      {/* {modal ? (
+      {modal ? (
         <Modal>
           <div className="corpo-modal">
             <div className="topo">
@@ -193,9 +195,9 @@ const DescriptionCard = ({
 
           <div id="background-black" onClick={() => setModal(false)}></div>
         </Modal>
-      ) : null} */}
+      ) : null}
     </Container>
-  );
-};
+  )
+}
 
-export default DescriptionCard;
+export default DescriptionCard
