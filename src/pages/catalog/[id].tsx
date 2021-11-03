@@ -114,7 +114,12 @@ const catalog = () => {
     try {
       const { data } = await getProducts(store)
 
-      setProducts(data);
+      const formatedData = data.map(it => ({
+        ...it, 
+        categories: it.categories.map((cat: CategoryType) => cat.name)
+      }));
+      
+      setProducts(formatedData);
     } catch (e) {
       notify("Erro ao buscar produtos");
     }
