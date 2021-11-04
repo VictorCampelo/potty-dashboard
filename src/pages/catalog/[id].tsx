@@ -1,79 +1,90 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { toast } from "react-toastify";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import React, { useEffect, useState, useCallback } from 'react'
+import { toast } from 'react-toastify'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import { getCategories, getProducts, getStoreId } from '../../services/bussiness.services';
-import { createCategory, createProduct, deleteCategory, deleteProduct } from "../../services/products.services";
+import {
+  getCategories,
+  getProducts,
+  getStoreId
+} from '../../services/bussiness.services'
+import {
+  createCategory,
+  createProduct,
+  deleteCategory,
+  deleteProduct
+} from '../../services/products.services'
 
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FiPlus, FiSearch } from "react-icons/fi";
-import { IoIosClose, IoMdCamera } from "react-icons/io";
-import { FaMoneyBill, FaPercentage, FaCoins } from "react-icons/fa";
-import { GoArrowRight, GoArrowLeft } from "react-icons/go";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { FiBox } from "react-icons/fi";
-import { VscSearch } from "react-icons/vsc";
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { FiPlus, FiSearch } from 'react-icons/fi'
+import { IoIosClose, IoMdCamera } from 'react-icons/io'
+import { FaMoneyBill, FaPercentage, FaCoins } from 'react-icons/fa'
+import { GoArrowRight, GoArrowLeft } from 'react-icons/go'
+import { IoTrashBinOutline } from 'react-icons/io5'
+import { FiBox } from 'react-icons/fi'
+import { VscSearch } from 'react-icons/vsc'
 import {
   MdUpload,
   MdOutlineArrowBackIosNew,
-  MdOutlineArrowForwardIos,
-} from "react-icons/md";
+  MdOutlineArrowForwardIos
+} from 'react-icons/md'
 
-import { Button } from "../../components/atoms/Button";
-import CatalogTabs from "../../components/molecules/CatalogTabs";
-import { CategoryListCard } from "../../components/molecules/CategoryListCard";
-import CustomModal from "../../components/molecules/CustomModal";
-import DrawerLateral from "../../components/molecules/DrawerLateral";
-import { Input } from "../../components/molecules/Input";
-import { ProductListCard } from "../../components/molecules/ProductListCard";
-import { TextArea } from "../../components/molecules/TextArea";
-import { 
+import { Button } from '../../components/atoms/Button'
+import CatalogTabs from '../../components/molecules/CatalogTabs'
+import { CategoryListCard } from '../../components/molecules/CategoryListCard'
+import CustomModal from '../../components/molecules/CustomModal'
+import DrawerLateral from '../../components/molecules/DrawerLateral'
+import { Input } from '../../components/molecules/Input'
+import { ProductListCard } from '../../components/molecules/ProductListCard'
+import { TextArea } from '../../components/molecules/TextArea'
+import {
   AddCategoryModalContainer,
-  AddProductModalContainer, 
-  Container, 
-  EditCategoryModalContainer, 
-  ExcludeModalContainer 
-} from "../../styles/pages/Catalog";
+  AddProductModalContainer,
+  Container,
+  EditCategoryModalContainer,
+  ExcludeModalContainer
+} from '../../styles/pages/Catalog'
 
 type CategoryType = {
-  name: string;
-  type: string;
-  id: string;
-  enabled: false;
-  createdAt: string;
-  updatedAt: string;
+  name: string
+  type: string
+  id: string
+  enabled: false
+  createdAt: string
+  updatedAt: string
 }
 
 type ProductType = {
-  avgStars: number;
-  createdAt: string;
-  deletedAt: string;
-  description: string;
-  discount: any;
-  files: [string];
+  avgStars: number
+  createdAt: string
+  deletedAt: string
+  description: string
+  discount: any
+  files: [string]
   id: string
   inventory: number
   lastSold: any
-  price: number;
-  sumFeedbacks: number;
-  sumOrders: number;
-  sumStars: number;
+  price: number
+  sumFeedbacks: number
+  sumOrders: number
+  sumStars: number
   tags: any
-  title: string;
-  updatedAt: string;
+  title: string
+  updatedAt: string
   categories: CategoryType[]
 }
 
 const catalog = () => {
-  const [excludeModal, setExcludeModal] = useState(false);
-  const [confirmExclude, setConfirmExclude] = useState(false);
+  const [excludeModal, setExcludeModal] = useState(false)
+  const [confirmExclude, setConfirmExclude] = useState(false)
 
-  const [editCategoryModal, setEditCategoryModal] = useState(false);
-  const [isCategory, setIsCategory] = useState(false);
+  const [editCategoryModal, setEditCategoryModal] = useState(false)
+  const [isCategory, setIsCategory] = useState(false)
 
-  const [addModal, setAddModal] = useState(false);
-  const [addCategoryModal, setCategoryAddModal] = useState(false);
+  const [addModal, setAddModal] = useState(false)
+  const [addCategoryModal, setCategoryAddModal] = useState(false)
+
+  const [editProduct, setEditProuct] = useState(false)
 
   const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
@@ -84,68 +95,78 @@ const catalog = () => {
   const [inventoryProduct, setInventoryProduct] = useState('')
 
   const [storeId, setStoreId] = useState('')
-  const [toggleState, setToggleState] = useState(1);
+  const [toggleState, setToggleState] = useState(1)
 
-  const router = useRouter();
-  const { id } = router.query;
+  const router = useRouter()
+  const { id } = router.query
 
   // Modal de adição de categoria
-  
+
   function toggleAddCategoryModal() {
-    setCategoryAddModal(!addCategoryModal);
+    setCategoryAddModal(!addCategoryModal)
   }
 
   // Modal de adição de produtos
 
   function handleOpenAddModal() {
-    setAddModal(true);
+    setAddModal(true)
   }
-  
+
   function toggleAddModal() {
-    setAddModal(!addModal);
+    setAddModal(!addModal)
   }
-  
+
+  // Modal de edição de produtos
+
+  function handleOpenEditProduct() {
+    setEditProuct(true)
+  }
+
+  function toggleEditProduct() {
+    setEditProuct(!editProduct)
+  }
+
   // Modal de exclusao produtos
 
   function handleOpenExcludeModal() {
-    setIsCategory(false);
-    setExcludeModal(true);
+    setIsCategory(false)
+    setExcludeModal(true)
   }
 
   function toggleExcludeModal() {
-    setExcludeModal(!excludeModal);
+    setExcludeModal(!excludeModal)
   }
 
   function handleContinueExcludeModal() {
-    setConfirmExclude(!confirmExclude);
+    setConfirmExclude(!confirmExclude)
   }
 
   // Modal de edição de categoria
 
   function handleOpenEditCategoryModal() {
-    setEditCategoryModal(true);
+    setEditCategoryModal(true)
   }
 
   function toggleEditCategoryModal() {
-    setEditCategoryModal(!editCategoryModal);
+    setEditCategoryModal(!editCategoryModal)
   }
 
   // Modal de exclusao categoria
 
   function handleOpenCategoryExcludeModal() {
-    setIsCategory(true);
-    setExcludeModal(true);
+    setIsCategory(true)
+    setExcludeModal(true)
   }
 
-  const notify = useCallback((message:string) => {
+  const notify = useCallback((message: string) => {
     toast.error(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
+      progress: undefined
     })
   }, [])
 
@@ -153,59 +174,59 @@ const catalog = () => {
     let store = ''
 
     try {
-      store = await getStoreId(String(id || ''));
+      store = await getStoreId(String(id || ''))
       setStoreId(store)
-    } catch(e) {
-      notify("Erro ao buscar loja");
+    } catch (e) {
+      notify('Erro ao buscar loja')
     }
 
     try {
       const { data } = await getProducts(store)
 
-      const formatedData = data.map(it => ({
-        ...it, 
+      const formatedData = data.map((it) => ({
+        ...it,
         categories: it.categories.map((cat: CategoryType) => cat.name)
-      }));
-      
-      setProducts(formatedData);
+      }))
+
+      setProducts(formatedData)
     } catch (e) {
-      notify("Erro ao buscar produtos");
+      notify('Erro ao buscar produtos')
     }
 
     try {
-      const { data } = await getCategories(store);
+      const { data } = await getCategories(store)
 
-      setCategories(data);
+      setCategories(data)
     } catch (e) {
-      notify("Erro ao buscar categorias");
+      notify('Erro ao buscar categorias')
     }
   }
 
   const notifySuccess = useCallback((message: string) => {
     toast.success(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
+      progress: undefined
     })
   }, [])
 
-  async function handleCreateCategory() { 
+  async function handleCreateCategory() {
     try {
       await createCategory({ name: category, storeId })
 
-      notifySuccess("Categoria criada com sucesso!")
+      notifySuccess('Categoria criada com sucesso!')
 
       setCategory('')
       loadData()
       toggleAddCategoryModal()
     } catch (e) {
-      console.error(e);
+      console.error(e)
 
-      notify("Erro ao criar categoria")
+      notify('Erro ao criar categoria')
     }
   }
 
@@ -214,20 +235,20 @@ const catalog = () => {
       title: titleProduct,
       price: Number(priceProduct),
       description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0')  
+      inventory: Number(inventoryProduct || '0')
     }
 
     try {
-      await createProduct({ data: body });
+      await createProduct({ data: body })
 
-      toast.success("Produto criado com sucesso", {
-        position: "top-right",
+      toast.success('Produto criado com sucesso', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       })
 
       setAddModal(false)
@@ -235,29 +256,32 @@ const catalog = () => {
       setPriceProduct('')
       setDescriptionProduct('')
       setInventoryProduct('')
-    } catch(e) {
-      console.error(e);
+    } catch (e) {
+      console.error(e)
 
-      if(e.status == 401) {
-        return toast.error("Usuário deslogado, faça o seu login para prosseguir", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        })
+      if (e.status == 401) {
+        return toast.error(
+          'Usuário deslogado, faça o seu login para prosseguir',
+          {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          }
+        )
       }
 
-      toast.error("Erro ao criar produto", {
-        position: "top-right",
+      toast.error('Erro ao criar produto', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       })
     }
 
@@ -266,27 +290,27 @@ const catalog = () => {
 
   const handleDeleteProduct = async (id: string) => {
     try {
-      await deleteProduct(id) 
+      await deleteProduct(id)
 
-      notifySuccess("Produto deletado com sucesso!")
+      notifySuccess('Produto deletado com sucesso!')
     } catch (e) {
-      notify("Erro ao excluir produto, tente novamente!")
+      notify('Erro ao excluir produto, tente novamente!')
     }
   }
 
   const handleDeleteCategory = async (id: string) => {
     try {
-      await deleteCategory(id, storeId); 
+      await deleteCategory(id, storeId)
 
-      notifySuccess("Produto deletado com sucesso!")
+      notifySuccess('Produto deletado com sucesso!')
     } catch (e) {
-      notify("Erro ao excluir produto, tente novamente!")
+      notify('Erro ao excluir produto, tente novamente!')
     }
   }
 
   useEffect(() => {
-    if(id) loadData()
-  }, [id]);
+    if (id) loadData()
+  }, [id])
 
   return (
     <>
@@ -320,7 +344,7 @@ const catalog = () => {
               ) : (
                 <>
                   <h1>
-                    Realmente deseja excluir <strong>definitivamente</strong>{" "}
+                    Realmente deseja excluir <strong>definitivamente</strong>{' '}
                     essa categoria?
                   </h1>
 
@@ -331,10 +355,7 @@ const catalog = () => {
                     >
                       Confirmar
                     </button>
-                    <button
-                      onClick={toggleExcludeModal}
-                      className="cancel-btn"
-                    >
+                    <button onClick={toggleExcludeModal} className="cancel-btn">
                       Cancelar
                     </button>
                   </div>
@@ -363,7 +384,7 @@ const catalog = () => {
               ) : (
                 <>
                   <h1>
-                    Realmente deseja excluir <strong>definitivamente</strong>{" "}
+                    Realmente deseja excluir <strong>definitivamente</strong>{' '}
                     esse produto?
                   </h1>
 
@@ -374,10 +395,7 @@ const catalog = () => {
                     >
                       Confirmar
                     </button>
-                    <button
-                      onClick={toggleExcludeModal}
-                      className="cancel-btn"
-                    >
+                    <button onClick={toggleExcludeModal} className="cancel-btn">
                       Cancelar
                     </button>
                   </div>
@@ -387,7 +405,7 @@ const catalog = () => {
           </>
         )}
       </CustomModal>
-      
+
       <Container>
         {/* ExcludeModal */}
 
@@ -404,30 +422,27 @@ const catalog = () => {
               <IoIosClose
                 onClick={toggleAddCategoryModal}
                 size={36}
-                color={"black"}
+                color={'black'}
               />
             </div>
-            
+
             <div className="inputContainer">
-              <Input 
-                value={category} 
-                onChange={e => setCategory(e.target.value)}
-                label="Categoria" 
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                label="Categoria"
               />
             </div>
 
             <div className="buttonContainer">
-              <Button 
-                title="Voltar" 
-                border 
-                style={{ marginRight: 16 }} 
+              <Button
+                title="Voltar"
+                border
+                style={{ marginRight: 16 }}
                 onClick={toggleAddCategoryModal}
-                />
-
-              <Button 
-                title="Salvar" 
-                onClick={handleCreateCategory}
               />
+
+              <Button title="Salvar" onClick={handleCreateCategory} />
             </div>
           </AddCategoryModalContainer>
         </CustomModal>
@@ -444,7 +459,7 @@ const catalog = () => {
               <IoIosClose
                 onClick={toggleEditCategoryModal}
                 size={36}
-                color={"black"}
+                color={'black'}
               />
             </div>
             <div className="category-container">
@@ -475,7 +490,7 @@ const catalog = () => {
                   icon={<FiBox />}
                   placeholder="Nome do produto"
                   value={titleProduct}
-                  onChange={e => setTitleProduct(e.target.value)}
+                  onChange={(e) => setTitleProduct(e.target.value)}
                 />
 
                 <TextArea
@@ -484,7 +499,7 @@ const catalog = () => {
                   placeholder="Descrição"
                   icon={<GiHamburgerMenu />}
                   value={descriptionProduct}
-                  onChange={e => setDescriptionProduct(e.target.value)}
+                  onChange={(e) => setDescriptionProduct(e.target.value)}
                 />
 
                 <Input
@@ -492,7 +507,7 @@ const catalog = () => {
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                   value={priceProduct}
-                  onChange={e => setPriceProduct(e.target.value)}
+                  onChange={(e) => setPriceProduct(e.target.value)}
                 />
 
                 <div className="desconto">
@@ -519,7 +534,7 @@ const catalog = () => {
                   icon={<FaCoins />}
                   placeholder="0"
                   value={inventoryProduct}
-                  onChange={e => setInventoryProduct                                                                                  (e.target.value)}
+                  onChange={(e) => setInventoryProduct(e.target.value)}
                 />
 
                 <Input
@@ -527,7 +542,7 @@ const catalog = () => {
                   icon={<VscSearch />}
                   placeholder="Categoria"
                 />
-                <h3>{"Categorias adicionadas: " + 0}</h3>
+                <h3>{'Categorias adicionadas: ' + 0}</h3>
 
                 <h2>Foto do produto</h2>
 
@@ -556,16 +571,124 @@ const catalog = () => {
             </div>
 
             <div className="buttonContainer">
-              <Button 
-                title="Voltar" 
-                border 
-                style={{ marginRight: 16 }} 
+              <Button
+                title="Voltar"
+                border
+                style={{ marginRight: 16 }}
                 onClick={toggleAddModal}
               />
 
-              <Button 
-                title="Salvar" 
-                onClick={handleCreateProduct}
+              <Button title="Salvar" onClick={handleCreateProduct} />
+            </div>
+          </AddProductModalContainer>
+        </CustomModal>
+
+        {/* Modal de edição de produto */}
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleEditProduct}
+          modalVisible={editProduct}
+        >
+          <AddProductModalContainer>
+            <h1 className="titulo-cadastro">Editar Produto</h1>
+            <div className="input-infos">
+              <div className="left-area">
+                <Input
+                  label="Nome do produto"
+                  icon={<FiBox />}
+                  placeholder="Nome do produto"
+                  value={titleProduct}
+                  onChange={(e) => setTitleProduct(e.target.value)}
+                />
+
+                <TextArea
+                  label="Descrição do produto"
+                  maxLength={600}
+                  placeholder="Descrição"
+                  icon={<GiHamburgerMenu />}
+                  value={descriptionProduct}
+                  onChange={(e) => setDescriptionProduct(e.target.value)}
+                />
+
+                <Input
+                  label="Preço"
+                  icon={<FaMoneyBill />}
+                  placeholder="R$ 0"
+                  value={priceProduct}
+                  onChange={(e) => setPriceProduct(e.target.value)}
+                />
+
+                <div className="desconto">
+                  <Input
+                    label="Desconto"
+                    icon={<FaPercentage />}
+                    placeholder="0.0%"
+                  />
+                  <div className="arrows">
+                    <GoArrowRight size={20} />
+                    <GoArrowLeft size={20} className="left-arrow" />
+                  </div>
+                  <Input
+                    label="Preço com desconto"
+                    icon={<FaMoneyBill />}
+                    placeholder="R$ 0"
+                  />
+                </div>
+              </div>
+
+              <div className="right-area">
+                <Input
+                  label="Quantidade atual"
+                  icon={<FaCoins />}
+                  placeholder="0"
+                  value={inventoryProduct}
+                  onChange={(e) => setInventoryProduct(e.target.value)}
+                />
+
+                <Input
+                  label="Categoria"
+                  icon={<VscSearch />}
+                  placeholder="Categoria"
+                />
+                <h3>{'Categorias adicionadas: ' + 0}</h3>
+
+                <h2>Foto do produto</h2>
+
+                <div className="foto">
+                  <div className="title-foto">Foto</div>
+                  <button>
+                    Enviar foto
+                    <MdUpload size={20} />
+                  </button>
+                </div>
+
+                <div className="array-fotos">
+                  <MdOutlineArrowBackIosNew />
+                  <div className="card-image">
+                    <IoMdCamera size={25} color="#6C7079" />
+                  </div>
+                  <div className="card-image">
+                    <IoMdCamera size={25} color="#6C7079" />
+                  </div>
+                  <div className="card-image">
+                    <IoMdCamera size={25} color="#6C7079" />
+                  </div>
+                  <MdOutlineArrowForwardIos />
+                </div>
+              </div>
+            </div>
+
+            <div className="buttonContainer">
+              <Button
+                title="Voltar"
+                border
+                style={{ marginRight: 16 }}
+                onClick={toggleEditProduct}
+              />
+
+              <Button
+                title="Salvar"
+                //onClick={}
               />
             </div>
           </AddProductModalContainer>
@@ -575,7 +698,12 @@ const catalog = () => {
 
         <div className="list-container">
           <header className="header">
-            <button className="addBtn" onClick={ toggleState == 1 ? handleOpenAddModal: toggleAddCategoryModal }>
+            <button
+              className="addBtn"
+              onClick={
+                toggleState == 1 ? handleOpenAddModal : toggleAddCategoryModal
+              }
+            >
               <FiPlus size={20} color="var(--white)" />
               Adicionar
             </button>
@@ -599,8 +727,8 @@ const catalog = () => {
                   {products.map((product, index) => {
                     return (
                       <ProductListCard
-                        key={product?.id + "-" + index}
-                        icon=''
+                        key={product?.id + '-' + index}
+                        icon=""
                         name={product?.title}
                         code={product?.id}
                         category={product?.tags}
@@ -611,7 +739,7 @@ const catalog = () => {
                         isRed={true}
                         isGreen={true}
                       />
-                    );
+                    )
                   })}
                 </div>
               }
@@ -620,18 +748,21 @@ const catalog = () => {
                   {categories.map((cat, index) => {
                     return (
                       <CategoryListCard
-                        key={cat.id + "-" + index}
-                        date={products.filter(prd => prd.categories.includes(cat)).map((data) => ({ // ARRUMAR ESSA BUSCA
-                          name: data.title,
-                          amount: String(data.inventory),
-                        }))}
+                        key={cat.id + '-' + index}
+                        date={products
+                          .filter((prd) => prd.categories.includes(cat))
+                          .map((data) => ({
+                            // ARRUMAR ESSA BUSCA
+                            name: data.title,
+                            amount: String(data.inventory)
+                          }))}
                         category={cat.name}
                         excludeBtn={handleOpenCategoryExcludeModal}
                         editBtn={handleOpenEditCategoryModal}
                         isGreen={true}
                         isRed={true}
                       />
-                    );
+                    )
                   })}
                 </div>
               }
@@ -640,7 +771,7 @@ const catalog = () => {
         </div>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default catalog;
+export default catalog
