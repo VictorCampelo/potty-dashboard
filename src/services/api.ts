@@ -7,7 +7,7 @@ export function setupApiClient(ctx = undefined) {
   const cookies = parseCookies(ctx)
 
   const api = axios.create({
-    baseURL: 'http://bdce-2804-28c8-8215-4e01-1961-133-bcdd-a6a1.ngrok.io',
+    baseURL: 'http://localhost:3030',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${cookies['ultimo.auth.token']}`

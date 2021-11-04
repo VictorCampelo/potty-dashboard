@@ -81,13 +81,13 @@ const catalog = () => {
   const [confirmExclude, setConfirmExclude] = useState(false)
 
   const [editCategoryModal, setEditCategoryModal] = useState(false)
-  const [isCategory, setIsCategory] = useState(false)
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
 
-  const [editProduct, setEditProduct] = useState(true)
+  const [editProduct, setEditProduct] = useState(false)
   const [editProductId, setEditProductId] = useState('')
+  const [deleteProductId, setDeleteProductId] = useState('')
 
   const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
@@ -133,7 +133,6 @@ const catalog = () => {
   // Modal de exclusao produtos
 
   function handleOpenExcludeModal() {
-    setIsCategory(false)
     setExcludeModal(true)
   }
 
@@ -158,7 +157,6 @@ const catalog = () => {
   // Modal de exclusao categoria
 
   function handleOpenCategoryExcludeModal() {
-    setIsCategory(true)
     setExcludeModal(true)
   }
 
@@ -194,14 +192,16 @@ const catalog = () => {
 
       setProducts(formatedData)
     } catch (e) {
+      console.log(e);
       notify('Erro ao buscar produtos')
     }
-
+    
     try {
       const { data } = await getCategories(store)
-
+      
       setCategories(data)
     } catch (e) {
+      console.log(e);
       notify('Erro ao buscar categorias')
     }
   }
@@ -292,11 +292,13 @@ const catalog = () => {
     loadData()
   }
 
-  const handleDeleteProduct = async (id: string) => {
+  const handleDeleteProduct = async () => {
     try {
-      await deleteProduct(id)
+      await deleteProduct(deleteProductId)
 
       notifySuccess('Produto deletado com sucesso!')
+      setExcludeModal(false);
+      loadData();
     } catch (e) {
       notify('Erro ao excluir produto, tente novamente!')
     }
@@ -315,8 +317,18 @@ const catalog = () => {
 
       notifySuccess('Produto deletado com sucesso!')
     } catch (e) {
-      notify('Erro ao excluir produto, tente novamente!')
+      console.error(e);
+
+      notify('Erro ao editar produto, tente novamente!')
     }
+
+    setTitleProduct('')
+    setPriceProduct('')
+    setDescriptionProduct('')
+    setInventoryProduct('')
+    setEditProductId('')
+    loadData()
+    setEditProduct(false)
   }
 
   const handleDeleteCategory = async (id: string) => {
@@ -354,93 +366,101 @@ const catalog = () => {
         <title> Catálogo | Último </title>
       </Head>
 
+      {/* Remove category modal */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={() => {}}
+        modalVisible={false}
+      >
+        <ExcludeModalContainer>
+          {confirmExclude ? (
+            <>
+              <div className="icon">
+                <IoTrashBinOutline size={120} color="var(--var)" />
+              </div>
+              <h1 className="desc">Produto excluído com sucesso!</h1>
+              <div className="btn">
+                <button
+                  onClick={handleContinueExcludeModal}
+                  className="continue-btn"
+                >
+                  Continuar
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1>
+                Realmente deseja excluir <strong>definitivamente</strong>{' '}
+                esse produto?
+              </h1>
+
+              <div className="btn-container">
+                <button
+                  onClick={() => setConfirmExclude(true)}
+                  className="exclude-btn"
+                >
+                  Confirmar
+                </button>
+                <button onClick={() => {
+                  handleDeleteProduct()
+                }} className="cancel-btn">
+                  Cancelar
+                </button>
+              </div>
+            </>
+          )}
+        </ExcludeModalContainer>
+      </CustomModal>
+
+      {/* Remove product modal */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleExcludeModal}
         modalVisible={excludeModal}
       >
-        {isCategory ? (
-          <>
-            <ExcludeModalContainer>
-              {confirmExclude ? (
-                <>
-                  <div className="icon">
-                    <IoTrashBinOutline size={120} color="#FF4D4B" />
-                  </div>
-                  <h1 className="desc">Categoria excluído com sucesso!</h1>
-                  <div className="btn">
-                    <button
-                      onClick={handleContinueExcludeModal}
-                      className="continue-btn"
-                    >
-                      Continuar
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h1>
-                    Realmente deseja excluir <strong>definitivamente</strong>{' '}
-                    essa categoria?
-                  </h1>
+        <ExcludeModalContainer>
+          {confirmExclude ? (
+            <>
+              <div className="icon">
+                <IoTrashBinOutline size={120} color="var(--red)" />
+              </div>
+              <h1 className="desc">Categoria excluído com sucesso!</h1>
+              <div className="btn">
+                <button
+                  onClick={handleContinueExcludeModal}
+                  className="continue-btn"
+                >
+                  Continuar
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1>
+                Realmente deseja excluir <strong>definitivamente</strong>{' '}
+                essa categoria?
+              </h1>
 
-                  <div className="btn-container">
-                    <button
-                      onClick={() => setConfirmExclude(true)}
-                      className="exclude-btn"
-                    >
-                      Confirmar
-                    </button>
-                    <button onClick={toggleExcludeModal} className="cancel-btn">
-                      Cancelar
-                    </button>
-                  </div>
-                </>
-              )}
-            </ExcludeModalContainer>
-          </>
-        ) : (
-          <>
-            <ExcludeModalContainer>
-              {confirmExclude ? (
-                <>
-                  <div className="icon">
-                    <IoTrashBinOutline size={120} color="#FF4D4B" />
-                  </div>
-                  <h1 className="desc">Produto excluído com sucesso!</h1>
-                  <div className="btn">
-                    <button
-                      onClick={handleContinueExcludeModal}
-                      className="continue-btn"
-                    >
-                      Continuar
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h1>
-                    Realmente deseja excluir <strong>definitivamente</strong>{' '}
-                    esse produto?
-                  </h1>
+              <div className="btn-container">
+                <button
+                  onClick={handleDeleteProduct}
+                  className="exclude-btn"
+                >
+                  Confirmar
+                </button>
+                <button onClick={() => {
+                  toggleExcludeModal()
+                  setDeleteProductId('')
+                }} className="cancel-btn">
+                  Cancelar
+                </button>
+              </div>
+            </>
+          )}
+        </ExcludeModalContainer>
+      </CustomModal>  
 
-                  <div className="btn-container">
-                    <button
-                      onClick={() => setConfirmExclude(true)}
-                      className="exclude-btn"
-                    >
-                      Confirmar
-                    </button>
-                    <button onClick={toggleExcludeModal} className="cancel-btn">
-                      Cancelar
-                    </button>
-                  </div>
-                </>
-              )}
-            </ExcludeModalContainer>
-          </>
-        )}
-      </CustomModal>
       {/* Add modal category */}
       <CustomModal
         buttons={false}
@@ -766,7 +786,10 @@ const catalog = () => {
                         category={product?.tags}
                         amount={product?.inventory}
                         price={product?.price}
-                        excludeBtn={handleOpenExcludeModal}
+                        excludeBtn={() => {
+                          handleOpenExcludeModal()
+                          setDeleteProductId(product.id)
+                        }}
                         editBtn={() => {
                           setEditProductId(product.id)
                           setEditProduct(true)
@@ -792,7 +815,7 @@ const catalog = () => {
                             amount: String(data.inventory)
                           }))}
                         category={cat.name}
-                        excludeBtn={handleOpenCategoryExcludeModal}
+                        excludeBtn={() => {}}
                         editBtn={handleOpenEditCategoryModal}
                         isGreen={true}
                         isRed={true}
