@@ -1,68 +1,95 @@
-import { forwardRef, ForwardRefRenderFunction, useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { forwardRef, ForwardRefRenderFunction, useState } from 'react'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import { Container } from './styles'
+import { ReactElement } from 'react'
+import masks from '../../../utils/masks'
 
-import { Container } from './styles';
-import { ReactElement } from 'react';
+type MasksTypes =
+  | 'cep'
+  | 'cnpj'
+  | 'cpf'
+  | 'phone'
+  | 'date'
+  | 'time'
+  | 'card'
+  | 'monetary'
+  | 'number'
+  | 'monetaryDollar'
+  | 'monetaryEuro'
+  | 'double'
+  | 'porcentagem'
+  | 'def'
 
-interface Input extends React.InputHTMLAttributes<HTMLInputElement>{
-  label: string;
-  password?: boolean;
-  forgetPassword?: boolean;
-  error?: boolean;
-  textError?: string;
-  icon?: ReactElement;
-  flex?: number;
+interface Input extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string
+  password?: boolean
+  forgetPassword?: boolean
+  error?: boolean
+  textError?: string
+  icon?: ReactElement
+  flex?: number
+  mask?: MasksTypes
 }
 
-const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = ({ 
-  label, 
-  password, 
-  icon, 
-  error,
-  textError = '',
-  flex = 1,
-  ...rest 
-}: Input, ref) => {
-  const [isInputVisible, setIsInputVisible] = useState(true);
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
+  {
+    label,
+    password,
+    icon,
+    error,
+    textError = '',
+    flex = 1,
+    mask = 'def',
+    ...rest
+  }: Input,
+  ref
+) => {
+  const [isInputVisible, setIsInputVisible] = useState(true)
+
+  const handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+    event.currentTarget.value = masks[mask!](event.currentTarget.value)
+  }
 
   return (
-    <Container flex={flex} error={error} >
-      <section className="labelContent">
-        <label> 
-          {label} 
-        </label>
+    <Container flex={flex} error={error}>
+      {label ? (
+        <section className="labelContent">
+          <label>{label}</label>
 
-        {error && textError && <span>{textError}</span> }
-      </section>
-      
+          {error && textError && <span>{textError}</span>}
+        </section>
+      ) : null}
+
       <div className="inputContainter">
+        {!!icon && icon}
 
-        { !!icon && icon }
-
-        <input 
-          type={ password && isInputVisible ? "password" : "text" }
+        <input
+          type={password && isInputVisible ? 'password' : 'text'}
           ref={ref}
-          {...rest} 
+          onKeyUp={(event) => handleOnChange(event)}
+          {...(!!rest.defaultValue && {
+            defaultValue: masks[mask!](rest.defaultValue)
+          })}
+          {...rest}
         />
 
-        { password && (
-          isInputVisible ? (
-          <AiOutlineEyeInvisible 
-            onClick={() => setIsInputVisible(false)} 
-            size={24} 
-            color="var(--black-800)" 
-          />
+        {password &&
+          (isInputVisible ? (
+            <AiOutlineEyeInvisible
+              onClick={() => setIsInputVisible(false)}
+              size={24}
+              color="var(--black-800)"
+            />
           ) : (
-          <AiOutlineEye 
-            onClick={() => setIsInputVisible(true)} 
-            size={24} 
-            color="var(--black-800)" 
-          />
-          )  
-        )}
+            <AiOutlineEye
+              onClick={() => setIsInputVisible(true)}
+              size={24}
+              color="var(--black-800)"
+            />
+          ))}
       </div>
     </Container>
   )
 }
 
-export const Input = forwardRef(InputBase);
+export const Input = forwardRef(InputBase)

@@ -1,0 +1,4 @@
+.husky
+tailwind.config.js
+**/*.js
+./src/utils/masks

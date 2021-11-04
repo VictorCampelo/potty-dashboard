@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 interface ContainerProps {
-  error: boolean;
-  flex: number;
+  error: boolean
+  flex: number
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -10,7 +10,7 @@ export const Container = styled.div<ContainerProps>`
   max-width: 500px;
   display: flex;
   flex-direction: column;
-  ${(props) => 'flex: '+ props.flex + ';'}
+  ${(props) => 'flex: ' + props.flex + ';'}
 
   .labelContent {
     display: flex;
@@ -21,7 +21,7 @@ export const Container = styled.div<ContainerProps>`
 
     label {
       font-size: 1rem;
-      ${(props) => props.error && "color: var(--red);"}
+      ${(props) => props.error && 'color: var(--red);'}
     }
 
     span {
@@ -53,22 +53,23 @@ export const Container = styled.div<ContainerProps>`
       border-radius: 11px;
       font-size: 0.875rem;
       background: inherit;
-      ${(props) => props.error && "color: var(--red);"}
+      padding-left: 5px;
+      ${(props) => props.error && 'color: var(--red);'}
     }
 
-    input:focus{
+    input:focus {
       outline: none;
     }
 
     svg {
       margin-right: 1rem;
-      ${(props) => props.error && "color: var(--red) !important;"}
+      ${(props) => props.error && 'color: var(--red) !important;'}
 
       &:last-child:hover {
         cursor: pointer;
       }
     }
-    
-    ${(props) => props.error && "border: 1px solid var(--red);"}
+
+    ${(props) => props.error && 'border: 1px solid var(--red);'}
   }
 `
