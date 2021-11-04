@@ -12,7 +12,9 @@ import {
   createCategory,
   createProduct,
   deleteCategory,
-  deleteProduct
+  deleteProduct,
+  updateCategory,
+  updateProduct
 } from '../../services/products.services'
 
 import { GiHamburgerMenu } from 'react-icons/gi'
@@ -84,10 +86,12 @@ const catalog = () => {
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
 
-  const [editProduct, setEditProuct] = useState(false)
+  const [editProduct, setEditProduct] = useState(true)
+  const [editProductId, setEditProductId] = useState('')
 
   const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
+
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
   const [priceProduct, setPriceProduct] = useState('')
@@ -119,11 +123,11 @@ const catalog = () => {
   // Modal de edição de produtos
 
   function handleOpenEditProduct() {
-    setEditProuct(true)
+    setEditProduct(true)
   }
 
   function toggleEditProduct() {
-    setEditProuct(!editProduct)
+    setEditProduct(!editProduct)
   }
 
   // Modal de exclusao produtos
@@ -216,7 +220,7 @@ const catalog = () => {
 
   async function handleCreateCategory() {
     try {
-      await createCategory({ name: category, storeId })
+      await createCategory(category, storeId)
 
       notifySuccess('Categoria criada com sucesso!')
 
@@ -298,9 +302,41 @@ const catalog = () => {
     }
   }
 
+  const handleUpdateProduct = async () => {
+    const body = {
+      title: titleProduct,
+      price: Number(priceProduct),
+      description: descriptionProduct,
+      inventory: Number(inventoryProduct || '0')
+    }
+
+    try {
+      await updateProduct(editProductId, body)
+
+      notifySuccess('Produto deletado com sucesso!')
+    } catch (e) {
+      notify('Erro ao excluir produto, tente novamente!')
+    }
+  }
+
   const handleDeleteCategory = async (id: string) => {
     try {
       await deleteCategory(id, storeId)
+
+      notifySuccess('Produto deletado com sucesso!')
+    } catch (e) {
+      notify('Erro ao excluir produto, tente novamente!')
+    }
+  }
+
+  const handleUpdateCategory = async (id: string) => {
+    const body = {
+      name: category,
+      storeId
+    }
+
+    try {
+      await updateCategory(id, storeId, body)
 
       notifySuccess('Produto deletado com sucesso!')
     } catch (e) {
@@ -405,294 +441,290 @@ const catalog = () => {
           </>
         )}
       </CustomModal>
+      {/* Add modal category */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleAddCategoryModal}
+        modalVisible={addCategoryModal}
+      >
+        <AddCategoryModalContainer>
+          <div className="exit-container">
+            <h1>Adicionar Categoria</h1>
+
+            <IoIosClose
+              onClick={toggleAddCategoryModal}
+              size={36}
+              color={'black'}
+            />
+          </div>
+
+          <div className="inputContainer">
+            <Input
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              label="Categoria"
+            />
+          </div>
+
+          <div className="buttonContainer">
+            <Button
+              title="Voltar"
+              border
+              style={{ marginRight: 16 }}
+              onClick={toggleAddCategoryModal}
+            />
+
+            <Button title="Salvar" onClick={handleCreateCategory} />
+          </div>
+        </AddCategoryModalContainer>
+      </CustomModal>
+
+      {/* EditCategoryModal */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleEditCategoryModal}
+        modalVisible={editCategoryModal}
+      >
+        <EditCategoryModalContainer>
+          <div className="exit-container">
+            <h1>Editar Categoria</h1>
+            <IoIosClose
+              onClick={toggleEditCategoryModal}
+              size={36}
+              color={'black'}
+            />
+          </div>
+          <div className="category-container">
+            <Input
+              label="Nome da categoria"
+              placeholder="Categoria"
+              icon={<FiSearch size={20} color="var(--black-800)" />}
+            ></Input>
+          </div>
+          <div className="category-btn-container">
+            <button>Confirmar</button>
+          </div>
+        </EditCategoryModalContainer>
+      </CustomModal>
+
+      {/* Modal de add produto */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleAddModal}
+        modalVisible={addModal}
+      >
+        <AddProductModalContainer>
+          <h1 className="titulo-cadastro">Cadastrar Produto</h1>
+          <div className="input-infos">
+            <div className="left-area">
+              <Input
+                label="Nome do produto"
+                icon={<FiBox />}
+                placeholder="Nome do produto"
+                value={titleProduct}
+                onChange={(e) => setTitleProduct(e.target.value)}
+              />
+
+              <TextArea
+                label="Descrição do produto"
+                maxLength={600}
+                placeholder="Descrição"
+                icon={<GiHamburgerMenu />}
+                value={descriptionProduct}
+                onChange={(e) => setDescriptionProduct(e.target.value)}
+              />
+
+              <Input
+                label="Preço"
+                icon={<FaMoneyBill />}
+                placeholder="R$ 0"
+                value={priceProduct}
+                onChange={(e) => setPriceProduct(e.target.value)}
+              />
+
+              <div className="desconto">
+                <Input
+                  label="Desconto"
+                  icon={<FaPercentage />}
+                  placeholder="0.0%"
+                />
+                <div className="arrows">
+                  <GoArrowRight size={20} />
+                  <GoArrowLeft size={20} className="left-arrow" />
+                </div>
+                <Input
+                  label="Preço com desconto"
+                  icon={<FaMoneyBill />}
+                  placeholder="R$ 0"
+                />
+              </div>
+            </div>
+
+            <div className="right-area">
+              <Input
+                label="Quantidade atual"
+                icon={<FaCoins />}
+                placeholder="0"
+                value={inventoryProduct}
+                onChange={(e) => setInventoryProduct(e.target.value)}
+              />
+
+              <Input
+                label="Categoria"
+                icon={<VscSearch />}
+                placeholder="Categoria"
+              />
+              <h3>{'Categorias adicionadas: ' + 0}</h3>
+
+              <h2>Foto do produto</h2>
+
+              <div className="foto">
+                <div className="title-foto">Foto</div>
+                <button>
+                  Enviar foto
+                  <MdUpload size={20} />
+                </button>
+              </div>
+
+              <div className="array-fotos">
+                <MdOutlineArrowBackIosNew />
+                <div className="card-image">
+                  <IoMdCamera size={25} color="#6C7079" />
+                </div>
+                <div className="card-image">
+                  <IoMdCamera size={25} color="#6C7079" />
+                </div>
+                <div className="card-image">
+                  <IoMdCamera size={25} color="#6C7079" />
+                </div>
+                <MdOutlineArrowForwardIos />
+              </div>
+            </div>
+          </div>
+
+          <div className="buttonContainer">
+            <Button
+              title="Voltar"
+              border
+              style={{ marginRight: 16 }}
+              onClick={toggleAddModal}
+            />
+
+            <Button title="Salvar" onClick={handleCreateProduct} />
+          </div>
+        </AddProductModalContainer>
+      </CustomModal>
+
+      {/* Modal de edição de produto */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleEditProduct}
+        modalVisible={editProduct}
+      >
+        <AddProductModalContainer>
+          <h1 className="titulo-cadastro">Editar Produto</h1>
+          <div className="input-infos">
+            <div className="left-area">
+              <Input
+                label="Nome do produto"
+                icon={<FiBox />}
+                placeholder="Nome do produto"
+                value={titleProduct}
+                onChange={(e) => setTitleProduct(e.target.value)}
+              />
+
+              <TextArea
+                label="Descrição do produto"
+                maxLength={600}
+                placeholder="Descrição"
+                icon={<GiHamburgerMenu />}
+                value={descriptionProduct}
+                onChange={(e) => setDescriptionProduct(e.target.value)}
+              />
+
+              <Input
+                label="Preço"
+                icon={<FaMoneyBill />}
+                placeholder="R$ 0"
+                value={priceProduct}
+                onChange={(e) => setPriceProduct(e.target.value)}
+              />
+
+              <div className="desconto">
+                <Input
+                  label="Desconto"
+                  icon={<FaPercentage />}
+                  placeholder="0.0%"
+                />
+                <div className="arrows">
+                  <GoArrowRight size={20} />
+                  <GoArrowLeft size={20} className="left-arrow" />
+                </div>
+                <Input
+                  label="Preço com desconto"
+                  icon={<FaMoneyBill />}
+                  placeholder="R$ 0"
+                />
+              </div>
+            </div>
+
+            <div className="right-area">
+              <Input
+                label="Quantidade atual"
+                icon={<FaCoins />}
+                placeholder="0"
+                value={inventoryProduct}
+                onChange={(e) => setInventoryProduct(e.target.value)}
+              />
+
+              <Input
+                label="Categoria"
+                icon={<VscSearch />}
+                placeholder="Categoria"
+              />
+              <h3>{'Categorias adicionadas: ' + 0}</h3>
+
+              <h2>Foto do produto</h2>
+
+              <div className="foto">
+                <div className="title-foto">Foto</div>
+                <button>
+                  Enviar foto
+                  <MdUpload size={20} />
+                </button>
+              </div>
+
+              <div className="array-fotos">
+                <MdOutlineArrowBackIosNew />
+                <div className="card-image">
+                  <IoMdCamera size={25} color="#6C7079" />
+                </div>
+                <div className="card-image">
+                  <IoMdCamera size={25} color="#6C7079" />
+                </div>
+                <div className="card-image">
+                  <IoMdCamera size={25} color="#6C7079" />
+                </div>
+                <MdOutlineArrowForwardIos />
+              </div>
+            </div>
+          </div>
+
+          <div className="buttonContainer">
+            <Button
+              title="Voltar"
+              border
+              style={{ marginRight: 16 }}
+              onClick={toggleEditProduct}
+            />
+
+            <Button title="Salvar" onClick={() => handleUpdateProduct()} />
+          </div>
+        </AddProductModalContainer>
+      </CustomModal>
 
       <Container>
         {/* ExcludeModal */}
-
-        {/* Add modal category */}
-        <CustomModal
-          buttons={false}
-          setModalOpen={toggleAddCategoryModal}
-          modalVisible={addCategoryModal}
-        >
-          <AddCategoryModalContainer>
-            <div className="exit-container">
-              <h1>Adicionar Categoria</h1>
-
-              <IoIosClose
-                onClick={toggleAddCategoryModal}
-                size={36}
-                color={'black'}
-              />
-            </div>
-
-            <div className="inputContainer">
-              <Input
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                label="Categoria"
-              />
-            </div>
-
-            <div className="buttonContainer">
-              <Button
-                title="Voltar"
-                border
-                style={{ marginRight: 16 }}
-                onClick={toggleAddCategoryModal}
-              />
-
-              <Button title="Salvar" onClick={handleCreateCategory} />
-            </div>
-          </AddCategoryModalContainer>
-        </CustomModal>
-
-        {/* EditCategoryModal */}
-        <CustomModal
-          buttons={false}
-          setModalOpen={toggleEditCategoryModal}
-          modalVisible={editCategoryModal}
-        >
-          <EditCategoryModalContainer>
-            <div className="exit-container">
-              <h1>Editar Categoria</h1>
-              <IoIosClose
-                onClick={toggleEditCategoryModal}
-                size={36}
-                color={'black'}
-              />
-            </div>
-            <div className="category-container">
-              <Input
-                label="Nome da categoria"
-                placeholder="Categoria"
-                icon={<FiSearch size={20} color="var(--black-800)" />}
-              ></Input>
-            </div>
-            <div className="category-btn-container">
-              <button>Confirmar</button>
-            </div>
-          </EditCategoryModalContainer>
-        </CustomModal>
-
-        {/* Modal de add produto */}
-        <CustomModal
-          buttons={false}
-          setModalOpen={toggleAddModal}
-          modalVisible={addModal}
-        >
-          <AddProductModalContainer>
-            <h1 className="titulo-cadastro">Cadastrar Produto</h1>
-            <div className="input-infos">
-              <div className="left-area">
-                <Input
-                  label="Nome do produto"
-                  icon={<FiBox />}
-                  placeholder="Nome do produto"
-                  value={titleProduct}
-                  onChange={(e) => setTitleProduct(e.target.value)}
-                />
-
-                <TextArea
-                  label="Descrição do produto"
-                  maxLength={600}
-                  placeholder="Descrição"
-                  icon={<GiHamburgerMenu />}
-                  value={descriptionProduct}
-                  onChange={(e) => setDescriptionProduct(e.target.value)}
-                />
-
-                <Input
-                  label="Preço"
-                  icon={<FaMoneyBill />}
-                  placeholder="R$ 0"
-                  value={priceProduct}
-                  onChange={(e) => setPriceProduct(e.target.value)}
-                />
-
-                <div className="desconto">
-                  <Input
-                    label="Desconto"
-                    icon={<FaPercentage />}
-                    placeholder="0.0%"
-                  />
-                  <div className="arrows">
-                    <GoArrowRight size={20} />
-                    <GoArrowLeft size={20} className="left-arrow" />
-                  </div>
-                  <Input
-                    label="Preço com desconto"
-                    icon={<FaMoneyBill />}
-                    placeholder="R$ 0"
-                  />
-                </div>
-              </div>
-
-              <div className="right-area">
-                <Input
-                  label="Quantidade atual"
-                  icon={<FaCoins />}
-                  placeholder="0"
-                  value={inventoryProduct}
-                  onChange={(e) => setInventoryProduct(e.target.value)}
-                />
-
-                <Input
-                  label="Categoria"
-                  icon={<VscSearch />}
-                  placeholder="Categoria"
-                />
-                <h3>{'Categorias adicionadas: ' + 0}</h3>
-
-                <h2>Foto do produto</h2>
-
-                <div className="foto">
-                  <div className="title-foto">Foto</div>
-                  <button>
-                    Enviar foto
-                    <MdUpload size={20} />
-                  </button>
-                </div>
-
-                <div className="array-fotos">
-                  <MdOutlineArrowBackIosNew />
-                  <div className="card-image">
-                    <IoMdCamera size={25} color="#6C7079" />
-                  </div>
-                  <div className="card-image">
-                    <IoMdCamera size={25} color="#6C7079" />
-                  </div>
-                  <div className="card-image">
-                    <IoMdCamera size={25} color="#6C7079" />
-                  </div>
-                  <MdOutlineArrowForwardIos />
-                </div>
-              </div>
-            </div>
-
-            <div className="buttonContainer">
-              <Button
-                title="Voltar"
-                border
-                style={{ marginRight: 16 }}
-                onClick={toggleAddModal}
-              />
-
-              <Button title="Salvar" onClick={handleCreateProduct} />
-            </div>
-          </AddProductModalContainer>
-        </CustomModal>
-
-        {/* Modal de edição de produto */}
-        <CustomModal
-          buttons={false}
-          setModalOpen={toggleEditProduct}
-          modalVisible={editProduct}
-        >
-          <AddProductModalContainer>
-            <h1 className="titulo-cadastro">Editar Produto</h1>
-            <div className="input-infos">
-              <div className="left-area">
-                <Input
-                  label="Nome do produto"
-                  icon={<FiBox />}
-                  placeholder="Nome do produto"
-                  value={titleProduct}
-                  onChange={(e) => setTitleProduct(e.target.value)}
-                />
-
-                <TextArea
-                  label="Descrição do produto"
-                  maxLength={600}
-                  placeholder="Descrição"
-                  icon={<GiHamburgerMenu />}
-                  value={descriptionProduct}
-                  onChange={(e) => setDescriptionProduct(e.target.value)}
-                />
-
-                <Input
-                  label="Preço"
-                  icon={<FaMoneyBill />}
-                  placeholder="R$ 0"
-                  value={priceProduct}
-                  onChange={(e) => setPriceProduct(e.target.value)}
-                />
-
-                <div className="desconto">
-                  <Input
-                    label="Desconto"
-                    icon={<FaPercentage />}
-                    placeholder="0.0%"
-                  />
-                  <div className="arrows">
-                    <GoArrowRight size={20} />
-                    <GoArrowLeft size={20} className="left-arrow" />
-                  </div>
-                  <Input
-                    label="Preço com desconto"
-                    icon={<FaMoneyBill />}
-                    placeholder="R$ 0"
-                  />
-                </div>
-              </div>
-
-              <div className="right-area">
-                <Input
-                  label="Quantidade atual"
-                  icon={<FaCoins />}
-                  placeholder="0"
-                  value={inventoryProduct}
-                  onChange={(e) => setInventoryProduct(e.target.value)}
-                />
-
-                <Input
-                  label="Categoria"
-                  icon={<VscSearch />}
-                  placeholder="Categoria"
-                />
-                <h3>{'Categorias adicionadas: ' + 0}</h3>
-
-                <h2>Foto do produto</h2>
-
-                <div className="foto">
-                  <div className="title-foto">Foto</div>
-                  <button>
-                    Enviar foto
-                    <MdUpload size={20} />
-                  </button>
-                </div>
-
-                <div className="array-fotos">
-                  <MdOutlineArrowBackIosNew />
-                  <div className="card-image">
-                    <IoMdCamera size={25} color="#6C7079" />
-                  </div>
-                  <div className="card-image">
-                    <IoMdCamera size={25} color="#6C7079" />
-                  </div>
-                  <div className="card-image">
-                    <IoMdCamera size={25} color="#6C7079" />
-                  </div>
-                  <MdOutlineArrowForwardIos />
-                </div>
-              </div>
-            </div>
-
-            <div className="buttonContainer">
-              <Button
-                title="Voltar"
-                border
-                style={{ marginRight: 16 }}
-                onClick={toggleEditProduct}
-              />
-
-              <Button
-                title="Salvar"
-                //onClick={}
-              />
-            </div>
-          </AddProductModalContainer>
-        </CustomModal>
 
         <DrawerLateral activated={true} greenOption={4} />
 
@@ -735,7 +767,10 @@ const catalog = () => {
                         amount={product?.inventory}
                         price={product?.price}
                         excludeBtn={handleOpenExcludeModal}
-                        editBtn={() => {}}
+                        editBtn={() => {
+                          setEditProductId(product.id)
+                          setEditProduct(true)
+                        }}
                         isRed={true}
                         isGreen={true}
                       />
