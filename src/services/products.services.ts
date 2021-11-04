@@ -22,11 +22,23 @@ export const createProduct = async ({ data }: CreateProductType) => {
   return res;
 }
 
+export const deleteProduct = async (id: string) => {
+  const res = await api.delete(`/products/${id}`)
+
+  return res;
+}
+
 export const createCategory = async ({ name, storeId }: CreateCategory) => {
   const res = await api.post(`/categories/product`, {
     name,
     storeId
   })
+  
+  return res;
+}
+
+export const deleteCategory = async (id: string, lojaId: string) => {
+  const res = await api.delete(`categories/products/${lojaId}/category/${id}`)
 
   return res;
 }

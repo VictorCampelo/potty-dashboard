@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { getCategories, getProducts, getStoreId } from '../../services/bussiness.services';
-import { createCategory, createProduct } from "../../services/products.services";
+import { createCategory, createProduct, deleteCategory, deleteProduct } from "../../services/products.services";
 
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FiPlus, FiSearch } from "react-icons/fi";
@@ -89,54 +89,6 @@ const catalog = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const notify = useCallback((message:string) => {
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    })
-  }, [])
-
-  const loadData = async () => {
-    let store = ''
-
-    try {
-      store = await getStoreId(String(id || ''));
-      setStoreId(store)
-    } catch(e) {
-      notify("Erro ao buscar loja");
-    }
-
-    try {
-      const { data } = await getProducts(store)
-
-      const formatedData = data.map(it => ({
-        ...it, 
-        categories: it.categories.map((cat: CategoryType) => cat.name)
-      }));
-      
-      setProducts(formatedData);
-    } catch (e) {
-      notify("Erro ao buscar produtos");
-    }
-
-    try {
-      const { data } = await getCategories(store);
-
-      setCategories(data);
-    } catch (e) {
-      notify("Erro ao buscar categorias");
-    }
-  }
-
-  useEffect(() => {
-    if(id) loadData()
-  }, [id]);
-
   // Modal de adição de categoria
   
   function toggleAddCategoryModal() {
@@ -183,6 +135,50 @@ const catalog = () => {
   function handleOpenCategoryExcludeModal() {
     setIsCategory(true);
     setExcludeModal(true);
+  }
+
+  const notify = useCallback((message:string) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+  }, [])
+
+  const loadData = async () => {
+    let store = ''
+
+    try {
+      store = await getStoreId(String(id || ''));
+      setStoreId(store)
+    } catch(e) {
+      notify("Erro ao buscar loja");
+    }
+
+    try {
+      const { data } = await getProducts(store)
+
+      const formatedData = data.map(it => ({
+        ...it, 
+        categories: it.categories.map((cat: CategoryType) => cat.name)
+      }));
+      
+      setProducts(formatedData);
+    } catch (e) {
+      notify("Erro ao buscar produtos");
+    }
+
+    try {
+      const { data } = await getCategories(store);
+
+      setCategories(data);
+    } catch (e) {
+      notify("Erro ao buscar categorias");
+    }
   }
 
   const notifySuccess = useCallback((message: string) => {
@@ -268,107 +264,132 @@ const catalog = () => {
     loadData()
   }
 
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      await deleteProduct(id) 
+
+      notifySuccess("Produto deletado com sucesso!")
+    } catch (e) {
+      notify("Erro ao excluir produto, tente novamente!")
+    }
+  }
+
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      await deleteCategory(id, storeId); 
+
+      notifySuccess("Produto deletado com sucesso!")
+    } catch (e) {
+      notify("Erro ao excluir produto, tente novamente!")
+    }
+  }
+
+  useEffect(() => {
+    if(id) loadData()
+  }, [id]);
+
   return (
     <>
       <Head>
         <title> Catálogo | Último </title>
       </Head>
 
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleExcludeModal}
+        modalVisible={excludeModal}
+      >
+        {isCategory ? (
+          <>
+            <ExcludeModalContainer>
+              {confirmExclude ? (
+                <>
+                  <div className="icon">
+                    <IoTrashBinOutline size={120} color="#FF4D4B" />
+                  </div>
+                  <h1 className="desc">Categoria excluído com sucesso!</h1>
+                  <div className="btn">
+                    <button
+                      onClick={handleContinueExcludeModal}
+                      className="continue-btn"
+                    >
+                      Continuar
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h1>
+                    Realmente deseja excluir <strong>definitivamente</strong>{" "}
+                    essa categoria?
+                  </h1>
+
+                  <div className="btn-container">
+                    <button
+                      onClick={() => setConfirmExclude(true)}
+                      className="exclude-btn"
+                    >
+                      Confirmar
+                    </button>
+                    <button
+                      onClick={toggleExcludeModal}
+                      className="cancel-btn"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </>
+              )}
+            </ExcludeModalContainer>
+          </>
+        ) : (
+          <>
+            <ExcludeModalContainer>
+              {confirmExclude ? (
+                <>
+                  <div className="icon">
+                    <IoTrashBinOutline size={120} color="#FF4D4B" />
+                  </div>
+                  <h1 className="desc">Produto excluído com sucesso!</h1>
+                  <div className="btn">
+                    <button
+                      onClick={handleContinueExcludeModal}
+                      className="continue-btn"
+                    >
+                      Continuar
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h1>
+                    Realmente deseja excluir <strong>definitivamente</strong>{" "}
+                    esse produto?
+                  </h1>
+
+                  <div className="btn-container">
+                    <button
+                      onClick={() => setConfirmExclude(true)}
+                      className="exclude-btn"
+                    >
+                      Confirmar
+                    </button>
+                    <button
+                      onClick={toggleExcludeModal}
+                      className="cancel-btn"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </>
+              )}
+            </ExcludeModalContainer>
+          </>
+        )}
+      </CustomModal>
+      
       <Container>
         {/* ExcludeModal */}
-        <CustomModal
-          buttons={false}
-          setModalOpen={toggleExcludeModal}
-          modalVisible={excludeModal}
-        >
-          {isCategory ? (
-            <>
-              <ExcludeModalContainer>
-                {confirmExclude ? (
-                  <>
-                    <div className="icon">
-                      <IoTrashBinOutline size={120} color="#FF4D4B" />
-                    </div>
-                    <h1 className="desc">Categoria excluído com sucesso!</h1>
-                    <div className="btn">
-                      <button
-                        onClick={handleContinueExcludeModal}
-                        className="continue-btn"
-                      >
-                        Continuar
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h1>
-                      Realmente deseja excluir <strong>definitivamente</strong>{" "}
-                      essa categoria?
-                    </h1>
-
-                    <div className="btn-container">
-                      <button
-                        onClick={() => setConfirmExclude(true)}
-                        className="exclude-btn"
-                      >
-                        Confirmar
-                      </button>
-                      <button
-                        onClick={toggleExcludeModal}
-                        className="cancel-btn"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
-                  </>
-                )}
-              </ExcludeModalContainer>
-            </>
-          ) : (
-            <>
-              <ExcludeModalContainer>
-                {confirmExclude ? (
-                  <>
-                    <div className="icon">
-                      <IoTrashBinOutline size={120} color="#FF4D4B" />
-                    </div>
-                    <h1 className="desc">Produto excluído com sucesso!</h1>
-                    <div className="btn">
-                      <button
-                        onClick={handleContinueExcludeModal}
-                        className="continue-btn"
-                      >
-                        Continuar
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h1>
-                      Realmente deseja excluir <strong>definitivamente</strong>{" "}
-                      esse produto?
-                    </h1>
-
-                    <div className="btn-container">
-                      <button
-                        onClick={() => setConfirmExclude(true)}
-                        className="exclude-btn"
-                      >
-                        Confirmar
-                      </button>
-                      <button
-                        onClick={toggleExcludeModal}
-                        className="cancel-btn"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
-                  </>
-                )}
-              </ExcludeModalContainer>
-            </>
-          )}
-        </CustomModal>
 
         {/* Add modal category */}
         <CustomModal
