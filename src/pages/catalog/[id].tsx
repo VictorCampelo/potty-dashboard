@@ -81,6 +81,7 @@ const catalog = () => {
   const [confirmExclude, setConfirmExclude] = useState(false)
 
   const [editCategoryModal, setEditCategoryModal] = useState(false)
+  const [excludeCategoryModal, setExcludeCategoryModal] = useState(false)
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
@@ -88,6 +89,8 @@ const catalog = () => {
   const [editProduct, setEditProduct] = useState(false)
   const [editProductId, setEditProductId] = useState('')
   const [deleteProductId, setDeleteProductId] = useState('')
+  const [editCategoryId, setEditCategoryId] = useState('')
+  const [deleteCategoryId, setDeleteCategoryId] = useState('')
 
   const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
@@ -105,13 +108,11 @@ const catalog = () => {
   const { id } = router.query
 
   // Modal de adição de categoria
-
   function toggleAddCategoryModal() {
     setCategoryAddModal(!addCategoryModal)
   }
 
   // Modal de adição de produtos
-
   function handleOpenAddModal() {
     setAddModal(true)
   }
@@ -121,7 +122,6 @@ const catalog = () => {
   }
 
   // Modal de edição de produtos
-
   function handleOpenEditProduct() {
     setEditProduct(true)
   }
@@ -145,19 +145,17 @@ const catalog = () => {
   }
 
   // Modal de edição de categoria
-
   function handleOpenEditCategoryModal() {
     setEditCategoryModal(true)
   }
 
-  function toggleEditCategoryModal() {
-    setEditCategoryModal(!editCategoryModal)
+  // Modal de edição de categoria
+  function handleToggleExcludeCategoryModal() {
+    setExcludeCategoryModal(!excludeCategoryModal)
   }
 
-  // Modal de exclusao categoria
-
-  function handleOpenCategoryExcludeModal() {
-    setExcludeModal(true)
+  function toggleEditCategoryModal() {
+    setEditCategoryModal(!editCategoryModal)
   }
 
   const notify = useCallback((message: string) => {
@@ -331,29 +329,36 @@ const catalog = () => {
     setEditProduct(false)
   }
 
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteCategory = async () => {
     try {
-      await deleteCategory(id, storeId)
+      await deleteCategory(deleteCategoryId, storeId)
 
       notifySuccess('Produto deletado com sucesso!')
     } catch (e) {
       notify('Erro ao excluir produto, tente novamente!')
     }
+
+    setExcludeCategoryModal(false)
+    loadData()
   }
 
-  const handleUpdateCategory = async (id: string) => {
+  const handleUpdateCategory = async () => {
     const body = {
       name: category,
       storeId
     }
 
     try {
-      await updateCategory(id, storeId, body)
+      await updateCategory(editCategoryId, storeId, body)
 
-      notifySuccess('Produto deletado com sucesso!')
+      notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
-      notify('Erro ao excluir produto, tente novamente!')
+      console.log(e);
+      notify('Erro ao editar produto, tente novamente!')
     }
+
+    loadData();
+    setEditCategoryModal(false);
   }
 
   useEffect(() => {
@@ -366,54 +371,37 @@ const catalog = () => {
         <title> Catálogo | Último </title>
       </Head>
 
-      {/* Remove category modal */}
+      {/* Remove category */}
       <CustomModal
         buttons={false}
-        setModalOpen={() => {}}
-        modalVisible={false}
+        setModalOpen={() => {
+          handleToggleExcludeCategoryModal()
+        }}
+        modalVisible={excludeCategoryModal}
       >
         <ExcludeModalContainer>
-          {confirmExclude ? (
-            <>
-              <div className="icon">
-                <IoTrashBinOutline size={120} color="var(--var)" />
-              </div>
-              <h1 className="desc">Produto excluído com sucesso!</h1>
-              <div className="btn">
-                <button
-                  onClick={handleContinueExcludeModal}
-                  className="continue-btn"
-                >
-                  Continuar
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <h1>
-                Realmente deseja excluir <strong>definitivamente</strong>{' '}
-                esse produto?
-              </h1>
+          <h1>
+            Realmente deseja excluir <strong>definitivamente</strong>{' '}
+            esse produto?
+          </h1>
 
-              <div className="btn-container">
-                <button
-                  onClick={() => setConfirmExclude(true)}
-                  className="exclude-btn"
-                >
-                  Confirmar
-                </button>
-                <button onClick={() => {
-                  handleDeleteProduct()
-                }} className="cancel-btn">
-                  Cancelar
-                </button>
-              </div>
-            </>
-          )}
+          <div className="btn-container">
+            <button
+              onClick={() => {
+                handleDeleteCategory()
+              }} 
+              className="exclude-btn"
+            >
+              Confirmar
+            </button>
+            <button className="cancel-btn">
+              Cancelar
+            </button>
+          </div>
         </ExcludeModalContainer>
       </CustomModal>
 
-      {/* Remove product modal */}
+      {/* Remove product */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleExcludeModal}
@@ -461,7 +449,7 @@ const catalog = () => {
         </ExcludeModalContainer>
       </CustomModal>  
 
-      {/* Add modal category */}
+      {/* Add category */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleAddCategoryModal}
@@ -499,7 +487,7 @@ const catalog = () => {
         </AddCategoryModalContainer>
       </CustomModal>
 
-      {/* EditCategoryModal */}
+      {/* Edit category */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleEditCategoryModal}
@@ -522,12 +510,14 @@ const catalog = () => {
             ></Input>
           </div>
           <div className="category-btn-container">
-            <button>Confirmar</button>
+            <button onClick={handleUpdateCategory} >
+              Confirmar
+            </button>
           </div>
         </EditCategoryModalContainer>
       </CustomModal>
 
-      {/* Modal de add produto */}
+      {/* Add produto */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleAddModal}
@@ -558,6 +548,7 @@ const catalog = () => {
                 label="Preço"
                 icon={<FaMoneyBill />}
                 placeholder="R$ 0"
+                mask="monetary"
                 value={priceProduct}
                 onChange={(e) => setPriceProduct(e.target.value)}
               />
@@ -566,17 +557,19 @@ const catalog = () => {
                 <Input
                   label="Desconto"
                   icon={<FaPercentage />}
+                  mask="monetary"
                   placeholder="0.0%"
-                />
+                  />
                 <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
                 <Input
                   label="Preço com desconto"
+                  mask="monetary"
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
-                />
+                  />
               </div>
             </div>
 
@@ -585,6 +578,7 @@ const catalog = () => {
                 label="Quantidade atual"
                 icon={<FaCoins />}
                 placeholder="0"
+                mask="number"
                 value={inventoryProduct}
                 onChange={(e) => setInventoryProduct(e.target.value)}
               />
@@ -635,7 +629,7 @@ const catalog = () => {
         </AddProductModalContainer>
       </CustomModal>
 
-      {/* Modal de edição de produto */}
+      {/* Edit product */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleEditProduct}
@@ -666,22 +660,25 @@ const catalog = () => {
                 label="Preço"
                 icon={<FaMoneyBill />}
                 placeholder="R$ 0"
+                mask="monetary"
                 value={priceProduct}
                 onChange={(e) => setPriceProduct(e.target.value)}
-              />
+                />
 
               <div className="desconto">
                 <Input
                   label="Desconto"
                   icon={<FaPercentage />}
                   placeholder="0.0%"
-                />
+                  mask="monetary"
+                  />
                 <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
                 <Input
                   label="Preço com desconto"
+                  mask="monetary"
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                 />
@@ -691,6 +688,7 @@ const catalog = () => {
             <div className="right-area">
               <Input
                 label="Quantidade atual"
+                mask="number"
                 icon={<FaCoins />}
                 placeholder="0"
                 value={inventoryProduct}
@@ -744,8 +742,6 @@ const catalog = () => {
       </CustomModal>
 
       <Container>
-        {/* ExcludeModal */}
-
         <DrawerLateral activated={true} greenOption={4} />
 
         <div className="list-container">
@@ -815,8 +811,14 @@ const catalog = () => {
                             amount: String(data.inventory)
                           }))}
                         category={cat.name}
-                        excludeBtn={() => {}}
-                        editBtn={handleOpenEditCategoryModal}
+                        excludeBtn={() => {
+                          setDeleteCategoryId(cat.id)
+                          handleToggleExcludeCategoryModal()
+                        }}
+                        editBtn={() => {
+                          setDeleteCategoryId(cat.id)
+                          handleOpenEditCategoryModal()
+                        }}
                         isGreen={true}
                         isRed={true}
                       />
