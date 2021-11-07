@@ -582,7 +582,7 @@ const Shop = ({ storeId, id }: Shop) => {
           </ModalContainer>
         </CustomModal>
 
-        <DrawerLateral shopId={String(id || '')} greenOption={1} />
+        <DrawerLateral greenOption={1} />
 
         <div className="cards-area">
           <div className="left-area">
