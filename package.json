@@ -13,7 +13,6 @@
   "dependencies": {
     "@hookform/resolvers": "^2.8.2",
     "axios": "^0.21.1",
-    "faker": "^5.5.3",
     "next": "11.0.1",
     "nookies": "^2.5.2",
     "react": "17.0.2",

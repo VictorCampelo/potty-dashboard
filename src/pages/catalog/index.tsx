@@ -46,6 +46,8 @@ import {
   EditCategoryModalContainer,
   ExcludeModalContainer
 } from '../../styles/pages/Catalog'
+import { withSSRAuth } from 'services/withSSRAuth'
+import { setupApiClient } from 'services/api'
 
 type CategoryType = {
   name: string
@@ -76,7 +78,11 @@ type ProductType = {
   categories: CategoryType[]
 }
 
-const catalog = () => {
+interface CatalogType {
+  storeId: string;
+}
+
+const catalog = ({ storeId }: CatalogType) => {
   const [excludeModal, setExcludeModal] = useState(false)
   const [confirmExclude, setConfirmExclude] = useState(false)
 
@@ -100,12 +106,9 @@ const catalog = () => {
   const [priceProduct, setPriceProduct] = useState('')
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
+  const [discountProduct, setDiscountProduct] = useState('')
 
-  const [storeId, setStoreId] = useState('')
   const [toggleState, setToggleState] = useState(1)
-
-  const router = useRouter()
-  const { id } = router.query
 
   // Modal de adição de categoria
   function toggleAddCategoryModal() {
@@ -171,17 +174,8 @@ const catalog = () => {
   }, [])
 
   const loadData = async () => {
-    let store = ''
-
     try {
-      store = await getStoreId(String(id || ''))
-      setStoreId(store)
-    } catch (e) {
-      notify('Erro ao buscar loja')
-    }
-
-    try {
-      const { data } = await getProducts(store)
+      const { data } = await getProducts(storeId)
 
       const formatedData = data.map((it) => ({
         ...it,
@@ -195,7 +189,7 @@ const catalog = () => {
     }
     
     try {
-      const { data } = await getCategories(store)
+      const { data } = await getCategories(storeId)
       
       setCategories(data)
     } catch (e) {
@@ -235,9 +229,10 @@ const catalog = () => {
   async function handleCreateProduct() {
     const body = {
       title: titleProduct,
-      price: Number(priceProduct),
+      price: Number(priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')),
       description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0')
+      inventory: Number(inventoryProduct || '0'),
+      discount: Number(discountProduct),
     }
 
     try {
@@ -258,6 +253,7 @@ const catalog = () => {
       setPriceProduct('')
       setDescriptionProduct('')
       setInventoryProduct('')
+      setDiscountProduct('')
     } catch (e) {
       console.error(e)
 
@@ -305,9 +301,10 @@ const catalog = () => {
   const handleUpdateProduct = async () => {
     const body = {
       title: titleProduct,
-      price: Number(priceProduct),
+      price: Number(priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')),
       description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0')
+      inventory: Number(inventoryProduct || '0'),
+      discount: Number(discountProduct),
     }
 
     try {
@@ -325,6 +322,7 @@ const catalog = () => {
     setDescriptionProduct('')
     setInventoryProduct('')
     setEditProductId('')
+    setDiscountProduct('')
     loadData()
     setEditProduct(false)
   }
@@ -353,7 +351,6 @@ const catalog = () => {
 
       notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
-      console.log(e);
       notify('Erro ao editar produto, tente novamente!')
     }
 
@@ -362,8 +359,8 @@ const catalog = () => {
   }
 
   useEffect(() => {
-    if (id) loadData()
-  }, [id])
+    loadData()
+  }, [])
 
   return (
     <>
@@ -502,13 +499,17 @@ const catalog = () => {
               color={'black'}
             />
           </div>
+          
           <div className="category-container">
             <Input
               label="Nome da categoria"
               placeholder="Categoria"
               icon={<FiSearch size={20} color="var(--black-800)" />}
-            ></Input>
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+            />
           </div>
+
           <div className="category-btn-container">
             <button onClick={handleUpdateCategory} >
               Confirmar
@@ -550,26 +551,32 @@ const catalog = () => {
                 placeholder="R$ 0"
                 mask="monetary"
                 value={priceProduct}
-                onChange={(e) => setPriceProduct(e.target.value)}
+                onChange={(e) => {
+                  setPriceProduct(e.target.value)
+                }}
               />
 
               <div className="desconto">
                 <Input
                   label="Desconto"
                   icon={<FaPercentage />}
-                  mask="monetary"
+                  mask="number"
                   placeholder="0.0%"
-                  />
+                  value={discountProduct}
+                  onChange={e => setDiscountProduct(e.target.value)}
+                />
+
                 <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
+
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
-                  />
+                />
               </div>
             </div>
 
@@ -816,7 +823,7 @@ const catalog = () => {
                           handleToggleExcludeCategoryModal()
                         }}
                         editBtn={() => {
-                          setDeleteCategoryId(cat.id)
+                          setEditCategoryId(cat.id)
                           handleOpenEditCategoryModal()
                         }}
                         isGreen={true}
@@ -835,3 +842,16 @@ const catalog = () => {
 }
 
 export default catalog
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const apiClient = setupApiClient(ctx);
+
+  const { data } = await apiClient.get("/stores/me");
+
+  return {
+    props: {
+      storeId: data.id,
+    },
+  };
+});
+

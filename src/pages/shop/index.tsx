@@ -29,8 +29,8 @@ import {
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { parseCookies } from 'nookies'
-import { api } from '../../services/apiClient'
+import { withSSRAuth } from 'services/withSSRAuth'
+import { setupApiClient } from 'services/api'
 
 type TimeTableArrayType = {
   [0]
@@ -47,9 +47,12 @@ type EditTimeTable = {
   dom: Array<TimeTableArrayType>
 }
 
-const Shop = () => {
-  const [storeId, setStoreId] = useState('')
+interface Shop {
+  storeId: string;
+  id: string;
+}
 
+const Shop = ({ storeId, id }: Shop) => {
   const [vazio, setVazio] = useState(false)
   const [timeTableModal, setTimeTableModal] = useState(false)
   const [categoryModal, setCategoryModal] = useState(false)
@@ -85,9 +88,6 @@ const Shop = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
-  const router = useRouter()
-  const { id } = router.query
-
   // Categorias
 
   const [category, setCategory] = useState('')
@@ -117,8 +117,6 @@ const Shop = () => {
       }
     }
     try {
-      const token = parseCookies()['ultimo.auth.token']
-      api.defaults.headers['Authorization'] = `Bearer ${token}`
       await editTimeTable(storeId, body)
 
       toast.success('Horários editado(s) com sucesso!', {
@@ -193,12 +191,9 @@ const Shop = () => {
   }
 
   async function loadData() {
-    let store = ''
 
     try {
       const { data } = await getBusiness(`${id}`)
-      store = await getStoreId(String(id || ''))
-      setStoreId(store)
 
       setBusinessName(data?.name)
       setStars(data?.avgStars)
@@ -240,8 +235,8 @@ const Shop = () => {
   }
 
   useEffect(() => {
-    if (id) loadData()
-  }, [id])
+    loadData()
+  }, [])
 
   return (
     <>
@@ -674,3 +669,19 @@ const Shop = () => {
 }
 
 export default Shop
+
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const apiClient = setupApiClient(ctx);
+
+  const { data } = await apiClient.get("/stores/me");
+
+  return {
+    props: {
+      storeId: data.id,
+      id: data.formatedName,
+    },
+  };
+});
+
+
