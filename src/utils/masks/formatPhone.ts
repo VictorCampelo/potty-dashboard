@@ -11,13 +11,6 @@ export default (phone: any) => {
   if (phone.length > 9) {
     phone = phone.replace(/^(.*)(\d{4})$/, '$1-$2')
   }
-  // console.log(phone);
+
   return phone
 }
-
-// format('00000123456')
-// format('0000000000')
-// format('000000000000000')
-// format('123456')
-// format('000321700')
-// format('000846600')
