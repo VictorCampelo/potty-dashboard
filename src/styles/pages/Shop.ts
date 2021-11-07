@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   padding: 20px 20px;
@@ -51,7 +51,7 @@ export const Container = styled.div`
       }
     }
   }
-`;
+`
 
 export const ModalContainer = styled.div`
   width: auto;
@@ -67,7 +67,7 @@ export const ModalContainer = styled.div`
     justify-content: space-between;
     margin-bottom: 2rem;
     h1 {
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 600;
       font-size: 24px;
@@ -90,11 +90,14 @@ export const ModalContainer = styled.div`
       margin-right: 72px;
     }
     .dates {
+      width: 350px;
+
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: center;
 
-      margin-top: 20px;
+      margin-bottom: 20px;
 
       > * {
         &:last-child {
@@ -104,7 +107,7 @@ export const ModalContainer = styled.div`
 
       p {
         width: 71px;
-        font-family: "Poppins";
+        font-family: 'Poppins';
         font-style: normal;
         font-weight: normal;
         font-size: 15px;
@@ -113,18 +116,6 @@ export const ModalContainer = styled.div`
         color: #363f4e;
 
         margin-right: 27px;
-      }
-
-      input {
-        width: 80px;
-        height: 40px;
-
-        border: 1px solid #363f4e;
-        box-sizing: border-box;
-        border-radius: 8px;
-        outline: none;
-
-        text-align: center;
       }
     }
   }
@@ -190,6 +181,8 @@ export const ModalContainer = styled.div`
   }
 
   .contact-container {
+    width: 600px;
+
     > * {
       &:first-child {
         margin-bottom: 24px;
@@ -218,4 +211,4 @@ export const ModalContainer = styled.div`
       }
     }
   }
-`;
+`
