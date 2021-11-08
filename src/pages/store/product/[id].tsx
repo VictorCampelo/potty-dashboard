@@ -1,4 +1,4 @@
-import { Input } from 'components/molecules/Input'
+import { Input } from '../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
 import {
@@ -8,13 +8,13 @@ import {
   ProductWrapper,
   Footer,
   FilterCard
-} from 'styles/pages/Product'
+} from '../../../styles/pages/Product'
 import Header from '../../../components/molecules/Header/index'
 import { useState } from 'react'
 import ReactStars from 'react-stars'
-import CatalogTabs from 'components/molecules/CatalogTabs'
-import CardFeedback from 'components/molecules/CardFeedback'
-import { ProductCard } from 'styles/pages/Store'
+import CatalogTabs from '../../../components/molecules/CatalogTabs'
+import CardFeedback from '../../../components/molecules/CardFeedback'
+import { ProductCard } from '../../../styles/pages/Store'
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -22,7 +22,7 @@ import {
   AiOutlineWhatsApp
 } from 'react-icons/ai'
 import router from 'next/router'
-import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
+import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 
 const fakeFeedBack = [
   {
