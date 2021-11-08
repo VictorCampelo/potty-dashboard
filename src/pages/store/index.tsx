@@ -28,9 +28,41 @@ import {
   HorizonCard
 } from '../../styles/pages/Store'
 import { useState } from 'react'
+import router from 'next/router'
 
 const Products = () => {
   const [buttonOn, setButtonOn] = useState(true)
+
+  const fakeProducts = [
+    {
+      id: 1
+    },
+    {
+      id: 2
+    },
+    {
+      id: 3
+    },
+    {
+      id: 4
+    },
+    {
+      id: 5
+    },
+    {
+      id: 6
+    },
+    {
+      id: 7
+    },
+    {
+      id: 8
+    }
+  ]
+
+  function handleOpenProduct(id) {
+    router.push(`store/product/${id}`)
+  }
 
   return (
     <Page>
@@ -214,135 +246,69 @@ const Products = () => {
               <div className="productWrapper">
                 {buttonOn ? (
                   <>
-                    <ProductCard>
-                      <img
-                        src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                        alt="geladeira frost free"
-                      />
-                      <span className="title">
-                        Refrigerador Brastemp BRM44HK
-                      </span>
-                      <div className="price">
-                        <span>R$ 2.999,00</span>
-                        <small>R$ 4.999,00</small>
-                      </div>
-                      <div className="score">
-                        <AiFillStar size={18} color="var(--gold)" />
-                        <span>5.0 | 5412 Pedidos</span>
-                      </div>
-                      <p>
-                        Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                        Legumes Fresh Zone Inox - 375L
-                      </p>
-                    </ProductCard>
-                    <ProductCard>
-                      <img
-                        src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                        alt="geladeira frost free"
-                      />
-                      <span className="title">
-                        Refrigerador Brastemp BRM44HK
-                      </span>
-                      <div className="price">
-                        <span>R$ 2.999,00</span>
-                        <small>R$ 4.999,00</small>
-                      </div>
-                      <div className="score">
-                        <AiFillStar size={18} color="var(--gold)" />
-                        <span>5.0 | 5412 Pedidos</span>
-                      </div>
-                      <p>
-                        Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                        Legumes Fresh Zone Inox - 375L
-                      </p>
-                    </ProductCard>
-                    <ProductCard>
-                      <img
-                        src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                        alt="geladeira frost free"
-                      />
-                      <span className="title">
-                        Refrigerador Brastemp BRM44HK
-                      </span>
-                      <div className="price">
-                        <span>R$ 2.999,00</span>
-                        <small>R$ 4.999,00</small>
-                      </div>
-                      <div className="score">
-                        <AiFillStar size={18} color="var(--gold)" />
-                        <span>5.0 | 5412 Pedidos</span>
-                      </div>
-                      <p>
-                        Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                        Legumes Fresh Zone Inox - 375L
-                      </p>
-                    </ProductCard>
-                    <ProductCard>
-                      <img
-                        src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                        alt="geladeira frost free"
-                      />
-                      <span className="title">
-                        Refrigerador Brastemp BRM44HK
-                      </span>
-                      <div className="price">
-                        <span>R$ 2.999,00</span>
-                        <small>R$ 4.999,00</small>
-                      </div>
-                      <div className="score">
-                        <AiFillStar size={18} color="var(--gold)" />
-                        <span>5.0 | 5412 Pedidos</span>
-                      </div>
-                      <p>
-                        Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                        Legumes Fresh Zone Inox - 375L
-                      </p>
-                    </ProductCard>
-                    <ProductCard>
-                      <img
-                        src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                        alt="geladeira frost free"
-                      />
-                      <span className="title">
-                        Refrigerador Brastemp BRM44HK
-                      </span>
-                      <div className="price">
-                        <span>R$ 2.999,00</span>
-                        <small>R$ 4.999,00</small>
-                      </div>
-                      <div className="score">
-                        <AiFillStar size={18} color="var(--gold)" />
-                        <span>5.0 | 5412 Pedidos</span>
-                      </div>
-                      <p>
-                        Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                        Legumes Fresh Zone Inox - 375L
-                      </p>
-                    </ProductCard>
-                    <ProductCard>
-                      <img
-                        src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                        alt="geladeira frost free"
-                      />
-                      <span className="title">
-                        Refrigerador Brastemp BRM44HK
-                      </span>
-                      <div className="price">
-                        <span>R$ 2.999,00</span>
-                        <small>R$ 4.999,00</small>
-                      </div>
-                      <div className="score">
-                        <AiFillStar size={18} color="var(--gold)" />
-                        <span>5.0 | 5412 Pedidos</span>
-                      </div>
-                      <p>
-                        Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                        Legumes Fresh Zone Inox - 375L
-                      </p>
-                    </ProductCard>
+                    {fakeProducts.map((e) => {
+                      return (
+                        <ProductCard
+                          key={e.id}
+                          onClick={() => handleOpenProduct(1)}
+                        >
+                          <img
+                            src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                            alt="geladeira frost free"
+                          />
+                          <span className="title">
+                            Refrigerador Brastemp BRM44HK
+                          </span>
+                          <div className="price">
+                            <span>R$ 2.999,00</span>
+                            <small>R$ 4.999,00</small>
+                          </div>
+                          <div className="score">
+                            <AiFillStar size={18} color="var(--gold)" />
+                            <span>5.0 | 5412 Pedidos</span>
+                          </div>
+                          <p>
+                            Refrigerador Brastemp BRM44HK Frost Free com Gavetão
+                            de Legumes Fresh Zone Inox - 375L
+                          </p>
+                        </ProductCard>
+                      )
+                    })}
                   </>
                 ) : (
                   <div className="horizon">
+                    {fakeProducts.map((e) => {
+                      return (
+                        <HorizonCard
+                          key={e.id}
+                          onClick={() => handleOpenProduct(1)}
+                        >
+                          <img
+                            src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                            alt="geladeira frost free"
+                          />
+                          <div className="infos">
+                            <span className="title">
+                              Refrigerador Brastemp BRM44HK
+                            </span>
+                            <div className="score">
+                              <AiFillStar size={18} color="var(--gold)" />
+                              <span>5.0 | 5412 Pedidos</span>
+                            </div>
+
+                            <div className="price">
+                              <span>R$ 2.999,00</span>
+                              <small>R$ 4.999,00</small>
+                            </div>
+
+                            <p>
+                              Refrigerador Brastemp BRM44HK Frost Free com
+                              Gavetão de Legumes Fresh Zone Inox - 375L
+                            </p>
+                          </div>
+                        </HorizonCard>
+                      )
+                    })}
                     <HorizonCard>
                       <img
                         src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
