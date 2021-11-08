@@ -10,7 +10,7 @@ import {
   FilterCard
 } from '../../../styles/pages/Product'
 import Header from '../../../components/molecules/Header/index'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import ReactStars from 'react-stars'
 import CatalogTabs from '../../../components/molecules/CatalogTabs'
 import CardFeedback from '../../../components/molecules/CardFeedback'
@@ -23,6 +23,7 @@ import {
 } from 'react-icons/ai'
 import router from 'next/router'
 import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
+import HeaderShop from 'components/molecules/HeaderShop'
 
 const fakeFeedBack = [
   {
@@ -111,7 +112,7 @@ const ProductShow = () => {
         <title>Produto | Último</title>
       </Head>
 
-      <Header />
+      <HeaderShop />
       <Container>
         <header className="header">
           <Input icon={<FaSearch />} placeholder="Pesquisar na loja" />

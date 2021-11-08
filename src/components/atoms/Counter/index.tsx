@@ -1,33 +1,32 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useState } from 'react'
+import styled from 'styled-components'
 
 const Counter = () => {
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(1)
 
   return (
     <Container>
-      <Button 
+      <Button
         className={value == 1 && 'inactive'}
         onClick={() => {
-          if(value > 1)
-            setValue(old => old - 1)
+          if (value > 1) setValue((old) => old - 1)
         }}
-      > 
-        - 
+      >
+        -
       </Button>
-        {value}
+      {value}
       <Button
         onClick={() => {
-          setValue(old => old + 1)
+          setValue((old) => old + 1)
         }}
-      > 
-        + 
+      >
+        +
       </Button>
     </Container>
   )
 }
 
-export default Counter;
+export default Counter
 
 export const Container = styled.section`
   width: 80px;
@@ -39,7 +38,7 @@ export const Container = styled.section`
   justify-content: space-between !important;
   align-items: center;
   padding: 1rem;
-`;
+`
 
 export const Button = styled.button`
   border: none;
@@ -51,7 +50,7 @@ export const Button = styled.button`
   font-weight: 600;
   background: white;
   font-size: 1.5rem;
-  
+
   &.inactive {
     color: var(--black-500);
   }
