@@ -1,56 +1,60 @@
-import Header from "../../components/molecules/Header";
-import Head from "next/head";
+import Header from '../../components/molecules/Header'
+import Head from 'next/head'
 
-import { CheckboxFilter } from "../../components/atoms/CheckboxFilter";
-import { 
-  AiFillFacebook, 
-  AiFillPhone, 
-  AiFillStar, 
-  AiOutlineWhatsApp 
-} from "react-icons/ai";
-import { 
-  CategoriesCard, 
-  Container, 
-  DescriptionCard, 
-  FilterCard, 
-  FilterCardSecondary, 
-  Footer, 
-  ProductCard, 
-  StatusCard 
-} from "../../styles/pages/Products";
+import { CheckboxFilter } from '../../components/atoms/CheckboxFilter'
+import {
+  AiFillFacebook,
+  AiFillPhone,
+  AiFillStar,
+  AiOutlineWhatsApp
+} from 'react-icons/ai'
+import {
+  CategoriesCard,
+  Container,
+  DescriptionCard,
+  FilterCard,
+  FilterCardSecondary,
+  Footer,
+  ProductCard,
+  StatusCard
+} from '../../styles/pages/Store'
+import router from 'next/router'
 
 const Products = () => {
+  function handleOpenProduct(id) {
+    router.push(`/product/${id}`)
+  }
+
   return (
     <>
       <Head>
-        <title>Products | Último</title>
+        <title>Loja | Último</title>
       </Head>
 
-      <Header/>
+      <Header />
       <Container>
         <section className="descriptionContainer">
-          <DescriptionCard >
-            <img src="https://img.elo7.com.br/product/zoom/315F8D5/logo-loja-semi-pronta-logomarca.jpg" alt="logo" />
+          <DescriptionCard>
+            <img
+              src="https://img.elo7.com.br/product/zoom/315F8D5/logo-loja-semi-pronta-logomarca.jpg"
+              alt="logo"
+            />
 
             <p>
-              Conheça os mais variados tipos de eletrodomésticos e móveis pelo melhor preço e diversidade da região!
-              {' '}<a>ver mais</a>
+              Conheça os mais variados tipos de eletrodomésticos e móveis pelo
+              melhor preço e diversidade da região! <a>ver mais</a>
             </p>
-
-
           </DescriptionCard>
           <StatusCard>
             <div className="status">
               <div className="statusDot" />
-              <span>
-                Aberto agora
-              </span>
+              <span>Aberto agora</span>
             </div>
             <div className="text">
               <p>
-                Hoje: <br/>
-                7h às 12h <br/>
-                13h às 18h <br/>
+                Hoje: <br />
+                7h às 12h <br />
+                13h às 18h <br />
               </p>
             </div>
           </StatusCard>
@@ -60,33 +64,23 @@ const Products = () => {
           <div className="categoriesContainer">
             <CategoriesCard>
               <div className="title">
-                <span>
-                  Categorias da loja:
-                </span>
+                <span>Categorias da loja:</span>
               </div>
 
               <div className="item">
-                <a>
-                  Todas as categorias
-                </a>
+                <a>Todas as categorias</a>
               </div>
 
               <div className="item">
-                <a>
-                  Cozinha
-                </a>
+                <a>Cozinha</a>
               </div>
 
               <div className="item">
-                <a>
-                  Quartos
-                </a>
+                <a>Quartos</a>
               </div>
 
               <div className="item">
-                <a className="active">
-                  Sala de estar
-                </a>
+                <a className="active">Sala de estar</a>
               </div>
             </CategoriesCard>
           </div>
@@ -114,7 +108,7 @@ const Products = () => {
               </FilterCard>
 
               <FilterCardSecondary>
-                <CheckboxFilter  confirm={false} toggleConfirm={() => {}} >
+                <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
                   <AiFillStar size={24} color="var(--gold)" />
                   <label>4.0 ou mais</label>
                 </CheckboxFilter>
@@ -126,130 +120,118 @@ const Products = () => {
             </div>
 
             <div className="productWrapper">
-              <ProductCard>
-                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+              <ProductCard onClick={(e) => handleOpenProduct(e)}>
+                <img
+                  src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                  alt="geladeira frost free"
+                />
                 <span className="title">Refrigerador Brastemp BRM44HK</span>
                 <div className="price">
-                  <span>
-                    R$ 2.999,00
-                  </span>  
-                  <small>
-                    R$ 4.999,00
-                  </small>
+                  <span>R$ 2.999,00</span>
+                  <small>R$ 4.999,00</small>
                 </div>
                 <div className="score">
                   <AiFillStar size={18} color="var(--gold)" />
-                  <span>
-                    5.0 | 5412 Pedidos
-                  </span>
+                  <span>5.0 | 5412 Pedidos</span>
                 </div>
                 <p>
-                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
+                  Legumes Fresh Zone Inox - 375L
                 </p>
               </ProductCard>
               <ProductCard>
-                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <img
+                  src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                  alt="geladeira frost free"
+                />
                 <span className="title">Refrigerador Brastemp BRM44HK</span>
                 <div className="price">
-                  <span>
-                    R$ 2.999,00
-                  </span>  
-                  <small>
-                    R$ 4.999,00
-                  </small>
+                  <span>R$ 2.999,00</span>
+                  <small>R$ 4.999,00</small>
                 </div>
                 <div className="score">
                   <AiFillStar size={18} color="var(--gold)" />
-                  <span>
-                    5.0 | 5412 Pedidos
-                  </span>
+                  <span>5.0 | 5412 Pedidos</span>
                 </div>
                 <p>
-                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
+                  Legumes Fresh Zone Inox - 375L
                 </p>
               </ProductCard>
               <ProductCard>
-                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <img
+                  src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                  alt="geladeira frost free"
+                />
                 <span className="title">Refrigerador Brastemp BRM44HK</span>
                 <div className="price">
-                  <span>
-                    R$ 2.999,00
-                  </span>  
-                  <small>
-                    R$ 4.999,00
-                  </small>
+                  <span>R$ 2.999,00</span>
+                  <small>R$ 4.999,00</small>
                 </div>
                 <div className="score">
                   <AiFillStar size={18} color="var(--gold)" />
-                  <span>
-                    5.0 | 5412 Pedidos
-                  </span>
+                  <span>5.0 | 5412 Pedidos</span>
                 </div>
                 <p>
-                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
-                </p>
-              </ProductCard>             
-              <ProductCard>
-                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
-                <span className="title">Refrigerador Brastemp BRM44HK</span>
-                <div className="price">
-                  <span>
-                    R$ 2.999,00
-                  </span>  
-                  <small>
-                    R$ 4.999,00
-                  </small>
-                </div>
-                <div className="score">
-                  <AiFillStar size={18} color="var(--gold)" />
-                  <span>
-                    5.0 | 5412 Pedidos
-                  </span>
-                </div>
-                <p>
-                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
+                  Legumes Fresh Zone Inox - 375L
                 </p>
               </ProductCard>
               <ProductCard>
-                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <img
+                  src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                  alt="geladeira frost free"
+                />
                 <span className="title">Refrigerador Brastemp BRM44HK</span>
                 <div className="price">
-                  <span>
-                    R$ 2.999,00
-                  </span>  
-                  <small>
-                    R$ 4.999,00
-                  </small>
+                  <span>R$ 2.999,00</span>
+                  <small>R$ 4.999,00</small>
                 </div>
                 <div className="score">
                   <AiFillStar size={18} color="var(--gold)" />
-                  <span>
-                    5.0 | 5412 Pedidos
-                  </span>
+                  <span>5.0 | 5412 Pedidos</span>
                 </div>
                 <p>
-                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
+                  Legumes Fresh Zone Inox - 375L
                 </p>
               </ProductCard>
               <ProductCard>
-                <img src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000" alt="geladeira frost free" />
+                <img
+                  src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                  alt="geladeira frost free"
+                />
                 <span className="title">Refrigerador Brastemp BRM44HK</span>
                 <div className="price">
-                  <span>
-                    R$ 2.999,00
-                  </span>  
-                  <small>
-                    R$ 4.999,00
-                  </small>
+                  <span>R$ 2.999,00</span>
+                  <small>R$ 4.999,00</small>
                 </div>
                 <div className="score">
                   <AiFillStar size={18} color="var(--gold)" />
-                  <span>
-                    5.0 | 5412 Pedidos
-                  </span>
+                  <span>5.0 | 5412 Pedidos</span>
                 </div>
                 <p>
-                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de Legumes Fresh Zone Inox - 375L
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
+                  Legumes Fresh Zone Inox - 375L
+                </p>
+              </ProductCard>
+              <ProductCard>
+                <img
+                  src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                  alt="geladeira frost free"
+                />
+                <span className="title">Refrigerador Brastemp BRM44HK</span>
+                <div className="price">
+                  <span>R$ 2.999,00</span>
+                  <small>R$ 4.999,00</small>
+                </div>
+                <div className="score">
+                  <AiFillStar size={18} color="var(--gold)" />
+                  <span>5.0 | 5412 Pedidos</span>
+                </div>
+                <p>
+                  Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
+                  Legumes Fresh Zone Inox - 375L
                 </p>
               </ProductCard>
             </div>
@@ -275,7 +257,7 @@ const Products = () => {
         </Footer>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 interface ContainerProp {
-  isRed: boolean;
-  isGreen: boolean;
+  isRed: boolean
+  isGreen: boolean
 }
 
 export const Container = styled.div<ContainerProp>`
@@ -21,7 +21,7 @@ export const Container = styled.div<ContainerProp>`
     align-items: center;
 
     .color {
-      width: 785px;
+      width: 810px;
       height: 76px;
 
       display: flex;
@@ -54,8 +54,11 @@ export const Container = styled.div<ContainerProp>`
         align-items: center;
         justify-content: center;
 
+        width: auto;
         height: 76px;
         border-radius: 0;
+
+        padding-right: 50px;
 
         tr {
           display: flex;
@@ -70,12 +73,12 @@ export const Container = styled.div<ContainerProp>`
           align-items: center;
           justify-content: center;
 
-          margin-right: 55px;
+          margin-left: 50px;
           margin-bottom: 3px;
 
           background: rgba(216, 217, 221, 0.48);
 
-          font-family: "Poppins";
+          font-family: 'Poppins';
           font-style: normal;
           font-weight: normal;
           font-size: 13px;
@@ -95,9 +98,9 @@ export const Container = styled.div<ContainerProp>`
           align-items: center;
           justify-content: center;
 
-          margin-right: 55px;
+          margin-left: 50px;
 
-          font-family: "Poppins";
+          font-family: 'Poppins';
           font-style: normal;
           font-weight: normal;
           font-size: 16px;
@@ -125,7 +128,7 @@ export const Container = styled.div<ContainerProp>`
       box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
       border-radius: 30px;
 
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: normal;
       font-size: 15px;
@@ -137,11 +140,11 @@ export const Container = styled.div<ContainerProp>`
     }
 
     .edit-btn {
-      ${(props) => props.isGreen && "color: #2DD1AC;"}
+      ${(props) => props.isGreen && 'color: #2DD1AC;'}
     }
 
     .close-btn {
-      ${(props) => props.isRed && "color: #FF4D4B;"}
+      ${(props) => props.isRed && 'color: #FF4D4B;'}
     }
   }
-`;
+`
