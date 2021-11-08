@@ -26,7 +26,7 @@ import {
   TopoPage,
   FilterCardTertiary,
   HorizonCard
-} from '../../styles/pages/Products'
+} from '../../styles/pages/Store'
 import { useState } from 'react'
 
 const Products = () => {
@@ -35,7 +35,7 @@ const Products = () => {
   return (
     <Page>
       <Head>
-        <title>Products | Último</title>
+        <title>Loja | Último</title>
       </Head>
 
       <TopoPage>

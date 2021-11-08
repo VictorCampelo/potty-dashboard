@@ -253,6 +253,10 @@ export const ProductCard = styled.div`
   align-items: center;
   flex-direction: column;
 
+  :hover {
+    cursor: pointer;
+  }
+
   img {
     width: 80%;
     height: 180px;

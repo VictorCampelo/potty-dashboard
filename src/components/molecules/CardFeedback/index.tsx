@@ -8,6 +8,7 @@ interface CardFeedback extends React.InputHTMLAttributes<HTMLInputElement> {
   quantStar?: number
   text: string
   time: string
+  width?: number
 }
 
 const CardFeedback = ({
@@ -15,6 +16,7 @@ const CardFeedback = ({
   quantStar,
   text,
   time,
+  width,
   ...rest
 }: CardFeedback) => {
   const stars = [] //Criando um vetor de estrelas
@@ -30,7 +32,7 @@ const CardFeedback = ({
   //adicionando estrelas preenchidas e vazias ao vetor
 
   return (
-    <Container>
+    <Container width={width}>
       <div className="title">
         <h1>{name}</h1>
         <div className="stars">{stars}</div>

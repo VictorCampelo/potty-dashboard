@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   padding: 20px 20px;
@@ -54,7 +54,7 @@ export const Container = styled.div`
 
         padding: 0 11px 0 11px;
 
-        font-family: "Poppins";
+        font-family: 'Poppins';
         font-style: normal;
         font-weight: 600;
         font-size: 15px;
@@ -76,7 +76,7 @@ export const Container = styled.div`
 
   main {
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .products-container {
@@ -85,7 +85,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     height: 100%;
   }
@@ -99,7 +99,7 @@ export const Container = styled.div`
 
     height: 100%;
   }
-`;
+`
 
 export const AddProductModalContainer = styled.div`
   width: auto;
@@ -122,7 +122,7 @@ export const AddProductModalContainer = styled.div`
     justify-content: space-between;
     margin-bottom: 2rem;
     h1 {
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 600;
       font-size: 24px;
@@ -137,7 +137,7 @@ export const AddProductModalContainer = styled.div`
   }
 
   h1 {
-    font-family: "Poppins";
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
     font-size: 30px;
@@ -154,9 +154,9 @@ export const AddProductModalContainer = styled.div`
     text-align: left;
   }
 
-  .input-infos{
+  .input-infos {
     display: flex;
-    .left-area{
+    .left-area {
       margin-top: -30px;
       display: flex;
       flex-direction: column;
@@ -164,38 +164,38 @@ export const AddProductModalContainer = styled.div`
       textarea {
         resize: none;
       }
-      
-      .desconto{
+
+      .desconto {
         display: flex;
         align-items: flex-end;
-        
-        .arrows{
+
+        .arrows {
           display: flex;
           flex-direction: column;
 
-          .left-arrow{
+          .left-arrow {
             margin-top: -5px;
           }
         }
       }
     }
 
-    .right-area{
+    .right-area {
       margin-left: 30px;
       margin-top: -30px;
     }
 
-    h3{
+    h3 {
       font-family: Poppins;
       font-style: normal;
       font-weight: normal;
       font-size: 12px;
       line-height: 18px;
 
-      color: #363F4E;
+      color: #363f4e;
     }
 
-    h2{
+    h2 {
       margin-top: 80px;
       font-family: Poppins;
       font-style: normal;
@@ -203,15 +203,15 @@ export const AddProductModalContainer = styled.div`
       font-size: 15px;
       line-height: 22px;
 
-      color: #363F4E;
+      color: #363f4e;
     }
 
-    .foto{
+    .foto {
       display: flex;
 
-      .title-foto{
-        z-index: 3 ;
-        background: #FFFFFF;
+      .title-foto {
+        z-index: 3;
+        background: #ffffff;
 
         display: flex;
         justify-content: center;
@@ -219,7 +219,7 @@ export const AddProductModalContainer = styled.div`
 
         padding: 6px 30px;
 
-        border: 1px solid #363F4E;
+        border: 1px solid #363f4e;
         box-sizing: border-box;
         border-radius: 8px;
 
@@ -229,10 +229,10 @@ export const AddProductModalContainer = styled.div`
         font-size: 12px;
         line-height: 18px;
 
-        color: #363F4E;
+        color: #363f4e;
       }
 
-      button{
+      button {
         margin-left: -10px;
         display: flex;
         justify-content: center;
@@ -240,11 +240,11 @@ export const AddProductModalContainer = styled.div`
 
         padding: 0px 10px 0px 15px;
 
-        background: #2DD1AC;
-        border: 1px solid #2DD1AC;
+        background: #2dd1ac;
+        border: 1px solid #2dd1ac;
 
         box-shadow: inset 0px 0px 4px rgba(54, 63, 78, 0.2);
-        border-radius: 0px 8px 8px 0px ;
+        border-radius: 0px 8px 8px 0px;
 
         font-family: Poppins;
         font-style: normal;
@@ -252,19 +252,17 @@ export const AddProductModalContainer = styled.div`
         font-size: 12px;
         line-height: 18px;
 
-        color: #FFFFFF;
+        color: #ffffff;
       }
     }
 
-    .array-fotos{
-      margin-top: 10px ;
+    .array-fotos {
+      margin-top: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
 
-      
-
-      .card-image{
+      .card-image {
         cursor: pointer;
         display: flex;
         justify-content: center;
@@ -272,12 +270,12 @@ export const AddProductModalContainer = styled.div`
 
         padding: 30px;
 
-        background: #FEFDF9;
+        background: #fefdf9;
         box-shadow: -2px 4px 5px rgba(0, 0, 0, 0.15);
         border-radius: 4px;
 
         margin-left: 8px;
-        margin-right: 8px; 
+        margin-right: 8px;
       }
     }
   }
@@ -299,7 +297,7 @@ export const ExcludeModalContainer = styled.div`
     justify-content: space-between;
     margin-bottom: 2rem;
     h1 {
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 600;
       font-size: 24px;
@@ -313,8 +311,8 @@ export const ExcludeModalContainer = styled.div`
     }
   }
 
-    h1 {
-    font-family: "Poppins";
+  h1 {
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
     font-size: 30px;
@@ -339,7 +337,7 @@ export const ExcludeModalContainer = styled.div`
       width: 196px;
       height: 54px;
 
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 600;
       font-size: 18px;
@@ -382,7 +380,7 @@ export const ExcludeModalContainer = styled.div`
     width: auto;
     max-width: 317px;
 
-    font-family: "Poppins";
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
     font-size: 30px;
@@ -404,7 +402,7 @@ export const ExcludeModalContainer = styled.div`
       width: 196px;
       height: 54px;
 
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 600;
       font-size: 18px;
@@ -421,8 +419,6 @@ export const ExcludeModalContainer = styled.div`
     .continue-btn {
       background: #2dd1ac;
     }
-
-    
   }
 `
 
@@ -493,7 +489,7 @@ export const EditCategoryModalContainer = styled.div`
   }
 
   h1 {
-    font-family: "Poppins";
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
     font-size: 30px;
@@ -535,6 +531,5 @@ export const EditCategoryModalContainer = styled.div`
       justify-content: center;
       align-items: center;
     }
-
   }
 `

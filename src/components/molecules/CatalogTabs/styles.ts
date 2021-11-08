@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   .container {
@@ -10,7 +10,7 @@ export const Container = styled.div`
 
     background: white;
     border-radius: 0 0 30px 30px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .bloc-tabs {
@@ -33,7 +33,7 @@ export const Container = styled.div`
     position: relative;
     outline: none;
 
-    font-family: "Poppins";
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
     font-size: 30px;
@@ -50,7 +50,7 @@ export const Container = styled.div`
   }
 
   .active-tabs::before {
-    content: "";
+    content: '';
 
     display: block;
     position: absolute;
@@ -85,4 +85,4 @@ export const Container = styled.div`
   .active-content {
     display: block;
   }
-`;
+`

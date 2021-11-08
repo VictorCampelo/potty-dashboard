@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -16,7 +16,7 @@ export const Container = styled.main`
     width: 530px;
     background: var(--white);
     border-radius: 30px;
-    box-shadow: 0px 0px 18px -4px #CCCCCC;
+    box-shadow: 0px 0px 18px -4px #cccccc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,7 +26,7 @@ export const Container = styled.main`
     .title {
       width: 100%;
       margin-bottom: 1rem;
-      
+
       h1 {
         font-size: 1.875rem;
         font-weight: 600;
@@ -44,7 +44,7 @@ export const Container = styled.main`
       display: flex;
       width: 100%;
       flex-direction: column;
-      gap: 1rem
+      gap: 1rem;
     }
 
     .buttonContainer {
@@ -91,8 +91,7 @@ export const Container = styled.main`
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1rem
-
+      gap: 1rem;
     }
   }
 `
