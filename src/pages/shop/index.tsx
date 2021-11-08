@@ -48,8 +48,8 @@ type EditTimeTable = {
 }
 
 interface Shop {
-  storeId: string;
-  id: string;
+  storeId: string
+  id: string
 }
 
 const Shop = ({ storeId, id }: Shop) => {
@@ -87,6 +87,8 @@ const Shop = ({ storeId, id }: Shop) => {
   const [sab, setSab] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
+
+  const router = useRouter()
 
   // Categorias
 
@@ -131,6 +133,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
       setTimeout(function () {
         setTimeTableModal(!timeTableModal)
+        router.reload()
       }, 2500)
     } catch (e) {
       if (e.message.includes('401')) {
@@ -191,7 +194,6 @@ const Shop = ({ storeId, id }: Shop) => {
   }
 
   async function loadData() {
-
     try {
       const { data } = await getBusiness(`${id}`)
 
@@ -670,18 +672,15 @@ const Shop = ({ storeId, id }: Shop) => {
 
 export default Shop
 
-
 export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const apiClient = setupApiClient(ctx);
+  const apiClient = setupApiClient(ctx)
 
-  const { data } = await apiClient.get("/stores/me");
+  const { data } = await apiClient.get('/stores/me')
 
   return {
     props: {
       storeId: data.id,
-      id: data.formatedName,
-    },
-  };
-});
-
-
+      id: data.formatedName
+    }
+  }
+})

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -60,8 +60,6 @@ export const Container = styled.main`
   }
 `
 
-
-
 export const Footer = styled.footer`
   width: calc(100% - 3rem);
   height: 260px;
@@ -77,7 +75,8 @@ export const Footer = styled.footer`
     margin-bottom: 1rem;
   }
 
-  span, a {
+  span,
+  a {
     display: flex;
     align-items: center;
     margin-bottom: 0.5rem;
@@ -86,7 +85,7 @@ export const Footer = styled.footer`
       margin-right: 0.5rem;
     }
   }
-`;
+`
 
 export const ProductCard = styled.div`
   width: 320px;
@@ -98,6 +97,10 @@ export const ProductCard = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  :hover {
+    cursor: pointer;
+  }
 
   img {
     width: 80%;
@@ -123,7 +126,7 @@ export const ProductCard = styled.div`
       font-weight: 600;
       margin-right: 0.5rem;
     }
-    
+
     small {
       font-weight: 600;
       text-decoration: line-through;
@@ -152,7 +155,7 @@ export const ProductCard = styled.div`
     margin-top: 0.5rem;
     font-size: 0.875rem;
   }
-`;
+`
 
 export const DescriptionCard = styled.div`
   width: 45%;
@@ -178,7 +181,7 @@ export const DescriptionCard = styled.div`
   a {
     display: inline;
     color: var(--blue-primary);
-    
+
     :hover {
       color: var(--blue-dark);
     }
@@ -194,7 +197,6 @@ export const StatusCard = styled.div`
   display: flex;
   flex-direction: column;
 
-  
   .status {
     width: 100%;
     padding: 1rem 1.5rem;
@@ -202,7 +204,7 @@ export const StatusCard = styled.div`
     box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
     display: flex;
     align-items: center;
-    
+
     .statusDot {
       width: 18px;
       height: 18px;
@@ -253,15 +255,15 @@ export const CategoriesCard = styled.div`
       color: var(--white);
     }
   }
-  
+
   .item {
     width: calc(100% - 1.5rem);
     padding: 1rem 0.5rem;
     border-bottom: 1px solid var(--gray-100);
-    
+
     :hover {
       cursor: pointer;
-      
+
       a {
         color: var(--gray-700);
       }
@@ -271,13 +273,13 @@ export const CategoriesCard = styled.div`
       font-weight: bold;
       color: var(--gray-600);
       text-decoration: none;
-      
+
       &.active {
         color: var(--green-confirmation);
       }
     }
   }
-`;
+`
 
 export const FilterCard = styled.div`
   height: 80px;
@@ -290,13 +292,13 @@ export const FilterCard = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 1.5rem;
-  
+
   .orderBy {
     font-weight: 600;
     font-size: 1.125rem;
     margin-right: 1rem;
   }
-  
+
   button {
     display: flex;
     align-items: center;
@@ -306,7 +308,7 @@ export const FilterCard = styled.div`
     height: 60%;
     padding: 0 1rem;
     border-right: 1px solid var(--gray-100);
-    
+
     :hover {
       .item:not(.active) {
         color: var(--gray-800);
@@ -318,7 +320,6 @@ export const FilterCard = styled.div`
     }
   }
 
-  
   .item {
     font-weight: bold;
     font-size: 1.125rem;
@@ -327,9 +328,8 @@ export const FilterCard = styled.div`
     &.active {
       color: var(--blue-primary);
     }
-    
   }
-`;
+`
 
 export const FilterCardSecondary = styled.div`
   height: 80px;
@@ -344,4 +344,4 @@ export const FilterCardSecondary = styled.div`
   margin-left: 1.5rem;
   padding: 0 1.5rem;
   gap: 1rem;
-`;
+`
