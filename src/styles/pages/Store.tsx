@@ -148,36 +148,39 @@ export const DescriptionShop = styled.div`
 `
 
 export const Container = styled.main`
+  margin-top: 30px;
   display: flex;
-  width: 95%;
+
+  width: 92%;
+  //margin-left: 2%;
   overflow-x: hidden;
-  justify-content: center;
-  align-items: center;
+  //justify-content: center;
+  //align-items: center;
   flex-direction: column;
   overflow-x: scroll;
 
   .descriptionContainer {
     width: 100%;
-    padding: 0 2rem;
+    //padding: 0 2rem;
     display: flex;
     justify-content: space-between;
 
-    margin-top: 10rem;
+    //margin-top: 10rem;
   }
 
   .productsContainer {
     width: 100%;
-    padding: 0 2rem;
+    //padding: 0 2rem;
     display: flex;
 
-    margin-top: 1.5rem;
+    //margin-top: 1.5rem;
 
     .products {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-content: space-between;
-      padding-left: 1.5rem;
+      //padding-left: 1.5rem;
 
       .filterWrapper {
         display: flex;
