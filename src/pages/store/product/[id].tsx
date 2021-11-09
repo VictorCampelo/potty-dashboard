@@ -9,7 +9,6 @@ import {
   Footer,
   FilterCard
 } from '../../../styles/pages/Product'
-import Header from '../../../components/molecules/Header/index'
 import React, { useState } from 'react'
 import ReactStars from 'react-stars'
 import CatalogTabs from '../../../components/molecules/CatalogTabs'

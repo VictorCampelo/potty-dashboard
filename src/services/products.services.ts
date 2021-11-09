@@ -17,8 +17,6 @@ type CategoryType = {
 }
 
 export const createProduct = async ({ data }: CreateProductType) => {
-  console.log(data);
-  
   const res = await api.post(`/products/`, data)
 
   return res

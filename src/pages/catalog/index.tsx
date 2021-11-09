@@ -184,7 +184,6 @@ const catalog = ({ storeId }: CatalogType) => {
 
       setProducts(formatedData)
     } catch (e) {
-      console.log(e);
       notify('Erro ao buscar produtos')
     }
     
@@ -193,7 +192,6 @@ const catalog = ({ storeId }: CatalogType) => {
       
       setCategories(data)
     } catch (e) {
-      console.log(e);
       notify('Erro ao buscar categorias')
     }
   }
@@ -391,7 +389,7 @@ const catalog = ({ storeId }: CatalogType) => {
             >
               Confirmar
             </button>
-            <button className="cancel-btn">
+            <button onClick={handleToggleExcludeCategoryModal} className="cancel-btn">
               Cancelar
             </button>
           </div>
@@ -676,9 +674,9 @@ const catalog = ({ storeId }: CatalogType) => {
                 <Input
                   label="Desconto"
                   icon={<FaPercentage />}
-                  placeholder="0.0%"
-                  mask="monetary"
-                  />
+                  mask="number"
+                  placeholder="0"
+                />
                 <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
@@ -850,7 +848,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 
   return {
     props: {
-      storeId: data.id,
+      storeId: data.store.id,
     },
   };
 });
