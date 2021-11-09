@@ -21,9 +21,12 @@ import {
   AiFillStar,
   AiOutlineWhatsApp
 } from 'react-icons/ai'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
+import { getProduct } from 'services/bussiness.services'
+import { toast } from 'react-toastify'
+import { useEffect } from 'react'
 
 const fakeFeedBack = [
   {
@@ -64,12 +67,6 @@ const fakeProducts = [
   },
   {
     id: 6
-  },
-  {
-    id: 7
-  },
-  {
-    id: 8
   }
 ]
 
@@ -98,12 +95,76 @@ const images = [
 ]
 
 const ProductShow = () => {
+  const router = useRouter()
+  const { id } = router.query
+
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
   const [toggleState, setToggleState] = useState(1)
 
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+  const [avgStars, setAvgStars] = useState(0)
+  const [sumFeedbacks, setSumFeedbacks] = useState(0)
+  const [sumOrders, setSumOrders] = useState(0)
+  const [price, setPrice] = useState(0)
+  const [discount, setDiscount] = useState(0)
+
+  const [isLoading, setIsLoading] = useState(true)
+
   function handleOpenProduct(id) {
     router.push(`/product/${id}`)
+  }
+
+  async function loadData() {
+    try {
+      const { data } = await getProduct(`${id}`)
+
+      setTitle(data?.title)
+      setDesc(data?.description)
+      setAvgStars(data?.avgStars)
+      setSumFeedbacks(data?.sumFeedbacks)
+      setSumOrders(data?.sumOrders)
+      setPrice(data?.price)
+      setDiscount(data?.discount)
+    } catch (e) {
+      if (e.response.status === 500) {
+        return toast.error('Erro interno, tente novamente', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      }
+      if (e.response.status === 404) {
+        toast.error('Produto não encontrado', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+        return router.push('/login')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (id) loadData()
+  }, [id])
+
+  function getDiscount(price, discount) {
+    const porcentagem = price / 100
+    const X = porcentagem * discount
+    const resultado = price - X
+    return resultado
   }
 
   return (
@@ -136,23 +197,28 @@ const ProductShow = () => {
               <img src={imagePreview} alt="Foto do produto" />
             </div>
             <div className="description-container">
-              <h1 className="title">
-                Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
-                Compartimento Extrafrio Fresh Zone Inox - 110v
-              </h1>
+              <h1 className="title">{title}</h1>
               <div className="desc">
                 <ReactStars count={1} size={23} value={1} edit={false} />
-                <p>5.0</p>
-                <p>2265 avaliações</p>
-                <p>5368 pedidos</p>
+                <p>{avgStars}</p>
+                <p>{sumFeedbacks} avaliações</p>
+                <p>{sumOrders} pedidos</p>
               </div>
 
               <div className="price-container">
-                <div className="descont">
-                  <h4>R$ 3.999,00</h4>
-                  <div>-25%</div>
-                </div>
-                <h1>R$ 2.999,00</h1>
+                {discount ? (
+                  <>
+                    <div className="discount">
+                      <h4>R$ {price}</h4>
+                      <div>-{discount}%</div>
+                    </div>
+                    <h1>R$ {getDiscount(price, discount)}</h1>
+                  </>
+                ) : (
+                  <>
+                    <h1>R$ {price}</h1>
+                  </>
+                )}
               </div>
               <div className="button-container">
                 <button>COMPRAR AGORA</button>
@@ -160,6 +226,7 @@ const ProductShow = () => {
               </div>
             </div>
           </CardProduct>
+
           <CardDesc>
             <CatalogTabs
               tab1="Descrição"
@@ -190,24 +257,8 @@ const ProductShow = () => {
                       </div>
                     </div>
                     <div className="right-container">
-                      <h1>Capacidade de 334 litros e prateleiras removíveis</h1>
-                      <p>
-                        Geladeira/Refrigerador Brastemp Frost Free Inverse -
-                        Branca 443L com Turbo Ice BRE57 ABANA
-                        <br />
-                        <br /> A Geladeira Brastemp Inverse Frost Free BRE57 443
-                        litros tem refrigerador em cima e freezer embaixo,
-                        deixando os alimentos mais utilizados sempre à mão. Com
-                        a função Turbo Ice, faça gelo mais rápido sempre que
-                        precisar. O modelo conta com Twist Ice, um exclusivo
-                        sistema que permite abastecer as formas de gelo de um
-                        jeito inteligente, evitando molhar o chão da cozinha,
-                        além de desenformar o gelo facilmente e armazená-lo em
-                        um recipiente portátil e prático, e Espaço Adapt,
-                        prateleiras com múltiplas combinações possíveis para
-                        armazenar itens de diversos tamanhos na porta de sua
-                        geladeira.
-                      </p>
+                      <h1>{desc.substring(0, 50)}</h1>
+                      <p>{desc}</p>
                     </div>
                   </div>
                 </>
@@ -218,7 +269,7 @@ const ProductShow = () => {
                     <header>
                       <h1 className="rate">Avaliações de Clientes</h1>
                       <div>
-                        <h1>5.0</h1>
+                        <h1>{avgStars}</h1>
                         <ReactStars
                           count={5}
                           size={50}
@@ -226,7 +277,7 @@ const ProductShow = () => {
                           edit={false}
                         />
                       </div>
-                      <p>(2265 avaliações)</p>
+                      <p>({sumFeedbacks} avaliações)</p>
                     </header>
                     <div className="container">
                       <div className="left-container">
@@ -322,6 +373,7 @@ const ProductShow = () => {
               }
             />
           </CardDesc>
+
           <ProductWrapper>
             {fakeProducts.map((e) => {
               return (
