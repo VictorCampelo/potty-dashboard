@@ -245,6 +245,7 @@ const catalog = ({ storeId }: CatalogType) => {
       setDescriptionProduct('')
       setInventoryProduct('')
       setDiscountProduct('')
+      setSelectedCategories([])
     } catch (e) {
       console.error(e)
 
@@ -296,6 +297,7 @@ const catalog = ({ storeId }: CatalogType) => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
+      categoriesIds: selectedCategories.map(cat => cat.value)
     }
 
     try {
@@ -314,6 +316,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setInventoryProduct('')
     setEditProductId('')
     setDiscountProduct('')
+    setSelectedCategories([])
     loadData()
     setEditProduct(false)
   }
@@ -692,21 +695,29 @@ const catalog = ({ storeId }: CatalogType) => {
             </div>
 
             <div className="right-area">
-              <Input
-                label="Quantidade atual"
-                mask="number"
-                icon={<FaCoins />}
-                placeholder="0"
-                value={inventoryProduct}
-                onChange={(e) => setInventoryProduct(e.target.value)}
-              />
+              <div className="input-container">
+                <Input
+                  label="Quantidade atual"
+                  icon={<FaCoins />}
+                  placeholder="0"
+                  mask="number"
+                  value={inventoryProduct}
+                  onChange={(e) => setInventoryProduct(e.target.value)}
+                />
+              </div>
 
-              <Input
-                label="Categoria"
-                icon={<VscSearch />}
-                placeholder="Categoria"
+              <MultiSelect
+                loading={false}
+                name="Categorias"
+                options={categories.map((cat) => ({
+                  value: String(cat.id),
+                  label: cat.name
+                }))}
+                placeholder="Suas categorias"
+                selectedValue={selectedCategories}
+                setSelectedValue={setSelectedCategories}
               />
-              <h3>{'Categorias adicionadas: ' + 0}</h3>
+              <h3>{'Categorias adicionadas: ' + selectedCategories.length}</h3>
 
               <h2>Foto do produto</h2>
 
