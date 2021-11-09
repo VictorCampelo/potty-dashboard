@@ -679,8 +679,8 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 
   return {
     props: {
-      storeId: data.id,
-      id: data.formatedName
+      storeId: data.store.id,
+      id: data.store.formatedName
     }
   }
 })

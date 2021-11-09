@@ -37,10 +37,10 @@ export const SelectStyles: StylesConfig<MyOptionType, false> = {
 export const SelectStylesMulti: StylesConfig<MyOptionType, true> = {
   control: styles => ({ 
     ...styles, 
-    backgroundColor: 'var(--gray-100)', 
-    border: 'none', 
+    backgroundColor: 'white', 
+    border: '1px solid black', 
     minHeight: '2rem', 
-    borderRadius: 11,
+    borderRadius: 8,
   }),
   indicatorSeparator: styles => ({ ...styles, backgroundColor: 'transparent' }),
   option: styles => ({...styles, textAlign: 'left' }),

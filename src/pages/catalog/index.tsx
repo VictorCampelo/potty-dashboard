@@ -48,6 +48,7 @@ import {
 } from '../../styles/pages/Catalog'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
+import { MultiSelect } from 'components/molecules/MultiSelect'
 
 type CategoryType = {
   name: string
@@ -75,7 +76,7 @@ type ProductType = {
   tags: any
   title: string
   updatedAt: string
-  categories: CategoryType[]
+  categories: string[]
 }
 
 interface CatalogType {
@@ -110,12 +111,12 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [toggleState, setToggleState] = useState(1)
 
-  // Modal de adição de categoria
+  const [selectedCategories, setSelectedCategories] = useState([])
+
   function toggleAddCategoryModal() {
     setCategoryAddModal(!addCategoryModal)
   }
 
-  // Modal de adição de produtos
   function handleOpenAddModal() {
     setAddModal(true)
   }
@@ -124,16 +125,9 @@ const catalog = ({ storeId }: CatalogType) => {
     setAddModal(!addModal)
   }
 
-  // Modal de edição de produtos
-  function handleOpenEditProduct() {
-    setEditProduct(true)
-  }
-
   function toggleEditProduct() {
     setEditProduct(!editProduct)
   }
-
-  // Modal de exclusao produtos
 
   function handleOpenExcludeModal() {
     setExcludeModal(true)
@@ -147,12 +141,10 @@ const catalog = ({ storeId }: CatalogType) => {
     setConfirmExclude(!confirmExclude)
   }
 
-  // Modal de edição de categoria
   function handleOpenEditCategoryModal() {
     setEditCategoryModal(true)
   }
 
-  // Modal de edição de categoria
   function handleToggleExcludeCategoryModal() {
     setExcludeCategoryModal(!excludeCategoryModal)
   }
@@ -231,6 +223,7 @@ const catalog = ({ storeId }: CatalogType) => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
+      categoriesIds: selectedCategories.map(cat => cat.value)
     }
 
     try {
@@ -516,7 +509,7 @@ const catalog = ({ storeId }: CatalogType) => {
         </EditCategoryModalContainer>
       </CustomModal>
 
-      {/* Add produto */}
+      {/* Add product */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleAddModal}
@@ -579,21 +572,29 @@ const catalog = ({ storeId }: CatalogType) => {
             </div>
 
             <div className="right-area">
-              <Input
-                label="Quantidade atual"
-                icon={<FaCoins />}
-                placeholder="0"
-                mask="number"
-                value={inventoryProduct}
-                onChange={(e) => setInventoryProduct(e.target.value)}
-              />
+              <div className="input-container">
+                <Input
+                  label="Quantidade atual"
+                  icon={<FaCoins />}
+                  placeholder="0"
+                  mask="number"
+                  value={inventoryProduct}
+                  onChange={(e) => setInventoryProduct(e.target.value)}
+                />
+              </div>
 
-              <Input
-                label="Categoria"
-                icon={<VscSearch />}
-                placeholder="Categoria"
+              <MultiSelect
+                loading={false}
+                name="Categorias"
+                options={categories.map((cat) => ({
+                  value: String(cat.id),
+                  label: cat.name
+                }))}
+                placeholder="Suas categorias"
+                selectedValue={selectedCategories}
+                setSelectedValue={setSelectedCategories}
               />
-              <h3>{'Categorias adicionadas: ' + 0}</h3>
+              <h3>{'Categorias adicionadas: ' + selectedCategories.length}</h3>
 
               <h2>Foto do produto</h2>
 
@@ -809,12 +810,13 @@ const catalog = ({ storeId }: CatalogType) => {
                       <CategoryListCard
                         key={cat.id + '-' + index}
                         date={products
-                          .filter((prd) => prd.categories.includes(cat))
-                          .map((data) => ({
-                            // ARRUMAR ESSA BUSCA
-                            name: data.title,
-                            amount: String(data.inventory)
-                          }))}
+                          .filter((prd) => prd.categories.includes(cat.name))
+                          .map((data) => {
+                            return{
+                              name: data.title,
+                              amount: String(data.inventory)
+                            } 
+                          })}
                         category={cat.name}
                         excludeBtn={() => {
                           setDeleteCategoryId(cat.id)

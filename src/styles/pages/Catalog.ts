@@ -183,6 +183,10 @@ export const AddProductModalContainer = styled.div`
     .right-area {
       margin-left: 30px;
       margin-top: -30px;
+
+      .input-container {
+        margin-bottom: 1rem;
+      }
     }
 
     h3 {
