@@ -11,7 +11,6 @@ export const Page = styled.div`
 export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  overflow-x: hidden;
 `
 
 export const TopoPage = styled.div`
@@ -135,7 +134,6 @@ export const DescriptionShop = styled.div`
 
     max-width: 500px;
     max-height: 150px;
-    overflow: hidden;
     font-family: Poppins;
     font-style: normal;
     font-weight: 500;
@@ -153,11 +151,9 @@ export const Container = styled.main`
 
   width: 92%;
   //margin-left: 2%;
-  overflow-x: hidden;
   //justify-content: center;
   //align-items: center;
   flex-direction: column;
-  overflow-x: scroll;
 
   .descriptionContainer {
     width: 100%;
@@ -448,10 +444,10 @@ export const CategoriesCard = styled.div`
   border-radius: 30px;
   background: var(--white);
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 
   .title {
     width: 100%;
@@ -494,7 +490,6 @@ export const FilterCard = styled.div`
   border-radius: 30px;
   background: var(--white);
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
-  overflow: hidden;
   display: flex;
   flex: 4;
   justify-content: center;
@@ -544,7 +539,6 @@ export const FilterCardSecondary = styled.div`
   border-radius: 30px;
   background: var(--white);
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
-  overflow: hidden;
   display: flex;
   flex: 2;
   justify-content: center;
