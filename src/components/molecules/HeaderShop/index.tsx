@@ -23,11 +23,14 @@ const Header: React.FC = () => {
         <Link href="/Gerencie">
           <a>Quem somos</a>
         </Link>
+        
+        <Link href="/cart">
+          <button>
+            <MdShoppingCart />
+            Carrinho
+          </button>
+        </Link>
 
-        <button>
-          <MdShoppingCart />
-          Carrinho
-        </button>
       </nav>
     </Container>
   )
