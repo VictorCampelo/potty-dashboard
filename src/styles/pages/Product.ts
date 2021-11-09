@@ -120,7 +120,7 @@ export const CardProduct = styled.div`
       flex-direction: column;
       justify-content: center;
 
-      .descont {
+      .discount {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -465,10 +465,13 @@ export const FilterCard = styled.div`
 
 export const ProductWrapper = styled.div`
   width: 100%;
-  height: 900px;
+  min-height: 900px;
+  height: auto;
 
   margin-top: 64px;
   margin-bottom: 74px;
+
+  padding: 0 50px;
 
   display: flex;
   flex-direction: row;

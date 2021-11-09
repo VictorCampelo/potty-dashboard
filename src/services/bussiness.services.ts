@@ -23,6 +23,11 @@ export async function getBusiness(id: string) {
   return res
 }
 
+export async function getStore(id: string) {
+  const res = await api.get(`/stores/id/${id}`)
+  return res
+}
+
 export async function getStoreId(name: string) {
   const res = await api.get(`/stores/${name}`)
 
@@ -32,6 +37,18 @@ export async function getStoreId(name: string) {
 export async function getProducts(id: string) {
   const res = await api.get(
     `/products/store/${id}?limit=10&offset=0&loadRelations=true&loadLastSolds=false`
+  )
+  return res
+}
+
+export async function getProduct(id: string) {
+  const res = await api.get(`/products/${id}`)
+  return res
+}
+
+export async function getRecommends(id: string) {
+  const res = await api.get(
+    `/products/store/${id}?limit=6&offset=0&loadRelations=true&loadLastSolds=false`
   )
   return res
 }
