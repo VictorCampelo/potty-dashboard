@@ -256,7 +256,7 @@ const ProductShow = () => {
                       </div>
                     </div>
                     <div className="right-container">
-                      <h1>{desc.substring(0, 50)}</h1>
+                      <h1>{title}</h1>
                       <p>{desc}</p>
                     </div>
                   </div>

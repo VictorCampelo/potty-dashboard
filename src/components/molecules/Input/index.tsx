@@ -66,7 +66,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
         <input
           type={password && isInputVisible ? 'password' : 'text'}
           ref={ref}
-          onKeyUp={(event) => handleOnChange(event)}
+          onChange={(event) => handleOnChange(event)}
           {...(!!rest.defaultValue && {
             defaultValue: masks[mask!](rest.defaultValue)
           })}
