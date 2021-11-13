@@ -1,44 +1,46 @@
-import Header from "../../components/molecules/Header";
-import Link from "next/link";
-import Head from "next/head";
-import { Container, Wrapper } from "../../styles/pages/preLogin";
+import Header from '../../components/molecules/Header'
+import Link from 'next/link'
+import Head from 'next/head'
+import { Container, Wrapper } from '../../styles/pages/preLogin'
 
-import { FiLock, FiMail } from 'react-icons/fi';
-import { Input } from "../../components/molecules/Input";
-import { Checkbox } from "../../components/atoms/Checkbox";
-import { useState } from "react";
-import { Button } from "../../components/atoms/Button";
-import { FaFacebook } from 'react-icons/fa';
-import { AiFillGoogleCircle } from 'react-icons/ai';
-import { useRouter } from "next/router";
-import { signUp } from "../../services/auth.services";
+import { FiLock, FiMail } from 'react-icons/fi'
+import { Input } from '../../components/molecules/Input'
+import { Checkbox } from '../../components/atoms/Checkbox'
+import { useState } from 'react'
+import { Button } from '../../components/atoms/Button'
+import { FaFacebook } from 'react-icons/fa'
+import { AiFillGoogleCircle } from 'react-icons/ai'
+import { useRouter } from 'next/router'
+import { signUp } from '../../services/auth.services'
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
-  const router = useRouter();
+  const router = useRouter()
 
-  async function handleSignUp(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
+  async function handleSignUp(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault()
 
     try {
       const user = {
         email,
-        firstName, 
-        lastName, 
+        firstName,
+        lastName,
         password,
         passwordConfirmation
       }
 
-      await signUp(user);
+      await signUp(user)
 
-      router.push('login');
-    } catch(e){
-      console.error(e);
+      router.push('login')
+    } catch (e) {
+      console.error(e)
     }
     // router.push('register/shopkeeper');
   }
@@ -49,7 +51,7 @@ const Register = () => {
         <title>Registro | Último</title>
       </Head>
 
-      <Header/>
+      <Header />
       <Container>
         <form>
           <div className="title">
@@ -57,54 +59,56 @@ const Register = () => {
           </div>
 
           <div className="inputContainer">
-            <Input 
-              label="Primeiro Nome" 
+            <Input
+              label="Primeiro Nome"
+              placeholder="Nome"
               value={firstName}
-              onChange={e => setFirstName(e.target.value)}
-              icon={<FiMail size={20} 
-              color="var(--black-800)" />} 
+              onChange={(e) => setFirstName(e.target.value)}
+              icon={<FiMail size={20} color="var(--black-800)" />}
             />
 
-            <Input 
-              label="Sobrenome" 
+            <Input
+              label="Sobrenome"
+              placeholder="Sobrenome"
               value={lastName}
-              onChange={e => setLastName(e.target.value)}
-              icon={<FiMail size={20} 
-              color="var(--black-800)" />} 
+              onChange={(e) => setLastName(e.target.value)}
+              icon={<FiMail size={20} color="var(--black-800)" />}
             />
 
-            <Input 
-              label="Email" 
+            <Input
+              label="Email"
+              placeholder="example@gmail.com"
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              icon={<FiMail size={20} 
-              color="var(--black-800)" />} 
+              onChange={(e) => setEmail(e.target.value)}
+              icon={<FiMail size={20} color="var(--black-800)" />}
             />
 
-            <Input 
-              label="Senha" 
+            <Input
+              label="Senha"
+              placeholder="********"
               value={password}
-              onChange={e => setPassword(e.target.value)}
-              password 
-              icon={<FiLock size={20} color="var(--black-800)" />} 
+              onChange={(e) => setPassword(e.target.value)}
+              password
+              icon={<FiLock size={20} color="var(--black-800)" />}
             />
-            
-            <Input 
-              label="Repetir senha" 
-              password 
+
+            <Input
+              label="Repetir senha"
+              placeholder="********"
+              password
               value={passwordConfirmation}
-              onChange={e => setPasswordConfirmation(e.target.value)}
-              icon={<FiLock size={20} color="var(--black-800)" />} 
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              icon={<FiLock size={20} color="var(--black-800)" />}
             />
           </div>
-          
+
           <div className="buttonContainer">
             <Button onClick={handleSignUp} title="CONTINUAR" />
           </div>
 
           <div className="divisorContainer">
             <div className="divisor" />
-              ou
+            ou
             <div className="divisor" />
           </div>
 
@@ -116,13 +120,13 @@ const Register = () => {
           <div className="register">
             Já possui conta?
             <Link href="/login">
-              <a>{' '}Faça seu login!</a>
+              <a> Faça seu login!</a>
             </Link>
           </div>
         </form>
       </Container>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
