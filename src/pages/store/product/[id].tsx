@@ -9,7 +9,7 @@ import {
   Footer,
   FilterCard
 } from '../../../styles/pages/Product'
-import React, { useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
 import CatalogTabs from '../../../components/molecules/CatalogTabs'
 import CardFeedback from '../../../components/molecules/CardFeedback'
@@ -26,6 +26,7 @@ import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
+import { CartContext } from 'contexts/CartContext'
 
 const fakeFeedBack = [
   {
@@ -96,11 +97,13 @@ const images = [
 const ProductShow = () => {
   const router = useRouter()
   const { id } = router.query
+  const { items, setItems } = useContext(CartContext);
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
   const [toggleState, setToggleState] = useState(1)
 
+  const [productId, setProductId] = useState('')
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [avgStars, setAvgStars] = useState(0)
@@ -126,6 +129,8 @@ const ProductShow = () => {
       setSumOrders(data?.sumOrders)
       setPrice(data?.price)
       setDiscount(data?.discount)
+      setProductId(data?.id)
+
     } catch (e) {
       if (e.response.status === 500) {
         return toast.error('Erro interno, tente novamente', {
@@ -164,6 +169,38 @@ const ProductShow = () => {
     const X = porcentagem * discount
     const resultado = price - X
     return resultado
+  }
+
+  const notifySuccess = useCallback((message: string) => {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }, [])
+
+  function handleAddToCart(){
+    if(items.find(it => it.productId == productId)){
+      const copyItems = [...items]
+      copyItems.forEach(it => {
+        if(it.productId == productId)
+          it.amount = it.amount + 1
+      })
+    } else {
+      setItems([...items, {
+        amount: 1,
+        price,
+        productId,
+        storeId: '1232',
+        title,
+      }])
+    }
+
+    notifySuccess("Item adicionado no carrinho")
   }
 
   return (
@@ -221,7 +258,7 @@ const ProductShow = () => {
               </div>
               <div className="button-container">
                 <button>COMPRAR AGORA</button>
-                <button>ADICIONAR AO CARRINHO</button>
+                <button onClick={handleAddToCart}>ADICIONAR AO CARRINHO</button>
               </div>
             </div>
           </CardProduct>

@@ -6,8 +6,20 @@ import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
 import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
+import { useContext } from 'react'
+import { CartContext } from 'contexts/CartContext'
 
 const Cart = () => {
+  const { items, setItems } = useContext(CartContext);
+
+  const total = items.reduce((prev, curr) => {
+    return prev + Number(curr.price) * Number(curr.amount)
+  }, 0)
+
+  function handleRemoveItem(id: string) {
+    setItems(items.filter(it => it.productId != id))
+  }
+
   return (
     <>
       <Head>
@@ -21,102 +33,60 @@ const Cart = () => {
           <h1>Meu carrinho</h1>
 
           <CartContainer>
-            <CartHead>
-              <section style={{ flex: 5, justifyContent: 'flex-start' }}>
-                <span>Produto</span>
-              </section>
+            {items.length == 0  ? (
+              <h1>Carrinho vazio!</h1>
+            ) : (
+              <>
+                <CartHead>
+                  <section style={{ flex: 5, justifyContent: 'flex-start' }}>
+                    <span>Produto</span>
+                  </section>
 
-              <section>
-                <span>Quantidade</span>
-              </section>
+                  <section>
+                    <span>Quantidade</span>
+                  </section>
 
-              <section>
-                <span>Subtotal</span>
-              </section>
+                  <section>
+                    <span>Subtotal</span>
+                  </section>
 
-              <section style={{ flex: 1 }} />
-            </CartHead>
+                  <section style={{ flex: 1 }} />
+                </CartHead>
 
-            <CartProduct>
-              <section style={{ flex: 5, justifyContent: 'flex-start' }}>
-                <div className="imgContainer">
-                  <AiFillCamera size={28} color="white" />
-                </div>
+                {items.map(it => (
+                  <CartProduct key={it.productId}>
+                    <section style={{ flex: 5, justifyContent: 'flex-start' }}>
+                      <div className="imgContainer">
+                        <AiFillCamera size={28} color="white" />
+                      </div>
 
-                <span>
-                  Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
-                  Compartimento Extrafrio Fresh Zone Inox - 110v
-                </span>
-              </section>
+                      <span>
+                        {it.title}
+                      </span>
+                    </section>
 
-              <Counter />
+                    <Counter id={it.productId} />
 
-              <section>
-                <strong>R$ 2.440,00</strong>
-              </section>
+                    <section>
+                      <strong>
+                        {new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(it.price * it.amount)}
+                      </strong>
+                    </section>
 
-              <section style={{ flex: 1 }}>
-                <button className="exclude">
-                  <IoTrashOutline size={24} color="var(--red)" />
+                    <section style={{ flex: 1 }}>
+                      <button className="exclude" onClick={() => handleRemoveItem(it.productId)}>
+                        <IoTrashOutline size={24} color="var(--red)" />
 
-                  <strong>Excluir</strong>
-                </button>
-              </section>
-            </CartProduct>
-
-            <CartProduct>
-              <section style={{ flex: 5, justifyContent: 'flex-start' }}>
-                <div className="imgContainer">
-                  <AiFillCamera size={28} color="white" />
-                </div>
-
-                <span>
-                  Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
-                  Compartimento Extrafrio Fresh Zone Inox - 110v
-                </span>
-              </section>
-
-              <Counter />
-
-              <section>
-                <strong>R$ 2.440,00</strong>
-              </section>
-
-              <section style={{ flex: 1 }}>
-                <button className="exclude">
-                  <IoTrashOutline size={24} color="var(--red)" />
-
-                  <strong>Excluir</strong>
-                </button>
-              </section>
-            </CartProduct>
-
-            <CartProduct>
-              <section style={{ flex: 5, justifyContent: 'flex-start' }}>
-                <div className="imgContainer">
-                  <AiFillCamera size={28} color="white" />
-                </div>
-
-                <span>
-                  Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
-                  Compartimento Extrafrio Fresh Zone Inox - 110v
-                </span>
-              </section>
-
-              <Counter />
-
-              <section>
-                <strong>R$ 2.440,00</strong>
-              </section>
-
-              <section style={{ flex: 1 }}>
-                <button className="exclude">
-                  <IoTrashOutline size={24} color="var(--red)" />
-
-                  <strong>Excluir</strong>
-                </button>
-              </section>
-            </CartProduct>
+                        <strong>Excluir</strong>
+                      </button>
+                    </section>
+                  </CartProduct>
+                ))}
+              </>
+            )}
           </CartContainer>
 
           <CartContainer
@@ -129,12 +99,17 @@ const Cart = () => {
           >
             <div className="info">
               <span>Total: </span>
-              <strong>R$ 13.431,12</strong>
-              <span>{' | '}13 items</span>
+              <strong>
+                {new Intl.NumberFormat('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL'
+                }).format(total)}
+              </strong>
+              <span>{' | '}{items.length > 1? items.length + ' item' : items.length + ' items'}</span>
             </div>
 
             <div className="buttonContainer">
-              <button className="empty">
+              <button className="empty" onClick={() => setItems([])}>
                 <IoTrashOutline size={24} color="var(--red)" />
                 ESVAZIAR CARRINHO
               </button>
@@ -177,6 +152,10 @@ export const CartContainer = styled.section`
   display: flex;
   margin-top: 2rem;
   flex-direction: column;
+
+  h1 {
+    padding: 2rem 1.5rem;
+  }
 
   .info {
     span,
@@ -249,6 +228,10 @@ export const CartProduct = styled.div`
     flex: 1;
     display: flex;
     justify-content: center;
+
+    span {
+      font-size: 1.5rem;
+    }
 
     .exclude {
       display: flex;

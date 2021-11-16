@@ -1,23 +1,42 @@
-import { useState } from 'react'
+import { CartContext } from 'contexts/CartContext'
+import { useContext } from 'react'
 import styled from 'styled-components'
 
-const Counter = () => {
-  const [value, setValue] = useState(1)
+interface Counter {
+  id: string;
+}
+
+const Counter = ({ id }: Counter) => {
+  const { items, setItems } = useContext(CartContext)
 
   return (
     <Container>
       <Button
-        className={value == 1 && 'inactive'}
+        className={items.find(it => it.productId == id).amount == 1 && 'inactive'}
         onClick={() => {
-          if (value > 1) setValue((old) => old - 1)
+          if (items.find(it => it.productId == id).amount > 1) setItems(items.map(it => {
+            if(it.productId == id)
+              return {
+                ...it,
+                amount: it.amount - 1
+              }
+            else return it
+          }))
         }}
       >
         -
       </Button>
-      {value}
+      {items.find(it => it.productId == id).amount}
       <Button
         onClick={() => {
-          setValue((old) => old + 1)
+          setItems(items.map(it => {
+            if(it.productId == id)
+              return {
+                ...it,
+                amount: it.amount + 1
+              }
+            else return it
+          }))
         }}
       >
         +
