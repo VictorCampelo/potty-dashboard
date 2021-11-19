@@ -23,7 +23,7 @@ export const Container = styled.header`
         transform: translate(-50%, -50%);
 
         padding: 30px 40px;
-        box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         border-radius: 30px;
         
         

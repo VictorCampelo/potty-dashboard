@@ -16,7 +16,7 @@ export const Container = styled.header`
         justify-content: center;  
         align-items: center;
 
-        box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         
         nav{
             width: 100%;
@@ -78,7 +78,7 @@ export const Container = styled.header`
         justify-content: center;  
         align-items: center;
 
-        box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         transition: all 0.3s ease-in-out;
 
         nav{

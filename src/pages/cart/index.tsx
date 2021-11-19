@@ -1,7 +1,7 @@
 import Header from '../../components/molecules/Header'
 import Head from 'next/head'
 import styled from 'styled-components'
-import HeaderProducts from 'components/molecules/HeaderProducts'
+import HeaderProducts from 'components/molecules/HeaderShop'
 import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
 import { AiFillCamera } from 'react-icons/ai'
@@ -148,7 +148,7 @@ export const CartContainer = styled.section`
   background: white;
   width: 100%;
   border-radius: 30px;
-  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   display: flex;
   margin-top: 2rem;
   flex-direction: column;
@@ -239,7 +239,7 @@ export const CartProduct = styled.div`
       background: white;
       border-radius: 30px;
       padding: 1rem;
-      box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
       strong {
         margin-left: 0.5rem;

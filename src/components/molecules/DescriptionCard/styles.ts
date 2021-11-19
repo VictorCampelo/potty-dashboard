@@ -5,7 +5,7 @@ export const Container = styled.section`
   margin-bottom: 20px;
 
   background: #ffffff;
-  box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 20px;
 
   .top {
@@ -153,7 +153,7 @@ export const Modal = styled.div`
     margin-bottom: 20px;
 
     background: #ffffff;
-    box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 20px;
 
     padding: 25px;

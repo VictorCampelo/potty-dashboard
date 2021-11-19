@@ -30,7 +30,7 @@ export const Container = styled.div<ContainerProp>`
       align-items: center;
 
       background: #ffffff;
-      box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
       border-radius: 30px;
       
       user-select: none;
@@ -115,7 +115,7 @@ export const Container = styled.div<ContainerProp>`
     padding: 0 15px;
 
     background: #ffffff;
-    box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 30px;
 
     font-family: "Poppins";

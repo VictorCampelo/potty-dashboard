@@ -37,7 +37,7 @@ export const CardProduct = styled.div`
 
   background: #fff;
 
-  box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 30px;
 
   display: flex;
@@ -217,7 +217,7 @@ export const CardDesc = styled.div`
 
   background: #fff;
 
-  box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 30px;
 
   padding: 25px 0;
@@ -487,9 +487,9 @@ export const Footer = styled.footer`
   height: 260px;
   border-radius: 30px;
   background: var(--white);
-  box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   padding: 2rem 3rem;
-  margin: 1.5rem;
+  margin: 1.5rem 0;
   display: flex;
   flex-direction: column;
 
