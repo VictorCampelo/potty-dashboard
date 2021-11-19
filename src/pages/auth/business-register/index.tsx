@@ -1,45 +1,44 @@
-import Header from "../../components/molecules/Header";
-import Head from "next/head";
-import { Container, Wrapper } from "../../styles/pages/preLogin";
+import Header from '../../../components/molecules/Header'
+import Head from 'next/head'
+import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
-import { FiMail, FiUser } from "react-icons/fi";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { Input } from "../../components/molecules/Input";
-import { Checkbox } from "../../components/atoms/Checkbox";
-import { useState } from "react";
-import { Button } from "../../components/atoms/Button";
-import { useContext } from "react";
-import { FaHome } from "react-icons/fa";
-import { BiBuildings, BiMapAlt } from "react-icons/bi";
-import Router from "next/router";
-import { ShopkeeperContext } from "../../contexts/ShopkeeperContext";
+import { FiMail, FiUser } from 'react-icons/fi'
+import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { Input } from '../../../components/molecules/Input'
+import { Checkbox } from '../../../components/atoms/Checkbox'
+import { useState } from 'react'
+import { Button } from '../../../components/atoms/Button'
+import { useContext } from 'react'
+import { FaHome } from 'react-icons/fa'
+import { BiBuildings, BiMapAlt } from 'react-icons/bi'
+import Router from 'next/router'
+import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 
 const BusinessRegister = () => {
-  const [businessName, setBusinessName] = useState("");
-  const [businessperson, setBusinessperson] = useState("");
-  const [cpfCnpj, setCpfCnpj] = useState("");
-  const [businessState, setBusinessState] = useState("");
-  const [businessCity, setBusinessCity] = useState("");
-  const [publicPlace, setPublicPlace] = useState("");
-  const [number, setNumer] = useState("");
-  const [district, setDistrict] = useState("");
-  const [cep, setCep] = useState("");
+  const [businessName, setBusinessName] = useState('')
+  const [businessperson, setBusinessperson] = useState('')
+  const [cpfCnpj, setCpfCnpj] = useState('')
+  const [businessState, setBusinessState] = useState('')
+  const [businessCity, setBusinessCity] = useState('')
+  const [publicPlace, setPublicPlace] = useState('')
+  const [number, setNumer] = useState('')
+  const [district, setDistrict] = useState('')
+  const [cep, setCep] = useState('')
 
-  const { setStore } = useContext(ShopkeeperContext);
+  const { setStore } = useContext(ShopkeeperContext)
 
   function handleContinueRegister() {
-
-    const store = { 
+    const store = {
       name: businessName,
       cpfCnpj,
       address: `${publicPlace}, n° ${number}, ${district}, CEP: ${cep}`,
       city: businessCity,
-      state: businessState,
+      state: businessState
     }
 
     setStore(store)
 
-    Router.push("/business-register/continue");
+    Router.push('/business-register/continue')
   }
 
   return (
@@ -145,7 +144,7 @@ const BusinessRegister = () => {
         </form>
       </Container>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default BusinessRegister;
+export default BusinessRegister

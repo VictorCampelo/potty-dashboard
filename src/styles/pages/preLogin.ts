@@ -27,6 +27,11 @@ export const Container = styled.main`
       width: 100%;
       margin-bottom: 1rem;
 
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
       h1 {
         font-size: 1.875rem;
         font-weight: 600;
@@ -37,6 +42,12 @@ export const Container = styled.main`
         text-align: justify;
         color: var(--gray-300);
         margin-top: 0.5rem;
+      }
+
+      a {
+        font-size: 0.8rem;
+        color: var(--gray-300);
+        margin-top: 0.7rem;
       }
     }
 

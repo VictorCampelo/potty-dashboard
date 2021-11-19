@@ -7,7 +7,7 @@ import {
   getCategories,
   getProducts,
   getStoreId
-} from '../../services/bussiness.services'
+} from '../../../services/bussiness.services'
 import {
   createCategory,
   createProduct,
@@ -15,7 +15,7 @@ import {
   deleteProduct,
   updateCategory,
   updateProduct
-} from '../../services/products.services'
+} from '../../../services/products.services'
 
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { FiPlus, FiSearch } from 'react-icons/fi'
@@ -31,21 +31,21 @@ import {
   MdOutlineArrowForwardIos
 } from 'react-icons/md'
 
-import { Button } from '../../components/atoms/Button'
-import CatalogTabs from '../../components/molecules/CatalogTabs'
-import { CategoryListCard } from '../../components/molecules/CategoryListCard'
-import CustomModal from '../../components/molecules/CustomModal'
-import DrawerLateral from '../../components/molecules/DrawerLateral'
-import { Input } from '../../components/molecules/Input'
-import { ProductListCard } from '../../components/molecules/ProductListCard'
-import { TextArea } from '../../components/molecules/TextArea'
+import { Button } from '../../../components/atoms/Button'
+import CatalogTabs from '../../../components/molecules/CatalogTabs'
+import { CategoryListCard } from '../../../components/molecules/CategoryListCard'
+import CustomModal from '../../../components/molecules/CustomModal'
+import DrawerLateral from '../../../components/molecules/DrawerLateral'
+import { Input } from '../../../components/molecules/Input'
+import { ProductListCard } from '../../../components/molecules/ProductListCard'
+import { TextArea } from '../../../components/molecules/TextArea'
 import {
   AddCategoryModalContainer,
   AddProductModalContainer,
   Container,
   EditCategoryModalContainer,
   ExcludeModalContainer
-} from '../../styles/pages/Catalog'
+} from '../../../styles/pages/Catalog'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { MultiSelect } from 'components/molecules/MultiSelect'
@@ -80,7 +80,7 @@ type ProductType = {
 }
 
 interface CatalogType {
-  storeId: string;
+  storeId: string
 }
 
 const catalog = ({ storeId }: CatalogType) => {
@@ -178,10 +178,10 @@ const catalog = ({ storeId }: CatalogType) => {
     } catch (e) {
       notify('Erro ao buscar produtos')
     }
-    
+
     try {
       const { data } = await getCategories(storeId)
-      
+
       setCategories(data)
     } catch (e) {
       notify('Erro ao buscar categorias')
@@ -219,11 +219,13 @@ const catalog = ({ storeId }: CatalogType) => {
   async function handleCreateProduct() {
     const body = {
       title: titleProduct,
-      price: Number(priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')),
+      price: Number(
+        priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+      ),
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
-      categoriesIds: selectedCategories.map(cat => cat.value)
+      categoriesIds: selectedCategories.map((cat) => cat.value)
     }
 
     try {
@@ -283,8 +285,8 @@ const catalog = ({ storeId }: CatalogType) => {
       await deleteProduct(deleteProductId)
 
       notifySuccess('Produto deletado com sucesso!')
-      setExcludeModal(false);
-      loadData();
+      setExcludeModal(false)
+      loadData()
     } catch (e) {
       notify('Erro ao excluir produto, tente novamente!')
     }
@@ -293,11 +295,13 @@ const catalog = ({ storeId }: CatalogType) => {
   const handleUpdateProduct = async () => {
     const body = {
       title: titleProduct,
-      price: Number(priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')),
+      price: Number(
+        priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+      ),
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
-      categoriesIds: selectedCategories.map(cat => cat.value)
+      categoriesIds: selectedCategories.map((cat) => cat.value)
     }
 
     try {
@@ -305,7 +309,7 @@ const catalog = ({ storeId }: CatalogType) => {
 
       notifySuccess('Produto deletado com sucesso!')
     } catch (e) {
-      console.error(e);
+      console.error(e)
 
       notify('Erro ao editar produto, tente novamente!')
     }
@@ -348,8 +352,8 @@ const catalog = ({ storeId }: CatalogType) => {
       notify('Erro ao editar produto, tente novamente!')
     }
 
-    loadData();
-    setEditCategoryModal(false);
+    loadData()
+    setEditCategoryModal(false)
   }
 
   useEffect(() => {
@@ -372,20 +376,23 @@ const catalog = ({ storeId }: CatalogType) => {
       >
         <ExcludeModalContainer>
           <h1>
-            Realmente deseja excluir <strong>definitivamente</strong>{' '}
-            esse produto?
+            Realmente deseja excluir <strong>definitivamente</strong> esse
+            produto?
           </h1>
 
           <div className="btn-container">
             <button
               onClick={() => {
                 handleDeleteCategory()
-              }} 
+              }}
               className="exclude-btn"
             >
               Confirmar
             </button>
-            <button onClick={handleToggleExcludeCategoryModal} className="cancel-btn">
+            <button
+              onClick={handleToggleExcludeCategoryModal}
+              className="cancel-btn"
+            >
               Cancelar
             </button>
           </div>
@@ -417,28 +424,28 @@ const catalog = ({ storeId }: CatalogType) => {
           ) : (
             <>
               <h1>
-                Realmente deseja excluir <strong>definitivamente</strong>{' '}
-                essa categoria?
+                Realmente deseja excluir <strong>definitivamente</strong> essa
+                categoria?
               </h1>
 
               <div className="btn-container">
-                <button
-                  onClick={handleDeleteProduct}
-                  className="exclude-btn"
-                >
+                <button onClick={handleDeleteProduct} className="exclude-btn">
                   Confirmar
                 </button>
-                <button onClick={() => {
-                  toggleExcludeModal()
-                  setDeleteProductId('')
-                }} className="cancel-btn">
+                <button
+                  onClick={() => {
+                    toggleExcludeModal()
+                    setDeleteProductId('')
+                  }}
+                  className="cancel-btn"
+                >
                   Cancelar
                 </button>
               </div>
             </>
           )}
         </ExcludeModalContainer>
-      </CustomModal>  
+      </CustomModal>
 
       {/* Add category */}
       <CustomModal
@@ -493,21 +500,19 @@ const catalog = ({ storeId }: CatalogType) => {
               color={'black'}
             />
           </div>
-          
+
           <div className="category-container">
             <Input
               label="Nome da categoria"
               placeholder="Categoria"
               icon={<FiSearch size={20} color="var(--black-800)" />}
               value={category}
-              onChange={e => setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.target.value)}
             />
           </div>
 
           <div className="category-btn-container">
-            <button onClick={handleUpdateCategory} >
-              Confirmar
-            </button>
+            <button onClick={handleUpdateCategory}>Confirmar</button>
           </div>
         </EditCategoryModalContainer>
       </CustomModal>
@@ -557,7 +562,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="number"
                   placeholder="0.0%"
                   value={discountProduct}
-                  onChange={e => setDiscountProduct(e.target.value)}
+                  onChange={(e) => setDiscountProduct(e.target.value)}
                 />
 
                 <div className="arrows">
@@ -672,7 +677,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 mask="monetary"
                 value={priceProduct}
                 onChange={(e) => setPriceProduct(e.target.value)}
-                />
+              />
 
               <div className="desconto">
                 <Input
@@ -823,10 +828,10 @@ const catalog = ({ storeId }: CatalogType) => {
                         date={products
                           .filter((prd) => prd.categories.includes(cat.name))
                           .map((data) => {
-                            return{
+                            return {
                               name: data.title,
                               amount: String(data.inventory)
-                            } 
+                            }
                           })}
                         category={cat.name}
                         excludeBtn={() => {
@@ -855,14 +860,13 @@ const catalog = ({ storeId }: CatalogType) => {
 export default catalog
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const apiClient = setupApiClient(ctx);
+  const apiClient = setupApiClient(ctx)
 
-  const { data } = await apiClient.get("/stores/me");
+  const { data } = await apiClient.get('/stores/me')
 
   return {
     props: {
-      storeId: data.store.id,
-    },
-  };
-});
-
+      storeId: data.store.id
+    }
+  }
+})

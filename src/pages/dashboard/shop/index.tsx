@@ -1,16 +1,16 @@
-import DrawerLateral from '../../components/molecules/DrawerLateral'
+import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import { IoIosClose } from 'react-icons/io'
 
 import React, { useState } from 'react'
-import { Container, ModalContainer } from '../../styles/pages/Shop'
+import { Container, ModalContainer } from '../../../styles/pages/Shop'
 
-import DescriptionCard from '../../components/molecules/DescriptionCard'
-import InfoCard from '../../components/molecules/InfoCard'
-import CustomModal from '../../components/molecules/CustomModal'
-import { Button } from '../../components/atoms/Button'
-import { Input } from '../../components/molecules/Input'
+import DescriptionCard from '../../../components/molecules/DescriptionCard'
+import InfoCard from '../../../components/molecules/InfoCard'
+import CustomModal from '../../../components/molecules/CustomModal'
+import { Button } from '../../../components/atoms/Button'
+import { Input } from '../../../components/molecules/Input'
 import { FiSearch } from 'react-icons/fi'
-import { CategoryCard } from '../../components/molecules/CategoryCard'
+import { CategoryCard } from '../../../components/molecules/CategoryCard'
 import { IoCellular, IoFastFood } from 'react-icons/io5'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { BiBuildings, BiMapAlt, BiTimeFive } from 'react-icons/bi'
@@ -25,7 +25,7 @@ import {
   editTimeTable,
   getBusiness,
   getStoreId
-} from '../../services/bussiness.services'
+} from '../../../services/bussiness.services'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'

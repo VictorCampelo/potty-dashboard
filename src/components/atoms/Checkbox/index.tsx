@@ -1,31 +1,29 @@
-import { Container } from "./styles";
-import { FaCheck } from 'react-icons/fa';
+import { Container } from './styles'
+import { FaCheck } from 'react-icons/fa'
 import Link from 'next/link'
 
 interface CheckboxProps {
-  confirm: boolean;
-  toggleConfirm: () => void;
-  label: string;
+  confirm: boolean
+  toggleConfirm: () => void
+  label: string
 }
 
 export const Checkbox = ({ confirm, toggleConfirm, label }: CheckboxProps) => {
   return (
-    <Container 
-      confirm={confirm}
-    > 
+    <Container confirm={confirm}>
       <div className="check">
-        <button 
+        <button
           type="button"
-          id="btn" 
-          className="btn" 
-          onClick={() => toggleConfirm()} 
+          id="btn"
+          className="btn"
+          onClick={() => toggleConfirm()}
         >
-          { confirm && <FaCheck  color="var(--gray-800)" />}
+          {confirm && <FaCheck color="var(--gray-800)" />}
         </button>
         <label htmlFor="btn">{label}</label>
       </div>
 
-      <Link href="/recover">
+      <Link href="/auth/recover">
         <a>Esqueceu sua senha</a>
       </Link>
     </Container>
