@@ -1,59 +1,59 @@
-import Header from "../../../components/molecules/Header";
-import Head from "next/head";
-import { Container, Wrapper } from "../../../styles/pages/preLogin";
+import Header from '../../../../components/molecules/Header'
+import Head from 'next/head'
+import { Container, Wrapper } from '../../../../styles/pages/preLogin'
 
-import { DescriptionInput } from "../../../components/molecules/DescriptionInput";
-import { ShopImage } from "../../../components/molecules/ShopImage";
-import { useContext, useState } from "react";
-import { Button } from "../../../components/atoms/Button";
-import { AiFillShop, AiFillCamera } from "react-icons/ai";
-import Router from "next/router";
+import { DescriptionInput } from '../../../../components/molecules/DescriptionInput'
+import { ShopImage } from '../../../../components/molecules/ShopImage'
+import { useContext, useState } from 'react'
+import { Button } from '../../../../components/atoms/Button'
+import { AiFillShop, AiFillCamera } from 'react-icons/ai'
+import Router from 'next/router'
 
-import { ShopkeeperContext } from "../../../contexts/ShopkeeperContext";
-import { api } from "../../../services/apiClient";
+import { ShopkeeperContext } from '../../../../contexts/ShopkeeperContext'
+import { api } from '../../../../services/apiClient'
 
 const BusinessRegister = () => {
-  const [desc, setDesc] = useState("");
-  const [imageSrc, setImageSrc] = useState(null);
+  const [desc, setDesc] = useState('')
+  const [imageSrc, setImageSrc] = useState(null)
 
-  const { userDto, storeDto } = useContext(ShopkeeperContext);
+  const { userDto, storeDto } = useContext(ShopkeeperContext)
 
   async function handleFinishRegister() {
     const body = {
       userDto: {
-        ...userDto,
+        ...userDto
       },
       storeDto: {
         ...storeDto,
         image: imageSrc,
-        description: desc,
-      },
-    };
+        description: desc
+      }
+    }
 
     try {
-      await api.post("auth/signup-store", body);
+      await api.post('auth/signup-store', body)
 
-      Router.push(`/login`);
+      Router.push(`/login`)
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
   }
 
   function readFile(file: File) {
     return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => resolve(reader.result), false);
-      reader.readAsDataURL(file);
-    });
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result), false)
+      reader.readAsDataURL(file)
+    })
   }
 
   const onFileChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      let imageDataUrl = await readFile(file);
-      setImageSrc(imageDataUrl);
+      const file = e.target.files[0]
+      const imageDataUrl = await readFile(file)
+      setImageSrc(imageDataUrl)
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -81,7 +81,7 @@ const BusinessRegister = () => {
                   accept="image/*"
                   multiple={false}
                   onChange={onFileChange}
-                  style={{ display: "none" }}
+                  style={{ display: 'none' }}
                 />
               }
             />
@@ -106,7 +106,7 @@ const BusinessRegister = () => {
         </form>
       </Container>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default BusinessRegister;
+export default BusinessRegister

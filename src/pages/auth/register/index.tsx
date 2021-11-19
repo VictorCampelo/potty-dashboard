@@ -1,17 +1,17 @@
-import Header from '../../components/molecules/Header'
+import Header from '../../../components/molecules/Header'
 import Link from 'next/link'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { FiLock, FiMail } from 'react-icons/fi'
-import { Input } from '../../components/molecules/Input'
-import { Checkbox } from '../../components/atoms/Checkbox'
+import { Input } from '../../../components/molecules/Input'
+import { Checkbox } from '../../../components/atoms/Checkbox'
 import { useState } from 'react'
-import { Button } from '../../components/atoms/Button'
+import { Button } from '../../../components/atoms/Button'
 import { FaFacebook } from 'react-icons/fa'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
-import { signUp } from '../../services/auth.services'
+import { signUp } from '../../../services/auth.services'
 
 const Register = () => {
   const [email, setEmail] = useState('')
@@ -42,7 +42,6 @@ const Register = () => {
     } catch (e) {
       console.error(e)
     }
-    // router.push('register/shopkeeper');
   }
 
   return (
@@ -56,6 +55,9 @@ const Register = () => {
         <form>
           <div className="title">
             <h1>Cadastro</h1>
+            <Link href="/auth/register-shopkeeper">
+              <a>Se cadastrar como lojista</a>
+            </Link>
           </div>
 
           <div className="inputContainer">
@@ -77,7 +79,7 @@ const Register = () => {
 
             <Input
               label="Email"
-              placeholder="example@gmail.com"
+              placeholder="exemplo@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               icon={<FiMail size={20} color="var(--black-800)" />}
@@ -118,9 +120,9 @@ const Register = () => {
           </div>
 
           <div className="register">
-            Já possui conta?
-            <Link href="/login">
-              <a> Faça seu login!</a>
+            Já possui conta?{' '}
+            <Link href="/auth/login">
+              <a>Faça seu login!</a>
             </Link>
           </div>
         </form>
