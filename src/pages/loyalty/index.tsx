@@ -1,13 +1,12 @@
-import styled from "styled-components";
-import Header from "../../components/molecules/Header";
-import GlobalStyle from "../../styles/GlobalStyle";
+import styled from 'styled-components'
+import Header from '../../components/molecules/Header'
 
 const Loyalty = () => {
   return (
     <div>
-      <Header/>
+      <Header />
     </div>
-  );
-};
+  )
+}
 
-export default Loyalty;
+export default Loyalty

@@ -12,7 +12,6 @@ export const Container = styled.div`
     background: #f4f4f6;
 
     border-radius: 8px;
-    margin-right: 10px;
 
     .left-area {
       display: flex;

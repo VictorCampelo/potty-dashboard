@@ -5,8 +5,9 @@ interface ContainerProp {
 }
 
 export const Container = styled.div<ContainerProp>`
-  max-width: 315px;
+  min-width: 315px;
   ${(props) => props.width && `max-width: ${props.width}px;`}
+  width: 100%;
   margin-bottom: 10px;
 
   border: 1px solid #d8d9dd;

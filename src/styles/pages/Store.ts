@@ -214,13 +214,13 @@ export const Container = styled.main`
 `
 
 export const Footer = styled.footer`
-  width: calc(100% - 3rem);
+  width: 100%;
   height: 260px;
   border-radius: 30px;
   background: var(--white);
   box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
   padding: 2rem 3rem;
-  margin: 1.5rem;
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
 

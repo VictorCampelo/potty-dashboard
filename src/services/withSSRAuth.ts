@@ -1,39 +1,45 @@
-import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { destroyCookie, parseCookies } from "nookies";
-import { AuthTokenError } from "../services/errors/AuthTokenError";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult
+} from 'next'
+import { destroyCookie, parseCookies } from 'nookies'
+import { AuthTokenError } from '../services/errors/AuthTokenError'
 
 export function withSSRAuth<P>(fn: GetServerSideProps<P>) {
-  return async (ctx: GetServerSidePropsContext):Promise<GetServerSidePropsResult<P>> => {
-    const cookies = parseCookies(ctx);
+  return async (
+    ctx: GetServerSidePropsContext
+  ): Promise<GetServerSidePropsResult<P>> => {
+    const cookies = parseCookies(ctx)
     const token = cookies['ultimo.auth.token']
 
-    if(!token) {
+    if (!token) {
       return {
         redirect: {
-          destination: '/login',
-          permanent: false,
+          destination: '/auth/login',
+          permanent: false
         }
       }
-    } 
+    }
 
     try {
-      return await fn(ctx); 
+      return await fn(ctx)
     } catch (err) {
-      if(err instanceof AuthTokenError) {
-        destroyCookie(ctx, 'ultimo.auth.token');
-    
+      if (err instanceof AuthTokenError) {
+        destroyCookie(ctx, 'ultimo.auth.token')
+
         return {
           redirect: {
-            destination: '/login',
-            permanent: false,
+            destination: '/auth/login',
+            permanent: false
           }
         }
       }
     }
-    
+
     return {
       redirect: {
-        destination: '/login',
+        destination: '/auth/login',
         permanent: false
       }
     }
