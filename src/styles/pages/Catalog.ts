@@ -236,7 +236,8 @@ export const AddProductModalContainer = styled.div`
         color: #363f4e;
       }
 
-      button {
+      label {
+        cursor: pointer;
         margin-left: -10px;
         display: flex;
         justify-content: center;
@@ -261,18 +262,18 @@ export const AddProductModalContainer = styled.div`
     }
 
     .array-fotos {
-      margin-top: 10px;
+      margin-top: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
 
       .card-image {
+        width: 100px;
+        height: 100px;
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
-
-        padding: 30px;
 
         background: #fefdf9;
         box-shadow: -2px 4px 5px rgba(0, 0, 0, 0.15);
@@ -280,6 +281,10 @@ export const AddProductModalContainer = styled.div`
 
         margin-left: 8px;
         margin-right: 8px;
+
+        img {
+          object-fit: cover;
+        }
       }
     }
   }

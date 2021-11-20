@@ -1,19 +1,19 @@
-import { Container } from "./styles";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { RiPencilFill, RiCamera2Fill } from "react-icons/ri";
-import EllipsisText from "react-ellipsis-text";
+import { Container } from './styles'
+import { IoTrashBinOutline } from 'react-icons/io5'
+import { RiPencilFill, RiCamera2Fill } from 'react-icons/ri'
+import { ellipsis } from 'functions/ellipsis'
 
 interface ProductListCard extends React.AllHTMLAttributes<HTMLAllCollection> {
-  icon: string;
-  name: string;
-  code: string;
-  category: string;
-  amount: number;
-  price: number;
-  excludeBtn: any;
-  editBtn: any;
-  isRed?: boolean;
-  isGreen?: boolean;
+  icon: string
+  name: string
+  code: string
+  category: string
+  amount: number
+  price: number
+  excludeBtn: any
+  editBtn: any
+  isRed?: boolean
+  isGreen?: boolean
 }
 
 export const ProductListCard = ({
@@ -26,7 +26,7 @@ export const ProductListCard = ({
   excludeBtn,
   editBtn,
   isRed,
-  isGreen,
+  isGreen
 }: ProductListCard) => {
   return (
     <Container isRed={isRed} isGreen={isGreen}>
@@ -49,20 +49,13 @@ export const ProductListCard = ({
               <td className="title">Preço</td>
             </tr>
             <tr>
+              <td className="children">{ellipsis(name, 10)}</td>
+              <td className="children">{ellipsis(code, 10)}</td>
+              <td className="children">{ellipsis(category, 10)}</td>
+              <td className="children">{ellipsis(String(amount), 10)}</td>
               <td className="children">
-                <EllipsisText text={String(name)} length={10} />
-              </td>
-              <td className="children">
-                <EllipsisText text={String(code)} length={10} />
-              </td>
-              <td className="children">
-                <EllipsisText text={String(category)} length={10} />
-              </td>
-              <td className="children">
-                <EllipsisText text={String(amount)} length={10} />
-              </td>
-              <td className="children">
-                <EllipsisText text={"R$" + String(price)} length={10} />
+                <span>R$ </span>
+                {ellipsis(String(price), 10)}
               </td>
             </tr>
           </div>
@@ -81,5 +74,5 @@ export const ProductListCard = ({
         </div>
       </div>
     </Container>
-  );
-};
+  )
+}

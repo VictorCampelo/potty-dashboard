@@ -9,6 +9,13 @@ type ProductType = {
   price: number
   description: string
   inventory: number
+  files: Array<ImageType>
+}
+
+type ImageType = {
+  one: string
+  two: string
+  three: string
 }
 
 type CategoryType = {

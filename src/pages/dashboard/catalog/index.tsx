@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
 import {
   getCategories,
-  getProducts,
-  getStoreId
+  getProducts
 } from '../../../services/bussiness.services'
 import {
   createCategory,
@@ -24,7 +22,6 @@ import { FaMoneyBill, FaPercentage, FaCoins } from 'react-icons/fa'
 import { GoArrowRight, GoArrowLeft } from 'react-icons/go'
 import { IoTrashBinOutline } from 'react-icons/io5'
 import { FiBox } from 'react-icons/fi'
-import { VscSearch } from 'react-icons/vsc'
 import {
   MdUpload,
   MdOutlineArrowBackIosNew,
@@ -108,6 +105,7 @@ const catalog = ({ storeId }: CatalogType) => {
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
   const [discountProduct, setDiscountProduct] = useState('')
+  const [imageSrc, setImageSrc] = useState(null)
 
   const [toggleState, setToggleState] = useState(1)
 
@@ -123,10 +121,12 @@ const catalog = ({ storeId }: CatalogType) => {
 
   function toggleAddModal() {
     setAddModal(!addModal)
+    setImageSrc(null)
   }
 
   function toggleEditProduct() {
     setEditProduct(!editProduct)
+    setImageSrc(null)
   }
 
   function handleOpenExcludeModal() {
@@ -153,8 +153,32 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(!editCategoryModal)
   }
 
-  const notify = useCallback((message: string) => {
-    toast.error(message, {
+  function readFile(file: File) {
+    const result = new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result), false)
+      reader.readAsDataURL(file)
+    })
+    return result
+  }
+
+  const onFileChange = async (e) => {
+    if (e.target.files && e.target.files.length <= 3) {
+      const One = await readFile(e.target.files[0])
+      const Two = await readFile(e.target.files[1])
+      const Three = await readFile(e.target.files[2])
+
+      const data = {
+        one: One,
+        two: Two,
+        three: Three
+      }
+      setImageSrc(data)
+    }
+  }
+
+  const notifySuccess = useCallback((message: string) => {
+    toast.success(message, {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -165,31 +189,8 @@ const catalog = ({ storeId }: CatalogType) => {
     })
   }, [])
 
-  const loadData = async () => {
-    try {
-      const { data } = await getProducts(storeId)
-
-      const formatedData = data.map((it) => ({
-        ...it,
-        categories: it.categories.map((cat: CategoryType) => cat.name)
-      }))
-
-      setProducts(formatedData)
-    } catch (e) {
-      notify('Erro ao buscar produtos')
-    }
-
-    try {
-      const { data } = await getCategories(storeId)
-
-      setCategories(data)
-    } catch (e) {
-      notify('Erro ao buscar categorias')
-    }
-  }
-
-  const notifySuccess = useCallback((message: string) => {
-    toast.success(message, {
+  const notify = useCallback((message: string) => {
+    toast.error(message, {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -225,7 +226,8 @@ const catalog = ({ storeId }: CatalogType) => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
-      categoriesIds: selectedCategories.map((cat) => cat.value)
+      categoriesIds: selectedCategories.map((cat) => cat.value),
+      files: imageSrc
     }
 
     try {
@@ -301,7 +303,8 @@ const catalog = ({ storeId }: CatalogType) => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
-      categoriesIds: selectedCategories.map((cat) => cat.value)
+      categoriesIds: selectedCategories.map((cat) => cat.value),
+      files: imageSrc
     }
 
     try {
@@ -354,6 +357,29 @@ const catalog = ({ storeId }: CatalogType) => {
 
     loadData()
     setEditCategoryModal(false)
+  }
+
+  const loadData = async () => {
+    try {
+      const { data } = await getProducts(storeId)
+
+      const formatedData = data.map((it) => ({
+        ...it,
+        categories: it.categories.map((cat: CategoryType) => cat.name)
+      }))
+
+      setProducts(formatedData)
+    } catch (e) {
+      notify('Erro ao buscar produtos')
+    }
+
+    try {
+      const { data } = await getCategories(storeId)
+
+      setCategories(data)
+    } catch (e) {
+      notify('Erro ao buscar categorias')
+    }
   }
 
   useEffect(() => {
@@ -608,22 +634,59 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <div className="foto">
                 <div className="title-foto">Foto</div>
-                <button>
+                <label htmlFor="image">
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={true}
+                    maxLength={3}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                  />
                   Enviar foto
                   <MdUpload size={20} />
-                </button>
+                </label>
               </div>
 
               <div className="array-fotos">
                 <MdOutlineArrowBackIosNew />
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.one}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.two}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.three}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <MdOutlineArrowForwardIos />
               </div>
@@ -728,22 +791,59 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <div className="foto">
                 <div className="title-foto">Foto</div>
-                <button>
+                <label htmlFor="image">
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={true}
+                    maxLength={3}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                  />
                   Enviar foto
                   <MdUpload size={20} />
-                </button>
+                </label>
               </div>
 
               <div className="array-fotos">
                 <MdOutlineArrowBackIosNew />
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.one}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.two}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.three}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <MdOutlineArrowForwardIos />
               </div>

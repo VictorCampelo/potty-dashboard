@@ -29,7 +29,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
-import EllipsisText from 'react-ellipsis-text'
+import { ellipsis } from 'functions/ellipsis'
 
 const Products = () => {
   const router = useRouter()
@@ -339,9 +339,7 @@ const Products = () => {
                             src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
                             alt="geladeira frost free"
                           />
-                          <span className="title">
-                            <EllipsisText text={String(e.title)} length={30} />
-                          </span>
+                          <span className="title">{ellipsis(e.title, 30)}</span>
                           <div className="price">
                             <span>R$ {e.price}</span>
                             <small>
@@ -358,12 +356,7 @@ const Products = () => {
                               {e.avgStars} | {e.sumOrders} Pedidos
                             </span>
                           </div>
-                          <p>
-                            <EllipsisText
-                              text={String(e.description)}
-                              length={120}
-                            />
-                          </p>
+                          <p>{ellipsis(e.description, 120)}</p>
                         </ProductCard>
                       )
                     })}
@@ -383,10 +376,7 @@ const Products = () => {
                           />
                           <div className="infos">
                             <span className="title">
-                              <EllipsisText
-                                text={String(e.title)}
-                                length={70}
-                              />
+                              {ellipsis(e.title, 70)}
                             </span>
                             <div className="score">
                               <AiFillStar
@@ -405,12 +395,7 @@ const Products = () => {
                               </small>
                             </div>
 
-                            <p>
-                              <EllipsisText
-                                text={String(e.description)}
-                                length={220}
-                              />
-                            </p>
+                            <p>{ellipsis(e.description, 120)}</p>
                           </div>
                         </HorizonCard>
                       )
