@@ -117,9 +117,7 @@ const Landing = ({ stores }: Landing) => {
 }
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const apiClient = setupApiClient(ctx)
-
-  const { data } = await apiClient.get('stores')
+  const { data } = await api.get('stores')
 
   return {
     props: {
