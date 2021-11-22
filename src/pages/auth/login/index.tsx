@@ -68,14 +68,14 @@ const Login = () => {
       const res = await signIn(user)
 
       if (res.status === 200 || res.status === 201) {
-        return router.push('/shopkeeper')
+        return router.push('/dashboard/shopkeeper')
       }
     } catch (e) {
       if (e.message.includes(401) || e.message.includes(404)) {
         return handleSendErrorToast({ newMessage: 'Email ou senha incorretos' })
       } else {
         if (e.message.includes(412)) {
-          return router.push('/register/confirmation-token')
+          return router.push('/auth/register/confirmation-token')
         }
         handleSendErrorToast({
           newMessage: 'Erro interno, tente novamente mais tarde'

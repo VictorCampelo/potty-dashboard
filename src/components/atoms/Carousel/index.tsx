@@ -1,18 +1,35 @@
-import React, { useRef } from "react";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import styled from "styled-components";
+import React, { useRef } from 'react'
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
+import styled from 'styled-components'
+import Link from 'next/link'
+import { api } from 'services/apiClient'
 
-const Carousel = () => {
-  const carousel = useRef(null);
+interface Carousel {
+  data: {
+    id: string
+    name: string
+    formatedName: string
+    avgStars: number
+    sumStars: number
+    city: string
+  }[]
+}
 
-  function handleScrollLeft(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
+const Carousel = ({ data = [] }: Carousel) => {
+  const carousel = useRef(null)
+
+  function handleScrollLeft(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault()
     carousel.current.scrollLeft -= 276
   }
-  
-  function handleScrollRight(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
+
+  function handleScrollRight(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault()
     carousel.current.scrollLeft += 276
   }
 
@@ -23,565 +40,54 @@ const Carousel = () => {
       </Button>
 
       <Container ref={carousel}>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
+        {data.map((store) => (
+          <Link href={`/store/${store.formatedName}`} key={store.id}>
+            <Item>
+              <div className="head">
+                <img
+                  src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg"
+                  className="store-banner"
+                  alt="banner"
+                />
+              </div>
 
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
+              <div className="logo">
+                <img
+                  src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png"
+                  alt="logo"
+                />
+              </div>
 
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
+              <div className="info">
+                <h3>{store.name}</h3>
 
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
+                <div className="stars">
+                  {[...new Array(store.avgStars)].map((e) => {
+                    return (
+                      <AiFillStar
+                        key={e + 'fill'}
+                        size={24}
+                        color="var(--gold)"
+                      />
+                    )
+                  })}
+                  {[...new Array(5 - store.avgStars)].map((e) => {
+                    return (
+                      <AiOutlineStar
+                        key={e + 'outline'}
+                        size={24}
+                        color="var(--gold)"
+                      />
+                    )
+                  })}
+                  <small>({store.sumStars})</small>
+                </div>
+              </div>
 
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
-        <Item>
-          <div className="head">
-            <img src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg" className="store-banner" alt="banner" />
-          </div>
-
-          <div className="logo">
-            <img src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png" alt="logo" />
-          </div>
-
-          <div className="info">
-            <h3>
-              Super Mercado dell
-            </h3>
-
-            <div className="stars">
-              {[...new Array(3)].map((e) => {
-                return (
-                  <AiFillStar
-                    key={e + 'fill'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              {[...new Array(5 - 3)].map((e) => {
-                return (
-                  <AiOutlineStar
-                    key={e + 'outline'}
-                    size={24}
-                    color="var(--gold)"
-                  />
-                )
-              })}
-              <small>
-                (1235)
-              </small>
-            </div>
-          </div>
-          
-          <span className="city">
-            Teresina
-          </span>
-        </Item>
+              <span className="city">{store.city}</span>
+            </Item>
+          </Link>
+        ))}
       </Container>
 
       <Button onClick={handleScrollRight}>
@@ -591,7 +97,7 @@ const Carousel = () => {
   )
 }
 
-export default Carousel;
+export default Carousel
 
 const Wrapper = styled.div`
   width: 114%;
@@ -617,7 +123,7 @@ const Button = styled.button`
 const Container = styled.div`
   display: flex;
   width: 100%;
-  padding: 0.5rem 0.25rem; 
+  padding: 0.5rem 0.25rem;
 
   overflow-x: scroll;
   scroll-behavior: smooth;
@@ -627,7 +133,7 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
 const Item = styled.div`
   width: 260px;
@@ -661,7 +167,6 @@ const Item = styled.div`
     margin-top: -2.5rem;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-
 
     img {
       width: 100%;
@@ -700,4 +205,4 @@ const Item = styled.div`
     margin-top: 0.6rem;
     color: var(--gray-600);
   }
-`;
+`

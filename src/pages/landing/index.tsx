@@ -1,13 +1,21 @@
-import Head from "next/head";
-import Header from "../../components/molecules/HeaderShop";
+import Head from 'next/head'
+import Header from '../../components/molecules/HeaderShop'
 
-import styled from "styled-components";
-import Carousel from "components/atoms/Carousel";
-import { Footer } from "styles/pages/Product";
-import { AiFillFacebook, AiFillPhone, AiOutlineWhatsApp } from "react-icons/ai";
-import { Button } from "components/atoms/Button";
+import styled from 'styled-components'
+import Carousel from 'components/atoms/Carousel'
+import { Footer } from 'styles/pages/Product'
+import { AiFillFacebook, AiFillPhone, AiOutlineWhatsApp } from 'react-icons/ai'
+import { Button } from 'components/atoms/Button'
+import { useEffect, useState } from 'react'
+import { api } from 'services/apiClient'
+import { withSSRAuth } from 'services/withSSRAuth'
+import { setupApiClient } from 'services/api'
 
-const Landing = () => {
+interface Landing {
+  stores: []
+}
+
+const Landing = ({ stores }: Landing) => {
   return (
     <>
       <Head>
@@ -39,40 +47,41 @@ const Landing = () => {
               <option>Brinquedo</option>
               <option>Móveis</option>
               <option>Eletrodomésticos</option>
-
             </Select>
           </div>
 
-          <div className="carousel-container">
-            <div className="carousel-item">
-              <span className="title">Mercadinho e mercearias</span>
+          {stores.length !== 0 && (
+            <div className="carousel-container">
+              <div className="carousel-item">
+                <span className="title">Mercadinho e mercearias</span>
 
-              <Carousel />
+                <Carousel data={stores} />
+              </div>
+
+              <div className="carousel-item">
+                <span className="title">Eletrônicos e eletrodomésticos</span>
+                <Carousel data={stores} />
+              </div>
+
+              <div className="carousel-item">
+                <span className="title">Restaurantes</span>
+                <Carousel data={stores} />
+              </div>
             </div>
-
-            <div className="carousel-item">
-              <span className="title">Eletrônicos e eletrodomésticos</span>
-              <Carousel />
-            </div>
-
-            <div className="carousel-item">
-              <span className="title">Restaurantes</span>
-              <Carousel />
-            </div>
-          </div>
-
+          )}
         </Content>
 
-        <Content style={{maxWidth: '100%', paddingLeft: 0}}>
+        <Content style={{ maxWidth: '100%', paddingLeft: 0 }}>
           <section className="description">
             <img src="/images/people.png" alt="People" />
 
             <div className="description-text">
               <h1>Divulgue facilmente seus produtos e serviços </h1>
               <span>
-                O Piauí Delivery é a forma mais rápida do seu negócio ser visto 
-                no mundo digital. A plataforma funciona como um catálogo online 
-                de todos os estabelecimentos no Piauí que trabalham com entregas.
+                O Piauí Delivery é a forma mais rápida do seu negócio ser visto
+                no mundo digital. A plataforma funciona como um catálogo online
+                de todos os estabelecimentos no Piauí que trabalham com
+                entregas.
               </span>
 
               <div className="button-container">
@@ -103,10 +112,21 @@ const Landing = () => {
           </Footer>
         </Content>
       </Container>
-
     </>
-  );
+  )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const apiClient = setupApiClient(ctx)
+
+  const { data } = await apiClient.get('stores')
+
+  return {
+    props: {
+      stores: data
+    }
+  }
+})
 
 export const Container = styled.main`
   width: 100%;
@@ -115,7 +135,7 @@ export const Container = styled.main`
   justify-content: center;
   display: flex;
   flex-direction: column;
-`;
+`
 
 export const Content = styled.section`
   max-width: 1420px;
@@ -134,7 +154,7 @@ export const Content = styled.section`
     width: 100%;
     margin-top: 4rem;
   }
-  
+
   .carousel-item {
     width: 100%;
     margin-bottom: 3rem;
@@ -168,12 +188,13 @@ export const Content = styled.section`
         font-size: 1.25rem;
       }
 
-      h1, span {
+      h1,
+      span {
         margin-bottom: 2rem !important;
       }
     }
   }
-`;
+`
 
 export const Banner = styled.section`
   width: 100%;
@@ -182,7 +203,7 @@ export const Banner = styled.section`
   justify-content: center;
   padding: 1.5rem 4rem;
   background: var(--green-confirmation);
-`;
+`
 
 export const SelectInput = styled.input`
   background: white;
@@ -193,7 +214,7 @@ export const SelectInput = styled.input`
   border-radius: 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   padding: 0 1.5rem;
-`;
+`
 
 export const Select = styled.select`
   background: white;
@@ -204,9 +225,9 @@ export const Select = styled.select`
   border-radius: 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   padding: 0 1.5rem;
-  -moz-appearance:none; 
-  -webkit-appearance:none; 
-  appearance:none;
-`;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+`
 
-export default Landing;
+export default Landing

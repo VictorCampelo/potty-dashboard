@@ -36,7 +36,7 @@ const BusinessRegister = () => {
 
     setStore(store)
 
-    Router.push('/business-register/finish')
+    Router.push('/auth/business-register/finish')
   }
 
   return (
