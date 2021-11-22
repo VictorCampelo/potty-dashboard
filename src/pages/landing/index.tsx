@@ -116,7 +116,7 @@ const Landing = ({ stores }: Landing) => {
   )
 }
 
-export const getServerSideProps = withSSRAuth(async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   const { data } = await api.get('stores')
 
   return {
@@ -124,7 +124,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
       stores: data
     }
   }
-})
+}
 
 export const Container = styled.main`
   width: 100%;
