@@ -343,7 +343,7 @@ const Products = () => {
                           <div className="price">
                             <span>R$ {e.price}</span>
                             <small>
-                              {e.descont ? 'R$ ' + e.descont : null}
+                              {e.discount ? 'R$ ' + e.discount : null}
                             </small>
                           </div>
                           <div className="score">

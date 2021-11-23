@@ -150,9 +150,9 @@ export const CardProduct = styled.div`
 
     .price-container {
       max-width: 100%;
-      height: 100px;
+      height: 200px;
 
-      margin-top: 24px;
+      margin: 24px 0px;
 
       display: flex;
       flex-direction: column;
@@ -218,6 +218,15 @@ export const CardProduct = styled.div`
         line-height: 60px;
 
         color: #2dd1ac;
+
+        small {
+          font-family: 'Poppins';
+          font-style: normal;
+          font-weight: 600;
+          font-size: 20px;
+
+          color: #b2b5ba;
+        }
       }
     }
 
