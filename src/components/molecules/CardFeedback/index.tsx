@@ -24,10 +24,10 @@ const CardFeedback = ({
   quantStar > 5 ? (quantStar = 5) : null //Tratativas para manter o máximo de estrelas como 5
 
   for (let i = 0; i < quantStar; i++) {
-    stars.push(<AiFillStar size={18} color="#ffe249" />)
+    stars.push(<AiFillStar key={i} size={18} color="#ffe249" />)
   }
   for (let i = quantStar; i < 5; i++) {
-    stars.push(<AiOutlineStar size={18} color="#ffe249" />)
+    stars.push(<AiOutlineStar key={i + 5} size={18} color="#ffe249" />)
   }
   //adicionando estrelas preenchidas e vazias ao vetor
 

@@ -8,16 +8,35 @@ import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
 import { CartContext } from 'contexts/CartContext'
+import { useEffect } from 'react'
+import { api } from 'services/apiClient'
 
 const Cart = () => {
-  const { items, setItems } = useContext(CartContext);
+  const { items, setItems } = useContext(CartContext)
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
 
   function handleRemoveItem(id: string) {
-    setItems(items.filter(it => it.productId != id))
+    setItems(items.filter((it) => it.productId != id))
+  }
+
+  async function handleSubmit() {
+    if (items.length > 0) {
+      try {
+        console.log(`/orders/${items[0].storeId}`)
+        const res = await api.post(`/orders/${items[0].storeId}`, {
+          products: items.map((prod) => ({
+            productId: prod.productId,
+            amount: prod.amount
+          }))
+        })
+        console.log(res)
+      } catch (e) {
+        console.error(e)
+      }
+    }
   }
 
   return (
@@ -33,7 +52,7 @@ const Cart = () => {
           <h1>Meu carrinho</h1>
 
           <CartContainer>
-            {items.length == 0  ? (
+            {items.length == 0 ? (
               <h1>Carrinho vazio!</h1>
             ) : (
               <>
@@ -53,16 +72,14 @@ const Cart = () => {
                   <section style={{ flex: 1 }} />
                 </CartHead>
 
-                {items.map(it => (
+                {items.map((it) => (
                   <CartProduct key={it.productId}>
                     <section style={{ flex: 5, justifyContent: 'flex-start' }}>
                       <div className="imgContainer">
                         <AiFillCamera size={28} color="white" />
                       </div>
 
-                      <span>
-                        {it.title}
-                      </span>
+                      <span>{it.title}</span>
                     </section>
 
                     <Counter id={it.productId} />
@@ -77,7 +94,10 @@ const Cart = () => {
                     </section>
 
                     <section style={{ flex: 1 }}>
-                      <button className="exclude" onClick={() => handleRemoveItem(it.productId)}>
+                      <button
+                        className="exclude"
+                        onClick={() => handleRemoveItem(it.productId)}
+                      >
                         <IoTrashOutline size={24} color="var(--red)" />
 
                         <strong>Excluir</strong>
@@ -105,7 +125,12 @@ const Cart = () => {
                   currency: 'BRL'
                 }).format(total)}
               </strong>
-              <span>{' | '}{items.length > 1? items.length + ' item' : items.length + ' items'}</span>
+              <span>
+                {' | '}
+                {items.length > 1
+                  ? items.length + ' item'
+                  : items.length + ' items'}
+              </span>
             </div>
 
             <div className="buttonContainer">
@@ -114,7 +139,7 @@ const Cart = () => {
                 ESVAZIAR CARRINHO
               </button>
 
-              <button className="finish">
+              <button className="finish" onClick={handleSubmit}>
                 <BsWhatsapp size={24} color="white" />
                 FINALIZAR COMPRA
               </button>
