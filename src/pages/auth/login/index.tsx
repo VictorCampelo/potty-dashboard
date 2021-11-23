@@ -68,7 +68,7 @@ const Login = () => {
       const res = await signIn(user)
 
       if (res.status === 200 || res.status === 201) {
-        return router.push('/dashboard/shopkeeper')
+        return router.push('/dashboard/catalog')
       }
     } catch (e) {
       if (e.message.includes(401) || e.message.includes(404)) {

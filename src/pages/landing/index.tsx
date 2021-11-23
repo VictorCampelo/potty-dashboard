@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
+import router from 'next/router'
 
 interface Landing {
   stores: []
@@ -85,7 +86,12 @@ const Landing = ({ stores }: Landing) => {
               </span>
 
               <div className="button-container">
-                <Button title="Cadastrar loja" />
+                <Button
+                  onClick={() => {
+                    router.push('/auth/register-shopkeeper')
+                  }}
+                  title="Cadastrar loja"
+                />
               </div>
             </div>
           </section>
