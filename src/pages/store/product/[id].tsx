@@ -7,7 +7,8 @@ import {
   CardDesc,
   ProductWrapper,
   Footer,
-  FilterCard
+  FilterCard,
+  Installments
 } from '../../../styles/pages/Product'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
@@ -27,6 +28,7 @@ import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
+import { IoIosClose } from 'react-icons/io'
 
 const fakeFeedBack = [
   {
@@ -97,7 +99,7 @@ const images = [
 const ProductShow = () => {
   const router = useRouter()
   const { id } = router.query
-  const { items, setItems } = useContext(CartContext);
+  const { items, setItems } = useContext(CartContext)
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
@@ -113,6 +115,7 @@ const ProductShow = () => {
   const [discount, setDiscount] = useState(0)
 
   const [isLoading, setIsLoading] = useState(true)
+  const [showInstallment, setShowInstallment] = useState(false)
 
   function handleOpenProduct(id) {
     router.push(`/product/${id}`)
@@ -130,7 +133,6 @@ const ProductShow = () => {
       setPrice(data?.price)
       setDiscount(data?.discount)
       setProductId(data?.id)
-
     } catch (e) {
       if (e.response.status === 500) {
         return toast.error('Erro interno, tente novamente', {
@@ -183,24 +185,26 @@ const ProductShow = () => {
     })
   }, [])
 
-  function handleAddToCart(){
-    if(items.find(it => it.productId == productId)){
+  function handleAddToCart() {
+    if (items.find((it) => it.productId == productId)) {
       const copyItems = [...items]
-      copyItems.forEach(it => {
-        if(it.productId == productId)
-          it.amount = it.amount + 1
+      copyItems.forEach((it) => {
+        if (it.productId == productId) it.amount = it.amount + 1
       })
     } else {
-      setItems([...items, {
-        amount: 1,
-        price,
-        productId,
-        storeId: '1232',
-        title,
-      }])
+      setItems([
+        ...items,
+        {
+          amount: 1,
+          price,
+          productId,
+          storeId: '1232',
+          title
+        }
+      ])
     }
 
-    notifySuccess("Item adicionado no carrinho")
+    notifySuccess('Item adicionado no carrinho')
   }
 
   return (
@@ -248,13 +252,59 @@ const ProductShow = () => {
                       <h4>R$ {price}</h4>
                       <div>-{discount}%</div>
                     </div>
-                    <h1>R$ {getDiscount(price, discount)}</h1>
+                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
                   </>
                 ) : (
                   <>
-                    <h1>R$ {price}</h1>
+                    <h1>
+                      R$ {price} <small>à vista</small>{' '}
+                    </h1>
                   </>
                 )}
+
+                <div className="installments">
+                  <a onClick={() => setShowInstallment(!showInstallment)}>
+                    Ver parcelas
+                  </a>
+
+                  {showInstallment && (
+                    <Installments>
+                      <div className="head">
+                        <div className=""></div>
+
+                        <h1 className="title">Formas de parcelamento</h1>
+
+                        <IoIosClose
+                          onClick={() => setShowInstallment(!showInstallment)}
+                          size={30}
+                          color={'#363F4E'}
+                        />
+                      </div>
+
+                      <img src="/images/cards.png" alt="bandeiras aceitas" />
+
+                      <div className="list">
+                        <p className="list1">
+                          <strong>R$ {price} à vista</strong> <br />
+                          2x R$ {(price / 2).toFixed(2)} sem juros <br />
+                          3x R$ {(price / 3).toFixed(2)} sem juros <br />
+                          4x R$ {(price / 4).toFixed(2)} sem juros <br />
+                          5x R$ {(price / 5).toFixed(2)} sem juros <br />
+                          6x R$ {(price / 6).toFixed(2)} sem juros <br />
+                        </p>
+
+                        <p className="list2">
+                          7x R$ {(price / 7).toFixed(2)} sem juros <br />
+                          8x R$ {(price / 8).toFixed(2)} sem juros <br />
+                          9x R$ {(price / 9).toFixed(2)} sem juros <br />
+                          10x R$ {(price / 10).toFixed(2)} sem juros <br />
+                          11x R$ {(price / 11).toFixed(2)} sem juros <br />
+                          12x R$ {(price / 12).toFixed(2)} sem juros <br />
+                        </p>
+                      </div>
+                    </Installments>
+                  )}
+                </div>
               </div>
               <div className="button-container">
                 <button>COMPRAR AGORA</button>

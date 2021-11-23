@@ -31,6 +31,44 @@ export const Container = styled.main`
   }
 `
 
+export const Installments = styled.div`
+  position: absolute;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 30px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  align-items: center;
+
+  svg {
+    cursor: pointer;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+
+    .title {
+      color: black !important;
+      font-size: 1.5rem !important;
+      margin: 0 1rem;
+    }
+  }
+
+  img {
+    width: 328px;
+  }
+
+  .list {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 2rem;
+  }
+`
+
 export const CardProduct = styled.div`
   width: 100%;
   height: 750px;
@@ -120,6 +158,20 @@ export const CardProduct = styled.div`
       flex-direction: column;
       justify-content: center;
 
+      .installments {
+        position: relative;
+      }
+
+      a {
+        color: var(--green-confirmation);
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+      }
+
       .discount {
         display: flex;
         flex-direction: row;
@@ -171,6 +223,7 @@ export const CardProduct = styled.div`
 
     .button-container {
       max-width: 530px;
+      margin-top: 1rem;
       height: 54px;
 
       display: flex;
