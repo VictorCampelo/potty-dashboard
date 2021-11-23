@@ -18,9 +18,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import { loginUser } from '../../../services/auth.services'
 import { useRouter } from 'next/router'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 type ToastProps = {
   newMessage?: string

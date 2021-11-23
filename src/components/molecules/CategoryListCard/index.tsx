@@ -1,22 +1,22 @@
-import { IoIosArrowDown } from "react-icons/io";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { RiPencilFill } from "react-icons/ri";
-import { Container } from "./styles";
-import EllipsisText from "react-ellipsis-text";
-import { useState } from "react";
-import Fade from "react-reveal/Fade";
+import { IoIosArrowDown } from 'react-icons/io'
+import { IoTrashBinOutline } from 'react-icons/io5'
+import { RiPencilFill } from 'react-icons/ri'
+import { Container } from './styles'
+import { useState } from 'react'
+import Fade from 'react-reveal/Fade'
+import { ellipsis } from 'functions/ellipsis'
 
 interface CategoryListCardProps
   extends React.AllHTMLAttributes<HTMLAllCollection> {
-  category: string;
-  excludeBtn: any;
-  editBtn: any;
-  isRed?: boolean;
-  isGreen?: boolean;
+  category: string
+  excludeBtn: any
+  editBtn: any
+  isRed?: boolean
+  isGreen?: boolean
   date: Array<{
-    name: string;
-    amount: string;
-  }>;
+    name: string
+    amount: string
+  }>
 }
 
 export const CategoryListCard = ({
@@ -25,12 +25,12 @@ export const CategoryListCard = ({
   editBtn,
   isRed,
   isGreen,
-  date,
+  date
 }: CategoryListCardProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   function handletoggle() {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen)
   }
   return (
     <Container isRed={isRed} isGreen={isGreen} isOpen={isOpen}>
@@ -43,14 +43,12 @@ export const CategoryListCard = ({
           <div className="children-container">
             {date.map((data) => {
               return (
-                <p className="items">
-                  <div className="text">
-                    <EllipsisText text={data?.name || ''} length={25} />
-                  </div>
+                <p key={data.name + '--'} className="items">
+                  <div className="text">{ellipsis(data?.name || '', 25)}</div>
                   <span className="spacer" />
                   {data.amount} un.
                 </p>
-              );
+              )
             })}
           </div>
         </Fade>
@@ -68,5 +66,5 @@ export const CategoryListCard = ({
         </button>
       </div>
     </Container>
-  );
-};
+  )
+}
