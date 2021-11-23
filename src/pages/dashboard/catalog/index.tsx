@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
 import {
   getCategories,
-  getProducts,
-  getStoreId
+  getProducts
 } from '../../../services/bussiness.services'
 import {
   createCategory,
@@ -24,7 +22,6 @@ import { FaMoneyBill, FaPercentage, FaCoins } from 'react-icons/fa'
 import { GoArrowRight, GoArrowLeft } from 'react-icons/go'
 import { IoTrashBinOutline } from 'react-icons/io5'
 import { FiBox } from 'react-icons/fi'
-import { VscSearch } from 'react-icons/vsc'
 import {
   MdUpload,
   MdOutlineArrowBackIosNew,
@@ -43,12 +40,16 @@ import {
   AddCategoryModalContainer,
   AddProductModalContainer,
   Container,
+  CropModalContainer,
   EditCategoryModalContainer,
   ExcludeModalContainer
 } from '../../../styles/pages/Catalog'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { MultiSelect } from 'components/molecules/MultiSelect'
+import { Point } from 'react-easy-crop/types'
+import getCroppedImg from 'functions/cropImage'
+import Cropper from 'react-easy-crop'
 
 type CategoryType = {
   name: string
@@ -109,9 +110,21 @@ const catalog = ({ storeId }: CatalogType) => {
   const [inventoryProduct, setInventoryProduct] = useState('')
   const [discountProduct, setDiscountProduct] = useState('')
 
-  const [toggleState, setToggleState] = useState(1)
+  const [previewImage, setPreviewImage] = useState(null)
+  const [imageSrc, setImageSrc] = useState(null)
+  const [imageSrc1, setImageSrc1] = useState(null)
+  const [imageSrc2, setImageSrc2] = useState(null)
+  const [currentImage, setCurrentImage] = useState(1)
 
+  const [zoom, setZoom] = useState(1)
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const rotation = 0
+
+  const [toggleState, setToggleState] = useState(1)
   const [selectedCategories, setSelectedCategories] = useState([])
+
+  // Functions Open Modals
 
   function toggleAddCategoryModal() {
     setCategoryAddModal(!addCategoryModal)
@@ -123,10 +136,18 @@ const catalog = ({ storeId }: CatalogType) => {
 
   function toggleAddModal() {
     setAddModal(!addModal)
+    setPreviewImage(null)
+    setImageSrc(null)
+    setImageSrc1(null)
+    setImageSrc2(null)
   }
 
   function toggleEditProduct() {
     setEditProduct(!editProduct)
+    setPreviewImage(null)
+    setImageSrc(null)
+    setImageSrc1(null)
+    setImageSrc2(null)
   }
 
   function handleOpenExcludeModal() {
@@ -153,42 +174,9 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(!editCategoryModal)
   }
 
-  const notify = useCallback((message: string) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
-  }, [])
+  // Toasts
 
-  const loadData = async () => {
-    try {
-      const { data } = await getProducts(storeId)
-
-      const formatedData = data.map((it) => ({
-        ...it,
-        categories: it.categories.map((cat: CategoryType) => cat.name)
-      }))
-
-      setProducts(formatedData)
-    } catch (e) {
-      notify('Erro ao buscar produtos')
-    }
-
-    try {
-      const { data } = await getCategories(storeId)
-
-      setCategories(data)
-    } catch (e) {
-      notify('Erro ao buscar categorias')
-    }
-  }
-
-  const notifySuccess = useCallback((message: string) => {
+  function notifySuccess(message: string) {
     toast.success(message, {
       position: 'top-right',
       autoClose: 5000,
@@ -198,7 +186,76 @@ const catalog = ({ storeId }: CatalogType) => {
       draggable: true,
       progress: undefined
     })
+  }
+
+  function notify(message: string) {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
+
+  // Image Crop Modal
+
+  function toggleImageModal() {
+    setPreviewImage(!previewImage)
+  }
+
+  function onZoomChange(newValue) {
+    setZoom(newValue)
+  }
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
   }, [])
+
+  function readFile(file: File) {
+    const result = new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result), false)
+      reader.readAsDataURL(file)
+    })
+    return result
+  }
+
+  const onFileChange = async (e) => {
+    if (e.target.files && e.target.files.length === 1) {
+      const file = await readFile(e.target.files[0])
+      setPreviewImage(file)
+    } else {
+      notify('Selecione apenas 1 imagem pro vez')
+    }
+  }
+
+  async function cropImage(current) {
+    // Get cropped image file
+
+    const Image = await getCroppedImg(previewImage, croppedAreaPixels, rotation)
+
+    try {
+      if (current === 1) {
+        setImageSrc(Image)
+      }
+      if (current === 2) {
+        setImageSrc1(Image)
+      }
+      if (current === 3) {
+        setImageSrc2(Image)
+      }
+      notifySuccess('Foto recortada com sucesso!')
+      setPreviewImage(null)
+      toggleImageModal()
+    } catch (e) {
+      notify('Erro interno favor tentar novamente mais tarde!')
+    }
+  }
+
+  // Functions
 
   async function handleCreateCategory() {
     try {
@@ -216,6 +273,37 @@ const catalog = ({ storeId }: CatalogType) => {
     }
   }
 
+  const handleDeleteCategory = async () => {
+    try {
+      await deleteCategory(deleteCategoryId, storeId)
+
+      notifySuccess('Produto deletado com sucesso!')
+    } catch (e) {
+      notify('Erro ao excluir produto, tente novamente!')
+    }
+
+    setExcludeCategoryModal(false)
+    loadData()
+  }
+
+  const handleUpdateCategory = async () => {
+    const body = {
+      name: category,
+      storeId
+    }
+
+    try {
+      await updateCategory(editCategoryId, storeId, body)
+
+      notifySuccess('Produto atualizado com sucesso!')
+    } catch (e) {
+      notify('Erro ao editar produto, tente novamente!')
+    }
+
+    loadData()
+    setEditCategoryModal(false)
+  }
+
   async function handleCreateProduct() {
     const body = {
       title: titleProduct,
@@ -225,7 +313,8 @@ const catalog = ({ storeId }: CatalogType) => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
-      categoriesIds: selectedCategories.map((cat) => cat.value)
+      categoriesIds: selectedCategories.map((cat) => cat.value),
+      files: [imageSrc, imageSrc1, imageSrc2]
     }
 
     try {
@@ -301,7 +390,8 @@ const catalog = ({ storeId }: CatalogType) => {
       description: descriptionProduct,
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
-      categoriesIds: selectedCategories.map((cat) => cat.value)
+      categoriesIds: selectedCategories.map((cat) => cat.value),
+      files: [imageSrc, imageSrc1, imageSrc2]
     }
 
     try {
@@ -325,35 +415,29 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditProduct(false)
   }
 
-  const handleDeleteCategory = async () => {
+  // Request Back-End
+
+  const loadData = async () => {
     try {
-      await deleteCategory(deleteCategoryId, storeId)
+      const { data } = await getProducts(storeId)
 
-      notifySuccess('Produto deletado com sucesso!')
+      const formatedData = data.map((it) => ({
+        ...it,
+        categories: it.categories.map((cat: CategoryType) => cat.name)
+      }))
+
+      setProducts(formatedData)
     } catch (e) {
-      notify('Erro ao excluir produto, tente novamente!')
-    }
-
-    setExcludeCategoryModal(false)
-    loadData()
-  }
-
-  const handleUpdateCategory = async () => {
-    const body = {
-      name: category,
-      storeId
+      notify('Erro ao buscar produtos')
     }
 
     try {
-      await updateCategory(editCategoryId, storeId, body)
+      const { data } = await getCategories(storeId)
 
-      notifySuccess('Produto atualizado com sucesso!')
+      setCategories(data)
     } catch (e) {
-      notify('Erro ao editar produto, tente novamente!')
+      notify('Erro ao buscar categorias')
     }
-
-    loadData()
-    setEditCategoryModal(false)
   }
 
   useEffect(() => {
@@ -606,25 +690,91 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <h2>Foto do produto</h2>
 
-              <div className="foto">
-                <div className="title-foto">Foto</div>
-                <button>
+              {/*<div className="foto">
+                 <div className="title-foto">Foto</div>
+                 <label htmlFor="image">
                   Enviar foto
                   <MdUpload size={20} />
-                </button>
-              </div>
+                </label>
+              </div> */}
 
               <div className="array-fotos">
                 <MdOutlineArrowBackIosNew />
-                <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
-                </div>
-                <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
-                </div>
-                <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
-                </div>
+                <input
+                  id="image"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(1)}
+                />
+                <input
+                  id="image1"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(2)}
+                />
+                <input
+                  id="image2"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(3)}
+                />
+                <label htmlFor="image">
+                  <div className="card-image">
+                    {imageSrc ? (
+                      <img
+                        src={imageSrc}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
+                <label htmlFor="image1">
+                  <div className="card-image">
+                    {imageSrc1 ? (
+                      <img
+                        src={imageSrc1}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
+                <label htmlFor="image2">
+                  <div className="card-image">
+                    {imageSrc2 ? (
+                      <img
+                        src={imageSrc2}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
                 <MdOutlineArrowForwardIos />
               </div>
             </div>
@@ -728,22 +878,59 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <div className="foto">
                 <div className="title-foto">Foto</div>
-                <button>
+                <label htmlFor="image">
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={true}
+                    maxLength={3}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                  />
                   Enviar foto
                   <MdUpload size={20} />
-                </button>
+                </label>
               </div>
 
               <div className="array-fotos">
                 <MdOutlineArrowBackIosNew />
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.one}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.two}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <div className="card-image">
-                  <IoMdCamera size={25} color="#6C7079" />
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc.three}
+                      width="100%"
+                      height="100%"
+                      alt="Foto Produto"
+                    />
+                  ) : (
+                    <IoMdCamera size={25} color="#6C7079" />
+                  )}
                 </div>
                 <MdOutlineArrowForwardIos />
               </div>
@@ -761,6 +948,57 @@ const catalog = ({ storeId }: CatalogType) => {
             <Button title="Salvar" onClick={() => handleUpdateProduct()} />
           </div>
         </AddProductModalContainer>
+      </CustomModal>
+
+      {/* Crop Image Modal */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleImageModal}
+        modalVisible={previewImage}
+      >
+        <CropModalContainer>
+          <section className="crops">
+            <div className="cropper-container">
+              <div className="crop">
+                <Cropper
+                  style={{
+                    containerStyle: {
+                      background: 'rgba(255, 255, 255, 0.2)',
+                      width: 400,
+                      height: 400,
+                      top: '20%',
+                      left: '50%',
+                      transform: 'translate(-50%, -20%)'
+                    },
+                    cropAreaStyle: {},
+                    mediaStyle: {}
+                  }}
+                  image={previewImage}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1 / 1}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </div>
+              <div className="controls-container">
+                <input
+                  type="range"
+                  step="0.1"
+                  min="1"
+                  max="2"
+                  value={zoom}
+                  onChange={(e) => onZoomChange(e.target.value)}
+                />
+              </div>
+            </div>
+          </section>
+          <section className="btns">
+            <Button title="Cancelar" onClick={toggleImageModal} />
+            <Button title="Recortar" onClick={() => cropImage(currentImage)} />
+          </section>
+        </CropModalContainer>
       </CustomModal>
 
       <Container>
