@@ -112,6 +112,7 @@ const ProductShow = () => {
   const [sumFeedbacks, setSumFeedbacks] = useState(0)
   const [sumOrders, setSumOrders] = useState(0)
   const [price, setPrice] = useState(0)
+  const [priceWithDiscount, setPriceWithDiscount] = useState(0)
   const [discount, setDiscount] = useState(0)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -133,6 +134,15 @@ const ProductShow = () => {
       setPrice(data?.price)
       setDiscount(data?.discount)
       setProductId(data?.id)
+
+      setPriceWithDiscount(
+        parseFloat(
+          getDiscount(
+            getDiscount(data?.price, data?.discount).toFixed(2),
+            10
+          ).toFixed(2)
+        )
+      )
     } catch (e) {
       if (e.response.status === 500) {
         return toast.error('Erro interno, tente novamente', {
@@ -253,12 +263,20 @@ const ProductShow = () => {
                       <div>-{discount}%</div>
                     </div>
                     <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                    <p>
+                      Em até 12x sem juros ou{' '}
+                      <strong>{priceWithDiscount}</strong> à vista
+                    </p>
                   </>
                 ) : (
                   <>
                     <h1>
-                      R$ {price} <small>à vista</small>{' '}
+                      R$ {getDiscount(price, 10).toFixed(2)}{' '}
+                      <small>à vista</small>{' '}
                     </h1>
+                    <p>
+                      Ou <strong>R$ {price}</strong> à prazo
+                    </p>
                   </>
                 )}
 
@@ -285,21 +303,65 @@ const ProductShow = () => {
 
                       <div className="list">
                         <p className="list1">
-                          <strong>R$ {price} à vista</strong> <br />
-                          2x R$ {(price / 2).toFixed(2)} sem juros <br />
-                          3x R$ {(price / 3).toFixed(2)} sem juros <br />
-                          4x R$ {(price / 4).toFixed(2)} sem juros <br />
-                          5x R$ {(price / 5).toFixed(2)} sem juros <br />
-                          6x R$ {(price / 6).toFixed(2)} sem juros <br />
+                          <strong>R$ {priceWithDiscount} à vista</strong> <br />
+                          2x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 2
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          3x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 3
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          4x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 4
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          5x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 5
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          6x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 6
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
                         </p>
 
                         <p className="list2">
-                          7x R$ {(price / 7).toFixed(2)} sem juros <br />
-                          8x R$ {(price / 8).toFixed(2)} sem juros <br />
-                          9x R$ {(price / 9).toFixed(2)} sem juros <br />
-                          10x R$ {(price / 10).toFixed(2)} sem juros <br />
-                          11x R$ {(price / 11).toFixed(2)} sem juros <br />
-                          12x R$ {(price / 12).toFixed(2)} sem juros <br />
+                          7x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 7
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          8x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 8
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          9x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 9
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          10x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 10
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          11x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 11
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
+                          12x R${' '}
+                          {(
+                            Number(getDiscount(price, discount).toFixed(2)) / 12
+                          ).toFixed(2)}{' '}
+                          sem juros <br />
                         </p>
                       </div>
                     </Installments>
