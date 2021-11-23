@@ -1,4 +1,4 @@
-import { Input } from '../../../components/molecules/Input'
+import { Input } from '../../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
 import {
@@ -9,12 +9,12 @@ import {
   Footer,
   FilterCard,
   Installments
-} from '../../../styles/pages/Product'
+} from '../../../../styles/pages/Product'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
-import CatalogTabs from '../../../components/molecules/CatalogTabs'
-import CardFeedback from '../../../components/molecules/CardFeedback'
-import { ProductCard } from '../../../styles/pages/Store'
+import CatalogTabs from '../../../../components/molecules/CatalogTabs'
+import CardFeedback from '../../../../components/molecules/CardFeedback'
+import { ProductCard } from '../../../../styles/pages/Store'
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -22,13 +22,14 @@ import {
   AiOutlineWhatsApp
 } from 'react-icons/ai'
 import router, { useRouter } from 'next/router'
-import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
+import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
+import { getStoreId } from 'services/bussiness.services'
 
 const fakeFeedBack = [
   {
@@ -98,13 +99,14 @@ const images = [
 
 const ProductShow = () => {
   const router = useRouter()
-  const { id } = router.query
+  const { id, name } = router.query
   const { items, setItems } = useContext(CartContext)
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
   const [toggleState, setToggleState] = useState(1)
 
+  const [storeId, setStoreId] = useState('')
   const [productId, setProductId] = useState('')
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -123,6 +125,12 @@ const ProductShow = () => {
   }
 
   async function loadData() {
+    try {
+      setStoreId(await getStoreId(String(name)))
+    } catch (e) {
+      console.error(e)
+    }
+
     try {
       const { data } = await getProduct(`${id}`)
 
@@ -208,7 +216,7 @@ const ProductShow = () => {
           amount: 1,
           price,
           productId,
-          storeId: '1232',
+          storeId,
           title
         }
       ])
@@ -234,13 +242,12 @@ const ProductShow = () => {
               <div className="list-images">
                 {images.map((data) => {
                   return (
-                    <>
-                      <img
-                        onClick={(e) => setImagePreview(data.original)}
-                        src={data.thumbnail}
-                        alt={data.title}
-                      />
-                    </>
+                    <img
+                      key={data.title}
+                      onClick={(e) => setImagePreview(data.original)}
+                      src={data.thumbnail}
+                      alt={data.title}
+                    />
                   )
                 })}
               </div>
@@ -389,15 +396,14 @@ const ProductShow = () => {
                         <div className="list-images">
                           {images.map((data) => {
                             return (
-                              <>
-                                <img
-                                  onClick={(e) =>
-                                    setImagePreviewDesc(data.original)
-                                  }
-                                  src={data.thumbnail}
-                                  alt={data.title}
-                                />
-                              </>
+                              <img
+                                key={data.title}
+                                onClick={(e) =>
+                                  setImagePreviewDesc(data.original)
+                                }
+                                src={data.thumbnail}
+                                alt={data.title}
+                              />
                             )
                           })}
                         </div>

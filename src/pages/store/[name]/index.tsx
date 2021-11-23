@@ -1,6 +1,6 @@
-import HeaderShop from '../../components/molecules/HeaderShop'
+import HeaderShop from '../../../components/molecules/HeaderShop'
 import Head from 'next/head'
-import { CheckboxFilter } from '../../components/atoms/CheckboxFilter'
+import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -23,7 +23,7 @@ import {
   TopoPage,
   FilterCardTertiary,
   HorizonCard
-} from '../../styles/pages/Store'
+} from '../../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -73,7 +73,7 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   function handleOpenProduct(id) {
-    router.push(`/store/product/${id}`)
+    router.push(`/store/${name}/product/${id}`)
   }
 
   async function loadData() {
