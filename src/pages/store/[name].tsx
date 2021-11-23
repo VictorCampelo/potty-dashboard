@@ -132,7 +132,7 @@ const Products = () => {
           draggable: true,
           progress: undefined
         })
-        return router.push('/login')
+        return router.push('/landing')
       }
     } finally {
       setIsLoading(false)
