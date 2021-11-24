@@ -6,10 +6,7 @@ import Carousel from 'components/atoms/Carousel'
 import { Footer } from 'styles/pages/Product'
 import { AiFillFacebook, AiFillPhone, AiOutlineWhatsApp } from 'react-icons/ai'
 import { Button } from 'components/atoms/Button'
-import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
-import { withSSRAuth } from 'services/withSSRAuth'
-import { setupApiClient } from 'services/api'
 import router from 'next/router'
 
 interface Landing {

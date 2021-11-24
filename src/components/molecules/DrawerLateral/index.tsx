@@ -62,7 +62,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
             </div>
           </Link>
 
-          <Link href="/dashboard/shop">
+          <Link href="/dashboard/loja">
             <div className="option">
               <BiStore
                 className="icon"

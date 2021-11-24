@@ -1,11 +1,11 @@
 export function ellipsis(text: string, length: number) {
-  const preText = text.substr(0, length)
-  const sub = text.substr(length, 9999999)
+  const preText = text ? text.substr(0, length) : ''
+  const sub = text ? text.substr(length, 9999999) : ''
   const result = sub.replace(sub, '...')
 
   let textResult
 
-  if (preText.length < length) {
+  if (preText && preText.length < length) {
     textResult = `${preText}`
   } else {
     textResult = `${preText + result}`
