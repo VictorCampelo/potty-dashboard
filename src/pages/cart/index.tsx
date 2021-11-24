@@ -10,6 +10,7 @@ import { useContext } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { useEffect } from 'react'
 import { api } from 'services/apiClient'
+import router from 'next/router'
 
 const Cart = () => {
   const { items, setItems } = useContext(CartContext)
@@ -25,14 +26,14 @@ const Cart = () => {
   async function handleSubmit() {
     if (items.length > 0) {
       try {
-        console.log(`/orders/${items[0].storeId}`)
-        const res = await api.post(`/orders/${items[0].storeId}`, {
+        const { data } = await api.post(`/orders/${items[0].storeId}`, {
           products: items.map((prod) => ({
             productId: prod.productId,
             amount: prod.amount
           }))
         })
-        console.log(res)
+
+        router.push(data.whatsapp)
       } catch (e) {
         console.error(e)
       }
