@@ -1,15 +1,15 @@
-import Header from '../../../../components/molecules/Header'
+import Header from '../../../components/molecules/Header'
 import Link from 'next/link'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { VscKey } from 'react-icons/vsc'
 import { FiLock } from 'react-icons/fi'
-import { Input } from '../../../../components/molecules/Input'
-import { Button } from '../../../../components/atoms/Button'
+import { Input } from '../../../components/molecules/Input'
+import { Button } from '../../../components/atoms/Button'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { recoverPasswordConfirmation } from '../../../../services/auth.services'
+import { recoverPasswordConfirmation } from '../../../services/auth.services'
 
 const SendTokenRegister = () => {
   const router = useRouter()

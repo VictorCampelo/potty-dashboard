@@ -1,18 +1,18 @@
-import Header from '../../../components/molecules/Header'
+import Header from '../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../styles/pages/preLogin'
 
 import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { Input } from '../../../components/molecules/Input'
-import { Checkbox } from '../../../components/atoms/Checkbox'
+import { Input } from '../../components/molecules/Input'
+import { Checkbox } from '../../components/atoms/Checkbox'
 import { useState } from 'react'
-import { Button } from '../../../components/atoms/Button'
+import { Button } from '../../components/atoms/Button'
 import { useContext } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import Router from 'next/router'
-import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
+import { ShopkeeperContext } from '../../contexts/ShopkeeperContext'
 
 const BusinessRegister = () => {
   const [businessName, setBusinessName] = useState('')
@@ -38,7 +38,7 @@ const BusinessRegister = () => {
 
     setStore(store)
 
-    Router.push('/auth/business-register/continue')
+    Router.push('/business-register/continue')
   }
 
   return (

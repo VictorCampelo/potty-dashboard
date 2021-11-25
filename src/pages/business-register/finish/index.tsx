@@ -1,16 +1,16 @@
-import Header from '../../../../components/molecules/Header'
+import Header from '../../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
-import { DescriptionInput } from '../../../../components/molecules/DescriptionInput'
-import { ShopImage } from '../../../../components/molecules/ShopImage'
+import { DescriptionInput } from '../../../components/molecules/DescriptionInput'
+import { ShopImage } from '../../../components/molecules/ShopImage'
 import { useContext, useState } from 'react'
-import { Button } from '../../../../components/atoms/Button'
+import { Button } from '../../../components/atoms/Button'
 import { AiFillShop, AiFillCamera } from 'react-icons/ai'
 import Router from 'next/router'
 
-import { ShopkeeperContext } from '../../../../contexts/ShopkeeperContext'
-import { api } from '../../../../services/apiClient'
+import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
+import { api } from '../../../services/apiClient'
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
@@ -31,9 +31,9 @@ const BusinessRegister = () => {
     }
 
     try {
-      await api.post('/auth/signup-store', body)
+      await api.post('/signup-store', body)
 
-      Router.push(`/auth/login`)
+      Router.push(`/login`)
     } catch (e) {
       console.error(e)
     }

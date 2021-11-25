@@ -5,7 +5,7 @@ import router from 'next/router'
 
 const Header: React.FC = () => {
   function handleStart() {
-    router.push('/auth/login')
+    router.push('/login')
   }
 
   return (

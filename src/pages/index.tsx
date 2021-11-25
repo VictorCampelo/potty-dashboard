@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Header from '../../components/molecules/HeaderShop'
+import Header from '../components/molecules/HeaderShop'
 
 import styled from 'styled-components'
 import Carousel from 'components/atoms/Carousel'
@@ -85,7 +85,7 @@ const Landing = ({ stores }: Landing) => {
               <div className="button-container">
                 <Button
                   onClick={() => {
-                    router.push('/auth/register-shopkeeper')
+                    router.push('/cadastro/lojista')
                   }}
                   title="Cadastrar loja"
                 />

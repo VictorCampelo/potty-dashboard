@@ -5,15 +5,15 @@ import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { FiLock, FiMail } from 'react-icons/fi'
 import { Input } from '../../../components/molecules/Input'
-import { Checkbox } from '../../../components/atoms/Checkbox'
 import { useState } from 'react'
 import { Button } from '../../../components/atoms/Button'
 import { FaFacebook } from 'react-icons/fa'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
-import { signUp } from '../../../services/auth.services'
+import { useContext } from 'react'
+import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 
-const Register = () => {
+const RegisterShopkeeper = () => {
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -21,6 +21,8 @@ const Register = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
   const router = useRouter()
+
+  const { setUser } = useContext(ShopkeeperContext)
 
   async function handleSignUp(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -36,9 +38,9 @@ const Register = () => {
         passwordConfirmation
       }
 
-      await signUp(user)
+      setUser(user)
 
-      router.push('login')
+      router.push('/business-register')
     } catch (e) {
       console.error(e)
     }
@@ -47,24 +49,24 @@ const Register = () => {
   return (
     <Wrapper>
       <Head>
-        <title>Registro | Último</title>
+        <title>Registro Lojista | Último</title>
       </Head>
 
       <Header />
       <Container>
         <form>
           <div className="title">
-            <h1>Cadastro</h1>
-            <Link href="/auth/register-shopkeeper">
-              <a>Se cadastrar como lojista</a>
+            <h1>Cadastro lojista</h1>
+            <Link href="/cadastro">
+              <a>Voltar ao cadastro</a>
             </Link>
           </div>
 
           <div className="inputContainer">
             <Input
               label="Primeiro Nome"
-              placeholder="Nome"
               value={firstName}
+              placeholder="Nome"
               onChange={(e) => setFirstName(e.target.value)}
               icon={<FiMail size={20} color="var(--black-800)" />}
             />
@@ -121,7 +123,7 @@ const Register = () => {
 
           <div className="register">
             Já possui conta?{' '}
-            <Link href="/auth/login">
+            <Link href="/login">
               <a>Faça seu login!</a>
             </Link>
           </div>
@@ -131,4 +133,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterShopkeeper

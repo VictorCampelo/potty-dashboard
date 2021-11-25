@@ -1,19 +1,19 @@
-import Header from '../../../components/molecules/Header'
+import Header from '../../components/molecules/Header'
 import Link from 'next/link'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../styles/pages/preLogin'
 
 import { FiLock, FiMail } from 'react-icons/fi'
-import { Input } from '../../../components/molecules/Input'
+import { Input } from '../../components/molecules/Input'
+import { Checkbox } from '../../components/atoms/Checkbox'
 import { useState } from 'react'
-import { Button } from '../../../components/atoms/Button'
+import { Button } from '../../components/atoms/Button'
 import { FaFacebook } from 'react-icons/fa'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
-import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
+import { signUp } from '../../services/auth.services'
 
-const RegisterShopkeeper = () => {
+const Register = () => {
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -21,8 +21,6 @@ const RegisterShopkeeper = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
   const router = useRouter()
-
-  const { setUser } = useContext(ShopkeeperContext)
 
   async function handleSignUp(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -38,9 +36,9 @@ const RegisterShopkeeper = () => {
         passwordConfirmation
       }
 
-      setUser(user)
+      await signUp(user)
 
-      router.push('/auth/business-register')
+      router.push('login')
     } catch (e) {
       console.error(e)
     }
@@ -49,24 +47,24 @@ const RegisterShopkeeper = () => {
   return (
     <Wrapper>
       <Head>
-        <title>Registro Lojista | Último</title>
+        <title>Registro | Último</title>
       </Head>
 
       <Header />
       <Container>
         <form>
           <div className="title">
-            <h1>Cadastro lojista</h1>
-            <Link href="/auth/register">
-              <a>Voltar ao cadastro</a>
+            <h1>Cadastro</h1>
+            <Link href="/cadastro/lojista">
+              <a>Se cadastrar como lojista</a>
             </Link>
           </div>
 
           <div className="inputContainer">
             <Input
               label="Primeiro Nome"
-              value={firstName}
               placeholder="Nome"
+              value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               icon={<FiMail size={20} color="var(--black-800)" />}
             />
@@ -123,7 +121,7 @@ const RegisterShopkeeper = () => {
 
           <div className="register">
             Já possui conta?{' '}
-            <Link href="/auth/login">
+            <Link href="/login">
               <a>Faça seu login!</a>
             </Link>
           </div>
@@ -133,4 +131,4 @@ const RegisterShopkeeper = () => {
   )
 }
 
-export default RegisterShopkeeper
+export default Register

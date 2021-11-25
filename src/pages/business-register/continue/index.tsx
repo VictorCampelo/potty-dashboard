@@ -1,12 +1,12 @@
-import Header from '../../../../components/molecules/Header'
+import Header from '../../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { Input } from '../../../../components/molecules/Input'
+import { Input } from '../../../components/molecules/Input'
 import { useContext, useState } from 'react'
-import { Button } from '../../../../components/atoms/Button'
+import { Button } from '../../../components/atoms/Button'
 import { FaHome } from 'react-icons/fa'
 import Router from 'next/router'
 import {
@@ -15,7 +15,7 @@ import {
   AiFillPhone,
   AiOutlineWhatsApp
 } from 'react-icons/ai'
-import { ShopkeeperContext } from '../../../../contexts/ShopkeeperContext'
+import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 
 const BusinessRegister = () => {
   const [number, setNumber] = useState('')
@@ -36,7 +36,7 @@ const BusinessRegister = () => {
 
     setStore(store)
 
-    Router.push('/auth/business-register/finish')
+    Router.push('/business-register/finish')
   }
 
   return (

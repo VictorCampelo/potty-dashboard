@@ -23,7 +23,7 @@ export const Checkbox = ({ confirm, toggleConfirm, label }: CheckboxProps) => {
         <label htmlFor="btn">{label}</label>
       </div>
 
-      <Link href="/auth/recover">
+      <Link href="/recover">
         <a>Esqueceu sua senha</a>
       </Link>
     </Container>

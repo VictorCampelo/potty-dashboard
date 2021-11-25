@@ -1,12 +1,12 @@
-import Header from '../../../components/molecules/Header'
+import Header from '../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../styles/pages/preLogin'
+import { Container, Wrapper } from '../../styles/pages/preLogin'
 
 import { FiMail } from 'react-icons/fi'
-import { Input } from '../../../components/molecules/Input'
-import { Button } from '../../../components/atoms/Button'
+import { Input } from '../../components/molecules/Input'
+import { Button } from '../../components/atoms/Button'
 import { useRouter } from 'next/router'
-import { recoverPassword } from '../../../services/auth.services'
+import { recoverPassword } from '../../services/auth.services'
 import { useState } from 'react'
 
 const Register = () => {

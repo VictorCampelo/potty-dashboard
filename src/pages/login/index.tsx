@@ -1,13 +1,13 @@
 /* eslint-disable no-constant-condition */
 import Link from 'next/link'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../styles/pages/preLogin'
-import { Input } from '../../../components/molecules/Input'
-import { Checkbox } from '../../../components/atoms/Checkbox'
-import { Button } from '../../../components/atoms/Button'
-import Header from '../../../components/molecules/Header'
+import { Container, Wrapper } from '../../styles/pages/preLogin'
+import { Input } from '../../components/molecules/Input'
+import { Checkbox } from '../../components/atoms/Checkbox'
+import { Button } from '../../components/atoms/Button'
+import Header from '../../components/molecules/Header'
 
-import { AuthContext } from '../../../contexts/AuthContext'
+import { AuthContext } from '../../contexts/AuthContext'
 import { useState, useContext } from 'react'
 
 import { FiLock, FiMail } from 'react-icons/fi'
@@ -156,7 +156,7 @@ const Login = () => {
 
           <div className="register">
             Não possui conta?{' '}
-            <Link href="/auth/register">
+            <Link href="/cadastro">
               <a>Cadastre-se!</a>
             </Link>
           </div>
