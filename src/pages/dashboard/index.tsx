@@ -114,6 +114,44 @@ const Shopkeeper = () => {
           </div>
 
           <div className="bottom-area">
+            <CardShop title="Últimos Feedbacks">
+              <CardFeedback
+                name="Henrique Soares"
+                quantStar={5} //max stars is 5
+                text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
+                time="Há 30 minutos"
+                width={280}
+              />
+              <CardFeedback
+                name="Sara Sousa"
+                quantStar={2} //max stars is 5
+                text="Infelizmente o produto veio errado, acabei me perjudicando por esse erro bobo."
+                time="Há 2 horas"
+                width={280}
+              />
+              <CardFeedback
+                name="Francisco José"
+                quantStar={5} //max stars is 5
+                text="Produto perfeito!! Parabéns aos responsáveis"
+                time="Há 3 horas"
+                width={280}
+              />
+              <CardFeedback
+                name="Francisco José"
+                quantStar={5} //max stars is 5
+                text="Produto perfeito!! Parabéns aos responsáveis"
+                time="Há 3 horas"
+                width={280}
+              />
+              <CardFeedback
+                name="Francisco José"
+                quantStar={5} //max stars is 5
+                text="Produto perfeito!! Parabéns aos responsáveis"
+                time="Há 3 horas"
+                width={280}
+              />
+            </CardShop>
+
             <CardShop title="Últimos produtos vendidos">
               <CardProduct
                 srcImg="/images/coffee.png"
@@ -179,44 +217,6 @@ const Shopkeeper = () => {
                 quant="10.569"
                 tipo={2}
                 preco="2,00"
-              />
-            </CardShop>
-
-            <CardShop title="Últimos Feedbacks">
-              <CardFeedback
-                name="Henrique Soares"
-                quantStar={5} //max stars is 5
-                text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
-                time="Há 30 minutos"
-                width={550}
-              />
-              <CardFeedback
-                name="Sara Sousa"
-                quantStar={2} //max stars is 5
-                text="Infelizmente o produto veio errado, acabei me perjudicando por esse erro bobo."
-                time="Há 2 horas"
-                width={550}
-              />
-              <CardFeedback
-                name="Francisco José"
-                quantStar={5} //max stars is 5
-                text="Produto perfeito!! Parabéns aos responsáveis"
-                time="Há 3 horas"
-                width={550}
-              />
-              <CardFeedback
-                name="Francisco José"
-                quantStar={5} //max stars is 5
-                text="Produto perfeito!! Parabéns aos responsáveis"
-                time="Há 3 horas"
-                width={550}
-              />
-              <CardFeedback
-                name="Francisco José"
-                quantStar={5} //max stars is 5
-                text="Produto perfeito!! Parabéns aos responsáveis"
-                time="Há 3 horas"
-                width={550}
               />
             </CardShop>
 

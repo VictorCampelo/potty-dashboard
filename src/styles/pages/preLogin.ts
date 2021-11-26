@@ -51,6 +51,34 @@ export const Container = styled.main`
       }
     }
 
+    .recoverTitle {
+      width: 100%;
+      margin-bottom: 1rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+
+      h1 {
+        font-size: 1.875rem;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 0.875rem;
+        text-align: justify;
+        color: var(--gray-300);
+        margin-top: 0.5rem;
+      }
+
+      a {
+        font-size: 0.8rem;
+        color: var(--gray-300);
+        margin-top: 0.7rem;
+      }
+    }
+
     .inputContainer {
       display: flex;
       width: 100%;
