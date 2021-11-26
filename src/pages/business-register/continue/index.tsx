@@ -2,16 +2,13 @@ import Header from '../../../components/molecules/Header'
 import Head from 'next/head'
 import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
-import { FiMail, FiUser } from 'react-icons/fi'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { Input } from '../../../components/molecules/Input'
 import { useContext, useState } from 'react'
 import { Button } from '../../../components/atoms/Button'
-import { FaHome } from 'react-icons/fa'
 import Router from 'next/router'
 import {
   AiFillFacebook,
-  AiFillLinkedin,
+  AiFillInstagram,
   AiFillPhone,
   AiOutlineWhatsApp
 } from 'react-icons/ai'
@@ -74,7 +71,7 @@ const BusinessRegister = () => {
               placeholder="instagram.com/exemplo"
               value={instagramUrl}
               onChange={(e) => setInstagramUrl(e.target.value)}
-              icon={<AiFillLinkedin size={20} color="var(--black-800)" />}
+              icon={<AiFillInstagram size={20} color="var(--black-800)" />}
             />
 
             <Input
