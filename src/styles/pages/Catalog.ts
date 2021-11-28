@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  padding: 20px 20px;
   width: 100%;
   height: 100vh;
   background: #fffdf9;
@@ -10,94 +9,103 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  .list-container {
+  div.area {
+    max-width: 100%;
     width: 100%;
-    height: 100%;
+
+    padding: 20px 20px;
+
+    padding-left: 16vw;
 
     display: flex;
-    flex-direction: column;
 
-    margin-left: 320px;
-
-    background: #ffffff;
-
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 30px;
-    overflow-y: hidden;
-
-    .header {
+    .list-container {
       width: 100%;
-      height: 110px;
+      height: 100%;
 
       display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
+      flex-direction: column;
 
-      border-radius: 30px 30px 0 0;
-      padding: 20px;
+      background: #ffffff;
 
-      .addBtn {
-        width: 123px;
-        height: 2.5rem;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      border-radius: 30px;
+      overflow-y: hidden;
+
+      .header {
+        width: 100%;
+        height: 110px;
 
         display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
         align-items: center;
-        justify-content: space-between;
 
-        margin-top: 0.5rem;
-        margin-right: 40px;
+        border-radius: 30px 30px 0 0;
+        padding: 20px;
 
-        background: var(--blue-primary);
-        border-radius: 8px;
-        border: none;
+        .addBtn {
+          width: 123px;
+          height: 2.5rem;
 
-        padding: 0 11px 0 11px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 15px;
-        line-height: 22px;
-        color: var(--white);
-      }
+          margin-top: 0.5rem;
+          margin-right: 40px;
 
-      .addBtn:hover {
-        background: var(--blue-dark);
-      }
+          background: var(--blue-primary);
+          border-radius: 8px;
+          border: none;
 
-      .input-container {
-        width: 313px;
+          padding: 0 11px 0 11px;
 
-        margin-right: 28px;
+          font-family: 'Poppins';
+          font-style: normal;
+          font-weight: 600;
+          font-size: 15px;
+          line-height: 22px;
+          color: var(--white);
+        }
+
+        .addBtn:hover {
+          background: var(--blue-dark);
+        }
+
+        .input-container {
+          width: 313px;
+
+          margin-right: 28px;
+        }
       }
     }
-  }
 
-  main {
-    height: 100%;
-    overflow-y: auto;
-  }
+    main {
+      height: 100%;
+      overflow-y: auto;
+    }
 
-  .products-container {
-    padding: 20px 70px;
+    .products-container {
+      padding: 20px 70px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      overflow-y: auto;
 
-    height: 100%;
-  }
+      height: 100%;
+    }
 
-  .categories-container {
-    padding: 20px 85px;
+    .categories-container {
+      padding: 20px 85px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
 
-    height: 100%;
+      height: 100%;
+    }
   }
 `
 

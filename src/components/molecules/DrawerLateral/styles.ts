@@ -5,9 +5,9 @@ export const Container = styled.header`
 
   .showNames {
     width: 13vw;
-    height: 96vh;
+    height: 96.5vh;
 
-    //margin: 20px 20px;
+    margin: 20px 20px;
     border-radius: 30px;
     background: var(--white);
 
@@ -63,9 +63,9 @@ export const Container = styled.header`
   }
   .noShowNames {
     width: 70px;
-    height: 96vh;
+    height: 96.5vh;
 
-    //margin: 20px 20px;
+    margin: 20px 20px;
     border-radius: 30px;
     background: var(--white);
 
