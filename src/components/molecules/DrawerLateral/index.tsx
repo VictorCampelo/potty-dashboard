@@ -48,7 +48,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
             )}
           </div>
 
-          <Link href="/dashboard/shopkeeper">
+          <Link href="/dashboard">
             <div className="option">
               <IoHomeOutline
                 className="icon"
