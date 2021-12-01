@@ -94,26 +94,24 @@ const Landing = ({ stores }: Landing) => {
           </section>
         </Content>
 
-        <Content>
-          <Footer>
-            <h1>Contato</h1>
+        <Footer>
+          <h1>Contato</h1>
 
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 99444-5552
-            </span>
+          <span>
+            <AiFillPhone size={24} color="var(--gray-700)" />
+            (89) 99444-5552
+          </span>
 
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              Whatsapp
-            </span>
+          <span>
+            <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+            Whatsapp
+          </span>
 
-            <a href="facebook.com">
-              <AiFillFacebook size={24} color="var(--gray-700)" />
-              Facebook
-            </a>
-          </Footer>
-        </Content>
+          <a href="facebook.com">
+            <AiFillFacebook size={24} color="var(--gray-700)" />
+            Facebook
+          </a>
+        </Footer>
       </Container>
     </>
   )
