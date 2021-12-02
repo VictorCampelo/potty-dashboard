@@ -134,6 +134,14 @@ export const Container = styled.main`
     }
   }
 
+  @media (max-width: 321px) {
+    form {
+      .title {
+        flex-direction: column;
+      }
+    }
+  }
+
   @media (max-width: 426px) {
     height: 100vh;
     padding-top: 0;
