@@ -31,7 +31,7 @@ const BusinessRegister = () => {
     }
 
     try {
-      await api.post('/signup-store', body)
+      await api.post('/auth/signup-store', body)
 
       Router.push(`/login`)
     } catch (e) {
