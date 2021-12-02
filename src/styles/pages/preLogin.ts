@@ -133,4 +133,13 @@ export const Container = styled.main`
       gap: 1rem;
     }
   }
+
+  @media (max-width: 426px) {
+    height: 100vh;
+    padding-top: 0;
+    form {
+      height: 100%;
+      border-radius: 0;
+    }
+  }
 `
