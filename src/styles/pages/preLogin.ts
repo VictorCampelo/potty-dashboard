@@ -137,9 +137,13 @@ export const Container = styled.main`
   @media (max-width: 426px) {
     height: 100vh;
     padding-top: 0;
+    background: var(--white);
     form {
-      height: 100%;
+      box-shadow: none;
       border-radius: 0;
+      .title {
+        margin-bottom: 2rem;
+      }
     }
   }
 `
