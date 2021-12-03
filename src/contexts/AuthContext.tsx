@@ -1,36 +1,36 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { setCookie, parseCookies, destroyCookie } from 'nookies';
-import Router from "next/router";
-import { api } from "../services/apiClient";
-import { AxiosResponse } from "axios";
+import { createContext, ReactNode, useEffect, useState } from 'react'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
+import Router from 'next/router'
+import { api } from '../services/apiClient'
+import { AxiosResponse } from 'axios'
 
 type SignInCredentials = {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 type User = {
-  email: string;
+  email: string
 }
 
 type AuthContextData = {
-  signIn: (credentials: SignInCredentials) => Promise<AxiosResponse<any>>;
-  signOut: () => void;
-  isAuthenticaded: boolean;
-  user: User;
+  signIn: (credentials: SignInCredentials) => Promise<AxiosResponse<any>>
+  signOut: () => void
+  isAuthenticaded: boolean
+  user: User
 }
 
-export const AuthContext = createContext({} as AuthContextData);
+export const AuthContext = createContext({} as AuthContextData)
 
 let authChannel: BroadcastChannel
 
 type AuthProviderProps = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function signOut() {
-  destroyCookie(undefined, 'ultimo.auth.token');
-  destroyCookie(undefined, 'ultimo.auth.refreshToken');
+  destroyCookie(undefined, 'ultimo.auth.token')
+  destroyCookie(undefined, 'ultimo.auth.refreshToken')
 
   authChannel.postMessage('signOut')
 
@@ -38,19 +38,19 @@ export function signOut() {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] =  useState<User>(null);
-  const isAuthenticaded = !!user;
+  const [user, setUser] = useState<User>(null)
+  const isAuthenticaded = !!user
 
   useEffect(() => {
-    authChannel = new BroadcastChannel('auth');
+    authChannel = new BroadcastChannel('auth')
 
     authChannel.onmessage = (message) => {
-      switch(message.data){
-        case 'singOut': 
-          signOut();
-          break;
+      switch (message.data) {
+        case 'singOut':
+          signOut()
+          break
         default:
-          break;
+          break
       }
     }
   }, [])
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   //   if(token) {
   //     api.get('/me').then(res => {
   //       const { email } = res.data;
-        
+
   //       setUser({ email })
   //     }).catch(() => {
   //       signOut();
@@ -71,22 +71,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     const res = await api.post('/auth/signin', {
-      email, 
-      password 
+      email,
+      password
     })
 
-    const token = res.data.jwtToken;
+    const token = res.data.jwtToken
 
     authChannel.postMessage('signIn')
 
     setCookie(undefined, 'ultimo.auth.token', token, {
       maxAge: 60 * 60 * 24 * 30, // 1 month
-      path: '/',
-      secure: true,
-    });
+      path: '/'
+      // secure: true,
+    })
 
     setUser({
-      email,
+      email
     })
 
     api.defaults.headers['Authorization'] = `Bearer ${token}`
