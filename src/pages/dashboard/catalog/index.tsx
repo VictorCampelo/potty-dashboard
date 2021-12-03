@@ -1004,91 +1004,93 @@ const catalog = ({ storeId }: CatalogType) => {
       <Container>
         <DrawerLateral activated={true} greenOption={4} />
 
-        <div className="list-container">
-          <header className="header">
-            <button
-              className="addBtn"
-              onClick={
-                toggleState == 1 ? handleOpenAddModal : toggleAddCategoryModal
-              }
-            >
-              <FiPlus size={20} color="var(--white)" />
-              Adicionar
-            </button>
-            <div className="input-container">
-              <Input
-                className="searchInput"
-                label=""
-                placeholder="Pesquisar"
-                icon={<FiSearch size={18} color="var(--black-800)" />}
+        <div className="area">
+          <div className="list-container">
+            <header className="header">
+              <button
+                className="addBtn"
+                onClick={
+                  toggleState == 1 ? handleOpenAddModal : toggleAddCategoryModal
+                }
+              >
+                <FiPlus size={20} color="var(--white)" />
+                Adicionar
+              </button>
+              <div className="input-container">
+                <Input
+                  className="searchInput"
+                  label=""
+                  placeholder="Pesquisar"
+                  icon={<FiSearch size={18} color="var(--black-800)" />}
+                />
+              </div>
+            </header>
+            <main>
+              <CatalogTabs
+                tab1="Produtos"
+                tab2="Categorias"
+                setToggleState={setToggleState}
+                toggleState={toggleState}
+                content1={
+                  <div className="products-container">
+                    {products.map((product, index) => {
+                      return (
+                        <ProductListCard
+                          key={product?.id + '-' + index}
+                          icon=""
+                          name={product?.title}
+                          code={product?.id}
+                          category={product?.tags}
+                          amount={product?.inventory}
+                          price={product?.price}
+                          excludeBtn={() => {
+                            handleOpenExcludeModal()
+                            setDeleteProductId(product.id)
+                          }}
+                          editBtn={() => {
+                            setEditProductId(product.id)
+                            setEditProduct(true)
+                          }}
+                          isRed={true}
+                          isGreen={true}
+                        />
+                      )
+                    })}
+                  </div>
+                }
+                content2={
+                  <div className="categories-container">
+                    {categories.map((cat, index) => {
+                      return (
+                        <CategoryListCard
+                          key={cat.id + '-' + index}
+                          date={products
+                            .filter((prd) => prd.categories.includes(cat.name))
+                            .map((data) => {
+                              return {
+                                name: data.title,
+                                amount: String(data.inventory)
+                              }
+                            })}
+                          category={cat.name}
+                          excludeBtn={() => {
+                            setDeleteCategoryId(cat.id)
+                            handleToggleExcludeCategoryModal()
+                          }}
+                          editBtn={() => {
+                            setEditCategoryId(cat.id)
+                            handleOpenEditCategoryModal()
+                          }}
+                          isGreen={true}
+                          isRed={true}
+                        />
+                      )
+                    })}
+                  </div>
+                }
               />
-            </div>
-          </header>
-          <main>
-            <CatalogTabs
-              tab1="Produtos"
-              tab2="Categorias"
-              setToggleState={setToggleState}
-              toggleState={toggleState}
-              content1={
-                <div className="products-container">
-                  {products.map((product, index) => {
-                    return (
-                      <ProductListCard
-                        key={product?.id + '-' + index}
-                        icon=""
-                        name={product?.title}
-                        code={product?.id}
-                        category={product?.tags}
-                        amount={product?.inventory}
-                        price={product?.price}
-                        excludeBtn={() => {
-                          handleOpenExcludeModal()
-                          setDeleteProductId(product.id)
-                        }}
-                        editBtn={() => {
-                          setEditProductId(product.id)
-                          setEditProduct(true)
-                        }}
-                        isRed={true}
-                        isGreen={true}
-                      />
-                    )
-                  })}
-                </div>
-              }
-              content2={
-                <div className="categories-container">
-                  {categories.map((cat, index) => {
-                    return (
-                      <CategoryListCard
-                        key={cat.id + '-' + index}
-                        date={products
-                          .filter((prd) => prd.categories.includes(cat.name))
-                          .map((data) => {
-                            return {
-                              name: data.title,
-                              amount: String(data.inventory)
-                            }
-                          })}
-                        category={cat.name}
-                        excludeBtn={() => {
-                          setDeleteCategoryId(cat.id)
-                          handleToggleExcludeCategoryModal()
-                        }}
-                        editBtn={() => {
-                          setEditCategoryId(cat.id)
-                          handleOpenEditCategoryModal()
-                        }}
-                        isGreen={true}
-                        isRed={true}
-                      />
-                    )
-                  })}
-                </div>
-              }
-            />
-          </main>
+            </main>
+          </div>
         </div>
       </Container>
     </>

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  padding: 20px 20px;
   width: 100%;
   height: 100vh;
   background: #fffdf9;
@@ -11,7 +10,10 @@ export const Container = styled.div`
   div.cards-area {
     max-width: 100%;
     width: auto;
-    margin-left: 5vw;
+
+    padding: 20px 20px;
+
+    padding-left: 7vw;
 
     display: flex;
 

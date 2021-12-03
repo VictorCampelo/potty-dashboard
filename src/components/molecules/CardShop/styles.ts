@@ -1,14 +1,17 @@
 import styled from 'styled-components'
 
-export const Container = styled.section`
-  min-height: 200px;
-  max-height: 500px;
+interface ContainerTypes {
+  width?: string
+}
+
+export const Container = styled.section<ContainerTypes>`
+  max-width: ${(props) => (props.width ? `${props.width}px` : `100vw`)};
+  width: 100%;
+  max-height: 100vh;
+  height: 100%;
 
   margin-right: 20px;
-  margin-bottom: 20px;
 
-  max-width: 700px;
-  width: auto;
   background: #ffffff;
   box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
   border-radius: 30px;
@@ -21,9 +24,12 @@ export const Container = styled.section`
     font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
-    font-size: 1.1rem;
+    font-size: 20px;
     line-height: 36px;
+
+    /* identical to box height */
     text-align: center;
+
     color: #363f4e;
   }
 
@@ -41,10 +47,14 @@ export const Container = styled.section`
 
   .product {
     width: 100%;
-    margin-top: 24px;
-    padding: 0 20px;
+    height: 100%;
+    max-height: 38vh;
 
-    overflow-y: scroll;
+    margin-top: 24px;
+    padding: 0px 20px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
 
     display: flex;
     flex-direction: column;
