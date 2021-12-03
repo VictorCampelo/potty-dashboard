@@ -32,17 +32,15 @@ type SignInFormData = {
 
 const signInFormSchema = yup.object().shape({
   email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
-  password: yup
-    .string()
-    .required('Senha obrigatória')
-    .min(8, 'Usuário ou senha icorretos')
+  password: yup.string().required('Senha obrigatória')
 })
 
 const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    getValues
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
@@ -140,7 +138,14 @@ const Login = () => {
           />
 
           <div className="buttonContainer">
-            <Button isLoading={isSubmitting} type="submit" title="Entrar" />
+            <Button
+              isLoading={isSubmitting}
+              type="submit"
+              title="Entrar"
+              disabled={
+                getValues('email') === '' || getValues('password') === ''
+              }
+            />
           </div>
 
           <div className="divisorContainer">

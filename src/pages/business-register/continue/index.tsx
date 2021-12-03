@@ -52,7 +52,8 @@ const BusinessRegister = () => {
           <div className="inputContainer">
             <Input
               label="Telefone"
-              placeholder="(00)0000-0000"
+              placeholder="(00) 00000-0000"
+              mask="phone"
               value={number}
               onChange={(e) => setNumber(e.target.value)}
               icon={<AiFillPhone size={20} color="var(--black-800)" />}

@@ -66,6 +66,7 @@ const BusinessRegister = () => {
             <Input
               label="CPF/CNPJ"
               placeholder="000.000.000-00"
+              mask={cpfCnpj.length <= 14 ? 'cpf' : 'cnpj'}
               value={cpfCnpj}
               onChange={(e) => setCpfCnpj(e.target.value)}
               icon={<FiUser size={20} color="var(--black-800)" />}
@@ -107,6 +108,7 @@ const BusinessRegister = () => {
                 label="Número"
                 placeholder="0000"
                 value={number}
+                mask="number"
                 flex={1}
                 type="numeric"
                 maxLength={6}
@@ -126,7 +128,8 @@ const BusinessRegister = () => {
 
               <Input
                 label="CEP"
-                placeholder="000.000.000-00"
+                placeholder="00000-000"
+                mask="cep"
                 value={cep}
                 onChange={(e) => setCep(e.target.value)}
                 icon={<BiMapAlt size={20} color="var(--black-800)" />}
