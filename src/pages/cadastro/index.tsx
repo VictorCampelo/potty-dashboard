@@ -13,34 +13,61 @@ import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
 import { signUp } from '../../services/auth.services'
 import { useRenderField } from 'contexts/RenderFieldContext'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { ErrorToast } from 'utils/toasts'
+import useMedia from 'use-media'
+
+type SignUpFormData = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  passwordConfirmation: string
+}
+
+const registerFormSchema = yup.object().shape({
+  firstName: yup.string().required('Primeiro nome obrigatório'),
+  lastName: yup.string().required('Último nome obrigatório'),
+  email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
+  password: yup.string().required('Senha obrigatória'),
+  passwordConfirmation: yup
+    .string()
+    .required('Confirmação de senha obrigatória')
+    .oneOf([yup.ref('password'), null], 'As senhas não são iguais')
+})
 
 const Register = () => {
-  const [email, setEmail] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
-
   const router = useRouter()
-  const { show, showSecondary } = useRenderField()
+  const show = useMedia({ minWidth: '420px' })
 
-  async function handleSignUp(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues
+  } = useForm({
+    resolver: yupResolver(registerFormSchema)
+  })
+
+  const handleSignUp: SubmitHandler<SignUpFormData> = async (values, event) => {
     try {
       const user = {
-        email,
-        firstName,
-        lastName,
-        password,
-        passwordConfirmation
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+        passwordConfirmation: values.passwordConfirmation
       }
 
-      await signUp(user)
-      router.push('login')
+      const res = await signUp(user)
+
+      if (res.status === 200 || res.status === 201) {
+        return router.push('/login')
+      }
     } catch (e) {
-      console.error(e)
+      console.log(e)
     }
   }
 
@@ -52,7 +79,7 @@ const Register = () => {
 
       <Header />
       <Container>
-        <form>
+        <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro</h1>
             <Link href="/cadastro/lojista">
@@ -60,41 +87,45 @@ const Register = () => {
             </Link>
           </div>
 
-          {show === 0 ? (
+          {show === true ? (
             <div className="inputContainer">
               <Input
                 label="Primeiro Nome"
                 placeholder="Nome"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
                 icon={<FiMail size={20} color="var(--black-800)" />}
+                {...register('firstName')}
+                textError={errors.firstName?.message}
+                error={errors.firstName}
               />
 
               <Input
                 label="Sobrenome"
                 placeholder="Sobrenome"
                 className="name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
                 icon={<FiMail size={20} color="var(--black-800)" />}
+                {...register('lastName')}
+                textError={errors.lastName?.message}
+                error={errors.lastName}
               />
               <Input
                 label="Email"
                 placeholder="exemplo@gmail.com"
                 className="input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 icon={<FiMail size={20} color="var(--black-800)" />}
+                {...register('email')}
+                textError={errors.email?.message}
+                error={errors.email}
               />
 
               <Input
                 label="Senha"
                 placeholder="********"
                 className="input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 password
                 icon={<FiLock size={20} color="var(--black-800)" />}
+                {...register('password')}
+                textError={errors.password?.message}
+                error={errors.password}
               />
 
               <Input
@@ -102,28 +133,31 @@ const Register = () => {
                 placeholder="********"
                 className="input"
                 password
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
                 icon={<FiLock size={20} color="var(--black-800)" />}
+                {...register('passwordConfirmation')}
+                textError={errors.passwordConfirmation?.message}
+                error={errors.passwordConfirmation}
               />
             </div>
-          ) : show === 1 ? (
+          ) : show === false ? (
             <div className="inputContainer">
               <Input
                 label="Primeiro Nome"
                 placeholder="Nome"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
                 icon={<FiMail size={20} color="var(--black-800)" />}
+                {...register('firstName')}
+                textError={errors.firstName ? errors.firstName : ''}
+                error={errors.firstName}
               />
 
               <Input
                 label="Sobrenome"
                 placeholder="Sobrenome"
                 className="name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
                 icon={<FiMail size={20} color="var(--black-800)" />}
+                {...register('lastName')}
+                textError={errors.lastName ? errors.lastName : ''}
+                error={errors.lastName}
               />
             </div>
           ) : (
@@ -132,19 +166,17 @@ const Register = () => {
                 label="Email"
                 placeholder="exemplo@gmail.com"
                 className="input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 icon={<FiMail size={20} color="var(--black-800)" />}
+                {...register('email')}
               />
 
               <Input
                 label="Senha"
                 placeholder="********"
                 className="input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 password
                 icon={<FiLock size={20} color="var(--black-800)" />}
+                {...register('password')}
               />
 
               <Input
@@ -152,17 +184,17 @@ const Register = () => {
                 placeholder="********"
                 className="input"
                 password
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
                 icon={<FiLock size={20} color="var(--black-800)" />}
+                {...register('passwordConfirmation')}
               />
             </div>
           )}
 
           <div className="buttonContainer">
             <Button
-              onClick={show !== 1 ? handleSignUp : showSecondary}
+              // onClick={show !== false}
               title="CONTINUAR"
+              type="submit"
             />
           </div>
 

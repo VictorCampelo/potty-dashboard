@@ -13,33 +13,62 @@ import { FaHome } from 'react-icons/fa'
 import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import Router from 'next/router'
 import { ShopkeeperContext } from '../../contexts/ShopkeeperContext'
+import * as yup from 'yup'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+type bussinesRegisterFormData = {
+  businessName: string
+  cpfCnpj: string
+  businessState: string
+  businessCity: string
+  publicPlace: string
+  number: string
+  district: string
+  cep: string
+}
+
+const bussinesRegisterFormSchema = yup.object().shape({
+  businessName: yup.string().required('Nome do negócio obrigatório'),
+  cpfCnpj: yup
+    .string()
+    .required('CPF ou CNPJ obrigatório')
+    .min(14, 'Mínimo 14 caracteres [CPF]')
+    .max(18),
+  businessState: yup.string().required('Estado obrigatório'),
+  businessCity: yup.string().required('Cidade obrigatória'),
+  publicPlace: yup.string().required('Logradouro obrigatório'),
+  number: yup.string().required('obrigatório'),
+  district: yup.string().required('Bairro obrigatório'),
+  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
+})
 
 const BusinessRegister = () => {
-  const [businessName, setBusinessName] = useState('')
-  const [businessperson, setBusinessperson] = useState('')
-  const [cpfCnpj, setCpfCnpj] = useState('')
-  const [businessState, setBusinessState] = useState('')
-  const [businessCity, setBusinessCity] = useState('')
-  const [publicPlace, setPublicPlace] = useState('')
-  const [number, setNumer] = useState('')
-  const [district, setDistrict] = useState('')
-  const [cep, setCep] = useState('')
-
   const { setStore } = useContext(ShopkeeperContext)
+  const [cpfCnpj, setCpfCnpj] = useState('')
 
-  function handleContinueRegister() {
-    const store = {
-      name: businessName,
-      cpfCnpj,
-      address: `${publicPlace}, n° ${number}, ${district}, CEP: ${cep}`,
-      city: businessCity,
-      state: businessState
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues
+  } = useForm({
+    resolver: yupResolver(bussinesRegisterFormSchema)
+  })
+
+  const handleContinueRegister: SubmitHandler<bussinesRegisterFormData> =
+    async (values, event) => {
+      const store = {
+        name: values.businessName,
+        cpfCnpj: values.cpfCnpj,
+        address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
+        city: values.businessCity,
+        state: values.businessState
+      }
+
+      setStore(store)
+      Router.push('/business-register/continue')
     }
-
-    setStore(store)
-
-    Router.push('/business-register/continue')
-  }
 
   return (
     <Wrapper>
@@ -49,7 +78,7 @@ const BusinessRegister = () => {
 
       <Header />
       <Container>
-        <form onSubmit={() => {}}>
+        <form onSubmit={handleSubmit(handleContinueRegister)}>
           <div className="title">
             <h1> Registro de Negócio </h1>
           </div>
@@ -58,39 +87,44 @@ const BusinessRegister = () => {
             <Input
               label="Nome do negócio"
               placeholder="Nome do negócio"
-              value={businessName}
-              onChange={(e) => setBusinessName(e.target.value)}
               icon={<FiMail size={20} color="var(--black-800)" />}
+              {...register('businessName')}
+              textError={errors.businessName?.message}
+              error={errors.businessName}
             />
 
             <Input
               label="CPF/CNPJ"
               placeholder="000.000.000-00"
               mask={cpfCnpj.length <= 14 ? 'cpf' : 'cnpj'}
-              value={cpfCnpj}
-              onChange={(e) => setCpfCnpj(e.target.value)}
               icon={<FiUser size={20} color="var(--black-800)" />}
+              {...register('cpfCnpj')}
+              onChange={(e) => setCpfCnpj(e.target.value)}
+              textError={errors.cpfCnpj?.message}
+              error={errors.cpfCnpj}
             />
 
             <div className="inputRow">
               <Input
                 label="Estado"
                 placeholder="Estado"
-                value={businessState}
-                onChange={(e) => setBusinessState(e.target.value)}
                 icon={
                   <HiOutlineLocationMarker size={20} color="var(--black-800)" />
                 }
+                {...register('businessState')}
+                textError={errors.businessState?.message}
+                error={errors.businessState}
               />
 
               <Input
                 label="Cidade"
                 placeholder="Cidade"
-                value={businessCity}
-                onChange={(e) => setBusinessCity(e.target.value)}
                 icon={
                   <HiOutlineLocationMarker size={20} color="var(--black-800)" />
                 }
+                {...register('businessCity')}
+                textError={errors.businessCity?.message}
+                error={errors.businessCity}
               />
             </div>
 
@@ -99,21 +133,23 @@ const BusinessRegister = () => {
                 label="Logradouro"
                 placeholder="Logradouro"
                 flex={3}
-                value={publicPlace}
-                onChange={(e) => setPublicPlace(e.target.value)}
                 icon={<FaHome size={20} color="var(--black-800)" />}
+                {...register('publicPlace')}
+                textError={errors.publicPlace?.message}
+                error={errors.publicPlace}
               />
 
               <Input
                 label="Número"
                 placeholder="0000"
-                value={number}
                 mask="number"
                 flex={1}
                 type="numeric"
                 maxLength={6}
-                onChange={(e) => setNumer(e.target.value)}
                 icon={<BiBuildings size={20} color="var(--black-800)" />}
+                {...register('number')}
+                textError={errors.number?.message}
+                error={errors.number}
               />
             </div>
 
@@ -121,28 +157,26 @@ const BusinessRegister = () => {
               <Input
                 label="Bairro"
                 placeholder="Bairro"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
                 icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                {...register('district')}
+                textError={errors.district?.message}
+                error={errors.district}
               />
 
               <Input
                 label="CEP"
                 placeholder="00000-000"
                 mask="cep"
-                value={cep}
-                onChange={(e) => setCep(e.target.value)}
                 icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                {...register('cep')}
+                textError={errors.cep?.message}
+                error={errors.cep}
               />
             </div>
           </div>
 
           <div className="buttonContainer">
-            <Button
-              type="button"
-              onClick={handleContinueRegister}
-              title="Continuar"
-            />
+            <Button type="submit" title="Continuar" />
           </div>
         </form>
       </Container>

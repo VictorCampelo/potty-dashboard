@@ -20,10 +20,7 @@ import * as yup from 'yup'
 
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-
-type ToastProps = {
-  newMessage?: string
-}
+import { ErrorToast } from 'utils/toasts'
 
 type SignInFormData = {
   email: string
@@ -69,31 +66,16 @@ const Login = () => {
       }
     } catch (e) {
       if (e.message.includes(401) || e.message.includes(404)) {
-        return handleSendErrorToast({ newMessage: 'Email ou senha incorretos' })
+        return ErrorToast({ newMessage: 'Email ou senha incorretos' })
       } else {
         if (e.message.includes(412)) {
           return router.push('/auth/register/confirmation-token')
         }
-        handleSendErrorToast({
+        ErrorToast({
           newMessage: 'Erro interno, tente novamente mais tarde'
         })
       }
     }
-  }
-
-  const handleSendErrorToast = ({ newMessage }: ToastProps) => {
-    const message =
-      newMessage || errors?.email?.message || errors?.password?.message
-    if (message)
-      toast.error(message, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
   }
 
   return (

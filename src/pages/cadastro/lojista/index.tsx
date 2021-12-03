@@ -12,37 +12,57 @@ import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
 import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
+import * as yup from 'yup'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+type SignUpFormData = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  passwordConfirmation: string
+}
+
+const registerFormSchema = yup.object().shape({
+  firstName: yup.string().required('Primeiro nome obrigatório'),
+  lastName: yup.string().required('Último nome obrigatório'),
+  email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
+  password: yup.string().required('Senha obrigatória'),
+  passwordConfirmation: yup
+    .string()
+    .required('Confirmação de senha obrigatória')
+    .oneOf([yup.ref('password'), null], 'As senhas não são iguais')
+})
 
 const RegisterShopkeeper = () => {
-  const [email, setEmail] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
-
   const router = useRouter()
 
   const { setUser } = useContext(ShopkeeperContext)
 
-  async function handleSignUp(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues
+  } = useForm({
+    resolver: yupResolver(registerFormSchema)
+  })
 
+  const handleSignUp: SubmitHandler<SignUpFormData> = async (values, event) => {
     try {
       const user = {
-        email,
-        firstName,
-        lastName,
-        password,
-        passwordConfirmation
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+        passwordConfirmation: values.passwordConfirmation
       }
 
       setUser(user)
-
       router.push('/business-register')
     } catch (e) {
-      console.error(e)
+      console.log(e)
     }
   }
 
@@ -54,7 +74,7 @@ const RegisterShopkeeper = () => {
 
       <Header />
       <Container>
-        <form>
+        <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro lojista</h1>
             <Link href="/cadastro">
@@ -65,49 +85,57 @@ const RegisterShopkeeper = () => {
           <div className="inputContainer">
             <Input
               label="Primeiro Nome"
-              value={firstName}
               placeholder="Nome"
-              onChange={(e) => setFirstName(e.target.value)}
               icon={<FiMail size={20} color="var(--black-800)" />}
+              {...register('firstName')}
+              textError={errors.firstName?.message}
+              error={errors.firstName}
             />
 
             <Input
               label="Sobrenome"
               placeholder="Sobrenome"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              className="name"
               icon={<FiMail size={20} color="var(--black-800)" />}
+              {...register('lastName')}
+              textError={errors.lastName?.message}
+              error={errors.lastName}
             />
-
             <Input
               label="Email"
               placeholder="exemplo@gmail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              className="input"
               icon={<FiMail size={20} color="var(--black-800)" />}
+              {...register('email')}
+              textError={errors.email?.message}
+              error={errors.email}
             />
 
             <Input
               label="Senha"
               placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              className="input"
               password
               icon={<FiLock size={20} color="var(--black-800)" />}
+              {...register('password')}
+              textError={errors.password?.message}
+              error={errors.password}
             />
 
             <Input
               label="Repetir senha"
               placeholder="********"
+              className="input"
               password
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
               icon={<FiLock size={20} color="var(--black-800)" />}
+              {...register('passwordConfirmation')}
+              textError={errors.passwordConfirmation?.message}
+              error={errors.passwordConfirmation}
             />
           </div>
 
           <div className="buttonContainer">
-            <Button onClick={handleSignUp} title="CONTINUAR" />
+            <Button type="submit" title="CONTINUAR" />
           </div>
 
           <div className="divisorContainer">

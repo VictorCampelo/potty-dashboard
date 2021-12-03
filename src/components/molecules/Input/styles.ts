@@ -28,6 +28,7 @@ export const Container = styled.div<ContainerProps>`
       color: var(--red);
       font-size: 0.875rem;
       font-weight: 500;
+      padding-left: 3px;
     }
   }
 
@@ -44,8 +45,6 @@ export const Container = styled.div<ContainerProps>`
     overflow: hidden;
     border: 1px solid var(--black-800);
 
-    cursor: text;
-
     input {
       width: 100%;
       height: 100%;
@@ -55,6 +54,8 @@ export const Container = styled.div<ContainerProps>`
       background: inherit;
       padding-left: 5px;
       ${(props) => props.error && 'color: var(--red);'}
+
+      cursor: text;
     }
 
     input:focus {

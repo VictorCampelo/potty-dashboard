@@ -41,7 +41,7 @@ export const Container = styled.div`
 
   OU
 
-  ${[sizes.up("sm")]} {
+  ${[sizes.down("sm")]} {
     display: flex;
     flex-direction: column;
     align-items: center;
