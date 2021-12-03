@@ -29,7 +29,10 @@ type SignInFormData = {
 
 const signInFormSchema = yup.object().shape({
   email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
-  password: yup.string().required('Senha obrigatória')
+  password: yup
+    .string()
+    .required('Senha obrigatória')
+    .min(8, 'Mínimo 8 caracteres')
 })
 
 const Login = () => {
@@ -43,6 +46,7 @@ const Login = () => {
   })
 
   const [rememberUser, setRememberUser] = useState(false)
+  const [errorNotFound, setErrorNotFound] = useState(false)
 
   const router = useRouter()
 
@@ -66,7 +70,8 @@ const Login = () => {
       }
     } catch (e) {
       if (e.message.includes(401) || e.message.includes(404)) {
-        return ErrorToast({ newMessage: 'Email ou senha incorretos' })
+        setErrorNotFound(true)
+        // return ErrorToast({ newMessage: 'Email ou senha incorretos' })
       } else {
         if (e.message.includes(412)) {
           return router.push('/auth/register/confirmation-token')
@@ -97,19 +102,20 @@ const Login = () => {
               label="Email"
               type="email"
               placeholder="exemplo@gmail.com"
-              error={errors.email !== undefined}
               icon={<FiMail size={20} color="var(--black-800)" />}
               {...register('email')}
+              textError={errors.email?.message}
+              error={errors.email}
             />
 
             <Input
               label="Senha"
               placeholder="********"
               password
-              textError={'Email ou senha incorretos'}
-              error={errors.password !== undefined}
               icon={<FiLock size={20} color="var(--black-800)" />}
               {...register('password')}
+              textError={errors.password?.message}
+              error={errors.password}
             />
           </div>
 
