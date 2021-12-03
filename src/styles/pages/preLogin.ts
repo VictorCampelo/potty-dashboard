@@ -133,4 +133,25 @@ export const Container = styled.main`
       gap: 1rem;
     }
   }
+
+  @media (max-width: 321px) {
+    form {
+      .title {
+        flex-direction: column;
+      }
+    }
+  }
+
+  @media (max-width: 426px) {
+    height: 100vh;
+    padding-top: 0;
+    background: var(--white);
+    form {
+      box-shadow: none;
+      border-radius: 0;
+      .title {
+        margin-bottom: 2rem;
+      }
+    }
+  }
 `

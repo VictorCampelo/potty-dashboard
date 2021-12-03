@@ -167,6 +167,33 @@ const Login = () => {
           </div>
         </form>
       </Container>
+
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          height: '85%',
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          width: '100%'
+        }}
+        src="/images/wave1.svg"
+        alt="wave 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          height: '65%',
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          width: '100%'
+        }}
+        src="/images/wave2.svg"
+        alt="wave 2"
+      />
     </Wrapper>
   )
 }
