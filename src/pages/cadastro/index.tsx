@@ -3,21 +3,20 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Container, Wrapper } from '../../styles/pages/preLogin'
 
-import { FiLock, FiMail } from 'react-icons/fi'
+import { FiLock, FiMail, FiChevronLeft } from 'react-icons/fi'
 import { Input } from '../../components/molecules/Input'
 import { Checkbox } from '../../components/atoms/Checkbox'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { FaFacebook } from 'react-icons/fa'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
 import { signUp } from '../../services/auth.services'
-import { useRenderField } from 'contexts/RenderFieldContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ErrorToast } from 'utils/toasts'
-import useMedia from 'use-media'
+import { useMedia } from 'use-media'
 
 type SignUpFormData = {
   firstName: string
@@ -46,7 +45,19 @@ const registerFormSchema = yup.object().shape({
 
 const Register = () => {
   const router = useRouter()
-  const show = useMedia({ minWidth: '420px' })
+  // Estado para fazer a responsividade
+  const [show, setShow] = useState(1)
+  const widthWindow = useMedia({ minWidth: '426px' })
+
+  function showPrimary(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault()
+    setShow(1)
+  }
+
+  function showSecondary(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault()
+    setShow(2)
+  }
 
   const {
     register,
@@ -87,13 +98,25 @@ const Register = () => {
       <Container>
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
-            <h1>Cadastro</h1>
+            <div className="mainTitle">
+              {show === 2 && !widthWindow ? (
+                <FiChevronLeft
+                  className="arrowLeft"
+                  size={25}
+                  color="var(--black-800)"
+                  onClick={showPrimary}
+                />
+              ) : (
+                <></>
+              )}
+              <h1>Cadastro</h1>
+            </div>
             <Link href="/cadastro/lojista">
               <a>Se cadastrar como lojista</a>
             </Link>
           </div>
 
-          {show === true ? (
+          {widthWindow ? (
             <div className="inputContainer">
               <Input
                 label="Primeiro Nome"
@@ -145,7 +168,7 @@ const Register = () => {
                 error={errors.passwordConfirmation}
               />
             </div>
-          ) : show === false ? (
+          ) : show === 1 ? (
             <div className="inputContainer">
               <Input
                 label="Primeiro Nome"
@@ -203,11 +226,11 @@ const Register = () => {
           )}
 
           <div className="buttonContainer">
-            <Button
-              // onClick={show !== false}
-              title="CONTINUAR"
-              type="submit"
-            />
+            {widthWindow || show === 2 ? (
+              <Button title="CONTINUAR" type="submit" />
+            ) : (
+              <Button title="CONTINUAR" onClick={showSecondary} />
+            )}
           </div>
 
           <div className="divisorContainer">

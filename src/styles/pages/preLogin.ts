@@ -32,9 +32,18 @@ export const Container = styled.main`
       align-items: center;
       justify-content: space-between;
 
-      h1 {
-        font-size: 1.875rem;
-        font-weight: 600;
+      .mainTitle {
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        .arrowLeft {
+          justify-self: center;
+        }
+
+        h1 {
+          font-size: 1.875rem;
+          font-weight: 600;
+        }
       }
 
       p {
@@ -134,10 +143,17 @@ export const Container = styled.main`
     }
   }
 
-  @media (max-width: 321px) {
+  @media (max-width: 375px) {
     form {
       .title {
         flex-direction: column;
+        align-items: flex-start;
+        .mainTitle {
+          .arrowLeft {
+            margin-right: 1.2rem;
+            align-self: center;
+          }
+        }
       }
     }
   }
