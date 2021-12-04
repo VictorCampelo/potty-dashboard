@@ -589,7 +589,6 @@ const catalog = ({ storeId }: CatalogType) => {
             <Input
               label="Nome da categoria"
               placeholder="Categoria"
-              icon={<FiSearch size={20} color="var(--black-800)" />}
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             />
