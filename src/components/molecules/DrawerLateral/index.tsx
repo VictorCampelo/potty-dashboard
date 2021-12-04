@@ -54,7 +54,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
                 className="icon"
                 color={
                   greenOption === 0
-                    ? 'var(--green-confirmation)'
+                    ? 'var(--color-primary)'
                     : 'var(--black-800)'
                 }
               />
@@ -68,7 +68,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
                 className="icon"
                 color={
                   greenOption === 1
-                    ? 'var(--green-confirmation)'
+                    ? 'var(--color-primary)'
                     : 'var(--black-800)'
                 }
               />
@@ -82,7 +82,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
                 className="icon"
                 color={
                   greenOption === 2
-                    ? 'var(--green-confirmation)'
+                    ? 'var(--color-primary)'
                     : 'var(--black-800)'
                 }
               />
@@ -96,7 +96,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
                 className="icon"
                 color={
                   greenOption === 3
-                    ? 'var(--green-confirmation)'
+                    ? 'var(--color-primary)'
                     : 'var(--black-800)'
                 }
               />
@@ -110,7 +110,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
                 className="icon"
                 color={
                   greenOption === 4
-                    ? 'var(--green-confirmation)'
+                    ? 'var(--color-primary)'
                     : 'var(--black-800)'
                 }
               />
@@ -124,7 +124,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
                 className="icon"
                 color={
                   greenOption === 5
-                    ? 'var(--green-confirmation)'
+                    ? 'var(--color-primary)'
                     : 'var(--black-800)'
                 }
               />

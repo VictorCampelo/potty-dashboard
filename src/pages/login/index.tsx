@@ -40,7 +40,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues
+    watch
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
@@ -130,9 +130,7 @@ const Login = () => {
               isLoading={isSubmitting}
               type="submit"
               title="Entrar"
-              disabled={
-                getValues('email') === '' || getValues('password') === ''
-              }
+              disabled={!watch('email') || !watch('password')}
             />
           </div>
 

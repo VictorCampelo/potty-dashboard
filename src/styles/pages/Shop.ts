@@ -31,7 +31,7 @@ export const Container = styled.div`
         height: 6vh;
         margin-top: 20px;
 
-        background: #2dd1ac;
+        background: var(--color-primary);
         border-radius: 30px;
         border: none;
 
@@ -75,7 +75,7 @@ export const ModalContainer = styled.div`
       font-size: 24px;
       line-height: 36px;
 
-      color: #01ac8a;
+      color: var(--color-secondary-darker);
     }
 
     svg {

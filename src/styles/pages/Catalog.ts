@@ -55,8 +55,8 @@ export const Container = styled.div`
           margin-top: 0.5rem;
           margin-right: 40px;
 
-          background: var(--blue-primary);
-          border-radius: 8px;
+          background: var(--color-secondary);
+          border-radius: 50px;
           border: none;
 
           padding: 0 11px 0 11px;
@@ -70,7 +70,7 @@ export const Container = styled.div`
         }
 
         .addBtn:hover {
-          background: var(--blue-dark);
+          background: var(--color-secondary-darker);
         }
 
         .input-container {
@@ -497,7 +497,7 @@ export const EditCategoryModalContainer = styled.div`
       font-size: 24px;
       line-height: 36px;
 
-      color: #01ac8a;
+      color: var(--color-secondary-darker);
     }
 
     svg {
@@ -534,7 +534,7 @@ export const EditCategoryModalContainer = styled.div`
       height: 54px;
       background: transparent;
 
-      border: 2px solid #2dd1ac;
+      border: 2px solid var(--color-primary);
       box-sizing: border-box;
       border-radius: 30px;
 
@@ -542,7 +542,7 @@ export const EditCategoryModalContainer = styled.div`
       font-weight: normal;
       font-size: 1rem;
 
-      color: #2dd1ac;
+      color: var(--color-primary);
 
       display: flex;
       justify-content: center;
