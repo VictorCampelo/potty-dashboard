@@ -98,24 +98,11 @@ const Register = () => {
       <Container>
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
-            <div className="mainTitle">
-              {show === 2 && !widthWindow ? (
-                <FiChevronLeft
-                  className="arrowLeft"
-                  size={25}
-                  color="var(--black-800)"
-                  onClick={showPrimary}
-                />
-              ) : (
-                <></>
-              )}
-              <h1>Cadastro</h1>
-            </div>
+            <h1>Cadastro</h1>
             <Link href="/cadastro/lojista">
               <a>Se cadastrar como lojista</a>
             </Link>
           </div>
-
           {widthWindow ? (
             <div className="inputContainer">
               <Input

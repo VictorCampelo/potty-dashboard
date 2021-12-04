@@ -26,24 +26,14 @@ export const Container = styled.main`
     .title {
       width: 100%;
       margin-bottom: 1rem;
-
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
 
-      .mainTitle {
-        display: flex;
-        flex-direction: row;
-        justify-items: center;
-        .arrowLeft {
-          justify-self: center;
-        }
-
-        h1 {
-          font-size: 1.875rem;
-          font-weight: 600;
-        }
+      h1 {
+        font-size: 1.875rem;
+        font-weight: 600;
       }
 
       p {
@@ -56,7 +46,6 @@ export const Container = styled.main`
       a {
         font-size: 0.8rem;
         color: var(--gray-300);
-        margin-top: 0.7rem;
       }
     }
 
@@ -148,12 +137,6 @@ export const Container = styled.main`
       .title {
         flex-direction: column;
         align-items: flex-start;
-        .mainTitle {
-          .arrowLeft {
-            margin-right: 1.2rem;
-            align-self: center;
-          }
-        }
       }
     }
   }
