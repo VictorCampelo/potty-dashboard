@@ -63,7 +63,8 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues
+    getValues,
+    watch
   } = useForm({
     resolver: yupResolver(registerFormSchema)
   })
@@ -216,7 +217,11 @@ const Register = () => {
             {widthWindow || show === 2 ? (
               <Button title="CONTINUAR" type="submit" />
             ) : (
-              <Button title="CONTINUAR" onClick={showSecondary} />
+              <Button
+                title="CONTINUAR"
+                onClick={showSecondary}
+                disabled={!watch('firstName') || !watch('lastName')}
+              />
             )}
           </div>
 
