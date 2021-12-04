@@ -276,7 +276,7 @@ export const ProductCard = styled.div`
 
     span {
       font-size: 1.75rem;
-      color: var(--green-confirmation);
+      color: var(--color-primary);
       font-weight: 600;
       margin-right: 0.5rem;
     }
@@ -363,12 +363,12 @@ export const StatusCard = styled.div`
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: var(--green-primary-dark);
+      background: var(--color-primary-dark);
       margin-right: 0.5rem;
     }
 
     span {
-      color: var(--green-primary-dark);
+      color: var(--color-primary-dark);
       font-weight: bold;
       font-size: 1.125rem;
     }
@@ -451,7 +451,7 @@ export const CategoriesCard = styled.div`
 
   .title {
     width: 100%;
-    background: var(--green-confirmation);
+    background: var(--color-primary);
     padding: 1rem 1.5rem;
 
     span {
@@ -479,7 +479,7 @@ export const CategoriesCard = styled.div`
       text-decoration: none;
 
       &.active {
-        color: var(--green-confirmation);
+        color: var(--color-primary);
       }
     }
   }
@@ -627,7 +627,7 @@ export const HorizonCard = styled.div`
 
     span {
       font-size: 1.75rem;
-      color: var(--green-confirmation);
+      color: var(--color-primary);
       font-weight: 600;
       margin-right: 0.5rem;
     }

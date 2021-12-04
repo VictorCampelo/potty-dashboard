@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.section`
   width: 35vw;
@@ -81,7 +81,7 @@ export const Container = styled.section`
       height: 35px;
       background: transparent;
 
-      border: 2px solid #2dd1ac;
+      border: 2px solid var(--color-primary);
       box-sizing: border-box;
       border-radius: 30px;
 
@@ -89,7 +89,7 @@ export const Container = styled.section`
       font-weight: normal;
       font-size: 1rem;
 
-      color: #2dd1ac;
+      color: var(--color-primary);
       background: #ffffff;
 
       display: flex;
@@ -130,7 +130,7 @@ export const Container = styled.section`
       font-weight: 600;
       font-size: 24px;
 
-      color: #01ac8a;
+      color: var(--color-secondary-darker);
     }
 
     p {
@@ -140,7 +140,7 @@ export const Container = styled.section`
       line-height: 18px;
     }
   }
-`;
+`
 
 export const Modal = styled.div`
   .corpo-modal {
@@ -164,7 +164,7 @@ export const Modal = styled.div`
         font-weight: 600;
         font-size: 20px;
 
-        color: #01ac8a;
+        color: var(--color-secondary-darker);
       }
       #close {
         position: absolute;
@@ -204,7 +204,7 @@ export const Modal = styled.div`
           cursor: pointer;
         }
 
-        input[type="file"] {
+        input[type='file'] {
           display: none;
         }
       }
@@ -282,7 +282,7 @@ export const Modal = styled.div`
         height: 35px;
         background: transparent;
 
-        border: 2px solid #2dd1ac;
+        border: 2px solid var(--color-primary);
         box-sizing: border-box;
         border-radius: 30px;
 
@@ -290,7 +290,7 @@ export const Modal = styled.div`
         font-weight: normal;
         font-size: 1rem;
 
-        color: #2dd1ac;
+        color: var(--color-primary);
 
         display: flex;
         justify-content: center;
@@ -310,4 +310,4 @@ export const Modal = styled.div`
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(21px);
   }
-`;
+`

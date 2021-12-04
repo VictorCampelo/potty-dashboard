@@ -589,8 +589,6 @@ const Shop = ({ storeId, id }: Shop) => {
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
-              // coverSrc={"/////images/cover.jpg"}
-              // imgSrc={"/////images/coffe-place.png"}
               title={businessName}
               quantStar={stars}
               description={desc}

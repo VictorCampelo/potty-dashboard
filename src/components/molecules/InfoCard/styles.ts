@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.section`
   width: 35vw;
@@ -14,7 +14,7 @@ export const Container = styled.section`
     .voidText {
       display: flex;
       width: 100%;
-      
+
       p {
         font-style: normal;
         font-weight: 400;
@@ -38,7 +38,7 @@ export const Container = styled.section`
 
       text-align: center;
 
-      color: #01ac8a;
+      color: var(--color-secondary-darker);
     }
 
     button {
@@ -46,7 +46,7 @@ export const Container = styled.section`
       height: 35px;
       background: transparent;
 
-      border: 2px solid #2dd1ac;
+      border: 2px solid var(--color-primary);
       box-sizing: border-box;
       border-radius: 30px;
 
@@ -54,7 +54,7 @@ export const Container = styled.section`
       font-weight: normal;
       font-size: 1rem;
 
-      color: #2dd1ac;
+      color: var(--color-primary);
 
       display: flex;
       justify-content: center;
@@ -135,4 +135,4 @@ export const Container = styled.section`
       }
     }
   }
-`;
+`

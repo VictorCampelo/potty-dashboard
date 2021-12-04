@@ -14,20 +14,20 @@ export const Container = styled.button<ContainerProp>`
   color: var(--white);
   font-weight: 700;
   font-size: 1.125rem;
-  background-color: var(--green-confirmation);
+  background-color: var(--color-primary);
   transition: 0.2s background;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  ${(props) => props.border && 'border: 2px solid var(--green-confirmation);'}
-  ${(props) => props.border && 'color: var(--green-confirmation);'}
+  ${(props) => props.border && 'border: 2px solid var(--color-primary);'}
+  ${(props) => props.border && 'color: var(--color-primary);'}
   ${(props) => props.border && 'font-weight: normal;'}
   ${(props) => props.border && 'background-color: var(--white);'}
 
   :hover {
-    background-color: var(--green-confirmation-darker);
+    background-color: var(--color-primary-darker);
     ${(props) => props.border && 'background-color: #eeeeee;'}
   }
 

@@ -27,11 +27,13 @@ export default createGlobalStyle`
     --gray-600: #6B7079;
     --gray-700: #363F4E;
     --yellow-600: #F7EAD5;
+    --yellow: #FFC658;
     --gold: #ffe249;
 
-    --green-confirmation: #2DD1AC;
-    --green-confirmation-darker: #24a78a;
-    --green-primary-dark: #01AC8A;
+    --color-primary: #FF7A00;
+    --color-primary-darker: #BF5C00;
+    --color-secondary: #AC4EDF;
+    --color-secondary-darker: #5D1A82;
 
     --blue-primary: #3C8EFC;
     --blue-dark: #2A78E1;

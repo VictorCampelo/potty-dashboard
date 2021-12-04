@@ -55,8 +55,8 @@ export const Container = styled.div`
           margin-top: 0.5rem;
           margin-right: 40px;
 
-          background: var(--blue-primary);
-          border-radius: 8px;
+          background: var(--color-secondary);
+          border-radius: 50px;
           border: none;
 
           padding: 0 11px 0 11px;
@@ -70,7 +70,7 @@ export const Container = styled.div`
         }
 
         .addBtn:hover {
-          background: var(--blue-dark);
+          background: var(--color-secondary-darker);
         }
 
         .input-container {

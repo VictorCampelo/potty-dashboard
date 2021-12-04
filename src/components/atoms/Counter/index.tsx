@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import styled from 'styled-components'
 
 interface Counter {
-  id: string;
+  id: string
 }
 
 const Counter = ({ id }: Counter) => {
@@ -12,31 +12,38 @@ const Counter = ({ id }: Counter) => {
   return (
     <Container>
       <Button
-        className={items.find(it => it.productId == id).amount == 1 && 'inactive'}
+        className={
+          items.find((it) => it.productId == id).amount == 1 && 'inactive'
+        }
         onClick={() => {
-          if (items.find(it => it.productId == id).amount > 1) setItems(items.map(it => {
-            if(it.productId == id)
-              return {
-                ...it,
-                amount: it.amount - 1
-              }
-            else return it
-          }))
+          if (items.find((it) => it.productId == id).amount > 1)
+            setItems(
+              items.map((it) => {
+                if (it.productId == id)
+                  return {
+                    ...it,
+                    amount: it.amount - 1
+                  }
+                else return it
+              })
+            )
         }}
       >
         -
       </Button>
-      {items.find(it => it.productId == id).amount}
+      {items.find((it) => it.productId == id).amount}
       <Button
         onClick={() => {
-          setItems(items.map(it => {
-            if(it.productId == id)
-              return {
-                ...it,
-                amount: it.amount + 1
-              }
-            else return it
-          }))
+          setItems(
+            items.map((it) => {
+              if (it.productId == id)
+                return {
+                  ...it,
+                  amount: it.amount + 1
+                }
+              else return it
+            })
+          )
         }}
       >
         +
@@ -65,7 +72,7 @@ export const Button = styled.button`
   height: 32px;
   border-radius: 50%;
   box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
-  color: var(--green-confirmation);
+  color: var(--color-primary);
   font-weight: 600;
   background: white;
   font-size: 1.5rem;

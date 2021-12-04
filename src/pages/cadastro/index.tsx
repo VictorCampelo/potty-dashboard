@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Container, Wrapper } from '../../styles/pages/preLogin'
 
-import { FiLock, FiMail } from 'react-icons/fi'
+import { FiLock, FiMail, FiUser } from 'react-icons/fi'
 import { Input } from '../../components/molecules/Input'
 import { Checkbox } from '../../components/atoms/Checkbox'
 import { useState } from 'react'
@@ -98,7 +98,7 @@ const Register = () => {
               <Input
                 label="Primeiro Nome"
                 placeholder="Nome"
-                icon={<FiMail size={20} color="var(--black-800)" />}
+                icon={<FiUser size={20} color="var(--black-800)" />}
                 {...register('firstName')}
                 textError={errors.firstName?.message}
                 error={errors.firstName}
@@ -108,7 +108,7 @@ const Register = () => {
                 label="Sobrenome"
                 placeholder="Sobrenome"
                 className="name"
-                icon={<FiMail size={20} color="var(--black-800)" />}
+                icon={<FiUser size={20} color="var(--black-800)" />}
                 {...register('lastName')}
                 textError={errors.lastName?.message}
                 error={errors.lastName}
