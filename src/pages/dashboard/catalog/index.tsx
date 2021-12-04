@@ -171,6 +171,7 @@ const catalog = ({ storeId }: CatalogType) => {
   }
 
   function toggleEditCategoryModal() {
+    setCategory('')
     setEditCategoryModal(!editCategoryModal)
   }
 
@@ -299,7 +300,7 @@ const catalog = ({ storeId }: CatalogType) => {
     } catch (e) {
       notify('Erro ao editar produto, tente novamente!')
     }
-
+    setCategory('')
     loadData()
     setEditCategoryModal(false)
   }
