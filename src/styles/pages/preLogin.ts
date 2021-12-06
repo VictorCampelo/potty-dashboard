@@ -139,6 +139,11 @@ export const Container = styled.main`
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .logo {
+        flex-direction: row;
+        align-items: center;
+      }
     }
   }
 

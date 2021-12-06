@@ -94,7 +94,7 @@ const Login = () => {
 
       <Container>
         <form onSubmit={handleSubmit(handleSignIn)}>
-          <div className="title">
+          <div className="title logo">
             <h1>Login</h1>
             <img src="/images/logo.png" alt="logo" />
           </div>

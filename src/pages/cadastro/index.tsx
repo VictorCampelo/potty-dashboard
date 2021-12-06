@@ -156,61 +156,67 @@ const Register = () => {
                 error={errors.passwordConfirmation}
               />
             </div>
-          ) : show === 1 ? (
-            <div className="inputContainer">
-              <Input
-                label="Primeiro Nome"
-                placeholder="Nome"
-                icon={<FiMail size={20} color="var(--black-800)" />}
-                {...register('firstName')}
-                textError={errors.firstName ? errors.firstName : ''}
-                error={errors.firstName}
-              />
-
-              <Input
-                label="Sobrenome"
-                placeholder="Sobrenome"
-                className="name"
-                icon={<FiMail size={20} color="var(--black-800)" />}
-                {...register('lastName')}
-                textError={errors.lastName ? errors.lastName : ''}
-                error={errors.lastName}
-              />
-            </div>
           ) : (
-            <div className="inputContainer">
-              <Input
-                label="Email"
-                placeholder="exemplo@gmail.com"
-                className="input"
-                icon={<FiMail size={20} color="var(--black-800)" />}
-                {...register('email')}
-                textError={errors.email?.message}
-                error={errors.email}
-              />
+            <>
+              <div
+                className="inputContainer"
+                style={show == 2 ? { display: 'none' } : undefined}
+              >
+                <Input
+                  label="Primeiro Nome"
+                  placeholder="Nome"
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('firstName')}
+                  textError={errors.firstName ? errors.firstName : ''}
+                  error={errors.firstName}
+                />
 
-              <Input
-                label="Senha"
-                placeholder="********"
-                className="input"
-                password
-                icon={<FiLock size={20} color="var(--black-800)" />}
-                {...register('password')}
-                textError={errors.password?.message}
-                error={errors.password}
-              />
+                <Input
+                  label="Sobrenome"
+                  placeholder="Sobrenome"
+                  className="name"
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('lastName')}
+                  textError={errors.lastName ? errors.lastName : ''}
+                  error={errors.lastName}
+                />
+              </div>
 
-              <Input
-                label="Repetir senha"
-                placeholder="********"
-                className="input"
-                password
-                icon={<FiLock size={20} color="var(--black-800)" />}
-                {...register('passwordConfirmation')}
-                textError={errors.passwordConfirmation?.message}
-                error={errors.passwordConfirmation}
-              />
-            </div>
+              <div
+                className="inputContainer"
+                style={show == 1 ? { display: 'none' } : undefined}
+              >
+                <Input
+                  label="Email"
+                  placeholder="exemplo@gmail.com"
+                  icon={<FiMail size={20} color="var(--black-800)" />}
+                  {...register('email')}
+                  textError={errors.email?.message}
+                  error={errors.email}
+                />
+
+                <Input
+                  label="Senha"
+                  placeholder="********"
+                  password
+                  icon={<FiLock size={20} color="var(--black-800)" />}
+                  {...register('password')}
+                  textError={errors.password?.message}
+                  error={errors.password}
+                />
+
+                <Input
+                  label="Repetir senha"
+                  placeholder="********"
+                  className="input"
+                  password
+                  icon={<FiLock size={20} color="var(--black-800)" />}
+                  {...register('passwordConfirmation')}
+                  textError={errors.passwordConfirmation?.message}
+                  error={errors.passwordConfirmation}
+                />
+              </div>
+            </>
           )}
 
           <div className="buttonContainer">
