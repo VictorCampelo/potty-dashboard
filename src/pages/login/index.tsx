@@ -1,6 +1,7 @@
 /* eslint-disable no-constant-condition */
 import Link from 'next/link'
 import Head from 'next/head'
+import Image from 'next/image'
 import { Container, Wrapper } from '../../styles/pages/preLogin'
 import { Input } from '../../components/molecules/Input'
 import { Checkbox } from '../../components/atoms/Checkbox'
@@ -95,6 +96,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(handleSignIn)}>
           <div className="title">
             <h1>Login</h1>
+            <img src="/images/logo.png" alt="logo" />
           </div>
 
           <div className="inputContainer">

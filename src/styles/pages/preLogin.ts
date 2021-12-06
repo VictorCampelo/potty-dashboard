@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from '../../utils/sizes'
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -26,7 +27,6 @@ export const Container = styled.main`
     .title {
       width: 100%;
       margin-bottom: 1rem;
-
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -34,7 +34,7 @@ export const Container = styled.main`
 
       h1 {
         font-size: 1.875rem;
-        font-weight: 600;
+        font-weight: 500;
       }
 
       p {
@@ -47,7 +47,6 @@ export const Container = styled.main`
       a {
         font-size: 0.8rem;
         color: var(--gray-300);
-        margin-top: 0.7rem;
       }
     }
 
@@ -62,7 +61,7 @@ export const Container = styled.main`
 
       h1 {
         font-size: 1.875rem;
-        font-weight: 600;
+        font-weight: 400;
       }
 
       p {
@@ -134,15 +133,16 @@ export const Container = styled.main`
     }
   }
 
-  @media (max-width: 321px) {
+  ${[sizes.down('sssm')]} {
     form {
       .title {
         flex-direction: column;
+        align-items: flex-start;
       }
     }
   }
 
-  @media (max-width: 426px) {
+  ${[sizes.down('ssm')]} {
     height: 100vh;
     padding-top: 0;
     background: var(--white);
