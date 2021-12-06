@@ -88,7 +88,7 @@ const InfoCard = ({
               justifyContent: 'center'
             }}
           >
-            <PulseLoader size={5} color="#2dd1ac" />
+            <PulseLoader size={5} color="var(--color-primary)" />
           </div>
         ) : (
           <>

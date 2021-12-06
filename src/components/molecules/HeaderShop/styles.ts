@@ -46,7 +46,7 @@ export const Container = styled.header`
 
       border-radius: 30px;
       border: none;
-      background: var(--green-confirmation);
+      background: var(--color-primary);
       margin-right: 4rem;
       margin-left: 5rem;
       cursor: pointer;
@@ -64,7 +64,7 @@ export const Container = styled.header`
       align-items: center;
 
       :hover {
-        background: var(--green-confirmation-darker);
+        background: var(--color-primary-darker);
       }
     }
   }

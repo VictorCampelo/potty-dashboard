@@ -75,13 +75,13 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
 
         {password &&
           (isInputVisible ? (
-            <AiOutlineEyeInvisible
+            <AiOutlineEye
               onClick={() => setIsInputVisible(false)}
               size={24}
               color="var(--black-800)"
             />
           ) : (
-            <AiOutlineEye
+            <AiOutlineEyeInvisible
               onClick={() => setIsInputVisible(true)}
               size={24}
               color="var(--black-800)"

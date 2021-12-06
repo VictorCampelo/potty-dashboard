@@ -190,7 +190,7 @@ export const CartContainer = styled.section`
     }
 
     strong {
-      color: var(--green-confirmation);
+      color: var(--color-primary);
     }
   }
 
@@ -218,7 +218,7 @@ export const CartContainer = styled.section`
       }
 
       &.finish {
-        background: var(--green-confirmation);
+        background: var(--color-primary);
         color: white;
       }
     }

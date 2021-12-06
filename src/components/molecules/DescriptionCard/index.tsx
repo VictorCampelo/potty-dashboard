@@ -40,10 +40,10 @@ const DescriptionCard = ({
   quantStar > 5 ? (quantStar = 5) : null //Tratativas para manter o máximo de estrelas como 5
 
   for (let i = 0; i < quantStar; i++) {
-    stars.push(<AiFillStar size={18} color="#ffe249" />)
+    stars.push(<AiFillStar size={18} color="var(--yellow)" />)
   }
   for (let i = quantStar; i < 5; i++) {
-    stars.push(<AiOutlineStar size={18} color="#ffe249" />)
+    stars.push(<AiOutlineStar size={18} color="var(--yellow)" />)
   }
   //adicionando estrelas preenchidas e vazias ao vetor
 
@@ -93,7 +93,7 @@ const DescriptionCard = ({
             justifyContent: 'center'
           }}
         >
-          <PulseLoader size={5} color="#2dd1ac" />
+          <PulseLoader size={5} color="var(--color-secondary-darker)" />
         </div>
       ) : (
         <>

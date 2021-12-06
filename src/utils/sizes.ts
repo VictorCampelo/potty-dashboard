@@ -3,6 +3,8 @@ interface Breakpoints {
 }
 
 const breakpoints: Breakpoints = {
+  sssm: '375px',
+  ssm: '426px',
   sm: '600px',
   md: '960px',
   lg: '1280px',
@@ -41,7 +43,7 @@ export const Container = styled.div`
 
   OU
 
-  ${[sizes.up("sm")]} {
+  ${[sizes.down("sm")]} {
     display: flex;
     flex-direction: column;
     align-items: center;

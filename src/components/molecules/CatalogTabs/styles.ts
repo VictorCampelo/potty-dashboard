@@ -59,11 +59,10 @@ export const Container = styled.div`
     left: 50%;
 
     transform: translateX(-50%);
-    width: calc(150px + 2px);
-
+    width: 70%;
     height: 5px;
 
-    background: rgb(88, 147, 241);
+    background: var(--color-secondary);
     border-radius: 2px;
   }
 

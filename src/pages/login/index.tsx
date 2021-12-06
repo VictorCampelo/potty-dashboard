@@ -1,6 +1,7 @@
 /* eslint-disable no-constant-condition */
 import Link from 'next/link'
 import Head from 'next/head'
+import Image from 'next/image'
 import { Container, Wrapper } from '../../styles/pages/preLogin'
 import { Input } from '../../components/molecules/Input'
 import { Checkbox } from '../../components/atoms/Checkbox'
@@ -20,10 +21,7 @@ import * as yup from 'yup'
 
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-
-type ToastProps = {
-  newMessage?: string
-}
+import { ErrorToast } from 'utils/toasts'
 
 type SignInFormData = {
   email: string
@@ -35,19 +33,21 @@ const signInFormSchema = yup.object().shape({
   password: yup
     .string()
     .required('Senha obrigatória')
-    .min(8, 'Usuário ou senha icorretos')
+    .min(8, 'Mínimo 8 caracteres')
 })
 
 const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    watch
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
 
   const [rememberUser, setRememberUser] = useState(false)
+  const [errorNotFound, setErrorNotFound] = useState(false)
 
   const router = useRouter()
 
@@ -70,32 +70,18 @@ const Login = () => {
         return router.push('/dashboard')
       }
     } catch (e) {
-      if (e.message.includes(401) || e.message.includes(404)) {
-        return handleSendErrorToast({ newMessage: 'Email ou senha incorretos' })
+      if (e.response.status === 401 || e.response.status === 404) {
+        setErrorNotFound(true)
+        return ErrorToast({ newMessage: 'Email ou senha incorretos' })
       } else {
         if (e.message.includes(412)) {
           return router.push('/auth/register/confirmation-token')
         }
-        handleSendErrorToast({
+        ErrorToast({
           newMessage: 'Erro interno, tente novamente mais tarde'
         })
       }
     }
-  }
-
-  const handleSendErrorToast = ({ newMessage }: ToastProps) => {
-    const message =
-      newMessage || errors?.email?.message || errors?.password?.message
-    if (message)
-      toast.error(message, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
   }
 
   return (
@@ -108,8 +94,9 @@ const Login = () => {
 
       <Container>
         <form onSubmit={handleSubmit(handleSignIn)}>
-          <div className="title">
+          <div className="title logo">
             <h1>Login</h1>
+            <img src="/images/logo.png" alt="logo" />
           </div>
 
           <div className="inputContainer">
@@ -117,19 +104,20 @@ const Login = () => {
               label="Email"
               type="email"
               placeholder="exemplo@gmail.com"
-              error={errors.email !== undefined}
               icon={<FiMail size={20} color="var(--black-800)" />}
               {...register('email')}
+              textError={errors.email?.message}
+              error={errors.email}
             />
 
             <Input
               label="Senha"
               placeholder="********"
               password
-              textError={'Email ou senha incorretos'}
-              error={errors.password !== undefined}
               icon={<FiLock size={20} color="var(--black-800)" />}
               {...register('password')}
+              textError={errors.password?.message}
+              error={errors.password}
             />
           </div>
 
@@ -140,7 +128,12 @@ const Login = () => {
           />
 
           <div className="buttonContainer">
-            <Button isLoading={isSubmitting} type="submit" title="Entrar" />
+            <Button
+              isLoading={isSubmitting}
+              type="submit"
+              title="Entrar"
+              disabled={!watch('email') || !watch('password')}
+            />
           </div>
 
           <div className="divisorContainer">

@@ -201,7 +201,7 @@ export const Banner = styled.section`
   display: flex;
   justify-content: center;
   padding: 1.5rem 4rem;
-  background: var(--green-confirmation);
+  background: var(--color-primary);
 `
 
 export const SelectInput = styled.input`

@@ -1,16 +1,16 @@
-import { Container } from './styles'
+import { Container, ResizeContainer } from './styles'
 import React, { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import { IoHomeOutline, IoPersonOutline, IoExitOutline } from 'react-icons/io5'
-import { IoMdContract } from 'react-icons/io'
-import { BiStore, BiClipboard, BiExtension } from 'react-icons/bi'
+import { BiStore, BiClipboard } from 'react-icons/bi'
 import { FiBox } from 'react-icons/fi'
 import { AiOutlineExpand } from 'react-icons/ai'
 import useMedia from 'use-media'
 
 import Modal from '../Modal'
 import { signOut } from 'contexts/AuthContext'
+import { BsChevronDoubleRight } from 'react-icons/bs'
 
 interface DrawerLateral extends React.InputHTMLAttributes<HTMLInputElement> {
   greenOption?: number
@@ -32,130 +32,116 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
   }, [])
 
   return (
-    <Container>
-      <section className={active ? 'showNames' : 'noShowNames'}>
-        <div className="logo"></div>
-        <nav>
-          <div className="option" onClick={() => setActive(!active)}>
+    <>
+      <Modal
+        title="Realmente deseja sair da plataforma?"
+        buttons
+        modalVisible={modal}
+      >
+        <div className="bottom-area">
+          <div className="buttons">
+            <button onClick={signOut} className="red-button">
+              SAIR
+            </button>
+            <button onClick={() => setModal(false)}>VOLTAR</button>
+          </div>
+        </div>
+      </Modal>
+
+      <Container>
+        <section className={active ? 'showNames' : 'noShowNames'}>
+          <div className="logo"></div>
+          <nav>
             {activated ? null : (
-              <>
-                {active ? (
-                  <IoMdContract className="icon" color="var(--black-800)" />
-                ) : (
-                  <AiOutlineExpand className="icon" color="var(--black-800)" />
-                )}
-              </>
-            )}
-          </div>
-
-          <Link href="/dashboard">
-            <div className="option">
-              <IoHomeOutline
-                className="icon"
-                color={
-                  greenOption === 0
-                    ? 'var(--green-confirmation)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Home</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/dashboard/loja">
-            <div className="option">
-              <BiStore
-                className="icon"
-                color={
-                  greenOption === 1
-                    ? 'var(--green-confirmation)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Análise da loja</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/">
-            <div className="option">
-              <BiExtension
-                className="icon"
-                color={
-                  greenOption === 2
-                    ? 'var(--green-confirmation)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Categoria</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/">
-            <div className="option">
-              <BiClipboard
-                className="icon"
-                color={
-                  greenOption === 3
-                    ? 'var(--green-confirmation)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Pedidos</a> : null}
-            </div>
-          </Link>
-
-          <Link href={`/dashboard/catalog`}>
-            <div className="option">
-              <FiBox
-                className="icon"
-                color={
-                  greenOption === 4
-                    ? 'var(--green-confirmation)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Catálogo</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/">
-            <div className="option">
-              <IoPersonOutline
-                className="icon"
-                color={
-                  greenOption === 5
-                    ? 'var(--green-confirmation)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Meus dados</a> : null}
-            </div>
-          </Link>
-
-          <div className="option" onClick={() => setModal(true)}>
-            <IoExitOutline className="icon" color="var(--red)" />
-            {active ? <a className="red-option">Sair</a> : null}
-          </div>
-
-          {modal ? (
-            <Modal
-              title="Realmente deseja sair da plataforma?"
-              buttons
-              modalVisible={modal}
-            >
-              <div className="bottom-area">
-                <div className="buttons">
-                  <button onClick={signOut} className="red-button">
-                    SAIR
-                  </button>
-                  <button onClick={() => setModal(false)}>VOLTAR</button>
+              <ResizeContainer active={active}>
+                <div className="resbtn" onClick={() => setActive(!active)}>
+                  <BsChevronDoubleRight
+                    color="white"
+                    width={24}
+                    className={active && 'active'}
+                  />
                 </div>
+              </ResizeContainer>
+            )}
+
+            <Link href="/dashboard">
+              <div className="option">
+                <IoHomeOutline
+                  className="icon"
+                  color={
+                    greenOption === 0
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Home</a> : null}
               </div>
-            </Modal>
-          ) : null}
-        </nav>
-      </section>
-    </Container>
+            </Link>
+
+            <Link href="/dashboard/loja">
+              <div className="option">
+                <BiStore
+                  className="icon"
+                  color={
+                    greenOption === 1
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Análise da loja</a> : null}
+              </div>
+            </Link>
+
+            <Link href="/">
+              <div className="option">
+                <BiClipboard
+                  className="icon"
+                  color={
+                    greenOption === 3
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Pedidos</a> : null}
+              </div>
+            </Link>
+
+            <Link href={`/dashboard/catalog`}>
+              <div className="option">
+                <FiBox
+                  className="icon"
+                  color={
+                    greenOption === 4
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Catálogo</a> : null}
+              </div>
+            </Link>
+
+            <Link href="/">
+              <div className="option">
+                <IoPersonOutline
+                  className="icon"
+                  color={
+                    greenOption === 5
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Meus dados</a> : null}
+              </div>
+            </Link>
+
+            <div className="option" onClick={() => setModal(true)}>
+              <IoExitOutline className="icon" color="var(--red)" />
+              {active ? <a className="red-option">Sair</a> : null}
+            </div>
+          </nav>
+        </section>
+      </Container>
+    </>
   )
 }
 

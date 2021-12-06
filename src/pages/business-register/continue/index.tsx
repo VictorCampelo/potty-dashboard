@@ -13,22 +13,46 @@ import {
   AiOutlineWhatsApp
 } from 'react-icons/ai'
 import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+type bussinesRegisterFormData = {
+  number: string
+  facebookUrl: string
+  instagramUrl: string
+  whatsappUrl: string
+}
+
+const bussinesRegisterFormSchema = yup.object().shape({
+  number: yup.string().required('Telefone obrigatório'),
+  facebookUrl: yup.string().required('Facebook obrigatório'),
+  instagramUrl: yup.string().required('Instagram obrigatório'),
+  whatsappUrl: yup.string().required('Whatsapp obrigatório')
+})
 
 const BusinessRegister = () => {
-  const [number, setNumber] = useState('')
-  const [facebookUrl, setFacebookUrl] = useState('')
-  const [instagramUrl, setInstagramUrl] = useState('')
-  const [whatsappUrl, setWhatsappUrl] = useState('')
-
   const { setStore, storeDto } = useContext(ShopkeeperContext)
 
-  function handleFinishRegister() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues
+  } = useForm({
+    resolver: yupResolver(bussinesRegisterFormSchema)
+  })
+
+  const handleFinishRegister: SubmitHandler<bussinesRegisterFormData> = async (
+    values,
+    event
+  ) => {
     const store = {
       ...storeDto,
-      phone: number,
-      facebook_link: facebookUrl,
-      instagram_link: instagramUrl,
-      whatsapp_link: whatsappUrl
+      phone: values.number,
+      facebook_link: values.facebookUrl,
+      instagram_link: values.instagramUrl,
+      whatsapp_link: values.whatsappUrl
     }
 
     setStore(store)
@@ -44,7 +68,7 @@ const BusinessRegister = () => {
 
       <Header />
       <Container>
-        <form onSubmit={() => {}}>
+        <form onSubmit={handleSubmit(handleFinishRegister)}>
           <div className="title">
             <h1> Registro de Negócio </h1>
           </div>
@@ -52,43 +76,44 @@ const BusinessRegister = () => {
           <div className="inputContainer">
             <Input
               label="Telefone"
-              placeholder="(00)0000-0000"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              placeholder="(00) 0000-0000"
+              mask="phone"
               icon={<AiFillPhone size={20} color="var(--black-800)" />}
+              {...register('number')}
+              textError={errors.number?.message}
+              error={errors.number}
             />
 
             <Input
               label="Facebook"
               placeholder="facebook.com/exemplo"
-              value={facebookUrl}
-              onChange={(e) => setFacebookUrl(e.target.value)}
               icon={<AiFillFacebook size={20} color="var(--black-800)" />}
+              {...register('facebookUrl')}
+              textError={errors.facebookUrl?.message}
+              error={errors.facebookUrl}
             />
 
             <Input
               label="Instagram"
               placeholder="instagram.com/exemplo"
-              value={instagramUrl}
-              onChange={(e) => setInstagramUrl(e.target.value)}
               icon={<AiFillInstagram size={20} color="var(--black-800)" />}
+              {...register('instagramUrl')}
+              textError={errors.instagramUrl?.message}
+              error={errors.instagramUrl}
             />
 
             <Input
               label="Whatsapp"
               placeholder="wa.me/550000000000"
-              value={whatsappUrl}
-              onChange={(e) => setWhatsappUrl(e.target.value)}
               icon={<AiOutlineWhatsApp size={20} color="var(--black-800)" />}
+              {...register('whatsappUrl')}
+              textError={errors.whatsappUrl?.message}
+              error={errors.whatsappUrl}
             />
           </div>
 
           <div className="buttonContainer">
-            <Button
-              type="button"
-              onClick={handleFinishRegister}
-              title="CONTINUAR"
-            />
+            <Button type="submit" title="CONTINUAR" />
           </div>
         </form>
       </Container>

@@ -163,7 +163,7 @@ export const CardProduct = styled.div`
       }
 
       a {
-        color: var(--green-confirmation);
+        color: var(--color-primary);
         -webkit-touch-callout: none; /* iOS Safari */
         -webkit-user-select: none; /* Safari */
         -khtml-user-select: none; /* Konqueror HTML */
