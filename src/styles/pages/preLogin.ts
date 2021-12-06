@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from '../../utils/sizes'
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -33,7 +34,7 @@ export const Container = styled.main`
 
       h1 {
         font-size: 1.875rem;
-        font-weight: 600;
+        font-weight: 500;
       }
 
       p {
@@ -60,7 +61,7 @@ export const Container = styled.main`
 
       h1 {
         font-size: 1.875rem;
-        font-weight: 600;
+        font-weight: 400;
       }
 
       p {
@@ -132,7 +133,7 @@ export const Container = styled.main`
     }
   }
 
-  @media (max-width: 375px) {
+  ${[sizes.down('sssm')]} {
     form {
       .title {
         flex-direction: column;
@@ -141,7 +142,7 @@ export const Container = styled.main`
     }
   }
 
-  @media (max-width: 426px) {
+  ${[sizes.down('ssm')]} {
     height: 100vh;
     padding-top: 0;
     background: var(--white);
