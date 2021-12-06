@@ -1,6 +1,10 @@
 import Header from '../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../styles/pages/preLogin'
+import {
+  Container,
+  Wrapper,
+  ContainerLojist
+} from '../../styles/pages/preLogin'
 
 import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
@@ -77,109 +81,119 @@ const BusinessRegister = () => {
       </Head>
 
       <Header />
-      <Container>
+      <ContainerLojist>
         <form onSubmit={handleSubmit(handleContinueRegister)}>
           <div className="title">
             <h1> Registro de Negócio </h1>
           </div>
 
           <div className="inputContainer">
-            <Input
-              label="Nome do negócio"
-              placeholder="Nome do negócio"
-              icon={<FiMail size={20} color="var(--black-800)" />}
-              {...register('businessName')}
-              textError={errors.businessName?.message}
-              error={errors.businessName}
-            />
-
-            <Input
-              label="CPF/CNPJ"
-              placeholder="000.000.000-00"
-              mask={cpfCnpj.length <= 14 ? 'cpf' : 'cnpj'}
-              icon={<FiUser size={20} color="var(--black-800)" />}
-              {...register('cpfCnpj')}
-              onChange={(e) => setCpfCnpj(e.target.value)}
-              textError={errors.cpfCnpj?.message}
-              error={errors.cpfCnpj}
-            />
-
-            <div className="inputRow">
-              <Input
-                label="Estado"
-                placeholder="Estado"
-                icon={
-                  <HiOutlineLocationMarker size={20} color="var(--black-800)" />
-                }
-                {...register('businessState')}
-                textError={errors.businessState?.message}
-                error={errors.businessState}
-              />
-
-              <Input
-                label="Cidade"
-                placeholder="Cidade"
-                icon={
-                  <HiOutlineLocationMarker size={20} color="var(--black-800)" />
-                }
-                {...register('businessCity')}
-                textError={errors.businessCity?.message}
-                error={errors.businessCity}
-              />
+            <div>
+              <div className="inputCol">
+                <Input
+                  label="Nome do negócio"
+                  placeholder="Nome do negócio"
+                  icon={<FiMail size={20} color="var(--black-800)" />}
+                  {...register('businessName')}
+                  textError={errors.businessName?.message}
+                  error={errors.businessName}
+                />
+              </div>
+              <div className="inputCol">
+                <Input
+                  label="CPF/CNPJ"
+                  placeholder="000.000.000-00"
+                  mask={cpfCnpj.length <= 14 ? 'cpf' : 'cnpj'}
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('cpfCnpj')}
+                  onChange={(e) => setCpfCnpj(e.target.value)}
+                  textError={errors.cpfCnpj?.message}
+                  error={errors.cpfCnpj}
+                />
+              </div>
             </div>
+            <div>
+              <div className="inputRow">
+                <Input
+                  label="CEP"
+                  placeholder="00000-000"
+                  mask="cep"
+                  icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                  {...register('cep')}
+                  textError={errors.cep?.message}
+                  error={errors.cep}
+                />
+                <Input
+                  label="Bairro"
+                  placeholder="Bairro"
+                  icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                  {...register('district')}
+                  textError={errors.district?.message}
+                  error={errors.district}
+                />
+              </div>
 
-            <div className="inputRow">
-              <Input
-                label="Logradouro"
-                placeholder="Logradouro"
-                flex={3}
-                icon={<FaHome size={20} color="var(--black-800)" />}
-                {...register('publicPlace')}
-                textError={errors.publicPlace?.message}
-                error={errors.publicPlace}
-              />
+              <div className="inputRow">
+                <Input
+                  label="Logradouro"
+                  placeholder="Logradouro"
+                  flex={3}
+                  icon={<FaHome size={20} color="var(--black-800)" />}
+                  {...register('publicPlace')}
+                  textError={errors.publicPlace?.message}
+                  error={errors.publicPlace}
+                />
 
-              <Input
-                label="Número"
-                placeholder="0000"
-                mask="number"
-                flex={1}
-                type="numeric"
-                maxLength={6}
-                icon={<BiBuildings size={20} color="var(--black-800)" />}
-                {...register('number')}
-                textError={errors.number?.message}
-                error={errors.number}
-              />
-            </div>
+                <Input
+                  label="Número"
+                  placeholder="0000"
+                  mask="number"
+                  flex={1}
+                  type="numeric"
+                  maxLength={6}
+                  icon={<BiBuildings size={20} color="var(--black-800)" />}
+                  {...register('number')}
+                  textError={errors.number?.message}
+                  error={errors.number}
+                />
+              </div>
 
-            <div className="inputRow">
-              <Input
-                label="Bairro"
-                placeholder="Bairro"
-                icon={<BiMapAlt size={20} color="var(--black-800)" />}
-                {...register('district')}
-                textError={errors.district?.message}
-                error={errors.district}
-              />
+              <div className="inputRow">
+                <Input
+                  label="Estado"
+                  placeholder="Estado"
+                  icon={
+                    <HiOutlineLocationMarker
+                      size={20}
+                      color="var(--black-800)"
+                    />
+                  }
+                  {...register('businessState')}
+                  textError={errors.businessState?.message}
+                  error={errors.businessState}
+                />
 
-              <Input
-                label="CEP"
-                placeholder="00000-000"
-                mask="cep"
-                icon={<BiMapAlt size={20} color="var(--black-800)" />}
-                {...register('cep')}
-                textError={errors.cep?.message}
-                error={errors.cep}
-              />
+                <Input
+                  label="Cidade"
+                  placeholder="Cidade"
+                  icon={
+                    <HiOutlineLocationMarker
+                      size={20}
+                      color="var(--black-800)"
+                    />
+                  }
+                  {...register('businessCity')}
+                  textError={errors.businessCity?.message}
+                  error={errors.businessCity}
+                />
+              </div>
             </div>
           </div>
-
           <div className="buttonContainer">
             <Button type="submit" title="Continuar" />
           </div>
         </form>
-      </Container>
+      </ContainerLojist>
     </Wrapper>
   )
 }
