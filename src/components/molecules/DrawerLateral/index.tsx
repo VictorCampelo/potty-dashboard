@@ -1,16 +1,16 @@
-import { Container } from './styles'
+import { Container, ResizeContainer } from './styles'
 import React, { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import { IoHomeOutline, IoPersonOutline, IoExitOutline } from 'react-icons/io5'
-import { IoMdContract } from 'react-icons/io'
-import { BiStore, BiClipboard, BiExtension } from 'react-icons/bi'
+import { BiStore, BiClipboard } from 'react-icons/bi'
 import { FiBox } from 'react-icons/fi'
 import { AiOutlineExpand } from 'react-icons/ai'
 import useMedia from 'use-media'
 
 import Modal from '../Modal'
 import { signOut } from 'contexts/AuthContext'
+import { BsChevronDoubleRight } from 'react-icons/bs'
 
 interface DrawerLateral extends React.InputHTMLAttributes<HTMLInputElement> {
   greenOption?: number
@@ -52,20 +52,17 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
         <section className={active ? 'showNames' : 'noShowNames'}>
           <div className="logo"></div>
           <nav>
-            <div className="option" onClick={() => setActive(!active)}>
-              {activated ? null : (
-                <>
-                  {active ? (
-                    <IoMdContract className="icon" color="var(--black-800)" />
-                  ) : (
-                    <AiOutlineExpand
-                      className="icon"
-                      color="var(--black-800)"
-                    />
-                  )}
-                </>
-              )}
-            </div>
+            {activated ? null : (
+              <ResizeContainer active={active}>
+                <div className="resbtn" onClick={() => setActive(!active)}>
+                  <BsChevronDoubleRight
+                    color="white"
+                    width={24}
+                    className={active && 'active'}
+                  />
+                </div>
+              </ResizeContainer>
+            )}
 
             <Link href="/dashboard">
               <div className="option">
