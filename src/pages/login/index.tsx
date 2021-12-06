@@ -69,9 +69,9 @@ const Login = () => {
         return router.push('/dashboard')
       }
     } catch (e) {
-      if (e.message.includes(401) || e.message.includes(404)) {
+      if (e.response.status === 401 || e.response.status === 404) {
         setErrorNotFound(true)
-        // return ErrorToast({ newMessage: 'Email ou senha incorretos' })
+        return ErrorToast({ newMessage: 'Email ou senha incorretos' })
       } else {
         if (e.message.includes(412)) {
           return router.push('/auth/register/confirmation-token')

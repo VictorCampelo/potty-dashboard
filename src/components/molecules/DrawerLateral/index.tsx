@@ -32,130 +32,119 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
   }, [])
 
   return (
-    <Container>
-      <section className={active ? 'showNames' : 'noShowNames'}>
-        <div className="logo"></div>
-        <nav>
-          <div className="option" onClick={() => setActive(!active)}>
-            {activated ? null : (
-              <>
-                {active ? (
-                  <IoMdContract className="icon" color="var(--black-800)" />
-                ) : (
-                  <AiOutlineExpand className="icon" color="var(--black-800)" />
-                )}
-              </>
-            )}
+    <>
+      <Modal
+        title="Realmente deseja sair da plataforma?"
+        buttons
+        modalVisible={modal}
+      >
+        <div className="bottom-area">
+          <div className="buttons">
+            <button onClick={signOut} className="red-button">
+              SAIR
+            </button>
+            <button onClick={() => setModal(false)}>VOLTAR</button>
           </div>
+        </div>
+      </Modal>
 
-          <Link href="/dashboard">
-            <div className="option">
-              <IoHomeOutline
-                className="icon"
-                color={
-                  greenOption === 0
-                    ? 'var(--color-primary)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Home</a> : null}
+      <Container>
+        <section className={active ? 'showNames' : 'noShowNames'}>
+          <div className="logo"></div>
+          <nav>
+            <div className="option" onClick={() => setActive(!active)}>
+              {activated ? null : (
+                <>
+                  {active ? (
+                    <IoMdContract className="icon" color="var(--black-800)" />
+                  ) : (
+                    <AiOutlineExpand
+                      className="icon"
+                      color="var(--black-800)"
+                    />
+                  )}
+                </>
+              )}
             </div>
-          </Link>
 
-          <Link href="/dashboard/loja">
-            <div className="option">
-              <BiStore
-                className="icon"
-                color={
-                  greenOption === 1
-                    ? 'var(--color-primary)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Análise da loja</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/">
-            <div className="option">
-              <BiExtension
-                className="icon"
-                color={
-                  greenOption === 2
-                    ? 'var(--color-primary)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Categoria</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/">
-            <div className="option">
-              <BiClipboard
-                className="icon"
-                color={
-                  greenOption === 3
-                    ? 'var(--color-primary)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Pedidos</a> : null}
-            </div>
-          </Link>
-
-          <Link href={`/dashboard/catalog`}>
-            <div className="option">
-              <FiBox
-                className="icon"
-                color={
-                  greenOption === 4
-                    ? 'var(--color-primary)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Catálogo</a> : null}
-            </div>
-          </Link>
-
-          <Link href="/">
-            <div className="option">
-              <IoPersonOutline
-                className="icon"
-                color={
-                  greenOption === 5
-                    ? 'var(--color-primary)'
-                    : 'var(--black-800)'
-                }
-              />
-              {active ? <a>Meus dados</a> : null}
-            </div>
-          </Link>
-
-          <div className="option" onClick={() => setModal(true)}>
-            <IoExitOutline className="icon" color="var(--red)" />
-            {active ? <a className="red-option">Sair</a> : null}
-          </div>
-
-          {modal ? (
-            <Modal
-              title="Realmente deseja sair da plataforma?"
-              buttons
-              modalVisible={modal}
-            >
-              <div className="bottom-area">
-                <div className="buttons">
-                  <button onClick={signOut} className="red-button">
-                    SAIR
-                  </button>
-                  <button onClick={() => setModal(false)}>VOLTAR</button>
-                </div>
+            <Link href="/dashboard">
+              <div className="option">
+                <IoHomeOutline
+                  className="icon"
+                  color={
+                    greenOption === 0
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Home</a> : null}
               </div>
-            </Modal>
-          ) : null}
-        </nav>
-      </section>
-    </Container>
+            </Link>
+
+            <Link href="/dashboard/loja">
+              <div className="option">
+                <BiStore
+                  className="icon"
+                  color={
+                    greenOption === 1
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Análise da loja</a> : null}
+              </div>
+            </Link>
+
+            <Link href="/">
+              <div className="option">
+                <BiClipboard
+                  className="icon"
+                  color={
+                    greenOption === 3
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Pedidos</a> : null}
+              </div>
+            </Link>
+
+            <Link href={`/dashboard/catalog`}>
+              <div className="option">
+                <FiBox
+                  className="icon"
+                  color={
+                    greenOption === 4
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Catálogo</a> : null}
+              </div>
+            </Link>
+
+            <Link href="/">
+              <div className="option">
+                <IoPersonOutline
+                  className="icon"
+                  color={
+                    greenOption === 5
+                      ? 'var(--color-primary)'
+                      : 'var(--black-800)'
+                  }
+                />
+                {active ? <a>Meus dados</a> : null}
+              </div>
+            </Link>
+
+            <div className="option" onClick={() => setModal(true)}>
+              <IoExitOutline className="icon" color="var(--red)" />
+              {active ? <a className="red-option">Sair</a> : null}
+            </div>
+          </nav>
+        </section>
+      </Container>
+    </>
   )
 }
 

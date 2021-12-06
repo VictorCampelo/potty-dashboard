@@ -7,7 +7,7 @@ interface ContainerTypes {
 export const Container = styled.section<ContainerTypes>`
   max-width: ${(props) => (props.width ? `${props.width}px` : `100vw`)};
   width: 100%;
-  max-height: 100vh;
+  max-height: 46.25vh;
   height: 100%;
 
   margin-right: 20px;

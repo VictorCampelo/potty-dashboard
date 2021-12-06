@@ -2,12 +2,13 @@ import styled from 'styled-components'
 
 export const Container = styled.header`
   position: absolute;
+  height: 100%;
+  padding: 20px;
 
   .showNames {
     width: 13vw;
-    height: 96.5vh;
+    height: 100%;
 
-    margin: 20px 20px;
     border-radius: 30px;
     background: var(--white);
 
@@ -61,11 +62,11 @@ export const Container = styled.header`
       }
     }
   }
+
   .noShowNames {
     width: 70px;
-    height: 96.5vh;
+    height: 100%;
 
-    margin: 20px 20px;
     border-radius: 30px;
     background: var(--white);
 
