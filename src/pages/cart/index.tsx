@@ -84,21 +84,33 @@ const Cart = () => {
                         <AiFillCamera size={28} color="white" />
                       </div>
 
-                      <span>{it.title}</span>
+                      <span
+                        style={widthScreen ? undefined : { display: 'none' }}
+                      >
+                        {it.title}
+                      </span>
                     </section>
 
-                    <Counter id={it.productId} />
+                    {widthScreen && <Counter id={it.productId} />}
 
-                    <section>
+                    <section className="spanProductInformation">
+                      <span
+                        style={widthScreen ? { display: 'none' } : undefined}
+                      >
+                        {it.title}
+                      </span>
                       <strong>
                         {new Intl.NumberFormat('pt-BR', {
                           style: 'currency',
                           currency: 'BRL'
                         }).format(it.price * it.amount)}
                       </strong>
+                      <Counter id={it.productId} />
                     </section>
 
-                    <section style={{ flex: 1 }}>
+                    <section
+                      style={widthScreen ? { flex: 1 } : { display: 'none' }}
+                    >
                       <button
                         className="exclude"
                         onClick={() => handleRemoveItem(it.productId)}
@@ -293,6 +305,9 @@ export const CartHead = styled.div`
   width: 100%;
   padding: 1rem 2rem;
 
+  ${[sizes.down('lgMob')]} {
+    display: none;
+  }
   section {
     flex: 1;
     display: flex;
@@ -348,6 +363,12 @@ export const CartProduct = styled.div`
       background: var(--gray-300);
       margin-right: 1rem;
       padding: 30px;
+    }
+  }
+
+  ${[sizes.down('lgMob')]} {
+    .spanProductInformation {
+      flex-direction: column;
     }
   }
 `
