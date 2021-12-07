@@ -1,4 +1,4 @@
-import { Container, Modal } from './styles'
+import { Container } from './styles'
 import React, { useState, ChangeEvent } from 'react'
 
 import { RiPencilFill } from 'react-icons/ri'
@@ -15,10 +15,10 @@ interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
   title?: string
   quantStar?: number
   description?: string
-  imgSrc?: string
-  coverSrc?: string
+  imgSrc?: any
+  coverSrc?: any
   isLoading?: boolean
-  button?: any
+  button: any
   vazio?: boolean
   voidText?: string
 }
@@ -45,41 +45,6 @@ const DescriptionCard = ({
   for (let i = quantStar; i < 5; i++) {
     stars.push(<AiOutlineStar size={18} color="var(--yellow)" />)
   }
-  //adicionando estrelas preenchidas e vazias ao vetor
-
-  const [modal, setModal] = useState(false)
-
-  const [valueTitle, setValueTitle] = useState(title)
-  const [valueDescription, setValueDescription] = useState(description)
-
-  const [image, setImage] = useState<File[]>([])
-  const [previewImage, setPreviewImage] = useState<string[]>([])
-
-  previewImage.push(imgSrc)
-
-  // Random Image
-
-  const generateIcon = (query) =>
-    `https://source.unsplash.com/random/160x160/?${query}`
-
-  const generateBanner = (query) =>
-    `https://source.unsplash.com/random/?${query}`
-
-  function handleSelectImage(event: ChangeEvent<HTMLInputElement>) {
-    if (!event.target.files) {
-      return
-    }
-
-    const selectedImage = Array.from(event.target.files)
-
-    setImage(selectedImage)
-
-    const selectedImagePreview = selectedImage.map((image) => {
-      return URL.createObjectURL(image)
-    })
-
-    setPreviewImage(selectedImagePreview)
-  }
 
   return (
     <Container>
@@ -93,32 +58,29 @@ const DescriptionCard = ({
             justifyContent: 'center'
           }}
         >
-          <PulseLoader size={5} color="var(--color-secondary-darker)" />
+          <PulseLoader size={5} color="var(--color-primary)" />
         </div>
       ) : (
         <>
           <div className="top">
-            <div></div>
-
-            <div className="icon-container">
-              <div className="blur">
-                <div className="cover"></div>
-                <img
-                  className="banner"
-                  src={coverSrc || generateBanner('shop')}
-                  alt="banner da loja"
-                />
-              </div>
-              <div className="icon">
-                <img src={imgSrc || generateIcon('shop')} alt="icone da loja" />
+            <section>
+              <img
+                id="banner"
+                src={coverSrc || '/images/capa.png'}
+                alt="Banner"
+                width="100"
+                height="100"
+              />
+              <button onClick={button}>
+                Editar
+                <RiPencilFill size={15} className="icon" />
+              </button>
+              <div id="icon">
+                <img src={imgSrc || '/images/shop-test.png'} alt="Ícone" />
                 <h1>{title}</h1>
                 <div>{stars}</div>
               </div>
-            </div>
-            <button onClick={/*button*/ (e) => setModal(true)}>
-              Editar
-              <RiPencilFill size={15} />
-            </button>
+            </section>
           </div>
           {!vazio ? (
             <>
@@ -139,63 +101,6 @@ const DescriptionCard = ({
           )}
         </>
       )}
-
-      {modal ? (
-        <Modal>
-          <div className="corpo-modal">
-            <div className="topo">
-              <h1>Descrição</h1>
-              <div id="close" onClick={() => setModal(false)}>
-                <IoCloseSharp size={20} />
-              </div>
-
-              <div className="icon">
-                <img
-                  key={previewImage[0]}
-                  src={previewImage[0]}
-                  alt="icone da loja"
-                />
-                <label htmlFor="image[]">
-                  <AiFillCamera size={15} color="white" />
-                </label>
-
-                <input
-                  type="file"
-                  onChange={(event) => handleSelectImage(event)}
-                  id="image[]"
-                />
-              </div>
-            </div>
-
-            <div className="corpo">
-              <div className="inputs">
-                <h2>Nome do negócio</h2>
-                <div className="nome">
-                  <FaBuilding size={12} />
-                  <input
-                    type="text"
-                    value={valueTitle}
-                    onChange={(e) => setValueTitle(e.target.value)}
-                  ></input>
-                </div>
-              </div>
-
-              <div className="inputs">
-                <h2>Descrição do negócio</h2>
-                <textarea
-                  maxLength={600}
-                  value={valueDescription}
-                  onChange={(e) => setValueDescription(e.target.value)}
-                ></textarea>
-              </div>
-
-              <button> Confirmar </button>
-            </div>
-          </div>
-
-          <div id="background-black" onClick={() => setModal(false)}></div>
-        </Modal>
-      ) : null}
     </Container>
   )
 }

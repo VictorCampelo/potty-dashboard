@@ -14,7 +14,7 @@ import { CategoryCard } from '../../../components/molecules/CategoryCard'
 import { IoCellular, IoFastFood } from 'react-icons/io5'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { BiBuildings, BiMapAlt, BiTimeFive } from 'react-icons/bi'
-import { FaRoad } from 'react-icons/fa'
+import { FaBuilding, FaRoad } from 'react-icons/fa'
 import { IoMdCall } from 'react-icons/io'
 import { FaFacebook } from 'react-icons/fa'
 import { IoLogoWhatsapp } from 'react-icons/io5'
@@ -31,6 +31,9 @@ import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
+import { ShopImage } from 'components/molecules/ShopImage'
+import { AiFillCamera, AiFillShop } from 'react-icons/ai'
+import { DescriptionInput } from 'components/molecules/DescriptionInput'
 
 type TimeTableArrayType = {
   [0]
@@ -50,14 +53,19 @@ type EditTimeTable = {
 interface Shop {
   storeId: string
   id: string
+  images: Array<TimeTableArrayType>
 }
 
-const Shop = ({ storeId, id }: Shop) => {
+const Shop = ({ storeId, id, images }: Shop) => {
   const [vazio, setVazio] = useState(false)
+  const [descModal, setDescModal] = useState(false)
   const [timeTableModal, setTimeTableModal] = useState(false)
   const [categoryModal, setCategoryModal] = useState(false)
   const [locationModal, setLocationModal] = useState(false)
   const [contactModal, setContactModal] = useState(false)
+
+  const [imageIcon, setImageIcon] = useState(null)
+  const [imageBanner, setImageBanner] = useState(null)
 
   const [businessName, setBusinessName] = useState('')
   const [stars, setStars] = useState()
@@ -192,6 +200,45 @@ const Shop = ({ storeId, id }: Shop) => {
   function toggleContactModal() {
     setContactModal(!contactModal)
   }
+
+  // Modal de descrição
+
+  function handleOpenDescModal() {
+    setDescModal(true)
+  }
+
+  function toggleDescModal() {
+    setDescModal(!descModal)
+  }
+
+  function readFile(file: File) {
+    return new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result), false)
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const ImageIcon = async (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      const imageDataUrl = await readFile(file)
+      setImageIcon(imageDataUrl)
+    }
+  }
+
+  const ImageBanner = async (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      const imageDataUrl = await readFile(file)
+      setImageBanner(imageDataUrl)
+    }
+  }
+
+  const generateBanner = (query) =>
+    `https://source.unsplash.com/random/?${query}`
+
+  // Data
 
   async function loadData() {
     try {
@@ -584,14 +631,90 @@ const Shop = ({ storeId, id }: Shop) => {
           </ModalContainer>
         </CustomModal>
 
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleDescModal}
+          modalVisible={descModal}
+        >
+          <ModalContainer>
+            <div className="exit-container">
+              <h1>Descrição</h1>
+              <IoIosClose onClick={toggleDescModal} size={36} color={'black'} />
+            </div>
+
+            <div className="desc-container">
+              <div className="top">
+                <section>
+                  <img
+                    id="banner"
+                    src={imageBanner || '/images/capa.png'}
+                    alt="Banner"
+                  />
+                  <button type="button" id="imageBtn">
+                    <label htmlFor="banner[]">
+                      <AiFillCamera size={23} color="var(--white)" />
+                    </label>
+                    <input
+                      type="file"
+                      id="banner[]"
+                      name="banner"
+                      accept="image/*"
+                      multiple={false}
+                      onChange={ImageBanner}
+                      style={{ display: 'none' }}
+                    />
+                  </button>
+                </section>
+                <ShopImage
+                  id="icon"
+                  imageSrc={imageIcon || '/images/shop-test.png'} // Imagem para o perfil do Shop
+                  icon={<AiFillShop size={70} color="var(--white)" />}
+                  btnIcon={<AiFillCamera size={23} color="var(--white)" />}
+                  btn={
+                    <input
+                      type="file"
+                      id="icon[]"
+                      name="icon"
+                      accept="image/*"
+                      multiple={false}
+                      onChange={ImageIcon}
+                      style={{ display: 'none' }}
+                    />
+                  }
+                />
+              </div>
+              <div className="bottom">
+                <Input
+                  label="Nome do negócio"
+                  defaultValue={businessName}
+                  placeholder="Exemplo: Café da Maria"
+                  icon={<FaBuilding size={21} color="var(--black-800)" />}
+                />
+                <DescriptionInput
+                  label="Descrição do negócio"
+                  defaultValue={desc}
+                  placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
+                />
+              </div>
+            </div>
+
+            <div className="buttons-container">
+              <Button title="Confirmar" border={true}></Button>
+            </div>
+          </ModalContainer>
+        </CustomModal>
+
         <DrawerLateral greenOption={1} />
 
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
+              imgSrc={images[0]}
+              coverSrc={images[1]}
               title={businessName}
               quantStar={stars}
               description={desc}
+              button={() => handleOpenDescModal()}
               isLoading={isLoading}
               vazio={vazio}
               voidText="Nenhum descrição foi encontrada..."
@@ -678,7 +801,8 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   return {
     props: {
       storeId: data.store.id,
-      id: data.store.formatedName
+      id: data.store.formatedName,
+      images: data.files
     }
   }
 })
