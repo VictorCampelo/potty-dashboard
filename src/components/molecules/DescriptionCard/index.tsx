@@ -125,7 +125,8 @@ const DescriptionCard = ({
               <div className="bottom">
                 <h1>Descrição</h1>
 
-                <p>{description || 'Nenhuma descrição cadastrada'}</p>
+                <p>{description}</p>
+                {!description && <span>Nenhuma descrição cadastrada...</span>}
               </div>
             </>
           ) : (
