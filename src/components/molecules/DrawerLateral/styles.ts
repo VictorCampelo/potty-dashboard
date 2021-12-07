@@ -4,6 +4,7 @@ export const Container = styled.header`
   position: absolute;
   height: 100%;
   padding: 20px;
+  z-index: 1;
 
   .showNames {
     width: 13vw;
