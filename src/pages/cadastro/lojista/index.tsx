@@ -152,7 +152,7 @@ const RegisterShopkeeper = () => {
                 <Input
                   label="Primeiro Nome"
                   placeholder="Nome"
-                  icon={<FiMail size={20} color="var(--black-800)" />}
+                  icon={<FiUser size={20} color="var(--black-800)" />}
                   {...register('firstName')}
                   textError={errors.firstName?.message}
                   error={errors.firstName}
@@ -162,7 +162,7 @@ const RegisterShopkeeper = () => {
                   label="Sobrenome"
                   placeholder="Sobrenome"
                   className="name"
-                  icon={<FiMail size={20} color="var(--black-800)" />}
+                  icon={<FiUser size={20} color="var(--black-800)" />}
                   {...register('lastName')}
                   textError={errors.lastName?.message}
                   error={errors.lastName}
