@@ -2,7 +2,11 @@ import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import { IoIosClose } from 'react-icons/io'
 
 import React, { useState } from 'react'
-import { Container, ModalContainer } from '../../../styles/pages/Shop'
+import {
+  ConfigButton,
+  Container,
+  ModalContainer
+} from '../../../styles/pages/Shop'
 
 import DescriptionCard from '../../../components/molecules/DescriptionCard'
 import InfoCard from '../../../components/molecules/InfoCard'
@@ -23,8 +27,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import {
   editTimeTable,
-  getBusiness,
-  getStoreId
+  getBusiness
 } from '../../../services/bussiness.services'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
@@ -58,6 +61,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const [categoryModal, setCategoryModal] = useState(false)
   const [locationModal, setLocationModal] = useState(false)
   const [contactModal, setContactModal] = useState(false)
+  const [configModal, setConfigModal] = useState(false)
 
   const [businessName, setBusinessName] = useState('')
   const [stars, setStars] = useState()
@@ -584,6 +588,33 @@ const Shop = ({ storeId, id }: Shop) => {
           </ModalContainer>
         </CustomModal>
 
+        <CustomModal
+          buttons={false}
+          modalVisible={configModal}
+          setModalOpen={() => setConfigModal(!configModal)}
+        >
+          <ModalContainer>
+            <div className="exit-container">
+              <h1>Configurações adicionais</h1>
+              <IoIosClose
+                onClick={() => setConfigModal(!configModal)}
+                size={36}
+                color={'black'}
+              />
+            </div>
+
+            <div className="options"></div>
+
+            <div className="buttons-container">
+              <Button
+                title="Voltar"
+                border={true}
+                onClick={() => setConfigModal(!configModal)}
+              />
+            </div>
+          </ModalContainer>
+        </CustomModal>
+
         <DrawerLateral greenOption={1} />
 
         <div className="cards-area">
@@ -608,6 +639,11 @@ const Shop = ({ storeId, id }: Shop) => {
               isLoading={isLoading}
               vazio={vazio}
               voidText="Nenhum contato foi encontrada..."
+            />
+
+            <ConfigButton
+              title="CONFIGURAÇÕES ADCIONAIS"
+              onClick={() => setConfigModal(true)}
             />
           </div>
 
@@ -646,7 +682,6 @@ const Shop = ({ storeId, id }: Shop) => {
               title="Categorias"
               type="category"
               button={() => handleOpenCategoryModal()}
-              category="Alimentação"
               isLoading={isLoading}
               vazio={vazio}
               voidText="Nenhuma categoria foi encontrada..."

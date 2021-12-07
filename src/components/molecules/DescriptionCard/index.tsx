@@ -124,7 +124,8 @@ const DescriptionCard = ({
             <>
               <div className="bottom">
                 <h1>Descrição</h1>
-                <p>{description}</p>
+
+                <p>{description || 'Nenhuma descrição cadastrada'}</p>
               </div>
             </>
           ) : (
