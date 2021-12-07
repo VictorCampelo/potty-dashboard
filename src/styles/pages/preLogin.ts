@@ -12,7 +12,6 @@ export const Container = styled.main`
   justify-content: center;
   align-items: center;
   padding-top: 2rem;
-
   form {
     width: 530px;
     background: var(--white);
@@ -23,7 +22,6 @@ export const Container = styled.main`
     align-items: center;
     padding: 2.5rem 3rem 2rem 3rem;
     overflow-x: hidden;
-
     .title {
       width: 100%;
       margin-bottom: 1rem;
@@ -83,6 +81,7 @@ export const Container = styled.main`
       width: 100%;
       flex-direction: column;
       gap: 1rem;
+      /* border: 1px solid red; */
     }
 
     .buttonContainer {
@@ -130,6 +129,7 @@ export const Container = styled.main`
       align-items: center;
       justify-content: center;
       gap: 1rem;
+      /* border: 1px solid blue; */
     }
   }
 
@@ -157,6 +157,28 @@ export const Container = styled.main`
       .title {
         margin-bottom: 2rem;
       }
+    }
+  }
+`
+
+export const ContainerLojist = styled(Container)`
+  form {
+    width: 1100px;
+    .inputContainer {
+      flex-direction: row;
+
+      .inputCol {
+        margin-bottom: 1rem;
+      }
+
+      .inputRow {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .inputContainer > div {
+      width: 100%;
     }
   }
 `
