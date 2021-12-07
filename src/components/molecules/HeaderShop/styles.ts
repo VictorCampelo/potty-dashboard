@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from '../../../utils/sizes'
 
 export const Container = styled.header`
   //width: 100%;
@@ -67,5 +68,9 @@ export const Container = styled.header`
         background: var(--color-primary-darker);
       }
     }
+  }
+
+  ${[sizes.down('lgMob')]} {
+    display: none;
   }
 `

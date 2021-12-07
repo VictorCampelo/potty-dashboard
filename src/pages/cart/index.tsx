@@ -11,8 +11,12 @@ import { CartContext } from 'contexts/CartContext'
 import { useEffect } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
+import sizes from '../../utils/sizes'
+import { useMedia } from 'use-media'
 
 const Cart = () => {
+  const widthScreen = useMedia({ minWidth: '426px' })
+
   const { items, setItems } = useContext(CartContext)
 
   const total = items.reduce((prev, curr) => {
@@ -110,7 +114,7 @@ const Cart = () => {
             )}
           </CartContainer>
 
-          <CartContainer
+          <CartContainerFooter
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -134,7 +138,10 @@ const Cart = () => {
               </span>
             </div>
 
-            <div className="buttonContainer">
+            <div
+              className="buttonContainer"
+              style={widthScreen ? undefined : { display: 'none' }}
+            >
               <button className="empty" onClick={() => setItems([])}>
                 <IoTrashOutline size={24} color="var(--red)" />
                 ESVAZIAR CARRINHO
@@ -145,7 +152,16 @@ const Cart = () => {
                 FINALIZAR COMPRA
               </button>
             </div>
-          </CartContainer>
+            <div
+              className="buttonContainer"
+              style={widthScreen ? { display: 'none' } : undefined}
+            >
+              <button className="finish" onClick={handleSubmit}>
+                <BsWhatsapp size={24} color="white" />
+                FINALIZAR COMPRA
+              </button>
+            </div>
+          </CartContainerFooter>
         </Content>
       </Container>
     </>
@@ -161,6 +177,15 @@ export const Container = styled.main`
   justify-content: center;
   display: flex;
   padding: 0 4rem;
+
+  ${[sizes.down('lgMob')]} {
+    /* background: var(--white); */
+    background: white;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
 `
 
 export const Content = styled.section`
@@ -207,7 +232,7 @@ export const CartContainer = styled.section`
       border-radius: 50px;
       height: 48px;
       font-weight: bold;
-
+      border: 1px solid red;
       svg {
         margin-right: 0.5rem;
       }
@@ -225,6 +250,26 @@ export const CartContainer = styled.section`
   }
 `
 
+export const CartContainerFooter = styled(CartContainer)`
+  ${[sizes.down('lgMob')]} {
+    bottom: 0;
+    position: fixed;
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 0 1rem rgba(99, 99, 99, 0.2);
+    padding: 0;
+
+    .butonContainer {
+      button {
+        height: 100%;
+        flex-direction: column;
+      }
+      &.finish {
+        background: red;
+        color: white;
+      }
+    }
+  }
+`
 export const CartHead = styled.div`
   display: flex;
   width: 100%;

@@ -133,7 +133,7 @@ export const Container = styled.main`
     }
   }
 
-  ${[sizes.down('sssm')]} {
+  ${[sizes.down('mdMob')]} {
     form {
       .title {
         flex-direction: column;
@@ -147,7 +147,7 @@ export const Container = styled.main`
     }
   }
 
-  ${[sizes.down('ssm')]} {
+  ${[sizes.down('lgMob')]} {
     height: 100vh;
     padding-top: 0;
     background: var(--white);
