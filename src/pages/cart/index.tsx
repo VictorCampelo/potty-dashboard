@@ -114,27 +114,25 @@ const Cart = () => {
             )}
           </CartContainer>
 
-          <CartContainerFooter
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: '2rem',
-              justifyContent: 'space-between'
-            }}
-          >
+          <CartContainerFooter>
             <div className="info">
-              <span>Total: </span>
-              <strong>
-                {new Intl.NumberFormat('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL'
-                }).format(total)}
-              </strong>
-              <span>
-                {' | '}
+              <div>
+                <span>Total: </span>
+                <strong>
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(total)}
+                </strong>
+              </div>
+              <span className="spanBottom">
                 {items.length > 1
                   ? items.length + ' item'
                   : items.length + ' items'}
+                {' | '}
+                {!widthScreen && (
+                  <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
+                )}
               </span>
             </div>
 
@@ -153,12 +151,12 @@ const Cart = () => {
               </button>
             </div>
             <div
-              className="buttonContainer"
+              className="buttonContainerMob"
               style={widthScreen ? { display: 'none' } : undefined}
             >
               <button className="finish" onClick={handleSubmit}>
                 <BsWhatsapp size={24} color="white" />
-                FINALIZAR COMPRA
+                <p>FINALIZAR</p>
               </button>
             </div>
           </CartContainerFooter>
@@ -251,21 +249,41 @@ export const CartContainer = styled.section`
 `
 
 export const CartContainerFooter = styled(CartContainer)`
+  flex-direction: row;
+  align-items: center;
+  padding: 2rem;
+  justify-content: space-between;
+
   ${[sizes.down('lgMob')]} {
     bottom: 0;
     position: fixed;
     border-radius: 30px 30px 0 0;
     box-shadow: 0 0 1rem rgba(99, 99, 99, 0.2);
-    padding: 0;
+    padding: 0 0 0 1rem;
+    .info {
+      display: flex;
+      flex-direction: column;
 
-    .butonContainer {
-      button {
-        height: 100%;
-        flex-direction: column;
+      .spanBottom {
+        font-size: 1rem;
+        a {
+          color: var(--red);
+          text-decoration: underline;
+        }
       }
-      &.finish {
-        background: red;
-        color: white;
+    }
+    .buttonContainerMob {
+      display: flex;
+      height: 80px;
+      .finish {
+        border-radius: 0 30px 0 0;
+        background-color: purple;
+        border: 1px solid purple;
+        height: 100%;
+        padding: 0 1rem 0 1rem;
+        p {
+          color: white;
+        }
       }
     }
   }
