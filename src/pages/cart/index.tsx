@@ -2,6 +2,7 @@ import Header from '../../components/molecules/Header'
 import Head from 'next/head'
 import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
+import { Checkbox } from '../../components/atoms/Checkbox'
 import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
 import { AiFillCamera } from 'react-icons/ai'
@@ -13,6 +14,8 @@ import { api } from 'services/apiClient'
 import router from 'next/router'
 import sizes from '../../utils/sizes'
 import { useMedia } from 'use-media'
+import { FiArrowLeft } from 'react-icons/fi'
+import { FaCheck } from 'react-icons/fa'
 
 const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
@@ -54,7 +57,22 @@ const Cart = () => {
 
       <Container>
         <Content>
-          <h1>Meu carrinho</h1>
+          <div className="header">
+            {!widthScreen && <FiArrowLeft size={25} color="var(--black-800)" />}
+            <h1>Meu carrinho</h1>
+          </div>
+
+          <div
+            className="checkbox"
+            style={!widthScreen ? { display: 'none' } : undefined}
+          >
+            <div className="check">
+              <button type="button" id="btn" className="btn">
+                {confirm && <FaCheck color="var(--gray-800)" />}
+              </button>
+              <label htmlFor="btn">Selecionar Todos</label>
+            </div>
+          </div>
 
           <CartContainer>
             {items.length == 0 ? (
@@ -79,7 +97,14 @@ const Cart = () => {
 
                 {items.map((it) => (
                   <CartProduct key={it.productId}>
-                    <section style={{ flex: 5, justifyContent: 'flex-start' }}>
+                    <section
+                      className="sectionImg"
+                      style={
+                        widthScreen
+                          ? undefined
+                          : { flexGrow: 1, height: '100%' }
+                      }
+                    >
                       <div className="imgContainer">
                         <AiFillCamera size={28} color="white" />
                       </div>
@@ -87,17 +112,22 @@ const Cart = () => {
                       <span
                         style={widthScreen ? undefined : { display: 'none' }}
                       >
-                        {it.title}
+                        {/* {it.title} */}
+                        Título
                       </span>
                     </section>
 
                     {widthScreen && <Counter id={it.productId} />}
 
-                    <section className="spanProductInformation">
+                    <section
+                      className="spanProductInformation"
+                      style={widthScreen ? undefined : { flexGrow: 2 }}
+                    >
                       <span
                         style={widthScreen ? { display: 'none' } : undefined}
                       >
-                        {it.title}
+                        {/* {it.title} */}
+                        Título
                       </span>
                       <strong>
                         {new Intl.NumberFormat('pt-BR', {
@@ -203,6 +233,53 @@ export const Content = styled.section`
   height: 100%;
   width: 100%;
   padding-top: 3rem;
+  ${[sizes.down('lgMob')]} {
+    padding-top: 1rem;
+    .header {
+      margin-left: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .checkbox {
+      display: flex;
+      /* width: 100%; */
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0 1rem 1rem;
+
+      .btn {
+        width: 20px;
+        height: 20px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 5px;
+        border: 1px solid black;
+        background: var(--white);
+
+        margin-right: 10px;
+        padding: 4px;
+      }
+
+      .check {
+        display: flex;
+
+        label {
+          font-size: 0.875rem;
+          font-weight: 500;
+        }
+      }
+
+      a {
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: underline;
+      }
+    }
+  }
 `
 
 export const CartContainer = styled.section`
@@ -213,7 +290,11 @@ export const CartContainer = styled.section`
   display: flex;
   margin-top: 2rem;
   flex-direction: column;
-
+  ${[sizes.down('lgMob')]} {
+    border-radius: 0;
+    padding: 0 1rem 0 2rem;
+    box-shadow: none;
+  }
   h1 {
     padding: 2rem 1.5rem;
   }
@@ -328,6 +409,24 @@ export const CartProduct = styled.div`
   align-items: center;
   border-top: 1px solid var(--gray-100);
 
+  ${[sizes.down('lgMob')]} {
+    border-radius: 0;
+    justify-content: center;
+    padding: 0;
+    .sectionImg {
+      padding-right: 0;
+      .imgContainer {
+        height: 110px;
+        /* width: 120px; */
+        margin-right: 0;
+      }
+    }
+    .spanProductInformation {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
   section {
     flex: 1;
     display: flex;
@@ -351,6 +450,11 @@ export const CartProduct = styled.div`
       }
     }
 
+    :first-child {
+      flex: 5;
+      justify-content: flex-start;
+    }
+
     :last-child {
       display: flex;
       justify-content: flex-end;
@@ -363,12 +467,6 @@ export const CartProduct = styled.div`
       background: var(--gray-300);
       margin-right: 1rem;
       padding: 30px;
-    }
-  }
-
-  ${[sizes.down('lgMob')]} {
-    .spanProductInformation {
-      flex-direction: column;
     }
   }
 `

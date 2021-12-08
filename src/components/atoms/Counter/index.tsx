@@ -1,6 +1,7 @@
 import { CartContext } from 'contexts/CartContext'
 import { useContext } from 'react'
 import styled from 'styled-components'
+import sizes from '../../../utils/sizes'
 
 interface Counter {
   id: string
@@ -31,7 +32,7 @@ const Counter = ({ id }: Counter) => {
       >
         -
       </Button>
-      {items.find((it) => it.productId == id).amount}
+      <p>{items.find((it) => it.productId == id).amount}</p>
       <Button
         onClick={() => {
           setItems(
@@ -64,6 +65,16 @@ export const Container = styled.section`
   justify-content: space-between !important;
   align-items: center;
   padding: 1rem;
+
+  ${[sizes.down('lgMob')]} {
+    padding: 0;
+    border-radius: 4px;
+    p {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0 1rem 0 1rem;
+    }
+  }
 `
 
 export const Button = styled.button`
@@ -76,6 +87,14 @@ export const Button = styled.button`
   font-weight: 600;
   background: white;
   font-size: 1.5rem;
+
+  ${[sizes.down('lgMob')]} {
+    display: flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+  }
 
   &.inactive {
     color: var(--black-500);
