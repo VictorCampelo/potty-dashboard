@@ -3,7 +3,8 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
 import { IoTrashOutline } from 'react-icons/io5'
-import Counter from 'components/atoms/Counter'
+import Counter, { Button } from 'components/atoms/Counter'
+import { Button as BigButton } from 'components/atoms/Button'
 import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
@@ -21,6 +22,10 @@ const Cart = () => {
 
   function handleRemoveItem(id: string) {
     setItems(items.filter((it) => it.productId != id))
+    localStorage.setItem(
+      'ultimo.cart.items',
+      JSON.stringify(items.filter((it) => it.productId != id))
+    )
   }
 
   async function handleSubmit() {
@@ -40,6 +45,12 @@ const Cart = () => {
     }
   }
 
+  useEffect(() => {
+    if (items.length > 0) {
+      localStorage.setItem('ultimo.cart.items', JSON.stringify(items))
+    }
+  }, [items])
+
   return (
     <>
       <Head>
@@ -50,13 +61,24 @@ const Cart = () => {
 
       <Container>
         <Content>
-          <h1>Meu carrinho</h1>
+          {items.length == 0 ? (
+            <EmptyCartContainer>
+              <img src="/images/emptycart.png" alt="Carrinho vazio" />
 
-          <CartContainer>
-            {items.length == 0 ? (
               <h1>Carrinho vazio!</h1>
-            ) : (
-              <>
+
+              <p>Você ainda não possui itens no seu {'\n'} carrinho</p>
+
+              <BigButton
+                title="Ver produtos"
+                onClick={() => router.push('/')}
+              />
+            </EmptyCartContainer>
+          ) : (
+            <>
+              <h1>Meu carrinho</h1>
+
+              <CartContainer>
                 <CartHead>
                   <section style={{ flex: 5, justifyContent: 'flex-start' }}>
                     <span>Produto</span>
@@ -97,7 +119,9 @@ const Cart = () => {
                     <section style={{ flex: 1 }}>
                       <button
                         className="exclude"
-                        onClick={() => handleRemoveItem(it.productId)}
+                        onClick={() => {
+                          handleRemoveItem(it.productId)
+                        }}
                       >
                         <IoTrashOutline size={24} color="var(--red)" />
 
@@ -106,46 +130,52 @@ const Cart = () => {
                     </section>
                   </CartProduct>
                 ))}
-              </>
-            )}
-          </CartContainer>
+              </CartContainer>
 
-          <CartContainer
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: '2rem',
-              justifyContent: 'space-between'
-            }}
-          >
-            <div className="info">
-              <span>Total: </span>
-              <strong>
-                {new Intl.NumberFormat('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL'
-                }).format(total)}
-              </strong>
-              <span>
-                {' | '}
-                {items.length > 1
-                  ? items.length + ' item'
-                  : items.length + ' items'}
-              </span>
-            </div>
+              <CartContainer
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: '2rem',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div className="info">
+                  <span>Total: </span>
+                  <strong>
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL'
+                    }).format(total)}
+                  </strong>
+                  <span>
+                    {' | '}
+                    {items.length > 1
+                      ? items.length + ' item'
+                      : items.length + ' items'}
+                  </span>
+                </div>
 
-            <div className="buttonContainer">
-              <button className="empty" onClick={() => setItems([])}>
-                <IoTrashOutline size={24} color="var(--red)" />
-                ESVAZIAR CARRINHO
-              </button>
+                <div className="buttonContainer">
+                  <button
+                    className="empty"
+                    onClick={() => {
+                      setItems([])
+                      localStorage.setItem('ultimo.cart.items', '[]')
+                    }}
+                  >
+                    <IoTrashOutline size={24} color="var(--red)" />
+                    ESVAZIAR CARRINHO
+                  </button>
 
-              <button className="finish" onClick={handleSubmit}>
-                <BsWhatsapp size={24} color="white" />
-                FINALIZAR COMPRA
-              </button>
-            </div>
-          </CartContainer>
+                  <button className="finish" onClick={handleSubmit}>
+                    <BsWhatsapp size={24} color="white" />
+                    FINALIZAR COMPRA
+                  </button>
+                </div>
+              </CartContainer>
+            </>
+          )}
         </Content>
       </Container>
     </>
@@ -153,6 +183,25 @@ const Cart = () => {
 }
 
 export default Cart
+
+export const EmptyCartContainer = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  img {
+    width: 250px;
+    margin-bottom: 40px;
+  }
+
+  h1,
+  p {
+    margin-bottom: 1rem;
+  }
+`
 
 export const Container = styled.main`
   width: 100%;

@@ -220,6 +220,20 @@ const ProductShow = () => {
           title
         }
       ])
+
+      localStorage.setItem(
+        'ultimo.cart.items',
+        JSON.stringify([
+          ...items,
+          {
+            amount: 1,
+            price,
+            productId,
+            storeId,
+            title
+          }
+        ])
+      )
     }
 
     notifySuccess('Item adicionado no carrinho')
