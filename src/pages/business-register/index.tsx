@@ -22,6 +22,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 type bussinesRegisterFormData = {
+  firstName: string
+  lastName: string
   businessName: string
   cpfCnpj: string
   businessState: string
@@ -33,6 +35,8 @@ type bussinesRegisterFormData = {
 }
 
 const bussinesRegisterFormSchema = yup.object().shape({
+  firstName: yup.string().required('Primeiro nome obrigatório'),
+  lastName: yup.string().required('Último nome obrigatório'),
   businessName: yup.string().required('Nome do negócio obrigatório'),
   cpfCnpj: yup
     .string()
@@ -55,7 +59,8 @@ const BusinessRegister = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues
+    getValues,
+    watch
   } = useForm({
     resolver: yupResolver(bussinesRegisterFormSchema)
   })
@@ -63,6 +68,8 @@ const BusinessRegister = () => {
   const handleContinueRegister: SubmitHandler<bussinesRegisterFormData> =
     async (values, event) => {
       const store = {
+        firstName: values.firstName,
+        lastName: values.lastName,
         name: values.businessName,
         cpfCnpj: values.cpfCnpj,
         address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
@@ -97,6 +104,25 @@ const BusinessRegister = () => {
                   {...register('businessName')}
                   textError={errors.businessName?.message}
                   error={errors.businessName}
+                />
+              </div>
+              <div className="inputRow">
+                <Input
+                  label="Nome"
+                  placeholder="Nome"
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('firstName')}
+                  textError={errors.firstName?.message}
+                  error={errors.firstName}
+                />
+
+                <Input
+                  label="Sobrenome"
+                  placeholder="Sobrenome"
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('lastName')}
+                  textError={errors.lastName?.message}
+                  error={errors.lastName}
                 />
               </div>
               <div className="inputCol">
@@ -190,7 +216,27 @@ const BusinessRegister = () => {
             </div>
           </div>
           <div className="buttonContainer">
-            <Button type="submit" title="Continuar" />
+            <div style={{ marginRight: '1rem' }}>
+              <Button onClick={() => Router.back()} title="Voltar" border />
+            </div>
+            <div>
+              <Button
+                type="submit"
+                title="Continuar"
+                disabled={
+                  !watch('businessName') ||
+                  !watch('firstName') ||
+                  !watch('lastName') ||
+                  // !watch('cpfCnpj') ||
+                  !watch('cep') ||
+                  !watch('district') ||
+                  !watch('publicPlace') ||
+                  !watch('number') ||
+                  !watch('businessState') ||
+                  !watch('businessCity')
+                }
+              />
+            </div>
           </div>
         </form>
       </ContainerLojist>

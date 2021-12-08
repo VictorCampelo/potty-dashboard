@@ -38,7 +38,8 @@ const BusinessRegister = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues
+    getValues,
+    watch
   } = useForm({
     resolver: yupResolver(bussinesRegisterFormSchema)
   })
@@ -113,7 +114,27 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <Button type="submit" title="CONTINUAR" />
+            <div style={{ marginRight: '1rem' }}>
+              <Button
+                onClick={() => {
+                  Router.back()
+                }}
+                title="VOLTAR"
+                border
+              />
+            </div>
+            <div>
+              <Button
+                type="submit"
+                title="CONTINUAR"
+                disabled={
+                  !watch('number') ||
+                  !watch('facebookUrl') ||
+                  !watch('instagramUrl') ||
+                  !watch('whatsappUrl')
+                }
+              />
+            </div>
           </div>
         </form>
       </Container>
