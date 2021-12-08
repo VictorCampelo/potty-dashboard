@@ -64,13 +64,18 @@ const Cart = () => {
 
           <div
             className="checkbox"
-            style={!widthScreen ? { display: 'none' } : undefined}
+            style={widthScreen ? { display: 'none' } : undefined}
           >
             <div className="check">
               <button type="button" id="btn" className="btn">
-                {confirm && <FaCheck color="var(--gray-800)" />}
+                <FaCheck color="var(--gray-800)" />
               </button>
               <label htmlFor="btn">Selecionar Todos</label>
+            </div>
+            <div>
+              <p style={{ color: 'purple', marginRight: '1rem' }}>
+                Adicionar cupom
+              </p>
             </div>
           </div>
 
@@ -97,6 +102,17 @@ const Cart = () => {
 
                 {items.map((it) => (
                   <CartProduct key={it.productId}>
+                    <div
+                      className="checkbox"
+                      style={widthScreen ? { display: 'none' } : undefined}
+                    >
+                      <div className="check">
+                        <button type="button" id="btn" className="btn">
+                          <FaCheck color="var(--gray-800)" />
+                        </button>
+                      </div>
+                    </div>
+
                     <section
                       className="sectionImg"
                       style={
@@ -108,7 +124,6 @@ const Cart = () => {
                       <div className="imgContainer">
                         <AiFillCamera size={28} color="white" />
                       </div>
-
                       <span
                         style={widthScreen ? undefined : { display: 'none' }}
                       >
@@ -152,6 +167,18 @@ const Cart = () => {
                     </section>
                   </CartProduct>
                 ))}
+                <section
+                  style={
+                    widthScreen
+                      ? { display: 'none' }
+                      : { marginTop: '1rem', marginLeft: '3rem' }
+                  }
+                >
+                  <span>Subtotal:</span>
+                  <strong style={{ color: 'var(--color-primary)' }}>
+                    R$ 8.997,00
+                  </strong>
+                </section>
               </>
             )}
           </CartContainer>
@@ -168,9 +195,9 @@ const Cart = () => {
                 </strong>
               </div>
               <span className="spanBottom">
-                {items.length > 1
+                {items.length <= 1
                   ? items.length + ' item'
-                  : items.length + ' items'}
+                  : items.length + ' itens'}
                 {' | '}
                 {!widthScreen && (
                   <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
@@ -292,7 +319,7 @@ export const CartContainer = styled.section`
   flex-direction: column;
   ${[sizes.down('lgMob')]} {
     border-radius: 0;
-    padding: 0 1rem 0 2rem;
+    padding: 0 1rem 0 1rem;
     box-shadow: none;
   }
   h1 {
@@ -407,12 +434,19 @@ export const CartProduct = styled.div`
   width: 100%;
   padding: 1rem 2rem;
   align-items: center;
-  border-top: 1px solid var(--gray-100);
+  border-top: 2px solid var(--gray-100);
 
   ${[sizes.down('lgMob')]} {
     border-radius: 0;
     justify-content: center;
-    padding: 0;
+    padding: 1rem 0;
+
+    //checkBox que está dentro do cartProduct
+    .checkbox {
+      margin-left: 0;
+      padding-left: 0;
+    }
+
     .sectionImg {
       padding-right: 0;
       .imgContainer {
