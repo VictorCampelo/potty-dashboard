@@ -1,4 +1,11 @@
+import { Button } from 'components/atoms/Button'
 import styled from 'styled-components'
+
+export const ConfigButton = styled(Button)`
+  margin-top: 20px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+`
 
 export const Container = styled.div`
   width: 100%;
@@ -13,7 +20,7 @@ export const Container = styled.div`
 
     padding: 20px 20px;
 
-    padding-left: 7vw;
+    padding-left: 7rem;
 
     display: flex;
 

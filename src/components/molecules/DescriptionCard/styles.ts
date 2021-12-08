@@ -109,7 +109,7 @@ export const Container = styled.section`
     h1 {
       font-style: normal;
       font-weight: 600;
-      font-size: 24px;
+      font-size: 1.2rem;
 
       color: var(--color-secondary-darker);
     }
