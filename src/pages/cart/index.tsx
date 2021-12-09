@@ -67,7 +67,9 @@ const Cart = () => {
 
           <div
             className="checkbox"
-            style={widthScreen ? { display: 'none' } : undefined}
+            style={
+              widthScreen || items.length == 0 ? { display: 'none' } : undefined
+            }
           >
             <div className="check">
               <button
@@ -110,69 +112,114 @@ const Cart = () => {
 
                 {items.map((it) => (
                   <CartProduct key={it.productId}>
-                    <div
-                      className="checkbox"
-                      style={widthScreen ? { display: 'none' } : undefined}
-                    >
-                      <div className="check">
-                        <button type="button" id="btn" className="btn">
-                          {selectAll && <FaCheck color="var(--gray-800)" />}
-                        </button>
-                      </div>
-                    </div>
+                    {widthScreen ? (
+                      <>
+                        <section
+                          style={{ flex: 5, justifyContent: 'flex-start' }}
+                        >
+                          <div className="imgContainer">
+                            <AiFillCamera size={28} color="white" />
+                          </div>
 
-                    <section
-                      className="sectionImg"
-                      style={
-                        widthScreen
-                          ? undefined
-                          : { flexGrow: 1, height: '100%' }
-                      }
-                    >
-                      <div className="imgContainer">
-                        <AiFillCamera size={28} color="white" />
-                      </div>
-                      <span
-                        style={widthScreen ? undefined : { display: 'none' }}
-                      >
-                        {/* {it.title} */}
-                        Título
-                      </span>
-                    </section>
+                          <span>{it.title}</span>
+                        </section>
 
-                    {widthScreen && <Counter id={it.productId} />}
+                        <Counter id={it.productId} />
 
-                    <section
-                      className="spanProductInformation"
-                      style={widthScreen ? undefined : { flexGrow: 2 }}
-                    >
-                      <span
-                        style={widthScreen ? { display: 'none' } : undefined}
-                      >
-                        {/* {it.title} */}
-                        Título
-                      </span>
-                      <strong>
-                        {new Intl.NumberFormat('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(it.price * it.amount)}
-                      </strong>
-                      {!widthScreen && <Counter id={it.productId} />}
-                    </section>
+                        <section>
+                          <strong>
+                            {new Intl.NumberFormat('pt-BR', {
+                              style: 'currency',
+                              currency: 'BRL'
+                            }).format(it.price * it.amount)}
+                          </strong>
+                        </section>
 
-                    <section
-                      style={widthScreen ? { flex: 1 } : { display: 'none' }}
-                    >
-                      <button
-                        className="exclude"
-                        onClick={() => handleRemoveItem(it.productId)}
-                      >
-                        <IoTrashOutline size={24} color="var(--red)" />
+                        <section style={{ flex: 1 }}>
+                          <button
+                            className="exclude"
+                            onClick={() => {
+                              handleRemoveItem(it.productId)
+                            }}
+                          >
+                            <IoTrashOutline size={24} color="var(--red)" />
 
-                        <strong>Excluir</strong>
-                      </button>
-                    </section>
+                            <strong>Excluir</strong>
+                          </button>
+                        </section>
+                      </>
+                    ) : (
+                      <>
+                        <div
+                          className="checkbox"
+                          style={widthScreen ? { display: 'none' } : undefined}
+                        >
+                          <div className="check">
+                            <button type="button" id="btn" className="btn">
+                              {selectAll && <FaCheck color="var(--gray-800)" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <section
+                          className="sectionImg"
+                          style={
+                            widthScreen
+                              ? undefined
+                              : { flexGrow: 1, height: '100%' }
+                          }
+                        >
+                          <div className="imgContainer">
+                            <AiFillCamera size={28} color="white" />
+                          </div>
+                          <span
+                            style={
+                              widthScreen ? undefined : { display: 'none' }
+                            }
+                          >
+                            {/* {it.title} */}
+                            Títulos
+                          </span>
+                        </section>
+
+                        {widthScreen && <Counter id={it.productId} />}
+                        <section
+                          className="spanProductInformation"
+                          style={widthScreen ? undefined : { flexGrow: 2 }}
+                        >
+                          <span
+                            style={
+                              widthScreen ? { display: 'none' } : undefined
+                            }
+                          >
+                            {/* {it.title} */}
+                            Título
+                          </span>
+                          <strong>
+                            {new Intl.NumberFormat('pt-BR', {
+                              style: 'currency',
+                              currency: 'BRL'
+                            }).format(it.price * it.amount)}
+                          </strong>
+                          {!widthScreen && <Counter id={it.productId} />}
+                        </section>
+
+                        <section
+                          style={
+                            widthScreen ? { flex: 1 } : { display: 'none' }
+                          }
+                        >
+                          <button
+                            className="exclude"
+                            onClick={() => handleRemoveItem(it.productId)}
+                          >
+                            <IoTrashOutline size={24} color="var(--red)" />
+
+                            <strong>Excluir</strong>
+                          </button>
+                        </section>
+                      </>
+                    )}
                   </CartProduct>
                 ))}
                 <section
@@ -334,6 +381,7 @@ export const CartContainer = styled.section`
   display: flex;
   margin-top: 2rem;
   flex-direction: column;
+  border: 1px solid red;
   ${[sizes.down('lgMob')]} {
     border-radius: 0;
     padding: 0 1rem 0 1rem;
