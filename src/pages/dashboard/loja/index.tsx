@@ -256,7 +256,7 @@ const Shop = ({ storeId, id }: Shop) => {
       loadData()
       toggleContactModal()
     } catch (e) {
-      console.log(e)
+      toast.error('Houve um erro ao editar suas informações')
     }
   }
 
