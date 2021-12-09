@@ -151,6 +151,13 @@ export const ModalContainer = styled.div`
   }
 
   .desc-container {
+    width: 100%;
+    height: 50vh;
+
+    padding: 3px 20px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
     .top {
       width: 500px;
       position: relative;
