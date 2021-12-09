@@ -76,8 +76,8 @@ const BusinessRegister = () => {
               btn={
                 <input
                   type="file"
-                  id="image[]"
-                  name="image"
+                  id="icon[]"
+                  name="icon"
                   accept="image/*"
                   multiple={false}
                   onChange={onFileChange}

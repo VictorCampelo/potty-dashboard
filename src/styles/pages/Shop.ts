@@ -150,6 +150,74 @@ export const ModalContainer = styled.div`
     justify-content: center;
   }
 
+  .desc-container {
+    width: 100%;
+    height: 50vh;
+
+    padding: 3px 20px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    .top {
+      width: 500px;
+      position: relative;
+
+      section {
+        position: relative;
+
+        #banner {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+
+        #imageBtn {
+          position: absolute;
+          right: 10px;
+          bottom: 15px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 41px;
+          height: 41px;
+
+          background-color: var(--color-primary);
+
+          border-radius: 100%;
+          border: 4px solid var(--white);
+
+          label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+          }
+        }
+      }
+
+      #icon {
+        position: absolute;
+        left: 50%;
+        bottom: -90px;
+        transform: translate(-50%);
+      }
+    }
+
+    .bottom {
+      margin-top: 70px;
+      width: 500px;
+      height: auto;
+
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
   .inputRow {
     display: flex;
     flex-direction: row;
