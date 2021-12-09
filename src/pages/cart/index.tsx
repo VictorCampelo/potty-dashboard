@@ -3,7 +3,7 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
 import { IoTrashOutline } from 'react-icons/io5'
-import Counter, { Button } from 'components/atoms/Counter'
+import Counter from 'components/atoms/Counter'
 import { Button as BigButton } from 'components/atoms/Button'
 import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
@@ -12,6 +12,7 @@ import { CartContext } from 'contexts/CartContext'
 import { useEffect } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
   const { items, setItems } = useContext(CartContext)
@@ -38,9 +39,11 @@ const Cart = () => {
           }))
         })
 
-        router.push(data.whatsapp)
+        localStorage.setItem('ultimo.cart.items', '')
+        window.open(data.whatsapp)
+        router.push('/cart/finish')
       } catch (e) {
-        console.error(e)
+        toast.error('Erro ao finalizar compra, tente novamente mais tarde!')
       }
     }
   }

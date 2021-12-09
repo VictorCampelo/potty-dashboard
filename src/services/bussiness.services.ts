@@ -59,6 +59,6 @@ export async function getCategories(id: string) {
 }
 
 export async function editTimeTable(id: string, data) {
-  const res = await api.patch(`/stores/${id}`, data)
+  const res = await api.patch(`/stores/`, data)
   return res
 }
