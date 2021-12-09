@@ -9,7 +9,7 @@ import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
 import { CartContext } from 'contexts/CartContext'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
 import sizes from '../../utils/sizes'
@@ -21,11 +21,14 @@ const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 
   const { items, setItems } = useContext(CartContext)
-
+  const [selectAll, setSelectAll] = useState(false)
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
 
+  function handleSelectAll() {
+    setSelectAll(!selectAll)
+  }
   function handleRemoveItem(id: string) {
     setItems(items.filter((it) => it.productId != id))
   }
@@ -67,8 +70,13 @@ const Cart = () => {
             style={widthScreen ? { display: 'none' } : undefined}
           >
             <div className="check">
-              <button type="button" id="btn" className="btn">
-                <FaCheck color="var(--gray-800)" />
+              <button
+                type="button"
+                id="btn"
+                className="btn"
+                onClick={handleSelectAll}
+              >
+                {selectAll && <FaCheck color="var(--gray-800)" />}
               </button>
               <label htmlFor="btn">Selecionar Todos</label>
             </div>
@@ -108,7 +116,7 @@ const Cart = () => {
                     >
                       <div className="check">
                         <button type="button" id="btn" className="btn">
-                          <FaCheck color="var(--gray-800)" />
+                          {selectAll && <FaCheck color="var(--gray-800)" />}
                         </button>
                       </div>
                     </div>
@@ -223,7 +231,16 @@ const Cart = () => {
               className="buttonContainerMob"
               style={widthScreen ? { display: 'none' } : undefined}
             >
-              <button className="finish" onClick={handleSubmit}>
+              <button
+                className="finish"
+                onClick={handleSubmit}
+                disabled={!selectAll}
+                style={
+                  selectAll
+                    ? undefined
+                    : { backgroundColor: 'gray', borderColor: 'gray' }
+                }
+              >
                 <BsWhatsapp size={24} color="white" />
                 <p>FINALIZAR</p>
               </button>
