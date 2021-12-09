@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.section`
-  width: 670px;
+  width: 35vw;
   margin-bottom: 20px;
 
   background: #ffffff;
@@ -19,6 +19,7 @@ export const Container = styled.section`
     section {
       width: 100%;
       height: 200px;
+      position: relative;
 
       #banner {
         width: 100%;
@@ -76,9 +77,9 @@ export const Container = styled.section`
         justify-content: center;
         align-items: center;
 
-        position: relative;
-        bottom: 190px;
-        left: calc(85% - 15px);
+        position: absolute;
+        top: 15px;
+        right: 15px;
 
         .icon {
           margin-left: 4px;
