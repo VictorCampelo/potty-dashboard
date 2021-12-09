@@ -158,7 +158,7 @@ const Cart = () => {
                           currency: 'BRL'
                         }).format(it.price * it.amount)}
                       </strong>
-                      <Counter id={it.productId} />
+                      {!widthScreen && <Counter id={it.productId} />}
                     </section>
 
                     <section
