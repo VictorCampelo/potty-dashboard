@@ -10,7 +10,7 @@ import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { Input } from '../../components/molecules/Input'
 import { Checkbox } from '../../components/atoms/Checkbox'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { useContext } from 'react'
 import { FaHome } from 'react-icons/fa'
@@ -55,11 +55,28 @@ const BusinessRegister = () => {
   const { setStore } = useContext(ShopkeeperContext)
   const [cpfCnpj, setCpfCnpj] = useState('')
 
+  useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem('data'))
+    if (data) {
+      setValue('firstName', data.firstName)
+      setValue('lastName', data.lastName)
+      setValue('businessName', data.name)
+      setValue('cpfCnpj', data.cpfCnpj)
+      // setValue('address', data.address)
+      setValue('publicPlace', data.publicPlace)
+      setValue('cep', data.cep)
+      setValue('district', data.district)
+      setValue('number', data.number)
+      setValue('city', data.city)
+      setValue('state', data.state)
+    }
+  }, [])
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     getValues,
+    setValue,
     watch
   } = useForm({
     resolver: yupResolver(bussinesRegisterFormSchema)
@@ -72,11 +89,16 @@ const BusinessRegister = () => {
         lastName: values.lastName,
         name: values.businessName,
         cpfCnpj: values.cpfCnpj,
-        address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
+        // address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
+        publicPlace: values.publicPlace,
+        number: values.number,
+        district: values.district,
+        cep: values.cep,
         city: values.businessCity,
         state: values.businessState
       }
 
+      sessionStorage.setItem('data', JSON.stringify(store))
       setStore(store)
       Router.push('/business-register/continue')
     }
@@ -217,25 +239,14 @@ const BusinessRegister = () => {
           </div>
           <div className="buttonContainer">
             <div style={{ marginRight: '1rem' }}>
-              <Button onClick={() => Router.back()} title="Voltar" border />
+              <Button
+                onClick={() => Router.push('/cadastro')}
+                title="Voltar"
+                border
+              />
             </div>
             <div>
-              <Button
-                type="submit"
-                title="Continuar"
-                disabled={
-                  !watch('businessName') ||
-                  !watch('firstName') ||
-                  !watch('lastName') ||
-                  // !watch('cpfCnpj') ||
-                  !watch('cep') ||
-                  !watch('district') ||
-                  !watch('publicPlace') ||
-                  !watch('number') ||
-                  !watch('businessState') ||
-                  !watch('businessCity')
-                }
-              />
+              <Button type="submit" title="Continuar" />
             </div>
           </div>
         </form>
