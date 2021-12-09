@@ -21,6 +21,7 @@ export const Container = styled.div<ContainerProps>`
 
     label {
       font-size: 1rem;
+      color: var(--black-800);
       ${(props) => props.error && 'color: var(--red);'}
     }
 
