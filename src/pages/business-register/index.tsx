@@ -10,7 +10,7 @@ import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { Input } from '../../components/molecules/Input'
 import { Checkbox } from '../../components/atoms/Checkbox'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { useContext } from 'react'
 import { FaHome } from 'react-icons/fa'
@@ -22,6 +22,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 type bussinesRegisterFormData = {
+  firstName: string
+  lastName: string
   businessName: string
   cpfCnpj: string
   businessState: string
@@ -33,6 +35,8 @@ type bussinesRegisterFormData = {
 }
 
 const bussinesRegisterFormSchema = yup.object().shape({
+  firstName: yup.string().required('Primeiro nome obrigatório'),
+  lastName: yup.string().required('Último nome obrigatório'),
   businessName: yup.string().required('Nome do negócio obrigatório'),
   cpfCnpj: yup
     .string()
@@ -51,11 +55,29 @@ const BusinessRegister = () => {
   const { setStore } = useContext(ShopkeeperContext)
   const [cpfCnpj, setCpfCnpj] = useState('')
 
+  useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem('data'))
+    if (data) {
+      setValue('firstName', data.firstName)
+      setValue('lastName', data.lastName)
+      setValue('businessName', data.name)
+      setValue('cpfCnpj', data.cpfCnpj)
+      // setValue('address', data.address)
+      setValue('publicPlace', data.publicPlace)
+      setValue('cep', data.cep)
+      setValue('district', data.district)
+      setValue('number', data.number)
+      setValue('city', data.city)
+      setValue('state', data.state)
+    }
+  }, [])
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues
+    getValues,
+    setValue,
+    watch
   } = useForm({
     resolver: yupResolver(bussinesRegisterFormSchema)
   })
@@ -63,13 +85,20 @@ const BusinessRegister = () => {
   const handleContinueRegister: SubmitHandler<bussinesRegisterFormData> =
     async (values, event) => {
       const store = {
+        firstName: values.firstName,
+        lastName: values.lastName,
         name: values.businessName,
         cpfCnpj: values.cpfCnpj,
-        address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
+        // address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
+        publicPlace: values.publicPlace,
+        number: values.number,
+        district: values.district,
+        cep: values.cep,
         city: values.businessCity,
         state: values.businessState
       }
 
+      sessionStorage.setItem('data', JSON.stringify(store))
       setStore(store)
       Router.push('/business-register/continue')
     }
@@ -97,6 +126,25 @@ const BusinessRegister = () => {
                   {...register('businessName')}
                   textError={errors.businessName?.message}
                   error={errors.businessName}
+                />
+              </div>
+              <div className="inputRow">
+                <Input
+                  label="Nome"
+                  placeholder="Nome"
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('firstName')}
+                  textError={errors.firstName?.message}
+                  error={errors.firstName}
+                />
+
+                <Input
+                  label="Sobrenome"
+                  placeholder="Sobrenome"
+                  icon={<FiUser size={20} color="var(--black-800)" />}
+                  {...register('lastName')}
+                  textError={errors.lastName?.message}
+                  error={errors.lastName}
                 />
               </div>
               <div className="inputCol">
@@ -190,7 +238,16 @@ const BusinessRegister = () => {
             </div>
           </div>
           <div className="buttonContainer">
-            <Button type="submit" title="Continuar" />
+            <div style={{ marginRight: '1rem' }}>
+              <Button
+                onClick={() => Router.push('/cadastro')}
+                title="Voltar"
+                border
+              />
+            </div>
+            <div>
+              <Button type="submit" title="Continuar" />
+            </div>
           </div>
         </form>
       </ContainerLojist>

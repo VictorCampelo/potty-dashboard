@@ -97,11 +97,22 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <Button
-              type="button"
-              onClick={handleFinishRegister}
-              title="FINALIZAR"
-            />
+            <div style={{ marginRight: '1rem' }}>
+              <Button
+                type="button"
+                onClick={() => Router.back()}
+                title="VOLTAR"
+                border
+              />
+            </div>
+            <div>
+              <Button
+                type="button"
+                onClick={handleFinishRegister}
+                title="FINALIZAR"
+                disabled={desc === ''}
+              />
+            </div>
           </div>
         </form>
       </Container>
