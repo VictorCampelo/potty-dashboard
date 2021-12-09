@@ -34,6 +34,7 @@ import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
+import { api } from 'services/apiClient'
 
 type TimeTableArrayType = {
   [0]
@@ -218,10 +219,10 @@ const Shop = ({ storeId, id }: Shop) => {
         setTimeTable(false)
       }
 
-      setTelefone(data?.phone)
-      setFacebook(data?.facebook_link)
-      setInstagram(data?.instagram_link)
-      setWhatsApp(data?.whatsapp_link)
+      setTelefone(data?.phone || '')
+      setFacebook(data?.facebookLink || '')
+      setInstagram(data?.instagramLink || '')
+      setWhatsApp(data?.whatsappLink || '')
 
       setBusinessAddress(data?.address)
     } catch (e) {
@@ -237,6 +238,25 @@ const Shop = ({ storeId, id }: Shop) => {
       })
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  async function handleEditContactInfo() {
+    console.log(storeId)
+
+    try {
+      const res = await api.patch(`stores`, {
+        facebookLink: facebook,
+        instagramLink: instagram,
+        whatsappLink: whatsApp,
+        phone: telefone
+      })
+
+      toast.success('Informações editadas com sucesso!')
+      loadData()
+      toggleContactModal()
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -583,7 +603,11 @@ const Shop = ({ storeId, id }: Shop) => {
             </div>
 
             <div className="buttons-container">
-              <Button title="Confirmar" border={true}></Button>
+              <Button
+                title="Confirmar"
+                onClick={handleEditContactInfo}
+                border={true}
+              />
             </div>
           </ModalContainer>
         </CustomModal>
