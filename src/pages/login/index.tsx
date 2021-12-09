@@ -40,8 +40,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    watch
+    formState: { errors, isSubmitting }
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
@@ -128,12 +127,7 @@ const Login = () => {
           />
 
           <div className="buttonContainer">
-            <Button
-              isLoading={isSubmitting}
-              type="submit"
-              title="Entrar"
-              disabled={!watch('email') || !watch('password')}
-            />
+            <Button isLoading={isSubmitting} type="submit" title="Entrar" />
           </div>
 
           <div className="divisorContainer">
