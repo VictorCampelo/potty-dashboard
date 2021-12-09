@@ -2,12 +2,14 @@ import styled from 'styled-components'
 
 export const Container = styled.header`
   position: absolute;
+  height: 100%;
+  padding: 20px;
+  z-index: 1;
 
   .showNames {
     width: 13vw;
-    height: 96vh;
+    height: 100%;
 
-    //margin: 20px 20px;
     border-radius: 30px;
     background: var(--white);
 
@@ -61,11 +63,11 @@ export const Container = styled.header`
       }
     }
   }
+
   .noShowNames {
     width: 70px;
-    height: 96vh;
+    height: 100%;
 
-    //margin: 20px 20px;
     border-radius: 30px;
     background: var(--white);
 
@@ -101,7 +103,7 @@ export const Container = styled.header`
           height: 0;
           width: 0;
           opacity: 0;
-          transition: all 0.1s ease-in-out;
+          transition: all 0.3s ease-in-out;
           margin-left: 0px;
         }
 
@@ -111,8 +113,38 @@ export const Container = styled.header`
           height: 0;
           width: 0;
           opacity: 0;
-          transition: all 0.1s ease-in-out;
+          transition: all 0.3s ease-in-out;
         }
+      }
+    }
+  }
+`
+
+type ResizeProps = {
+  active: boolean
+}
+
+export const ResizeContainer = styled.div<ResizeProps>`
+  width: 100%;
+  height: 49px;
+
+  display: flex;
+  justify-content: flex-end;
+
+  .resbtn {
+    width: 50px;
+    border-radius: 50px 0 0 50px;
+    background: var(--color-primary);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      transition: transform 0.5s;
+
+      &.active {
+        transform: rotate(180deg);
       }
     }
   }

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 
@@ -13,43 +13,45 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-    border: 1px solid #fff;
-
     color: var(--white);
-    background-color: var(--green-confirmation);
+    background-color: var(--color-primary);
+
+    border: 4px solid #ffffff;
+
+    border-radius: 100%;
 
     .image {
-      width: 132px;
-      height: 132px;
-      
-      border-radius: 50%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+
+      border-radius: 100%;
     }
   }
-  .imageBtn {
-      position: relative;
-      left: 30px;
-      bottom: 25px;
 
+  .imageBtn {
+    position: relative;
+    left: 30px;
+    bottom: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 41px;
+    height: 41px;
+
+    background-color: var(--color-primary);
+
+    border-radius: 100%;
+    border: 4px solid var(--white);
+
+    label {
       display: flex;
       align-items: center;
       justify-content: center;
 
-      width: 41px;
-      height: 41px;
-
-      background-color: #6C7079;
-
-      border-radius: 50%;
-      border: 4px solid var(--white);
-
-      label {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        cursor: pointer;
-      }
+      cursor: pointer;
     }
+  }
 `

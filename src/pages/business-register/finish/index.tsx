@@ -31,7 +31,7 @@ const BusinessRegister = () => {
     }
 
     try {
-      await api.post('/signup-store', body)
+      await api.post('/auth/signup-store', body)
 
       Router.push(`/login`)
     } catch (e) {
@@ -76,8 +76,8 @@ const BusinessRegister = () => {
               btn={
                 <input
                   type="file"
-                  id="image[]"
-                  name="image"
+                  id="icon[]"
+                  name="icon"
                   accept="image/*"
                   multiple={false}
                   onChange={onFileChange}
@@ -97,11 +97,22 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <Button
-              type="button"
-              onClick={handleFinishRegister}
-              title="FINALIZAR"
-            />
+            <div style={{ marginRight: '1rem' }}>
+              <Button
+                type="button"
+                onClick={() => Router.back()}
+                title="VOLTAR"
+                border
+              />
+            </div>
+            <div>
+              <Button
+                type="button"
+                onClick={handleFinishRegister}
+                title="FINALIZAR"
+                disabled={desc === ''}
+              />
+            </div>
           </div>
         </form>
       </Container>

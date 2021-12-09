@@ -163,7 +163,7 @@ export const CardProduct = styled.div`
       }
 
       a {
-        color: var(--green-confirmation);
+        color: var(--color-primary);
         -webkit-touch-callout: none; /* iOS Safari */
         -webkit-user-select: none; /* Safari */
         -khtml-user-select: none; /* Konqueror HTML */
@@ -545,7 +545,7 @@ export const ProductWrapper = styled.div`
 `
 
 export const Footer = styled.footer`
-  width: 100%;
+  width: 90%;
   height: 260px;
   border-radius: 30px;
   background: var(--white);
@@ -554,7 +554,6 @@ export const Footer = styled.footer`
   margin: 1.5rem 0;
   display: flex;
   flex-direction: column;
-
   h1 {
     margin-bottom: 1rem;
   }

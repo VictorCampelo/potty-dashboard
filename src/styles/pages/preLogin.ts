@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from '../../utils/sizes'
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -11,7 +12,6 @@ export const Container = styled.main`
   justify-content: center;
   align-items: center;
   padding-top: 2rem;
-
   form {
     width: 530px;
     background: var(--white);
@@ -26,7 +26,6 @@ export const Container = styled.main`
     .title {
       width: 100%;
       margin-bottom: 1rem;
-
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -34,7 +33,34 @@ export const Container = styled.main`
 
       h1 {
         font-size: 1.875rem;
-        font-weight: 600;
+        font-weight: 500;
+      }
+
+      p {
+        font-size: 0.875rem;
+        text-align: justify;
+        color: var(--gray-300);
+        margin-top: 0.5rem;
+      }
+
+      a {
+        font-size: 0.8rem;
+        color: var(--gray-300);
+      }
+    }
+
+    .recoverTitle {
+      width: 100%;
+      margin-bottom: 1rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+
+      h1 {
+        font-size: 1.875rem;
+        font-weight: 400;
       }
 
       p {
@@ -56,10 +82,12 @@ export const Container = styled.main`
       width: 100%;
       flex-direction: column;
       gap: 1rem;
+      /* border: 1px solid red; */
     }
 
     .buttonContainer {
       margin-top: 2rem;
+      display: flex;
     }
 
     .divisorContainer {
@@ -103,6 +131,56 @@ export const Container = styled.main`
       align-items: center;
       justify-content: center;
       gap: 1rem;
+      /* border: 1px solid blue; */
+    }
+  }
+
+  ${[sizes.down('sssm')]} {
+    form {
+      .title {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .logo {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+  }
+
+  ${[sizes.down('ssm')]} {
+    height: 100vh;
+    padding-top: 0;
+    background: var(--white);
+    form {
+      box-shadow: none;
+      border-radius: 0;
+      .title {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+`
+
+export const ContainerLojist = styled(Container)`
+  form {
+    width: 1100px;
+    .inputContainer {
+      flex-direction: row;
+
+      .inputCol {
+        margin-bottom: 1rem;
+      }
+
+      .inputRow {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .inputContainer > div {
+      width: 100%;
     }
   }
 `

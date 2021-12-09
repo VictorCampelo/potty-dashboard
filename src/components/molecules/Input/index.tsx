@@ -66,7 +66,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
         <input
           type={password && isInputVisible ? 'password' : 'text'}
           ref={ref}
-          onChange={(event) => handleOnChange(event)}
+          onKeyUp={(event) => handleOnChange(event)}
           {...(!!rest.defaultValue && {
             defaultValue: masks[mask!](rest.defaultValue)
           })}
@@ -75,13 +75,13 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
 
         {password &&
           (isInputVisible ? (
-            <AiOutlineEyeInvisible
+            <AiOutlineEye
               onClick={() => setIsInputVisible(false)}
               size={24}
               color="var(--black-800)"
             />
           ) : (
-            <AiOutlineEye
+            <AiOutlineEyeInvisible
               onClick={() => setIsInputVisible(true)}
               size={24}
               color="var(--black-800)"

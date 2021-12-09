@@ -88,7 +88,7 @@ const InfoCard = ({
               justifyContent: 'center'
             }}
           >
-            <PulseLoader size={5} color="#2dd1ac" />
+            <PulseLoader size={5} color="var(--color-primary)" />
           </div>
         ) : (
           <>
@@ -169,6 +169,9 @@ const InfoCard = ({
                       <GiKnifeFork size={15} />
                     ) : null}
                     <h2>{category}</h2>
+                    <span style={{ marginLeft: '-8px' }}>
+                      {!category && 'Nenhuma categoria cadastrada...'}
+                    </span>
                   </>
                 ) : (
                   <>

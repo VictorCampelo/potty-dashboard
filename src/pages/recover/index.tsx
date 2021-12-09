@@ -38,7 +38,7 @@ const Register = () => {
       <Header />
       <Container>
         <form>
-          <div className="title">
+          <div className="recoverTitle">
             <h1>Recuperação de senha</h1>
             <p>
               Para recuperar sua senha, informe seu email para receber o token
@@ -52,7 +52,7 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               label="Email"
               type="email"
-              placeholder="example@gmail.com"
+              placeholder="exemplo@gmail.com"
               icon={<FiMail size={20} color="var(--black-800);" />}
             />
           </div>
