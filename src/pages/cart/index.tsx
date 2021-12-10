@@ -150,10 +150,7 @@ const Cart = () => {
                       </>
                     ) : (
                       <>
-                        <div
-                          className="checkbox"
-                          style={widthScreen ? { display: 'none' } : undefined}
-                        >
+                        <div className="checkbox">
                           <div className="check">
                             <button type="button" id="btn" className="btn">
                               {selectAll && <FaCheck color="var(--gray-800)" />}
@@ -163,37 +160,19 @@ const Cart = () => {
 
                         <section
                           className="sectionImg"
-                          style={
-                            widthScreen
-                              ? undefined
-                              : { flexGrow: 1, height: '100%' }
-                          }
+                          style={{ flexGrow: 1, height: '100%' }}
                         >
                           <div className="imgContainer">
                             <AiFillCamera size={28} color="white" />
                           </div>
-                          <span
-                            style={
-                              widthScreen ? undefined : { display: 'none' }
-                            }
-                          >
-                            {/* {it.title} */}
-                            Títulos
-                          </span>
                         </section>
-
-                        {widthScreen && <Counter id={it.productId} />}
                         <section
                           className="spanProductInformation"
-                          style={widthScreen ? undefined : { flexGrow: 2 }}
+                          style={{ flexGrow: 2 }}
                         >
-                          <span
-                            style={
-                              widthScreen ? { display: 'none' } : undefined
-                            }
-                          >
-                            {/* {it.title} */}
-                            Título
+                          <span>
+                            {it.title}
+                            {/* Título */}
                           </span>
                           <strong>
                             {new Intl.NumberFormat('pt-BR', {
@@ -201,22 +180,7 @@ const Cart = () => {
                               currency: 'BRL'
                             }).format(it.price * it.amount)}
                           </strong>
-                          {!widthScreen && <Counter id={it.productId} />}
-                        </section>
-
-                        <section
-                          style={
-                            widthScreen ? { flex: 1 } : { display: 'none' }
-                          }
-                        >
-                          <button
-                            className="exclude"
-                            onClick={() => handleRemoveItem(it.productId)}
-                          >
-                            <IoTrashOutline size={24} color="var(--red)" />
-
-                            <strong>Excluir</strong>
-                          </button>
+                          <Counter id={it.productId} />
                         </section>
                       </>
                     )}
@@ -381,7 +345,7 @@ export const CartContainer = styled.section`
   display: flex;
   margin-top: 2rem;
   flex-direction: column;
-  border: 1px solid red;
+
   ${[sizes.down('lgMob')]} {
     border-radius: 0;
     padding: 0 1rem 0 1rem;
