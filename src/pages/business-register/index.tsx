@@ -396,6 +396,7 @@ const BusinessRegister = () => {
                 <Button
                   onClick={() => Router.push('/cadastro')}
                   title="Voltar"
+                  type="button"
                   border
                 />
               )}
