@@ -88,6 +88,10 @@ export const Container = styled.main`
     .buttonContainer {
       margin-top: 2rem;
       display: flex;
+
+      ${[sizes.down('ssm')]} {
+        flex-direction: column;
+      }
     }
 
     .divisorContainer {
