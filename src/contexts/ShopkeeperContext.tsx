@@ -1,43 +1,43 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState } from 'react'
 
 type ShopkeeperStore = {
-  name?: string,
-  CNPJ?: string,
-  phone?: string,
-  address?: string,
-  city?: string,
-  state?: string,
-  image?: string,
-  description?: string,
-  facebook_link?: string,
-  instagram_link?: string,
+  name?: string
+  CNPJ?: string
+  phone?: string
+  address?: string
+  city?: string
+  state?: string
+  image?: string
+  description?: string
+  facebook_link?: string
+  instagram_link?: string
   whatsapp_link?: string
 }
 
 type ShopkeeperUser = {
-  email: string,
-  firstName: string,
-  lastName: string,
-  password: string,
-  passwordConfirmation: string
+  email?: string
+  firstName?: string
+  lastName?: string
+  password?: string
+  passwordConfirmation?: string
 }
 
 type ShopkeepeerContextData = {
-  userDto: ShopkeeperUser,
-  storeDto: ShopkeeperStore,
-  setUser: (user: ShopkeeperUser) => void,
-  setStore: (store: ShopkeeperStore) => void,
+  userDto: ShopkeeperUser
+  storeDto: ShopkeeperStore
+  setUser: (user: ShopkeeperUser) => void
+  setStore: (store: ShopkeeperStore) => void
 }
 
-export const ShopkeeperContext = createContext({} as ShopkeepeerContextData);
+export const ShopkeeperContext = createContext({} as ShopkeepeerContextData)
 
 type ShopkeepeerContext = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function ShopkeeperProvider({ children }: ShopkeepeerContext) {
-  const [user, setUser] =  useState<ShopkeeperUser>(null);
-  const [store, setStore] =  useState<ShopkeeperStore>(null);
+  const [user, setUser] = useState<ShopkeeperUser>(null)
+  const [store, setStore] = useState<ShopkeeperStore>(null)
 
   function changeUser(newUser: ShopkeeperUser) {
     setUser(newUser)
@@ -48,7 +48,14 @@ export function ShopkeeperProvider({ children }: ShopkeepeerContext) {
   }
 
   return (
-    <ShopkeeperContext.Provider value={{ userDto: user, storeDto: store, setUser: changeUser, setStore: changeStore }}>
+    <ShopkeeperContext.Provider
+      value={{
+        userDto: user,
+        storeDto: store,
+        setUser: changeUser,
+        setStore: changeStore
+      }}
+    >
       {children}
     </ShopkeeperContext.Provider>
   )

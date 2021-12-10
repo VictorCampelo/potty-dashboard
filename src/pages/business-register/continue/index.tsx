@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { Input } from '../../../components/molecules/Input'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Button } from '../../../components/atoms/Button'
 import Router from 'next/router'
 import {
@@ -34,11 +34,23 @@ const bussinesRegisterFormSchema = yup.object().shape({
 const BusinessRegister = () => {
   const { setStore, storeDto } = useContext(ShopkeeperContext)
 
+  useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem('data'))
+    if (data) {
+      setValue('number', data.phone)
+      setValue('facebookUrl', data.facebook_link)
+      setValue('instagramUrl', data.instagram_link)
+      setValue('whatsappUrl', data.whatsapp_link)
+    }
+  }, [])
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues
+    getValues,
+    setValue,
+    watch
   } = useForm({
     resolver: yupResolver(bussinesRegisterFormSchema)
   })
@@ -54,7 +66,7 @@ const BusinessRegister = () => {
       instagram_link: values.instagramUrl,
       whatsapp_link: values.whatsappUrl
     }
-
+    sessionStorage.setItem('data', JSON.stringify(store))
     setStore(store)
 
     Router.push('/business-register/finish')
@@ -113,7 +125,19 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <Button type="submit" title="CONTINUAR" />
+            <div style={{ marginRight: '1rem' }}>
+              <Button
+                onClick={() => {
+                  Router.back()
+                }}
+                title="VOLTAR"
+                type="button"
+                border
+              />
+            </div>
+            <div>
+              <Button type="submit" title="CONTINUAR" />
+            </div>
           </div>
         </form>
       </Container>

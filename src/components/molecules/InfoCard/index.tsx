@@ -169,6 +169,9 @@ const InfoCard = ({
                       <GiKnifeFork size={15} />
                     ) : null}
                     <h2>{category}</h2>
+                    <span style={{ marginLeft: '-8px' }}>
+                      {!category && 'Nenhuma categoria cadastrada...'}
+                    </span>
                   </>
                 ) : (
                   <>

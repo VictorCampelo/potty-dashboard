@@ -13,20 +13,22 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-    border: 1px solid #fff;
-
     color: var(--white);
     background-color: var(--color-primary);
 
-    .image {
-      width: 132px;
-      height: 132px;
+    border: 4px solid #ffffff;
 
-      border-radius: 50%;
+    border-radius: 100%;
+
+    .image {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+
+      border-radius: 100%;
     }
   }
+
   .imageBtn {
     position: relative;
     left: 30px;
@@ -39,9 +41,9 @@ export const Container = styled.div`
     width: 41px;
     height: 41px;
 
-    background-color: #6c7079;
+    background-color: var(--color-primary);
 
-    border-radius: 50%;
+    border-radius: 100%;
     border: 4px solid var(--white);
 
     label {

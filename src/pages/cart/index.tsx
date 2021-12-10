@@ -5,6 +5,7 @@ import HeaderProducts from 'components/molecules/HeaderShop'
 import { Checkbox } from '../../components/atoms/Checkbox'
 import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
+import { Button as BigButton } from 'components/atoms/Button'
 import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
@@ -16,6 +17,7 @@ import sizes from '../../utils/sizes'
 import { useMedia } from 'use-media'
 import { FiArrowLeft } from 'react-icons/fi'
 import { FaCheck } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
@@ -31,6 +33,10 @@ const Cart = () => {
   }
   function handleRemoveItem(id: string) {
     setItems(items.filter((it) => it.productId != id))
+    localStorage.setItem(
+      'ultimo.cart.items',
+      JSON.stringify(items.filter((it) => it.productId != id))
+    )
   }
 
   async function handleSubmit() {
@@ -43,12 +49,20 @@ const Cart = () => {
           }))
         })
 
-        router.push(data.whatsapp)
+        localStorage.setItem('ultimo.cart.items', '')
+        window.open(data.whatsapp)
+        router.push('/cart/finish')
       } catch (e) {
-        console.error(e)
+        toast.error('Erro ao finalizar compra, tente novamente mais tarde!')
       }
     }
   }
+
+  useEffect(() => {
+    if (items.length > 0) {
+      localStorage.setItem('ultimo.cart.items', JSON.stringify(items))
+    }
+  }, [items])
 
   return (
     <>
@@ -89,11 +103,22 @@ const Cart = () => {
             </div>
           </div>
 
-          <CartContainer>
-            {items.length == 0 ? (
+          {items.length == 0 ? (
+            <EmptyCartContainer>
+              <img src="/images/emptycart.png" alt="Carrinho vazio" />
+
               <h1>Carrinho vazio!</h1>
-            ) : (
-              <>
+
+              <p>Você ainda não possui itens no seu {'\n'} carrinho</p>
+
+              <BigButton
+                title="Ver produtos"
+                onClick={() => router.push('/')}
+              />
+            </EmptyCartContainer>
+          ) : (
+            <>
+              <CartContainer>
                 <CartHead>
                   <section style={{ flex: 5, justifyContent: 'flex-start' }}>
                     <span>Produto</span>
@@ -186,77 +211,52 @@ const Cart = () => {
                     )}
                   </CartProduct>
                 ))}
-                <section
-                  style={
-                    widthScreen
-                      ? { display: 'none' }
-                      : { marginTop: '1rem', marginLeft: '3rem' }
-                  }
-                >
-                  <span>Subtotal:</span>
-                  <strong style={{ color: 'var(--color-primary)' }}>
-                    R$ 8.997,00
-                  </strong>
-                </section>
-              </>
-            )}
-          </CartContainer>
+              </CartContainer>
 
-          <CartContainerFooter>
-            <div className="info">
-              <div>
-                <span>Total: </span>
-                <strong>
-                  {new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }).format(total)}
-                </strong>
-              </div>
-              <span className="spanBottom">
-                {items.length <= 1
-                  ? items.length + ' item'
-                  : items.length + ' itens'}
-                {' | '}
-                {!widthScreen && (
-                  <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
-                )}
-              </span>
-            </div>
-
-            <div
-              className="buttonContainer"
-              style={widthScreen ? undefined : { display: 'none' }}
-            >
-              <button className="empty" onClick={() => setItems([])}>
-                <IoTrashOutline size={24} color="var(--red)" />
-                ESVAZIAR CARRINHO
-              </button>
-
-              <button className="finish" onClick={handleSubmit}>
-                <BsWhatsapp size={24} color="white" />
-                FINALIZAR COMPRA
-              </button>
-            </div>
-            <div
-              className="buttonContainerMob"
-              style={widthScreen ? { display: 'none' } : undefined}
-            >
-              <button
-                className="finish"
-                onClick={handleSubmit}
-                disabled={!selectAll}
-                style={
-                  selectAll
-                    ? undefined
-                    : { backgroundColor: 'gray', borderColor: 'gray' }
-                }
+              <CartContainer
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: '2rem',
+                  justifyContent: 'space-between'
+                }}
               >
-                <BsWhatsapp size={24} color="white" />
-                <p>FINALIZAR</p>
-              </button>
-            </div>
-          </CartContainerFooter>
+                <div className="info">
+                  <span>Total: </span>
+                  <strong>
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL'
+                    }).format(total)}
+                  </strong>
+                  <span>
+                    {' | '}
+                    {items.length > 1
+                      ? items.length + ' item'
+                      : items.length + ' items'}
+                  </span>
+                </div>
+
+                <div className="buttonContainer">
+                  <button
+                    className="empty"
+                    onClick={() => {
+                      setItems([])
+                      localStorage.setItem('ultimo.cart.items', '[]')
+                    }}
+                  >
+                    <IoTrashOutline size={24} color="var(--red)" />
+                    ESVAZIAR CARRINHO
+                  </button>
+
+                  <button className="finish" onClick={handleSubmit}>
+                    <BsWhatsapp size={24} color="white" />
+                    FINALIZAR COMPRA
+                  </button>
+                </div>
+              </CartContainer>
+            </>
+          )}
         </Content>
       </Container>
     </>
@@ -264,6 +264,25 @@ const Cart = () => {
 }
 
 export default Cart
+
+export const EmptyCartContainer = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  img {
+    width: 250px;
+    margin-bottom: 40px;
+  }
+
+  h1,
+  p {
+    margin-bottom: 1rem;
+  }
+`
 
 export const Container = styled.main`
   width: 100%;

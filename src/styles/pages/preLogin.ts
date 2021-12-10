@@ -22,6 +22,7 @@ export const Container = styled.main`
     align-items: center;
     padding: 2.5rem 3rem 2rem 3rem;
     overflow-x: hidden;
+
     .title {
       width: 100%;
       margin-bottom: 1rem;
@@ -86,6 +87,11 @@ export const Container = styled.main`
 
     .buttonContainer {
       margin-top: 2rem;
+      display: flex;
+
+      ${[sizes.down('ssm')]} {
+        flex-direction: column;
+      }
     }
 
     .divisorContainer {
