@@ -19,8 +19,8 @@ export function setupApiClient(ctx = undefined) {
       return response
     },
     (error: AxiosError) => {
-      if (error.response.status === 401) {
-        if (error.response.data?.code === 'token.expired') {
+      if (error?.response?.status === 401) {
+        if (error?.response?.data?.code === 'token.expired') {
           if (process.browser) {
             signOut()
           } else {

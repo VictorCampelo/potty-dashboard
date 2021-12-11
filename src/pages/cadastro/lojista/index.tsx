@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
-import { FiLock, FiMail } from 'react-icons/fi'
+import { FiLock, FiMail, FiUser } from 'react-icons/fi'
 import { Input } from '../../../components/molecules/Input'
 import { useState } from 'react'
 import { Button } from '../../../components/atoms/Button'
@@ -15,6 +15,7 @@ import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMedia } from 'use-media'
 
 type SignUpFormData = {
   firstName: string
@@ -25,10 +26,14 @@ type SignUpFormData = {
 }
 
 const registerFormSchema = yup.object().shape({
-  firstName: yup.string().required('Primeiro nome obrigatório'),
-  lastName: yup.string().required('Último nome obrigatório'),
   email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
-  password: yup.string().required('Senha obrigatória'),
+  password: yup
+    .string()
+    .required('Senha obrigatória')
+    .min(8, 'Mínimo 8 caracteres')
+    .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
+    .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
+    .matches(/\d+/, 'Deve conter, um número'),
   passwordConfirmation: yup
     .string()
     .required('Confirmação de senha obrigatória')
@@ -52,8 +57,6 @@ const RegisterShopkeeper = () => {
   const handleSignUp: SubmitHandler<SignUpFormData> = async (values, event) => {
     try {
       const user = {
-        firstName: values.firstName,
-        lastName: values.lastName,
         email: values.email,
         password: values.password,
         passwordConfirmation: values.passwordConfirmation
@@ -81,26 +84,7 @@ const RegisterShopkeeper = () => {
               <a>Voltar ao cadastro</a>
             </Link>
           </div>
-
           <div className="inputContainer">
-            <Input
-              label="Primeiro Nome"
-              placeholder="Nome"
-              icon={<FiMail size={20} color="var(--black-800)" />}
-              {...register('firstName')}
-              textError={errors.firstName?.message}
-              error={errors.firstName}
-            />
-
-            <Input
-              label="Sobrenome"
-              placeholder="Sobrenome"
-              className="name"
-              icon={<FiMail size={20} color="var(--black-800)" />}
-              {...register('lastName')}
-              textError={errors.lastName?.message}
-              error={errors.lastName}
-            />
             <Input
               label="Email"
               placeholder="exemplo@gmail.com"

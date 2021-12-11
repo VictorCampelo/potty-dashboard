@@ -1,16 +1,16 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 interface ContainerProps {
-  error: boolean;
-  flex: number;
+  error: boolean
+  flex: number
 }
 
 export const Container = styled.div<ContainerProps>`
   width: auto;
-  max-width: 470px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  ${(props) => 'flex: '+ props.flex + ';'}
+  ${(props) => 'flex: ' + props.flex + ';'}
 
   .labelContent {
     display: flex;
@@ -21,7 +21,8 @@ export const Container = styled.div<ContainerProps>`
 
     label {
       font-size: 1rem;
-      ${(props) => props.error && "color: var(--red);"}
+      color: var(--black-800);
+      ${(props) => props.error && 'color: var(--red);'}
     }
 
     span {
@@ -40,7 +41,7 @@ export const Container = styled.div<ContainerProps>`
     align-items: flex-start;
 
     border-radius: 8px;
-    
+
     padding-left: 12px;
     padding-right: 12px;
     padding-top: 7px;
@@ -58,14 +59,15 @@ export const Container = styled.div<ContainerProps>`
       font-size: 0.875rem;
       border: none;
       resize: none;
+      border: var(--black-800);
 
-      ${(props) => props.error && "color: var(--red);"}
+      ${(props) => props.error && 'color: var(--red);'}
     }
 
     .textArea:focus {
       outline: none;
     }
-    
-    ${(props) => props.error && "border: 1px solid var(--red);"}
+
+    ${(props) => props.error && 'border: 1px solid var(--red);'}
   }
 `

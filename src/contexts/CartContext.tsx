@@ -1,30 +1,38 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useEffect } from 'react'
 
 type CartItem = {
-  storeId: string;
-  productId: string;
-  amount: number;
-  title: string;
-  price: number;
+  storeId: string
+  productId: string
+  amount: number
+  title: string
+  price: number
 }
 
 type CartContextData = {
   items: CartItem[]
-  setItems: (items: CartItem[]) => void;
+  setItems: (items: CartItem[]) => void
 }
 
-export const CartContext = createContext({} as CartContextData);
+export const CartContext = createContext({} as CartContextData)
 
 type CartContext = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function CartProvider({ children }: CartContext) {
-  const [items, setItems] =  useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>([])
 
   function setProducts(products: CartItem[]) {
     setItems(products)
   }
+
+  useEffect(() => {
+    const cartItems = localStorage.getItem('ultimo.cart.items')
+
+    if (cartItems) {
+      setItems(JSON.parse(cartItems))
+    }
+  }, [])
 
   return (
     <CartContext.Provider value={{ items, setItems: setProducts }}>

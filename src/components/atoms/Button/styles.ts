@@ -6,7 +6,7 @@ interface ContainerProp {
 
 export const Container = styled.button<ContainerProp>`
   height: 3.375rem;
-  width: auto;
+  width: 100%;
   border: none;
   border-radius: 30px;
   padding: 0 4rem;

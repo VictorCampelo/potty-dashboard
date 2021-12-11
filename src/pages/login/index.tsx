@@ -40,14 +40,12 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    watch
+    formState: { errors, isSubmitting }
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
 
   const [rememberUser, setRememberUser] = useState(false)
-  const [errorNotFound, setErrorNotFound] = useState(false)
 
   const router = useRouter()
 
@@ -66,12 +64,14 @@ const Login = () => {
 
       const res = await signIn(user)
 
-      if (res.status === 200 || res.status === 201) {
+      if (res.data.user.role === 'USER') {
+        return router.push('/')
+      }
+      if (res.data.user.role === 'OWNER') {
         return router.push('/dashboard')
       }
     } catch (e) {
-      if (e.response.status === 401 || e.response.status === 404) {
-        setErrorNotFound(true)
+      if (e.message.includes(401) || e.message.includes(404)) {
         return ErrorToast({ newMessage: 'Email ou senha incorretos' })
       } else {
         if (e.message.includes(412)) {
@@ -128,12 +128,7 @@ const Login = () => {
           />
 
           <div className="buttonContainer">
-            <Button
-              isLoading={isSubmitting}
-              type="submit"
-              title="Entrar"
-              disabled={!watch('email') || !watch('password')}
-            />
+            <Button isLoading={isSubmitting} type="submit" title="Entrar" />
           </div>
 
           <div className="divisorContainer">
