@@ -379,7 +379,7 @@ export const CartContainer = styled.section`
       border-radius: 50px;
       height: 48px;
       font-weight: bold;
-      border: 1px solid red;
+
       svg {
         margin-right: 0.5rem;
       }
