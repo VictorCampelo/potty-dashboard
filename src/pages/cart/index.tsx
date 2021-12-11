@@ -228,7 +228,13 @@ const Cart = () => {
               className="buttonContainer"
               style={widthScreen ? undefined : { display: 'none' }}
             >
-              <button className="empty" onClick={() => setItems([])}>
+              <button
+                className="empty"
+                onClick={() => {
+                  setItems([])
+                  localStorage.setItem('ultimo.cart.items', '[]')
+                }}
+              >
                 <IoTrashOutline size={24} color="var(--red)" />
                 ESVAZIAR CARRINHO
               </button>
