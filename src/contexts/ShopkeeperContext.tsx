@@ -5,6 +5,10 @@ type ShopkeeperStore = {
   CNPJ?: string
   phone?: string
   address?: string
+  publicPlace?: string
+  number?: string
+  district?: string
+  cep?: string
   city?: string
   state?: string
   image?: string
