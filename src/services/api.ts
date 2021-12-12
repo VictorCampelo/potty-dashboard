@@ -7,7 +7,7 @@ export function setupApiClient(ctx = undefined) {
   const cookies = parseCookies(ctx)
 
   const api = axios.create({
-    baseURL: 'http://177.153.59.47:3001/',
+    baseURL: 'http://ec2-3-12-166-59.us-east-2.compute.amazonaws.com:3001/',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${cookies['ultimo.auth.token']}`
