@@ -19,11 +19,67 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { FaCheck } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
+type CartItem = {
+  storeId: string
+  productId: string
+  amount: number
+  title: string
+  price: number
+  isSelected: boolean
+}
+
+type Unidade = {
+  item: CartItem
+}
+
 const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 
   const { items, setItems } = useContext(CartContext)
   const [selectAll, setSelectAll] = useState(false)
+  const [selectUnity, setSelectUnity] = useState<Unidade[]>([])
+
+  function verifyItem(id: string) {
+    const el = selectUnity.find((items) => items.item.productId === id)
+    if (el) {
+      el.item.isSelected = !el.item.isSelected
+      const index = selectUnity.indexOf(
+        selectUnity.find((items) => items.item.productId === id)
+      )
+      return [el, index]
+    } else {
+      return null
+    }
+  }
+  function handleSelectUnity(item: CartItem) {
+    const arr = verifyItem(item.productId)
+    console.log(arr)
+    if (arr !== null) {
+      const newArr = selectUnity
+      const excludeEl = newArr.splice(arr[1], 1, arr[0])
+      console.log(newArr)
+      setSelectUnity([])
+      setSelectUnity(newArr)
+    }
+  }
+  useEffect(() => {
+    items.map((it) => {
+      setSelectUnity((arr) => [
+        ...arr,
+        {
+          item: {
+            storeId: it.storeId,
+            productId: it.productId,
+            amount: it.amount,
+            title: it.title,
+            price: it.price,
+            isSelected: false
+          }
+        }
+      ])
+    })
+  }, [items])
+
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
@@ -176,8 +232,19 @@ const Cart = () => {
                     <>
                       <div className="checkbox">
                         <div className="check">
-                          <button type="button" id="btn" className="btn">
-                            {selectAll && <FaCheck color="var(--gray-800)" />}
+                          <button
+                            type="button"
+                            id="btn"
+                            className="btn"
+                            onClick={() => {
+                              handleSelectUnity(it)
+                            }}
+                          >
+                            {selectUnity.find(
+                              (items) => items.item.productId === it.productId
+                            )?.item.isSelected && (
+                              <FaCheck color="var(--gray-800)" />
+                            )}
                           </button>
                         </div>
                       </div>
@@ -282,7 +349,8 @@ const Cart = () => {
                 }
               >
                 {' '}
-                FINALIZAR
+                <BsWhatsapp size={24} color="white" />
+                <p>FINALIZAR</p>
               </button>
             </div>
           </CartContainerFooter>
