@@ -54,7 +54,7 @@ const bussinesRegisterFormSchema = yup.object().shape({
 })
 
 const BusinessRegister = () => {
-  const { setStore } = useContext(ShopkeeperContext)
+  const { setStore, setUser, userDto } = useContext(ShopkeeperContext)
   const [cpfCnpj, setCpfCnpj] = useState('')
 
   // Estados, funções e variáveis referentes a responsividade da tela
@@ -100,21 +100,23 @@ const BusinessRegister = () => {
   const handleContinueRegister: SubmitHandler<bussinesRegisterFormData> =
     async (values, event) => {
       const store = {
-        firstName: values.firstName,
-        lastName: values.lastName,
         name: values.businessName,
         cpfCnpj: values.cpfCnpj,
-        // address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`,
+        city: values.businessCity,
+        state: values.businessState,
         publicPlace: values.publicPlace,
         number: values.number,
         district: values.district,
-        cep: values.cep,
-        city: values.businessCity,
-        state: values.businessState
+        cep: values.cep
       }
 
       sessionStorage.setItem('data', JSON.stringify(store))
       setStore(store)
+      setUser({
+        ...userDto,
+        firstName: values.firstName,
+        lastName: values.lastName
+      })
       Router.push('/business-register/continue')
     }
 
