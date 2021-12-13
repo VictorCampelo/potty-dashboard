@@ -25,11 +25,7 @@ type CartItem = {
   amount: number
   title: string
   price: number
-  isSelected: boolean
-}
-
-type Unidade = {
-  item: CartItem
+  enable: boolean
 }
 
 const Cart = () => {
@@ -37,48 +33,6 @@ const Cart = () => {
 
   const { items, setItems } = useContext(CartContext)
   const [selectAll, setSelectAll] = useState(false)
-  const [selectUnity, setSelectUnity] = useState<Unidade[]>([])
-
-  function verifyItem(id: string) {
-    const el = selectUnity.find((items) => items.item.productId === id)
-    if (el) {
-      el.item.isSelected = !el.item.isSelected
-      const index = selectUnity.indexOf(
-        selectUnity.find((items) => items.item.productId === id)
-      )
-      return [el, index]
-    } else {
-      return null
-    }
-  }
-  function handleSelectUnity(item: CartItem) {
-    const arr = verifyItem(item.productId)
-    console.log(arr)
-    if (arr !== null) {
-      const newArr = selectUnity
-      const excludeEl = newArr.splice(arr[1], 1, arr[0])
-      console.log(newArr)
-      setSelectUnity([])
-      setSelectUnity(newArr)
-    }
-  }
-  useEffect(() => {
-    items.map((it) => {
-      setSelectUnity((arr) => [
-        ...arr,
-        {
-          item: {
-            storeId: it.storeId,
-            productId: it.productId,
-            amount: it.amount,
-            title: it.title,
-            price: it.price,
-            isSelected: false
-          }
-        }
-      ])
-    })
-  }, [items])
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
@@ -86,7 +40,26 @@ const Cart = () => {
 
   function handleSelectAll() {
     setSelectAll(!selectAll)
+    setItems(
+      items.map((it) => {
+        return {
+          ...it,
+          enable: !selectAll
+        }
+      })
+    )
   }
+
+  function handleToggleEnableProduct(productId) {
+    const copyItems = [...items]
+
+    const isEnable = copyItems.find((it) => it.productId === productId).enable
+
+    copyItems.find((it) => it.productId === productId).enable = !isEnable
+
+    setItems(copyItems)
+  }
+
   function handleRemoveItem(id: string) {
     setItems(items.filter((it) => it.productId != id))
     localStorage.setItem(
@@ -96,13 +69,15 @@ const Cart = () => {
   }
 
   async function handleSubmit() {
-    if (items.length > 0) {
+    if (items.filter((it) => it.enable).length > 0) {
       try {
         const { data } = await api.post(`/orders/${items[0].storeId}`, {
-          products: items.map((prod) => ({
-            productId: prod.productId,
-            amount: prod.amount
-          }))
+          products: items
+            .filter((it) => it.enable)
+            .map((prod) => ({
+              productId: prod.productId,
+              amount: prod.amount
+            }))
         })
 
         localStorage.setItem('ultimo.cart.items', '')
@@ -236,15 +211,11 @@ const Cart = () => {
                             type="button"
                             id="btn"
                             className="btn"
-                            onClick={() => {
-                              handleSelectUnity(it)
-                            }}
+                            onClick={() =>
+                              handleToggleEnableProduct(it.productId)
+                            }
                           >
-                            {selectUnity.find(
-                              (items) => items.item.productId === it.productId
-                            )?.item.isSelected && (
-                              <FaCheck color="var(--gray-800)" />
-                            )}
+                            {it.enable && <FaCheck color="var(--gray-800)" />}
                           </button>
                         </div>
                       </div>
@@ -292,7 +263,9 @@ const Cart = () => {
             </CartContainer>
           )}
 
-          <CartContainerFooter>
+          <CartContainerFooter
+            disabled={items.filter((it) => it.enable).length === 0}
+          >
             <div className="info">
               <div>
                 <span>Total: </span>
@@ -338,16 +311,7 @@ const Cart = () => {
               className="buttonContainerMob"
               style={widthScreen ? { display: 'none' } : undefined}
             >
-              <button
-                className="finish"
-                onClick={handleSubmit}
-                disabled={!selectAll}
-                style={
-                  selectAll
-                    ? undefined
-                    : { backgroundColor: 'gray', borderColor: 'gray' }
-                }
-              >
+              <button className="finish" onClick={handleSubmit}>
                 {' '}
                 <BsWhatsapp size={24} color="white" />
                 <p>FINALIZAR</p>
@@ -513,7 +477,13 @@ export const CartContainer = styled.section`
   }
 `
 
-export const CartContainerFooter = styled(CartContainer)`
+type CartCOntainerFooterProp = {
+  disabled: boolean
+}
+
+export const CartContainerFooter = styled(
+  CartContainer
+)<CartCOntainerFooterProp>`
   flex-direction: row;
   align-items: center;
   padding: 2rem;
@@ -549,10 +519,13 @@ export const CartContainerFooter = styled(CartContainer)`
         p {
           color: white;
         }
+        ${(props) =>
+          props.disabled && `background-color: gray; border-color: gray`}
       }
     }
   }
 `
+
 export const CartHead = styled.div`
   display: flex;
   width: 100%;
