@@ -24,9 +24,17 @@ const BusinessRegister = () => {
         ...userDto
       },
       storeDto: {
-        ...storeDto,
+        name: storeDto.name,
+        CNPJ: storeDto.CNPJ,
+        phone: storeDto.phone,
+        city: storeDto.city,
+        state: storeDto.state,
+        facebook_link: storeDto.facebook_link,
+        instagram_link: storeDto.instagram_link,
+        whatsapp_link: storeDto.whatsapp_link,
         image: imageSrc,
-        description: desc
+        description: desc,
+        address: `${storeDto.publicPlace}, n° ${storeDto.number}, ${storeDto.district}, CEP: ${storeDto.cep}`
       }
     }
 
@@ -110,7 +118,6 @@ const BusinessRegister = () => {
                 type="button"
                 onClick={handleFinishRegister}
                 title="FINALIZAR"
-                disabled={desc === ''}
               />
             </div>
           </div>

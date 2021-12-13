@@ -1,7 +1,7 @@
 import Header from '../../components/molecules/Header'
 import Head from 'next/head'
-import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
+import { Checkbox } from '../../components/atoms/Checkbox'
 import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
 import { Button as BigButton } from 'components/atoms/Button'
@@ -9,17 +9,69 @@ import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
 import { CartContext } from 'contexts/CartContext'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
+import { useMedia } from 'use-media'
+import { FiArrowLeft } from 'react-icons/fi'
+import { FaCheck } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
+import {
+  EmptyCartContainer,
+  Container,
+  Content,
+  CartContainer,
+  CartContainerFooter,
+  CartHead,
+  CartProduct
+} from '../../styles/pages/Cart'
+type CartItem = {
+  storeId: string
+  productId: string
+  amount: number
+  title: string
+  price: number
+  enable: boolean
+}
+
 const Cart = () => {
+  const widthScreen = useMedia({ minWidth: '426px' })
+
   const { items, setItems } = useContext(CartContext)
+  const [selectAll, setSelectAll] = useState(true)
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
+
+  function handleSelectAll() {
+    setSelectAll(!selectAll)
+    setItems(
+      items.map((it) => {
+        return {
+          ...it,
+          enable: !selectAll
+        }
+      })
+    )
+  }
+
+  function handleToggleEnableProduct(productId) {
+    const copyItems = [...items]
+
+    const isEnable = copyItems.find((it) => it.productId === productId).enable
+
+    copyItems.find((it) => it.productId === productId).enable = !isEnable
+
+    setItems(copyItems)
+
+    if (items.filter((it) => it.enable).length < items.length) {
+      setSelectAll(false)
+    } else {
+      setSelectAll(true)
+    }
+  }
 
   function handleRemoveItem(id: string) {
     setItems(items.filter((it) => it.productId != id))
@@ -30,13 +82,15 @@ const Cart = () => {
   }
 
   async function handleSubmit() {
-    if (items.length > 0) {
+    if (items.filter((it) => it.enable).length > 0) {
       try {
         const { data } = await api.post(`/orders/${items[0].storeId}`, {
-          products: items.map((prod) => ({
-            productId: prod.productId,
-            amount: prod.amount
-          }))
+          products: items
+            .filter((it) => it.enable)
+            .map((prod) => ({
+              productId: prod.productId,
+              amount: prod.amount
+            }))
         })
 
         localStorage.setItem('ultimo.cart.items', '')
@@ -64,6 +118,43 @@ const Cart = () => {
 
       <Container>
         <Content>
+          <div className="header">
+            {!widthScreen && (
+              <FiArrowLeft
+                size={25}
+                color="var(--black-800)"
+                onClick={() => {
+                  router.push('/')
+                }}
+              />
+            )}
+            <h1>Meu carrinho</h1>
+          </div>
+
+          <div
+            className="checkbox"
+            style={
+              widthScreen || items.length == 0 ? { display: 'none' } : undefined
+            }
+          >
+            <div className="check">
+              <button
+                type="button"
+                id="btn"
+                className="btn"
+                onClick={handleSelectAll}
+              >
+                {selectAll && <FaCheck color="var(--gray-800)" />}
+              </button>
+              <label htmlFor="btn">Selecionar Todos</label>
+            </div>
+            <div>
+              <p style={{ color: 'purple', marginRight: '1rem' }}>
+                Adicionar cupom
+              </p>
+            </div>
+          </div>
+
           {items.length == 0 ? (
             <EmptyCartContainer>
               <img src="/images/emptycart.png" alt="Carrinho vazio" />
@@ -78,107 +169,176 @@ const Cart = () => {
               />
             </EmptyCartContainer>
           ) : (
-            <>
-              <h1>Meu carrinho</h1>
+            <CartContainer>
+              <CartHead>
+                <section style={{ flex: 5, justifyContent: 'flex-start' }}>
+                  <span>Produto</span>
+                </section>
 
-              <CartContainer>
-                <CartHead>
-                  <section style={{ flex: 5, justifyContent: 'flex-start' }}>
-                    <span>Produto</span>
-                  </section>
+                <section>
+                  <span>Quantidade</span>
+                </section>
 
-                  <section>
-                    <span>Quantidade</span>
-                  </section>
+                <section>
+                  <span>Subtotal</span>
+                </section>
 
-                  <section>
-                    <span>Subtotal</span>
-                  </section>
+                <section style={{ flex: 1 }} />
+              </CartHead>
 
-                  <section style={{ flex: 1 }} />
-                </CartHead>
+              {items.map((it) => (
+                <CartProduct key={it.productId}>
+                  {widthScreen ? (
+                    <>
+                      <section
+                        style={{ flex: 5, justifyContent: 'flex-start' }}
+                      >
+                        <div className="imgContainer">
+                          <AiFillCamera size={28} color="white" />
+                        </div>
 
-                {items.map((it) => (
-                  <CartProduct key={it.productId}>
-                    <section style={{ flex: 5, justifyContent: 'flex-start' }}>
-                      <div className="imgContainer">
-                        <AiFillCamera size={28} color="white" />
+                        <span>{it.title}</span>
+                      </section>
+
+                      <Counter id={it.productId} />
+
+                      <section>
+                        <strong>
+                          {new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(it.price * it.amount)}
+                        </strong>
+                      </section>
+
+                      <section style={{ flex: 1 }}>
+                        <button
+                          className="exclude"
+                          onClick={() => {
+                            handleRemoveItem(it.productId)
+                          }}
+                        >
+                          <IoTrashOutline size={24} color="var(--red)" />
+
+                          <strong>Excluir</strong>
+                        </button>
+                      </section>
+                    </>
+                  ) : (
+                    <>
+                      <div className="checkbox">
+                        <div className="check">
+                          <button
+                            type="button"
+                            id="btn"
+                            className="btn"
+                            onClick={() =>
+                              handleToggleEnableProduct(it.productId)
+                            }
+                          >
+                            {it.enable && <FaCheck color="var(--gray-800)" />}
+                          </button>
+                        </div>
                       </div>
 
-                      <span>{it.title}</span>
-                    </section>
-
-                    <Counter id={it.productId} />
-
-                    <section>
-                      <strong>
-                        {new Intl.NumberFormat('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(it.price * it.amount)}
-                      </strong>
-                    </section>
-
-                    <section style={{ flex: 1 }}>
-                      <button
-                        className="exclude"
-                        onClick={() => {
-                          handleRemoveItem(it.productId)
-                        }}
+                      <section
+                        className="sectionImg"
+                        style={{ flexGrow: 1, height: '100%' }}
                       >
-                        <IoTrashOutline size={24} color="var(--red)" />
+                        <div className="imgContainer">
+                          <AiFillCamera size={28} color="white" />
+                        </div>
+                      </section>
+                      <section
+                        className="spanProductInformation"
+                        style={{ flexGrow: 2 }}
+                      >
+                        <span>
+                          {it.title}
+                          {/* Título */}
+                        </span>
+                        <strong>
+                          {new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(it.price * it.amount)}
+                        </strong>
+                        <Counter id={it.productId} />
+                      </section>
+                    </>
+                  )}
+                </CartProduct>
+              ))}
+              <section
+                style={
+                  widthScreen
+                    ? { display: 'none' }
+                    : { marginTop: '1rem', marginLeft: '3rem' }
+                }
+              >
+                <span>Subtotal:</span>
+                <strong style={{ color: 'var(--color-primary)' }}>
+                  R$ 8.997,00
+                </strong>
+              </section>
+            </CartContainer>
+          )}
 
-                        <strong>Excluir</strong>
-                      </button>
-                    </section>
-                  </CartProduct>
-                ))}
-              </CartContainer>
+          <CartContainerFooter
+            disabled={items.filter((it) => it.enable).length === 0}
+          >
+            <div className="info">
+              <div>
+                <span>Total: </span>
+                <strong>
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(total)}
+                </strong>
+              </div>
+              <span className="spanBottom">
+                {items.length <= 1
+                  ? items.length + ' item'
+                  : items.length + ' itens'}
+                {' | '}
+                {!widthScreen && (
+                  <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
+                )}
+              </span>
+            </div>
 
-              <CartContainer
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: '2rem',
-                  justifyContent: 'space-between'
+            <div
+              className="buttonContainer"
+              style={widthScreen ? undefined : { display: 'none' }}
+            >
+              <button
+                className="empty"
+                onClick={() => {
+                  setItems([])
+                  localStorage.setItem('ultimo.cart.items', '[]')
                 }}
               >
-                <div className="info">
-                  <span>Total: </span>
-                  <strong>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    }).format(total)}
-                  </strong>
-                  <span>
-                    {' | '}
-                    {items.length > 1
-                      ? items.length + ' item'
-                      : items.length + ' items'}
-                  </span>
-                </div>
+                <IoTrashOutline size={24} color="var(--red)" />
+                ESVAZIAR CARRINHO
+              </button>
 
-                <div className="buttonContainer">
-                  <button
-                    className="empty"
-                    onClick={() => {
-                      setItems([])
-                      localStorage.setItem('ultimo.cart.items', '[]')
-                    }}
-                  >
-                    <IoTrashOutline size={24} color="var(--red)" />
-                    ESVAZIAR CARRINHO
-                  </button>
-
-                  <button className="finish" onClick={handleSubmit}>
-                    <BsWhatsapp size={24} color="white" />
-                    FINALIZAR COMPRA
-                  </button>
-                </div>
-              </CartContainer>
-            </>
-          )}
+              <button className="finish" onClick={handleSubmit}>
+                <BsWhatsapp size={24} color="white" />
+                FINALIZAR COMPRA
+              </button>
+            </div>
+            <div
+              className="buttonContainerMob"
+              style={widthScreen ? { display: 'none' } : undefined}
+            >
+              <button className="finish" onClick={handleSubmit}>
+                {' '}
+                <BsWhatsapp size={24} color="white" />
+                <p>FINALIZAR</p>
+              </button>
+            </div>
+          </CartContainerFooter>
         </Content>
       </Container>
     </>
@@ -186,157 +346,3 @@ const Cart = () => {
 }
 
 export default Cart
-
-export const EmptyCartContainer = styled.section`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  img {
-    width: 250px;
-    margin-bottom: 40px;
-  }
-
-  h1,
-  p {
-    margin-bottom: 1rem;
-  }
-`
-
-export const Container = styled.main`
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  padding: 0 4rem;
-`
-
-export const Content = styled.section`
-  max-width: 1420px;
-  height: 100%;
-  width: 100%;
-  padding-top: 3rem;
-`
-
-export const CartContainer = styled.section`
-  background: white;
-  width: 100%;
-  border-radius: 30px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  display: flex;
-  margin-top: 2rem;
-  flex-direction: column;
-
-  h1 {
-    padding: 2rem 1.5rem;
-  }
-
-  .info {
-    span,
-    strong {
-      font-size: 1.25rem;
-    }
-
-    strong {
-      color: var(--color-primary);
-    }
-  }
-
-  .buttonContainer {
-    display: flex;
-
-    button {
-      padding: 0 1rem;
-      display: flex;
-      align-items: center;
-      margin-left: 1rem;
-      border: none;
-      background: white;
-      border-radius: 50px;
-      height: 48px;
-      font-weight: bold;
-
-      svg {
-        margin-right: 0.5rem;
-      }
-
-      &.empty {
-        border: 1px solid var(--red);
-        color: var(--red);
-      }
-
-      &.finish {
-        background: var(--color-primary);
-        color: white;
-      }
-    }
-  }
-`
-
-export const CartHead = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 1rem 2rem;
-
-  section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-
-  span {
-    color: var(--blue-primary);
-    font-weight: 700;
-    font-size: 1.25rem;
-  }
-`
-
-export const CartProduct = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 1rem 2rem;
-  align-items: center;
-  border-top: 1px solid var(--gray-100);
-
-  section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-
-    span {
-      font-size: 1.5rem;
-    }
-
-    .exclude {
-      display: flex;
-      border: none;
-      background: white;
-      border-radius: 30px;
-      padding: 1rem;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-      strong {
-        margin-left: 0.5rem;
-        color: var(--red);
-      }
-    }
-
-    :last-child {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .imgContainer {
-      width: 90px;
-      height: 90px;
-      border-radius: 5px;
-      background: var(--gray-300);
-      margin-right: 1rem;
-      padding: 30px;
-    }
-  }
-`

@@ -26,9 +26,9 @@ type bussinesRegisterFormData = {
 
 const bussinesRegisterFormSchema = yup.object().shape({
   number: yup.string().required('Telefone obrigatório'),
-  facebookUrl: yup.string().required('Facebook obrigatório'),
-  instagramUrl: yup.string().required('Instagram obrigatório'),
-  whatsappUrl: yup.string().required('Whatsapp obrigatório')
+  facebookUrl: yup.string(),
+  instagramUrl: yup.string(),
+  whatsappUrl: yup.string()
 })
 
 const BusinessRegister = () => {

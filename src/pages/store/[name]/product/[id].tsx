@@ -217,7 +217,8 @@ const ProductShow = () => {
           price,
           productId,
           storeId,
-          title
+          title,
+          enable: true
         }
       ])
 
@@ -230,7 +231,8 @@ const ProductShow = () => {
             price,
             productId,
             storeId,
-            title
+            title,
+            enable: true
           }
         ])
       )
@@ -390,8 +392,14 @@ const ProductShow = () => {
                 </div>
               </div>
               <div className="button-container">
-                <button>COMPRAR AGORA</button>
-                <button onClick={handleAddToCart}>ADICIONAR AO CARRINHO</button>
+                {!isLoading && (
+                  <>
+                    <button>COMPRAR AGORA</button>
+                    <button onClick={handleAddToCart}>
+                      ADICIONAR AO CARRINHO
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </CardProduct>
