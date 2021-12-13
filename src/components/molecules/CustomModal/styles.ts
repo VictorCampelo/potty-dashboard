@@ -42,6 +42,7 @@ export const Container = styled.header`
 
         div {
           border: 5px solid var(--black-800);
+          border-radius: 16px 20px 20px 16px;
         }
       }
     }

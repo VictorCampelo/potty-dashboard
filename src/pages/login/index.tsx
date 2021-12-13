@@ -214,7 +214,7 @@ const Login = () => {
                 </div>
                 <div className="email">
                   <div style={{ background: 'var(--black-800)' }}>
-                    <HiMail size={25} color="var(--white)" />
+                    <HiMail size={24} color="var(--white)" />
                   </div>
                   <Link href="/cadastro">
                     <a>
