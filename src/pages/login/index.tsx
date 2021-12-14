@@ -254,6 +254,29 @@ const Login = () => {
         src="/images/wave2.svg"
         alt="wave 2"
       />
+
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          height: '55%',
+          zIndex: -1
+        }}
+        src="/images/illustration1.svg"
+        alt="illustration 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: '50%',
+          zIndex: -1
+        }}
+        src="/images/illustration2.svg"
+        alt="illustration 2"
+      />
     </Wrapper>
   )
 }
