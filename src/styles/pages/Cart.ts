@@ -58,6 +58,12 @@ export const Content = styled.section`
       align-items: center;
       margin: 1rem 0 1rem 1rem;
 
+      .cupomContainer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
       .btn {
         width: 20px;
         height: 20px;
@@ -78,7 +84,6 @@ export const Content = styled.section`
         display: flex;
 
         label {
-          font-size: 0.875rem;
           font-weight: 500;
         }
       }
@@ -101,9 +106,13 @@ export const CartContainer = styled.section`
   margin-top: 2rem;
   flex-direction: column;
 
+  .subTotal {
+    padding-left: 1rem;
+  }
+
   ${[sizes.down('lgMob')]} {
     border-radius: 0;
-    padding: 0 1rem 0 1rem;
+    padding: 0;
     box-shadow: none;
   }
   h1 {
@@ -233,12 +242,6 @@ export const CartProduct = styled.div`
     border-radius: 0;
     justify-content: center;
     padding: 1rem 0;
-
-    //checkBox que está dentro do cartProduct
-    .checkbox {
-      margin-left: 0;
-      padding-left: 0;
-    }
 
     .sectionImg {
       padding-right: 0;
