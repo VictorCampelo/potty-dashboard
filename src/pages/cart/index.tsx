@@ -99,6 +99,21 @@ const Cart = () => {
       window.open(data.whatsapp)
       router.push('/cart/finish')
     } catch (e) {
+      if (e.response.status === 401) {
+        return toast.error(
+          'Clique aqui para fazer o login e finalizar sua compra!',
+          {
+            onClick: () => router.push('/login')
+          }
+        )
+      }
+
+      if (e.response.status === 500) {
+        return toast.error(
+          'Faça o login com uma conta de usuário para finalizar a compra!'
+        )
+      }
+
       toast.error('Erro ao finalizar compra, tente novamente mais tarde!')
     }
   }
