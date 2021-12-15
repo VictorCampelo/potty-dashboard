@@ -6,6 +6,7 @@ import {
   getCategories,
   getProducts
 } from '../../../services/bussiness.services'
+
 import {
   createCategory,
   createProduct,
@@ -42,7 +43,8 @@ import {
   Container,
   CropModalContainer,
   EditCategoryModalContainer,
-  ExcludeModalContainer
+  ExcludeModalContainer,
+  EmptyContainer
 } from '../../../styles/pages/Catalog'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
@@ -1033,59 +1035,87 @@ const catalog = ({ storeId }: CatalogType) => {
                 toggleState={toggleState}
                 content1={
                   <div className="products-container">
-                    {products.map((product, index) => {
-                      return (
-                        <ProductListCard
-                          key={product?.id + '-' + index}
-                          icon=""
-                          name={product?.title}
-                          code={product?.id}
-                          category={product?.tags}
-                          amount={product?.inventory}
-                          price={product?.price}
-                          excludeBtn={() => {
-                            handleOpenExcludeModal()
-                            setDeleteProductId(product.id)
-                          }}
-                          editBtn={() => {
-                            setEditProductId(product.id)
-                            setEditProduct(true)
-                          }}
-                          isRed={true}
-                          isGreen={true}
-                        />
-                      )
-                    })}
+                    {products.length > 0 ? (
+                      products.map((product, index) => {
+                        return (
+                          <ProductListCard
+                            key={product?.id + '-' + index}
+                            icon=""
+                            name={product?.title}
+                            code={product?.id}
+                            category={product?.tags}
+                            amount={product?.inventory}
+                            price={product?.price}
+                            excludeBtn={() => {
+                              handleOpenExcludeModal()
+                              setDeleteProductId(product.id)
+                            }}
+                            editBtn={() => {
+                              setEditProductId(product.id)
+                              setEditProduct(true)
+                            }}
+                            isRed={true}
+                            isGreen={true}
+                          />
+                        )
+                      })
+                    ) : (
+                      <EmptyContainer>
+                        <div>
+                          <img src="/images/emptyProducts.svg" />
+                          <p>Nenhum produto cadastrado</p>
+                          <Button
+                            title="Cadastrar"
+                            onClick={handleOpenAddModal}
+                          />
+                        </div>
+                      </EmptyContainer>
+                    )}
                   </div>
                 }
                 content2={
                   <div className="categories-container">
-                    {categories.map((cat, index) => {
-                      return (
-                        <CategoryListCard
-                          key={cat.id + '-' + index}
-                          date={products
-                            .filter((prd) => prd.categories.includes(cat.name))
-                            .map((data) => {
-                              return {
-                                name: data.title,
-                                amount: String(data.inventory)
-                              }
-                            })}
-                          category={cat.name}
-                          excludeBtn={() => {
-                            setDeleteCategoryId(cat.id)
-                            handleToggleExcludeCategoryModal()
-                          }}
-                          editBtn={() => {
-                            setEditCategoryId(cat.id)
-                            handleOpenEditCategoryModal()
-                          }}
-                          isGreen={true}
-                          isRed={true}
-                        />
-                      )
-                    })}
+                    {categories.length > 0 ? (
+                      categories.map((cat, index) => {
+                        return (
+                          <CategoryListCard
+                            key={cat.id + '-' + index}
+                            date={products
+                              .filter((prd) =>
+                                prd.categories.includes(cat.name)
+                              )
+                              .map((data) => {
+                                return {
+                                  name: data.title,
+                                  amount: String(data.inventory)
+                                }
+                              })}
+                            category={cat.name}
+                            excludeBtn={() => {
+                              setDeleteCategoryId(cat.id)
+                              handleToggleExcludeCategoryModal()
+                            }}
+                            editBtn={() => {
+                              setEditCategoryId(cat.id)
+                              handleOpenEditCategoryModal()
+                            }}
+                            isGreen={true}
+                            isRed={true}
+                          />
+                        )
+                      })
+                    ) : (
+                      <EmptyContainer>
+                        <div>
+                          <img src="/images/emptyCategories.svg" />
+                          <p>Nenhuma categoria cadastrada</p>
+                          <Button
+                            title="Cadastrar"
+                            onClick={toggleAddCategoryModal}
+                          />
+                        </div>
+                      </EmptyContainer>
+                    )}
                   </div>
                 }
               />
