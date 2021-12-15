@@ -105,7 +105,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(handleSignIn)}>
           <div className="title logo">
             <h1>Login</h1>
-            <img src="/images/logo.png" alt="logo" />
+            <img src="/images/logo.svg" alt="logo" width={150} height={150} />
           </div>
 
           <div className="inputContainer">
