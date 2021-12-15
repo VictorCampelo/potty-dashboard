@@ -3,6 +3,7 @@ import styled from 'styled-components'
 interface ContainerProps {
   error: boolean
   flex: number
+  search: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -11,7 +12,9 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   ${(props) => 'flex: ' + props.flex + ';'}
-
+  ${(props) => props.search && 'max-width: 100%;'}
+ 
+  
   .labelContent {
     display: flex;
     justify-content: space-between;
@@ -46,6 +49,8 @@ export const Container = styled.div<ContainerProps>`
     overflow: hidden;
     border: 1px solid var(--black-800);
 
+    ${(props) => props.search && 'border: 1px solid white;'}
+    ${(props) => props.search && 'border-radius: 50px;'}
     input {
       width: 100%;
       height: 100%;
@@ -55,7 +60,6 @@ export const Container = styled.div<ContainerProps>`
       background: inherit;
       padding-left: 5px;
       ${(props) => props.error && 'color: var(--red);'}
-
       cursor: text;
     }
 
