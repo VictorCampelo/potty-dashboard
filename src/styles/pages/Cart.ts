@@ -1,5 +1,11 @@
 import styled from 'styled-components'
 import sizes from '../../utils/sizes'
+import { Button } from 'components/atoms/Button'
+
+export const SeeProductsButton = styled(Button)`
+  width: 70%;
+  padding: 0 2rem;
+`
 
 export const EmptyCartContainer = styled.section`
   width: 100%;
