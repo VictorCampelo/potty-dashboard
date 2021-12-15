@@ -1,11 +1,7 @@
-import Header from '../../components/molecules/Header'
 import Head from 'next/head'
-import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
-import { Checkbox } from '../../components/atoms/Checkbox'
 import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
-import { Button as BigButton } from 'components/atoms/Button'
 import { AiFillCamera } from 'react-icons/ai'
 import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
@@ -13,7 +9,6 @@ import { CartContext } from 'contexts/CartContext'
 import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
-import sizes from '../../utils/sizes'
 import { useMedia } from 'use-media'
 import { FiArrowLeft } from 'react-icons/fi'
 import { FaCheck } from 'react-icons/fa'
@@ -26,16 +21,9 @@ import {
   CartContainer,
   CartContainerFooter,
   CartHead,
-  CartProduct
+  CartProduct,
+  SeeProductsButton
 } from '../../styles/pages/Cart'
-type CartItem = {
-  storeId: string
-  productId: string
-  amount: number
-  title: string
-  price: number
-  enabled: boolean
-}
 
 const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
@@ -195,7 +183,7 @@ const Cart = () => {
 
               <p>Você ainda não possui itens no seu {'\n'} carrinho</p>
 
-              <BigButton
+              <SeeProductsButton
                 title="Ver produtos"
                 onClick={() => router.push('/')}
               />
