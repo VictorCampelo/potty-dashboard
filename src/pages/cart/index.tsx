@@ -301,15 +301,17 @@ const Cart = () => {
                     )}
                   </CartProduct>
 
-                  <p className="subTotal">
-                    Subtotal:{' '}
-                    <strong style={{ color: 'var(--color-primary)' }}>
-                      {new Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }).format(it.price * it.amount)}
-                    </strong>
-                  </p>
+                  {!widthScreen && (
+                    <p className="subTotal">
+                      Subtotal:{' '}
+                      <strong style={{ color: 'var(--color-primary)' }}>
+                        {new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(it.price * it.amount)}
+                      </strong>
+                    </p>
+                  )}
                 </>
               ))}
             </CartContainer>
