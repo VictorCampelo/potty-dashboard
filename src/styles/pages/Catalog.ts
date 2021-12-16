@@ -40,19 +40,17 @@ export const Container = styled.div`
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-
         border-radius: 30px 30px 0 0;
         padding: 20px;
 
         .addBtn {
           width: 123px;
           height: 2.5rem;
-
           display: flex;
           align-items: center;
           justify-content: space-between;
 
-          margin-top: 0.5rem;
+          /* margin-top: 0.5rem; */
           margin-right: 40px;
 
           background: var(--color-secondary);
@@ -634,5 +632,28 @@ export const CropModalContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
+  }
+`
+export const EmptyContainer = styled.div`
+  width: 100%;
+  padding: 2rem 0 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    img {
+      width: 70%;
+      height: 70%;
+    }
+    p {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
   }
 `
