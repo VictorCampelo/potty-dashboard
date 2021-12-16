@@ -37,14 +37,19 @@ const Landing = ({ stores }: Landing) => {
       <Container>
         <Banner>
           {/* <SelectInput type="text" /> */}
-          <img src="/images/logo2.svg" alt="banner" width={250} height={250} />
+          <img
+            src="/images/logo2.svg"
+            alt="banner"
+            width={319.19}
+            height={185.22}
+          />
         </Banner>
 
         <Content
           style={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center'
+            alignItems: 'center'
           }}
         >
           <div className="search-boxes">
@@ -59,48 +64,48 @@ const Landing = ({ stores }: Landing) => {
             <CardService
               title="Mercado"
               background="var(--color-secondary-darker)"
-              icon={<BsCart size={100} color="var(--white)" />}
+              icon={<BsCart size={75} color="var(--white)" />}
             />
 
             <CardService
               title="Restaurante"
               background="var(--red)"
-              icon={<FiCoffee size={100} color="var(--white)" />}
+              icon={<FiCoffee size={75} color="var(--white)" />}
             />
 
             <CardService
               title="Farmácia"
               background="var(--blue-primary)"
-              icon={<CgPill size={100} color="var(--white)" />}
+              icon={<CgPill size={75} color="var(--white)" />}
             />
 
             <CardService
               title="Pets"
               background="var(--color-primary)"
-              icon={<MdPets size={100} color="var(--white)" />}
+              icon={<MdPets size={75} color="var(--white)" />}
             />
             <CardService
               title="Eletrônico"
               background="var(--black-800)"
-              icon={<BsLaptopFill size={100} color="var(--white)" />}
+              icon={<BsLaptopFill size={75} color="var(--white)" />}
             />
 
             <CardService
               title="EPI"
               background="var(--gray-600)"
-              icon={<AiOutlineTool size={100} color="var(--white)" />}
+              icon={<AiOutlineTool size={75} color="var(--white)" />}
             />
 
             <CardService
               title="Móveis"
               background="var(--color-secondary)"
-              icon={<CgPill size={100} color="var(--white)" />}
+              icon={<CgPill size={75} color="var(--white)" />}
             />
 
             <CardService
               title="Bebidas"
               background="var(--yellow)"
-              icon={<CgPill size={100} color="var(--white)" />}
+              icon={<CgPill size={75} color="var(--white)" />}
             />
           </div>
 
@@ -214,12 +219,12 @@ export const Content = styled.section`
   height: 100%;
   width: 100%;
   padding: 3rem 3rem;
+
   .servicesContainer {
     margin-top: 3rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 3rem;
+    gap: 6rem;
   }
 
   .search-boxes {

@@ -8,9 +8,9 @@ export const Container = styled.div<ContainerProps>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
-    height: 300px;
-
+    width: 213px;
+    height: 222px;
+    /* margin: 0 0 1rem 0; */
     .imgContainer {
         ${(props) => 'background: ' + props.background + ';'}
         width: 100%;
