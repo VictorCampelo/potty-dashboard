@@ -8,18 +8,14 @@ import {
   AiFillFacebook,
   AiFillPhone,
   AiOutlineWhatsApp,
-  AiOutlineSearch,
-  AiOutlineTool
+  AiOutlineSearch
 } from 'react-icons/ai'
-import { BsCart, BsLaptopFill } from 'react-icons/bs'
-import { FiCoffee } from 'react-icons/fi'
-import { CgPill } from 'react-icons/cg'
-import { MdPets } from 'react-icons/md'
+
 import { Button } from 'components/atoms/Button'
 import { api } from 'services/apiClient'
 import router from 'next/router'
 import { Input } from 'components/molecules/Input'
-import { CardService } from 'components/atoms/CardService'
+import { CardServices } from 'components/molecules/CardServices'
 
 interface Landing {
   stores: []
@@ -60,71 +56,24 @@ const Landing = ({ stores }: Landing) => {
               search
             />
           </div>
-          <div className="servicesContainer">
-            <CardService
-              title="Mercado"
-              background="var(--color-secondary-darker)"
-              icon={<BsCart size={75} color="var(--white)" />}
-            />
 
-            <CardService
-              title="Restaurante"
-              background="var(--red)"
-              icon={<FiCoffee size={75} color="var(--white)" />}
-            />
-
-            <CardService
-              title="Farmácia"
-              background="var(--blue-primary)"
-              icon={<CgPill size={75} color="var(--white)" />}
-            />
-
-            <CardService
-              title="Pets"
-              background="var(--color-primary)"
-              icon={<MdPets size={75} color="var(--white)" />}
-            />
-            <CardService
-              title="Eletrônico"
-              background="var(--black-800)"
-              icon={<BsLaptopFill size={75} color="var(--white)" />}
-            />
-
-            <CardService
-              title="EPI"
-              background="var(--gray-600)"
-              icon={<AiOutlineTool size={75} color="var(--white)" />}
-            />
-
-            <CardService
-              title="Móveis"
-              background="var(--color-secondary)"
-              icon={<CgPill size={75} color="var(--white)" />}
-            />
-
-            <CardService
-              title="Bebidas"
-              background="var(--yellow)"
-              icon={<CgPill size={75} color="var(--white)" />}
-            />
-          </div>
+          <CardServices />
 
           {stores.length !== 0 && (
             <>
               <div className="carousel-container">
                 <div className="carousel-item">
                   <span className="title">Em promoção</span>
-
-                  <Carousel data={stores} />
+                  <Carousel data={stores} isProduct />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Veja as últimas novidades</span>
-                  <Carousel data={stores} />
+                  <Carousel data={stores} isProduct />
                 </div>
               </div>
-              <h1>Lojas</h1>
-              <div className="carousel-container">
+              <h1 style={{ alignSelf: 'flex-start' }}>Lojas</h1>
+              <div className="carousel-container" style={{ marginTop: '2rem' }}>
                 <div className="carousel-item">
                   <span className="title">Eletrônicos e eletrodomésticos</span>
 
@@ -219,13 +168,6 @@ export const Content = styled.section`
   height: 100%;
   width: 100%;
   padding: 3rem 3rem;
-
-  .servicesContainer {
-    margin-top: 3rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6rem;
-  }
 
   .search-boxes {
     width: 100%;
