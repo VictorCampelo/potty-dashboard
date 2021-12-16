@@ -8,12 +8,18 @@ import {
   AiFillFacebook,
   AiFillPhone,
   AiOutlineWhatsApp,
-  AiOutlineSearch
+  AiOutlineSearch,
+  AiOutlineTool
 } from 'react-icons/ai'
+import { BsCart, BsLaptopFill } from 'react-icons/bs'
+import { FiCoffee } from 'react-icons/fi'
+import { CgPill } from 'react-icons/cg'
+import { MdPets } from 'react-icons/md'
 import { Button } from 'components/atoms/Button'
 import { api } from 'services/apiClient'
 import router from 'next/router'
 import { Input } from 'components/molecules/Input'
+import { CardService } from 'components/atoms/CardService'
 
 interface Landing {
   stores: []
@@ -34,7 +40,13 @@ const Landing = ({ stores }: Landing) => {
           <img src="/images/logo2.svg" alt="banner" width={250} height={250} />
         </Banner>
 
-        <Content>
+        <Content
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }}
+        >
           <div className="search-boxes">
             <Input
               type="text"
@@ -43,29 +55,87 @@ const Landing = ({ stores }: Landing) => {
               search
             />
           </div>
+          <div className="servicesContainer">
+            <CardService
+              title="Mercado"
+              background="var(--color-secondary-darker)"
+              icon={<BsCart size={100} color="var(--white)" />}
+            />
+
+            <CardService
+              title="Restaurante"
+              background="var(--red)"
+              icon={<FiCoffee size={100} color="var(--white)" />}
+            />
+
+            <CardService
+              title="Farmácia"
+              background="var(--blue-primary)"
+              icon={<CgPill size={100} color="var(--white)" />}
+            />
+
+            <CardService
+              title="Pets"
+              background="var(--color-primary)"
+              icon={<MdPets size={100} color="var(--white)" />}
+            />
+            <CardService
+              title="Eletrônico"
+              background="var(--black-800)"
+              icon={<BsLaptopFill size={100} color="var(--white)" />}
+            />
+
+            <CardService
+              title="EPI"
+              background="var(--gray-600)"
+              icon={<AiOutlineTool size={100} color="var(--white)" />}
+            />
+
+            <CardService
+              title="Móveis"
+              background="var(--color-secondary)"
+              icon={<CgPill size={100} color="var(--white)" />}
+            />
+
+            <CardService
+              title="Bebidas"
+              background="var(--yellow)"
+              icon={<CgPill size={100} color="var(--white)" />}
+            />
+          </div>
 
           {stores.length !== 0 && (
-            <div className="carousel-container">
-              <div className="carousel-item">
-                <span className="title">Mercadinho e mercearias</span>
+            <>
+              <div className="carousel-container">
+                <div className="carousel-item">
+                  <span className="title">Em promoção</span>
 
-                <Carousel data={stores} />
-              </div>
+                  <Carousel data={stores} />
+                </div>
 
-              <div className="carousel-item">
-                <span className="title">Eletrônicos e eletrodomésticos</span>
-                <Carousel data={stores} />
+                <div className="carousel-item">
+                  <span className="title">Veja as últimas novidades</span>
+                  <Carousel data={stores} />
+                </div>
               </div>
+              <h1>Lojas</h1>
+              <div className="carousel-container">
+                <div className="carousel-item">
+                  <span className="title">Eletrônicos e eletrodomésticos</span>
 
-              <div className="carousel-item">
-                <span className="title">Restaurantes</span>
-                <Carousel data={stores} />
+                  <Carousel data={stores} />
+                </div>
+
+                <div className="carousel-item">
+                  <span className="title">Restaurantes</span>
+                  <Carousel data={stores} />
+                </div>
               </div>
-            </div>
+            </>
           )}
         </Content>
 
-        <Content style={{ maxWidth: '100%', paddingLeft: 0 }}>
+        {/* <Content style={{ maxWidth: '100%', paddingLeft: 0 }}>
           <section className="description">
             <img src="/images/people.png" alt="People" />
 
@@ -88,7 +158,7 @@ const Landing = ({ stores }: Landing) => {
               </div>
             </div>
           </section>
-        </Content>
+        </Content> */}
 
         <Footer>
           <h1>Contato</h1>
@@ -143,13 +213,21 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
-  padding: 3rem 6rem;
+  padding: 3rem 3rem;
+  .servicesContainer {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 3rem;
+  }
 
   .search-boxes {
     width: 100%;
     display: flex;
     gap: 2rem;
     margin-top: 1rem;
+    justify-content: center;
   }
 
   .carousel-container {

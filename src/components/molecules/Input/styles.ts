@@ -12,7 +12,7 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   ${(props) => 'flex: ' + props.flex + ';'}
-  ${(props) => props.search && 'max-width: 100%;'}
+  ${(props) => props.search && 'max-width: 90%;'}
  
   
   .labelContent {
