@@ -105,7 +105,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(handleSignIn)}>
           <div className="title logo">
             <h1>Login</h1>
-            <img src="/images/logo.png" alt="logo" />
+            <img src="/images/logo.svg" alt="logo" width={150} height={150} />
           </div>
 
           <div className="inputContainer">
@@ -253,6 +253,29 @@ const Login = () => {
         }}
         src="/images/wave2.svg"
         alt="wave 2"
+      />
+
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          height: '55%',
+          zIndex: -1
+        }}
+        src="/images/illustration1.svg"
+        alt="illustration 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: '50%',
+          zIndex: -1
+        }}
+        src="/images/illustration2.svg"
+        alt="illustration 2"
       />
     </Wrapper>
   )

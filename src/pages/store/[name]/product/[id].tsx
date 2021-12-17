@@ -218,7 +218,7 @@ const ProductShow = () => {
           productId,
           storeId,
           title,
-          enable: true
+          enabled: true
         }
       ])
 
@@ -232,7 +232,7 @@ const ProductShow = () => {
             productId,
             storeId,
             title,
-            enable: true
+            enabled: true
           }
         ])
       )

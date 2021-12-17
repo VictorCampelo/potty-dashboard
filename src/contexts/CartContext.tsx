@@ -6,7 +6,7 @@ type CartItem = {
   amount: number
   title: string
   price: number
-  enable?: boolean
+  enabled?: boolean
 }
 
 type CartContextData = {
