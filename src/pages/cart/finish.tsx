@@ -24,6 +24,7 @@ const Cart = () => {
 
             <BigButton
               title="Voltar para a loja"
+              style={{ maxWidth: 450 }}
               onClick={() => router.push('/')}
             />
 
