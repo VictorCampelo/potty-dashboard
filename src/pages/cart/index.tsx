@@ -75,33 +75,67 @@ const Cart = () => {
     try {
       let data
       if (!widthScreen) {
-        console.log('tela pequena')
+        const stores = []
 
-        const res = await api.post(`/orders/${items[0].storeId}`, {
-          products: items
-            .filter((it) => it.enabled)
-            .map((prod) => ({
-              productId: prod.productId,
-              amount: prod.amount
-            }))
+        items.forEach((it) => {
+          if (stores.some((store) => store.storeId == it.storeId)) {
+            stores.find((store) =>
+              store.orderProducts.push({
+                productId: it.productId,
+                amount: it.amount
+              })
+            )
+          } else {
+            stores.push({
+              storeId: it.storeId,
+              orderProducts: [
+                {
+                  productId: it.productId,
+                  amount: it.amount
+                }
+              ]
+            })
+          }
+        })
+
+        const res = await api.post(`/orders`, {
+          products: [...stores]
         })
 
         data = res.data
       } else {
-        const res = await api.post(`/orders/${items[0].storeId}`, {
-          products: items
-            .filter((it) => it.enabled)
-            .map((prod) => ({
-              productId: prod.productId,
-              amount: prod.amount
-            }))
+        const stores = []
+
+        items.forEach((it) => {
+          if (stores.some((store) => store.storeId == it.storeId)) {
+            stores.find((store) =>
+              store.orderProducts.push({
+                productId: it.productId,
+                amount: it.amount
+              })
+            )
+          } else {
+            stores.push({
+              storeId: it.storeId,
+              orderProducts: [
+                {
+                  productId: it.productId,
+                  amount: it.amount
+                }
+              ]
+            })
+          }
+        })
+
+        const res = await api.post(`/orders`, {
+          products: [...stores]
         })
 
         data = res.data
       }
 
       localStorage.setItem('ultimo.cart.items', '')
-      window.open(data.whatsapp)
+      data.whatsapp.forEach((it) => window.open(it))
       router.push('/cart/finish')
     } catch (e) {
       if (e.response.status === 401) {
