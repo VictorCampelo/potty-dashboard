@@ -45,7 +45,9 @@ const Landing = ({ stores }: Landing) => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            alignItems: 'center',
+            paddingLeft: '4rem',
+            paddingRight: '4rem'
           }}
         >
           <div className="search-boxes">
@@ -167,7 +169,7 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
-  padding: 3rem 3rem;
+  /* padding: 3rem 3rem; */
 
   .search-boxes {
     width: 100%;
