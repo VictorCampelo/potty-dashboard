@@ -46,13 +46,13 @@ export const CardServices = () => {
       <CardService
         title="Móveis"
         background="var(--color-secondary)"
-        icon={<CgPill size={75} color="var(--white)" />}
+        icon={<img src="/images/desk.svg" />}
       />
 
       <CardService
         title="Bebidas"
         background="var(--yellow)"
-        icon={<CgPill size={75} color="var(--white)" />}
+        icon={<img src="/images/drink.svg" />}
       />
     </Container>
   )

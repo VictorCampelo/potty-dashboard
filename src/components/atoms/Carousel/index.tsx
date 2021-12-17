@@ -111,6 +111,19 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
                   </span>
                 </div>
               )}
+              {isProduct && (
+                <>
+                  <ButtonProduct className="btnProductLeft">
+                    <BiChevronLeft size={15} color="black" />
+                  </ButtonProduct>
+                  <ButtonProduct className="btnProductRight">
+                    <BiChevronRight size={15} color="black" />
+                  </ButtonProduct>
+                </>
+              )}
+              {promo && (
+                <img src="/images/promo.svg" alt="promo" className="promo" />
+              )}
             </Item>
           </Link>
         ))}
@@ -151,6 +164,10 @@ const Button = styled.button<ButtonProp>`
   background: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `
+const ButtonProduct = styled(Button)`
+  width: 1.8rem;
+  height: 1.8rem;
+`
 
 const Container = styled.div`
   display: flex;
@@ -182,20 +199,41 @@ const Item = styled.div<ItemProps>`
   flex-direction: column;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
   margin-top: 1rem;
+
+  .btnProductLeft {
+    position: absolute;
+    left: 5px;
+    top: 30%;
+    z-index: 3;
+  }
+
+  .btnProductRight {
+    position: absolute;
+    right: 5px;
+    top: 30%;
+    z-index: 3;
+  }
+
+  .promo {
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    width: 75px;
+  }
+
   .head {
     width: 100%;
     height: 190px;
     display: flex;
     align-items: center;
     overflow: hidden;
-
     ${(props) => props.isProduct && 'padding: 1.2rem 1.2rem 0 1.2rem;'}
     ${(props) => props.isProduct && 'height: 300px;'}
     img {
       ${(props) => props.isProduct && 'border-radius: 10px;'}
     }
-
   }
 
   .logo {

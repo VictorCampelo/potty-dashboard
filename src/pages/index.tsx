@@ -66,7 +66,7 @@ const Landing = ({ stores }: Landing) => {
               <div className="carousel-container">
                 <div className="carousel-item">
                   <span className="title">Em promoção</span>
-                  <Carousel data={stores} isProduct />
+                  <Carousel data={stores} isProduct promo />
                 </div>
 
                 <div className="carousel-item">

@@ -8,7 +8,7 @@ export const Container = styled.div<ContainerProps>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 213px;
+    width: 250px;
     height: 222px;
     /* margin: 0 0 1rem 0; */
     .imgContainer {
