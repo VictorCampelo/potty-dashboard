@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   return (
     <Container>
       <div className="logo">
-        <img src="/images/logo.png" alt="logo" />
+        <img src="/images/logo.svg" alt="logo" />
       </div>
       <nav>
         <Link href="/Venda">
