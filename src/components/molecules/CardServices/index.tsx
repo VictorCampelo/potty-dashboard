@@ -60,7 +60,9 @@ export const CardServices = () => {
 
 export const Container = styled.div`
   margin-top: 3rem;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
 `

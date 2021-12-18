@@ -553,7 +553,8 @@ export const Footer = styled.footer`
   padding: 2rem 3rem;
   margin: 1.5rem 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   h1 {
     margin-bottom: 1rem;
   }

@@ -96,7 +96,7 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
                 <div className="infoProduct">
                   <p>{store.name}</p>
                   <div className="stars">
-                    <AiOutlineStar size={20} color="var(--gold)" />
+                    <AiFillStar size={20} color="var(--gold)" />
                     <small>{store.sumStars} (110 pedidos)</small>
                   </div>
                   <span>
