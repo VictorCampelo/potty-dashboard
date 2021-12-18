@@ -6,7 +6,9 @@ import Link from 'next/link'
 const Header: React.FC = () => {
   return (
     <Container>
-      <div className="logo"></div>
+      <div className="logo">
+        <img src="/images/logo.png" alt="logo" />
+      </div>
       <nav>
         <Link href="/Venda">
           <a>Categoria</a>
@@ -23,14 +25,14 @@ const Header: React.FC = () => {
         <Link href="/Gerencie">
           <a>Quem somos</a>
         </Link>
-        
-        <Link href="/cart">
-          <button>
-            <MdShoppingCart />
-            Carrinho
-          </button>
-        </Link>
-
+        <div className="authContainer">
+          <Link href="/cadastro">
+            <a className="register">Criar conta</a>
+          </Link>
+          <Link href="/login">
+            <button>Entrar</button>
+          </Link>
+        </div>
       </nav>
     </Container>
   )
