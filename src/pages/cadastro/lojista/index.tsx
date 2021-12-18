@@ -30,10 +30,10 @@ const registerFormSchema = yup.object().shape({
   password: yup
     .string()
     .required('Senha obrigatória')
-    .min(8, 'Mínimo 8 caracteres')
-    .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
-    .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
-    .matches(/\d+/, 'Deve conter, um número'),
+    .min(8, 'Mínimo 8 caracteres'),
+  // .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
+  // .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
+  // .matches(/\d+/, 'Deve conter, um número'),
   passwordConfirmation: yup
     .string()
     .required('Confirmação de senha obrigatória')

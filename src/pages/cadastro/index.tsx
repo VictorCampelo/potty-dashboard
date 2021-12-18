@@ -33,10 +33,10 @@ const registerFormSchema = yup.object().shape({
   password: yup
     .string()
     .required('Senha obrigatória')
-    .min(8, 'Mínimo 8 caracteres')
-    .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
-    .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
-    .matches(/\d+/, 'Deve conter, um número'),
+    .min(8, 'Mínimo 8 caracteres'),
+  // .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
+  // .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
+  // .matches(/\d+/, 'Deve conter, um número'),
   passwordConfirmation: yup
     .string()
     .required('Confirmação de senha obrigatória')
@@ -250,6 +250,54 @@ const Register = () => {
           </div>
         </form>
       </Container>
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          height: '85%',
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          width: '100%'
+        }}
+        src="/images/wave1.svg"
+        alt="wave 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          height: '65%',
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          width: '100%'
+        }}
+        src="/images/wave2.svg"
+        alt="wave 2"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          height: '55%',
+          zIndex: -1
+        }}
+        src="/images/illustration1.svg"
+        alt="illustration 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: '50%',
+          zIndex: -1
+        }}
+        src="/images/illustration2.svg"
+        alt="illustration 2"
+      />
     </Wrapper>
   )
 }
