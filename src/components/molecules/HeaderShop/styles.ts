@@ -70,7 +70,8 @@ export const Container = styled.header`
       border: none;
 
       :hover {
-        background: var(--gray-600);
+        padding: 5px;
+        background: var(--yellow);
       }
     }
   }
