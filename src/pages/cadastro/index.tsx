@@ -34,9 +34,6 @@ const registerFormSchema = yup.object().shape({
     .string()
     .required('Senha obrigatória')
     .min(8, 'Mínimo 8 caracteres'),
-  // .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
-  // .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
-  // .matches(/\d+/, 'Deve conter, um número'),
   passwordConfirmation: yup
     .string()
     .required('Confirmação de senha obrigatória')
@@ -82,7 +79,7 @@ const Register = () => {
       const res = await signUp(user)
 
       if (res.status === 200 || res.status === 201) {
-        return router.push('/login')
+        return router.push('/confirmacao-cadastro')
       }
     } catch (e) {
       console.log(e)
