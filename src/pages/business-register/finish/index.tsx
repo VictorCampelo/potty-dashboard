@@ -41,7 +41,7 @@ const BusinessRegister = () => {
     try {
       await api.post('/auth/signup-store', body)
 
-      Router.push(`/login`)
+      Router.push(`/confirmacao-cadastro`)
     } catch (e) {
       console.error(e)
     }
