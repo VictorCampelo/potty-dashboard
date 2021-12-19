@@ -10,19 +10,19 @@ const Header: React.FC = () => {
         <img src="/images/logo.svg" alt="logo" />
       </div>
       <nav>
-        <Link href="/Venda">
-          <a>Categoria</a>
+        <Link href="/categorias">
+          <a>Categorias</a>
         </Link>
 
-        <Link href="/Fidelize">
+        <Link href="/produtos">
           <a>Produtos</a>
         </Link>
 
-        <Link href="/Planos">
+        <Link href="/contatos">
           <a>Contatos</a>
         </Link>
 
-        <Link href="/Gerencie">
+        <Link href="/quem-somos">
           <a>Quem somos</a>
         </Link>
         <div className="authContainer">
