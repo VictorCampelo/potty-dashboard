@@ -32,7 +32,6 @@ const Landing = ({ stores }: Landing) => {
 
       <Container>
         <Banner>
-          {/* <SelectInput type="text" /> */}
           <img
             src="/images/logo2.svg"
             alt="banner"
@@ -60,7 +59,15 @@ const Landing = ({ stores }: Landing) => {
           </div>
 
           <CardServices />
-
+          <p
+            style={{
+              marginTop: '1rem',
+              alignSelf: 'flex-end',
+              fontWeight: 'bold'
+            }}
+          >
+            Ver todas as categorias
+          </p>
           {stores.length !== 0 && (
             <>
               <div className="carousel-container">
@@ -90,31 +97,6 @@ const Landing = ({ stores }: Landing) => {
             </>
           )}
         </Content>
-
-        {/* <Content style={{ maxWidth: '100%', paddingLeft: 0 }}>
-          <section className="description">
-            <img src="/images/people.png" alt="People" />
-
-            <div className="description-text">
-              <h1>Divulgue facilmente seus produtos e serviços </h1>
-              <span>
-                O Piauí Delivery é a forma mais rápida do seu negócio ser visto
-                no mundo digital. A plataforma funciona como um catálogo online
-                de todos os estabelecimentos no Piauí que trabalham com
-                entregas.
-              </span>
-
-              <div className="button-container">
-                <Button
-                  onClick={() => {
-                    router.push('/cadastro/lojista')
-                  }}
-                  title="Cadastrar loja"
-                />
-              </div>
-            </div>
-          </section>
-        </Content> */}
 
         <Footer>
           <div>

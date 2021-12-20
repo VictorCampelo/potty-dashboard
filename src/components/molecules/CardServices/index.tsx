@@ -16,30 +16,30 @@ export const CardServices = () => {
 
       <CardService
         title="Restaurante"
-        background="var(--red)"
+        background="var(--color-secondary)"
         icon={<FiCoffee size={75} color="var(--white)" />}
       />
 
       <CardService
         title="Farmácia"
-        background="var(--blue-primary)"
+        background="var(--color-secondary-darker)"
         icon={<CgPill size={75} color="var(--white)" />}
       />
 
       <CardService
         title="Pets"
-        background="var(--color-primary)"
+        background="var(--color-secondary)"
         icon={<MdPets size={75} color="var(--white)" />}
       />
       <CardService
         title="Eletrônico"
-        background="var(--black-800)"
+        background="var(--color-secondary)"
         icon={<BsLaptopFill size={75} color="var(--white)" />}
       />
 
       <CardService
         title="EPI"
-        background="var(--gray-600)"
+        background="var(--color-secondary-darker)"
         icon={<AiOutlineTool size={75} color="var(--white)" />}
       />
 
@@ -51,7 +51,7 @@ export const CardServices = () => {
 
       <CardService
         title="Bebidas"
-        background="var(--yellow)"
+        background="var(--color-secondary-darker)"
         icon={<img src="/images/drink.svg" />}
       />
     </Container>
