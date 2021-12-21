@@ -48,7 +48,7 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
-  padding-top: 3rem;
+  padding-top: 1.5rem;
   ${[sizes.down('lgMob')]} {
     padding-top: 1rem;
     .header {
@@ -109,7 +109,7 @@ export const CartContainer = styled.section`
   border-radius: 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   display: flex;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   flex-direction: column;
 
   .subTotal {
