@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
+import { MultiSelect as Select } from 'components/molecules/Select'
 
 import {
   getCategories,
@@ -111,6 +112,10 @@ const catalog = ({ storeId }: CatalogType) => {
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
   const [discountProduct, setDiscountProduct] = useState('')
+  const [installments, setInstallments] = useState({
+    value: '1',
+    label: '1x'
+  })
 
   const [previewImage, setPreviewImage] = useState(null)
   const [imageSrc, setImageSrc] = useState(null)
@@ -125,6 +130,11 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [toggleState, setToggleState] = useState(1)
   const [selectedCategories, setSelectedCategories] = useState([])
+
+  const Installments = [...Array(12)].map((it, idx) => ({
+    value: String(idx + 1),
+    label: idx + 1 + 'x'
+  }))
 
   // Functions Open Modals
 
@@ -317,7 +327,8 @@ const catalog = ({ storeId }: CatalogType) => {
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
       categoriesIds: selectedCategories.map((cat) => cat.value),
-      files: [imageSrc, imageSrc1, imageSrc2]
+      files: [imageSrc, imageSrc1, imageSrc2],
+      parcelAmount: Number(installments.value)
     }
 
     try {
@@ -394,7 +405,8 @@ const catalog = ({ storeId }: CatalogType) => {
       inventory: Number(inventoryProduct || '0'),
       discount: Number(discountProduct),
       categoriesIds: selectedCategories.map((cat) => cat.value),
-      files: [imageSrc, imageSrc1, imageSrc2]
+      files: [imageSrc, imageSrc1, imageSrc2],
+      parcelAmount: Number(installments.value)
     }
 
     try {
@@ -630,16 +642,28 @@ const catalog = ({ storeId }: CatalogType) => {
                 onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
-              <Input
-                label="Preço"
-                icon={<FaMoneyBill />}
-                placeholder="R$ 0"
-                mask="monetary"
-                value={priceProduct}
-                onChange={(e) => {
-                  setPriceProduct(e.target.value)
-                }}
-              />
+              <div className="row">
+                <Input
+                  label="Preço"
+                  icon={<FaMoneyBill />}
+                  placeholder="R$ 0"
+                  mask="monetary"
+                  value={priceProduct}
+                  onChange={(e) => {
+                    setPriceProduct(e.target.value)
+                  }}
+                />
+
+                <Select
+                  name="Parcelamento"
+                  options={Installments}
+                  selectedValue={installments}
+                  setSelectedValue={setInstallments}
+                  loading={false}
+                  placeholder="Selecione o número de parcelas"
+                  style={{ width: '50%' }}
+                />
+              </div>
 
               <div className="desconto">
                 <Input
@@ -648,7 +672,9 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="number"
                   placeholder="0.0%"
                   value={discountProduct}
-                  onChange={(e) => setDiscountProduct(e.target.value)}
+                  onChange={(e) => {
+                    setDiscountProduct(e.target.value)
+                  }}
                 />
 
                 <div className="arrows">
@@ -659,6 +685,17 @@ const catalog = ({ storeId }: CatalogType) => {
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
+                  value={(
+                    (Number(
+                      priceProduct
+                        .replace('R$ ', '')
+                        .replaceAll('.', '')
+                        .replaceAll(',', '.')
+                    ) *
+                      Number(discountProduct)) /
+                    100
+                  ).toFixed(2)}
+                  disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                 />
@@ -822,14 +859,28 @@ const catalog = ({ storeId }: CatalogType) => {
                 onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
-              <Input
-                label="Preço"
-                icon={<FaMoneyBill />}
-                placeholder="R$ 0"
-                mask="monetary"
-                value={priceProduct}
-                onChange={(e) => setPriceProduct(e.target.value)}
-              />
+              <div className="row">
+                <Input
+                  label="Preço"
+                  icon={<FaMoneyBill />}
+                  placeholder="R$ 0"
+                  mask="monetary"
+                  value={priceProduct}
+                  onChange={(e) => {
+                    setPriceProduct(e.target.value)
+                  }}
+                />
+
+                <Select
+                  name="Parcelamento"
+                  options={Installments}
+                  selectedValue={installments}
+                  setSelectedValue={setInstallments}
+                  loading={false}
+                  placeholder="Selecione o número de parcelas"
+                  style={{ width: '50%' }}
+                />
+              </div>
 
               <div className="desconto">
                 <Input

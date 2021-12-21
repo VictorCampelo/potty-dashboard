@@ -116,6 +116,12 @@ export const AddProductModalContainer = styled.div`
   align-items: center;
   justify-content: center;
 
+  .row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
   .buttonContainer {
     display: flex;
     margin-top: 24px;
