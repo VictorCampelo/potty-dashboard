@@ -5,7 +5,7 @@ export const Container = styled.header`
   //width: 100%;
   z-index: 5;
   padding: 1rem 20px;
-  /* background: rgba(0, 0, 0, 0.1); */
+  //background: rgba(0, 0, 0, 0.4);
 
   display: flex;
   justify-content: space-between;

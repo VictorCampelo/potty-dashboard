@@ -8,7 +8,8 @@ import {
   AiFillFacebook,
   AiFillPhone,
   AiOutlineWhatsApp,
-  AiOutlineSearch
+  AiOutlineSearch,
+  AiOutlineRight
 } from 'react-icons/ai'
 
 import { Button } from 'components/atoms/Button'
@@ -59,15 +60,24 @@ const Landing = ({ stores }: Landing) => {
           </div>
 
           <CardServices />
-          <p
+          <div   
             style={{
-              marginTop: '1rem',
-              alignSelf: 'flex-end',
-              fontWeight: 'bold'
-            }}
+                marginTop: '2rem',
+                alignSelf: 'flex-end',
+                display: 'flex',
+              }}
           >
-            Ver todas as categorias
-          </p>
+          
+            <p
+              style={{
+                color:'var(--color-primary)',
+                fontWeight: 'bold'
+              }}
+              >
+              Ver todas as categorias
+            </p>
+            <AiOutlineRight size={25} color='var(--color-primary)' />
+          </div>
           {stores.length !== 0 && (
             <>
               <div className="carousel-container">

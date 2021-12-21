@@ -30,6 +30,7 @@ import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
 import { ellipsis } from 'functions/ellipsis'
+import styled from 'styled-components'
 
 const Products = () => {
   const router = useRouter()
@@ -151,7 +152,7 @@ const Products = () => {
 
       <TopoPage>
         <img src="/images/capa.png" alt="capa" />
-        <HeaderShop />
+        <HeaderShopStore />
       </TopoPage>
 
       <InfoSerch>
@@ -437,3 +438,8 @@ const Products = () => {
 }
 
 export default Products
+
+export const HeaderShopStore = styled(HeaderShop)`
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid red;
+`
