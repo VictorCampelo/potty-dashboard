@@ -71,92 +71,6 @@ const Cart = () => {
     )
   }
 
-  async function handleSubmit() {
-    try {
-      let data
-      if (!widthScreen) {
-        const stores = []
-
-        items.forEach((it) => {
-          if (stores.some((store) => store.storeId == it.storeId)) {
-            stores.find((store) =>
-              store.orderProducts.push({
-                productId: it.productId,
-                amount: it.amount
-              })
-            )
-          } else {
-            stores.push({
-              storeId: it.storeId,
-              orderProducts: [
-                {
-                  productId: it.productId,
-                  amount: it.amount
-                }
-              ]
-            })
-          }
-        })
-
-        const res = await api.post(`/orders`, {
-          products: [...stores]
-        })
-
-        data = res.data
-      } else {
-        const stores = []
-
-        items.forEach((it) => {
-          if (stores.some((store) => store.storeId == it.storeId)) {
-            stores.find((store) =>
-              store.orderProducts.push({
-                productId: it.productId,
-                amount: it.amount
-              })
-            )
-          } else {
-            stores.push({
-              storeId: it.storeId,
-              orderProducts: [
-                {
-                  productId: it.productId,
-                  amount: it.amount
-                }
-              ]
-            })
-          }
-        })
-
-        const res = await api.post(`/orders`, {
-          products: [...stores]
-        })
-
-        data = res.data
-      }
-
-      localStorage.setItem('ultimo.cart.items', '')
-      data.whatsapp.forEach((it) => window.open(it))
-      router.push('/cart/finish')
-    } catch (e) {
-      if (e.response.status === 401) {
-        return toast.error(
-          'Clique aqui para fazer o login e finalizar sua compra!',
-          {
-            onClick: () => router.push('/login')
-          }
-        )
-      }
-
-      if (e.response.status === 500) {
-        return toast.error(
-          'Faça o login com uma conta de usuário para finalizar a compra!'
-        )
-      }
-
-      toast.error('Erro ao finalizar compra, tente novamente mais tarde!')
-    }
-  }
-
   useEffect(() => {
     if (items.length > 0) {
       localStorage.setItem('ultimo.cart.items', JSON.stringify(items))
@@ -370,7 +284,6 @@ const Cart = () => {
                   {items.filter((it) => it.enabled).length <= 1
                     ? items.length + ' item'
                     : items.length + ' itens'}
-                  {' | '}
                   {!widthScreen && (
                     <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
                   )}
@@ -392,16 +305,25 @@ const Cart = () => {
                   ESVAZIAR CARRINHO
                 </button>
 
-                <button className="finish" onClick={handleSubmit}>
-                  <BsWhatsapp size={24} color="white" />
-                  FINALIZAR COMPRA
+                <button
+                  className="finish"
+                  onClick={() => {
+                    router.push('/cart/continue')
+                  }}
+                >
+                  CONTINUAR
                 </button>
               </div>
               <div
                 className="buttonContainerMob"
                 style={widthScreen ? { display: 'none' } : undefined}
               >
-                <button className="finish" onClick={handleSubmit}>
+                <button
+                  className="finish"
+                  onClick={() => {
+                    router.push('/cart/continue')
+                  }}
+                >
                   {' '}
                   <BsWhatsapp size={24} color="white" />
                   <p>FINALIZAR</p>
