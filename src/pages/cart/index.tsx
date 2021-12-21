@@ -166,7 +166,7 @@ const Cart = () => {
   return (
     <>
       <Head>
-        <title>Cart | Último</title>
+        <title>Carrinho | Último</title>
       </Head>
 
       <HeaderProducts />
