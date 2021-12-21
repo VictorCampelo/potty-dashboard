@@ -1,4 +1,5 @@
 import HeaderShop from '../../../components/molecules/HeaderShop'
+import Link from 'next/link'
 import Head from 'next/head'
 import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 import {
@@ -151,8 +152,8 @@ const Products = () => {
       </Head>
 
       <TopoPage>
-        <img src="/images/capa.png" alt="capa" />
-        <HeaderShopStore />
+        <img className='capa' src="/images/capa.png" alt="capa" />
+        <HeaderShop isMain={false} />
       </TopoPage>
 
       <InfoSerch>
@@ -438,8 +439,3 @@ const Products = () => {
 }
 
 export default Products
-
-export const HeaderShopStore = styled(HeaderShop)`
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid red;
-`
