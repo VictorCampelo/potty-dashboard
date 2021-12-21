@@ -10,14 +10,43 @@ import { CartContext } from 'contexts/CartContext'
 import { api } from 'services/apiClient'
 import useMedia from 'use-media'
 import { toast } from 'react-toastify'
+import CustomModal from 'components/molecules/CustomModal'
+import { IoIosClose } from 'react-icons/io'
+import { Input } from 'components/molecules/Input'
+import * as yup from 'yup'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { BiBuildings, BiMapAlt } from 'react-icons/bi'
+import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { FaHome } from 'react-icons/fa'
+import { Button } from 'components/atoms/Button'
 
 type PaymentForm = {
   value: string
   label: string
 }
 
+type adressRegisterFormData = {
+  state: string
+  city: string
+  publicPlace: string
+  number: string
+  district: string
+  cep: string
+}
+
+const adressRegisterFormSchema = yup.object().shape({
+  state: yup.string().required('Estado obrigatório'),
+  city: yup.string().required('Cidade obrigatória'),
+  publicPlace: yup.string().required('Logradouro obrigatório'),
+  number: yup.string().required('obrigatório'),
+  district: yup.string().required('Bairro obrigatório'),
+  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
+})
+
 const CartContinue = () => {
   const { items } = useContext(CartContext)
+  const [addAdressModal, setAddAdressModal] = useState(false)
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
@@ -27,6 +56,7 @@ const CartContinue = () => {
     value: '0',
     label: 'Cartão de crédito'
   })
+
   const [installments, setInstallments] = useState<PaymentForm>({
     value: '0',
     label: '1x'
@@ -56,9 +86,20 @@ const CartContinue = () => {
     label: idx + 1 + 'x'
   }))
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues,
+    setValue,
+    watch
+  } = useForm({
+    resolver: yupResolver(adressRegisterFormSchema)
+  })
+
   const widthScreen = useMedia({ minWidth: '426px' })
 
-  async function handleSubmit() {
+  async function handleFinishPurcharse() {
     try {
       let data
       if (!widthScreen) {
@@ -152,6 +193,106 @@ const CartContinue = () => {
 
       <HeaderProducts />
 
+      <CustomModal
+        buttons={false}
+        setModalOpen={() => {
+          setAddAdressModal(!addAdressModal)
+        }}
+        modalVisible={addAdressModal}
+      >
+        <ModalContainer>
+          <div className="exit-container">
+            <h1>Adicionar novo endereço</h1>
+
+            <IoIosClose
+              onClick={() => setAddAdressModal(false)}
+              size={36}
+              color={'black'}
+            />
+          </div>
+
+          <form className="input-container">
+            <div className="row">
+              <Input
+                label="CEP"
+                placeholder="00000-000"
+                mask="cep"
+                icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                {...register('cep')}
+                textError={errors.cep?.message}
+                error={errors.cep}
+                maxLength={45}
+              />
+
+              <Input
+                label="Bairro"
+                placeholder="Bairro"
+                icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                {...register('district')}
+                textError={errors.district?.message}
+                error={errors.district}
+              />
+            </div>
+
+            <div className="row">
+              <Input
+                label="Logradouro"
+                placeholder="Logradouro"
+                flex={3}
+                icon={<FaHome size={20} color="var(--black-800)" />}
+                {...register('publicPlace')}
+                textError={errors.publicPlace?.message}
+                error={errors.publicPlace}
+              />
+
+              <Input
+                label="Número"
+                placeholder="0000"
+                mask="number"
+                flex={1}
+                type="numeric"
+                maxLength={6}
+                icon={<BiBuildings size={20} color="var(--black-800)" />}
+                {...register('number')}
+                textError={errors.number?.message}
+                error={errors.number}
+              />
+            </div>
+
+            <div className="row">
+              <Input
+                label="Cidade"
+                placeholder="Cidade"
+                icon={
+                  <HiOutlineLocationMarker size={20} color="var(--black-800)" />
+                }
+                {...register('city')}
+                textError={errors.city?.message}
+                error={errors.city}
+                maxLength={45}
+              />
+
+              <Input
+                label="Estado"
+                placeholder="Estado"
+                icon={
+                  <HiOutlineLocationMarker size={20} color="var(--black-800)" />
+                }
+                {...register('state')}
+                textError={errors.state?.message}
+                error={errors.state}
+                maxLength={45}
+              />
+            </div>
+
+            <div className="buttons-container">
+              <Button title="Voltar" border />
+              <Button title="Adicionar" />
+            </div>
+          </form>
+        </ModalContainer>
+      </CustomModal>
+
       <Container>
         <Content>
           <h1>Finalizar compra</h1>
@@ -177,7 +318,7 @@ const CartContinue = () => {
                   </span>
                 </AdressInfo>
 
-                <NewAdressButton>
+                <NewAdressButton onClick={() => setAddAdressModal(true)}>
                   <FiPlus size={24} />
                   Adicionar novo endereço
                 </NewAdressButton>
@@ -255,7 +396,7 @@ const CartContinue = () => {
               </div>
 
               <div className="buttonContainer">
-                <button className="finish" onClick={handleSubmit}>
+                <button className="finish" onClick={handleFinishPurcharse}>
                   <BsWhatsapp size={24} color="white" />
                   FINALIZAR COMPRA
                 </button>
@@ -477,5 +618,51 @@ export const ProductItem = styled.div`
     h4 {
       font-size: 1rem;
     }
+  }
+`
+
+export const ModalContainer = styled.div`
+  width: auto;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .exit-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-size: 24px;
+
+      color: var(--gray-700);
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .row {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .buttons-container {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding: 0 12.5%;
   }
 `

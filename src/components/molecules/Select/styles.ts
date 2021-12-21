@@ -11,7 +11,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   border: none;
-  z-index: 123123;
 
   label {
     margin-bottom: 0.5rem;
@@ -28,8 +27,7 @@ export const SelectStyles: StylesConfig<MyOptionType, false> = {
     backgroundColor: 'var(--gray-100)',
     border: 'none',
     height: '2rem',
-    borderRadius: 11,
-    zIndex: 123123
+    borderRadius: 11
   }),
   indicatorSeparator: (styles) => ({
     ...styles,
