@@ -1,50 +1,44 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 interface ContainerProp {
-  isRed: boolean;
-  isGreen: boolean;
-  isOpen: boolean;
+  isRed: boolean
+  isGreen: boolean
+  isOpen: boolean
 }
 
 export const Container = styled.div<ContainerProp>`
-  width: auto;
-  max-width: 1050px;
-
+  width: 100%;
   display: flex;
-  align-items: flex-start;
-
   margin-bottom: 16px;
 
   .section {
     display: flex;
     flex-direction: column;
-    align-items: center;
-
-    margin-right: 22px;
+    width: 100%;
 
     .card-container {
-      width: 808px;
-      height: 54px;
+      width: 100%;
+      height: 68px;
+      z-index: 1;
 
       display: flex;
       align-items: center;
 
-      background: #ffffff;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-      border-radius: 30px;
-      
+      background: #f4f5f6;
+      border-radius: 8px;
+
       user-select: none;
 
       cursor: pointer;
 
       .icon-btn {
-        ${(props) => props.isOpen && "transform: rotate(180deg);"}
+        ${(props) => props.isOpen && 'transform: rotate(180deg);'}
         transition: 0.4s;
         margin: 16px 23px;
       }
 
       .title {
-        font-family: "Poppins";
+        font-family: 'Poppins';
         font-style: normal;
         font-weight: 600;
         font-size: 15px;
@@ -59,14 +53,15 @@ export const Container = styled.div<ContainerProp>`
 
     .children-container {
       width: 767px;
+      margin-left: 40px;
 
       display: none;
-      ${(props) => props.isOpen && "display: block;"}
+      ${(props) => props.isOpen && 'display: block;'}
 
       align-items: center;
 
       margin-top: 15px;
-      
+
       .items {
         width: 767px;
         height: 29px;
@@ -74,10 +69,10 @@ export const Container = styled.div<ContainerProp>`
         display: flex;
         align-items: center;
 
-        background: #ebf3fe;
+        background: #f4f4f4;
         border-radius: 30px;
 
-        font-family: "Poppins";
+        font-family: 'Poppins';
         font-style: normal;
         font-weight: normal;
         font-size: 13px;
@@ -105,20 +100,19 @@ export const Container = styled.div<ContainerProp>`
   }
 
   button {
-    width: 99px;
-    height: 50px;
+    width: 50px;
+    height: 45%;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     padding: 0 15px;
 
     background: #ffffff;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 30px;
+    border-radius: 8px;
 
-    font-family: "Poppins";
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
@@ -127,13 +121,34 @@ export const Container = styled.div<ContainerProp>`
     &:first-child {
       margin-right: 16px;
     }
+
+    :hover {
+      background: #f4f5f6;
+    }
   }
 
   .edit-btn {
-    ${(props) => props.isGreen && "color: #2DD1AC;"}
+    ${(props) => props.isGreen && 'color: var(--gray-700);'}
   }
 
   .close-btn {
-    ${(props) => props.isRed && "color: #FF4D4B;"}
+    ${(props) => props.isRed && 'color: #FF4D4B;'}
   }
-`;
+
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 64px;
+    width: 80px;
+    padding: 4px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: rgba(99, 99, 99, 0.15) 0px 0px 3px 0px;
+    z-index: 0;
+    margin-top: 2px;
+
+    margin-left: -14px;
+    padding-left: 20px;
+  }
+`

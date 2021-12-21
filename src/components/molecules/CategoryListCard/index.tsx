@@ -53,16 +53,13 @@ export const CategoryListCard = ({
           </div>
         </Fade>
       </div>
-      <div className="edit-btn">
+
+      <div className="buttons-container">
         <button onClick={editBtn} className="edit-btn">
           <RiPencilFill size={20} />
-          Editar
         </button>
-      </div>
-      <div className="exclude-btn">
         <button onClick={excludeBtn} className="close-btn">
           <IoTrashBinOutline size={20} />
-          Excluir
         </button>
       </div>
     </Container>

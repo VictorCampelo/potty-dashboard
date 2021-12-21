@@ -143,6 +143,7 @@ const BusinessRegister = () => {
                     {...register('businessName')}
                     textError={errors.businessName?.message}
                     error={errors.businessName}
+                    maxLength={45}
                   />
                 </div>
                 <div className="inputRow">
@@ -153,6 +154,7 @@ const BusinessRegister = () => {
                     {...register('firstName')}
                     textError={errors.firstName?.message}
                     error={errors.firstName}
+                    maxLength={45}
                   />
 
                   <Input
@@ -162,6 +164,7 @@ const BusinessRegister = () => {
                     {...register('lastName')}
                     textError={errors.lastName?.message}
                     error={errors.lastName}
+                    maxLength={45}
                   />
                 </div>
                 <div className="inputCol">
@@ -174,6 +177,7 @@ const BusinessRegister = () => {
                     onChange={(e) => setCpfCnpj(e.target.value)}
                     textError={errors.cpfCnpj?.message}
                     error={errors.cpfCnpj}
+                    maxLength={45}
                   />
                 </div>
               </div>
@@ -187,6 +191,7 @@ const BusinessRegister = () => {
                     {...register('cep')}
                     textError={errors.cep?.message}
                     error={errors.cep}
+                    maxLength={45}
                   />
 
                   <Input
@@ -196,6 +201,7 @@ const BusinessRegister = () => {
                     {...register('district')}
                     textError={errors.district?.message}
                     error={errors.district}
+                    maxLength={45}
                   />
                 </div>
 
@@ -208,6 +214,7 @@ const BusinessRegister = () => {
                     {...register('publicPlace')}
                     textError={errors.publicPlace?.message}
                     error={errors.publicPlace}
+                    maxLength={45}
                   />
 
                   <Input
@@ -237,6 +244,7 @@ const BusinessRegister = () => {
                     {...register('businessState')}
                     textError={errors.businessState?.message}
                     error={errors.businessState}
+                    maxLength={45}
                   />
 
                   <Input
@@ -251,6 +259,7 @@ const BusinessRegister = () => {
                     {...register('businessCity')}
                     textError={errors.businessCity?.message}
                     error={errors.businessCity}
+                    maxLength={45}
                   />
                 </div>
               </div>
@@ -266,6 +275,7 @@ const BusinessRegister = () => {
                     {...register('businessName')}
                     textError={errors.businessName?.message}
                     error={errors.businessName}
+                    maxLength={45}
                   />
                 </div>
                 <div className="inputRow">
@@ -276,6 +286,7 @@ const BusinessRegister = () => {
                     {...register('firstName')}
                     textError={errors.firstName?.message}
                     error={errors.firstName}
+                    maxLength={45}
                   />
 
                   <Input
@@ -285,6 +296,7 @@ const BusinessRegister = () => {
                     {...register('lastName')}
                     textError={errors.lastName?.message}
                     error={errors.lastName}
+                    maxLength={45}
                   />
                 </div>
                 <div className="inputCol">
@@ -297,6 +309,7 @@ const BusinessRegister = () => {
                     onChange={(e) => setCpfCnpj(e.target.value)}
                     textError={errors.cpfCnpj?.message}
                     error={errors.cpfCnpj}
+                    maxLength={45}
                   />
                 </div>
               </div>
@@ -310,6 +323,7 @@ const BusinessRegister = () => {
                     {...register('cep')}
                     textError={errors.cep?.message}
                     error={errors.cep}
+                    maxLength={45}
                   />
 
                   <Input
@@ -324,6 +338,7 @@ const BusinessRegister = () => {
                     {...register('businessState')}
                     textError={errors.businessState?.message}
                     error={errors.businessState}
+                    maxLength={45}
                   />
                 </div>
 
@@ -340,6 +355,7 @@ const BusinessRegister = () => {
                     {...register('businessCity')}
                     textError={errors.businessCity?.message}
                     error={errors.businessCity}
+                    maxLength={45}
                   />
 
                   <Input

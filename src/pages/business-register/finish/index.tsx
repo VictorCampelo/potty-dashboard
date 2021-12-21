@@ -41,7 +41,7 @@ const BusinessRegister = () => {
     try {
       await api.post('/auth/signup-store', body)
 
-      Router.push(`/login`)
+      Router.push(`/confirmacao-cadastro`)
     } catch (e) {
       console.error(e)
     }
@@ -101,6 +101,7 @@ const BusinessRegister = () => {
               placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
               value={desc}
               onChange={(text) => setDesc(text.target.value)}
+              maxLength={45}
             />
           </div>
 

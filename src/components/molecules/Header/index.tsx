@@ -10,7 +10,6 @@ const Header: React.FC = () => {
 
   return (
     <Container>
-      <div className="logo"></div>
       <nav>
         <Link href="/sales">
           <a>Venda</a>

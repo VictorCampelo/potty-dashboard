@@ -4,10 +4,18 @@ import Header from '../components/molecules/HeaderShop'
 import styled from 'styled-components'
 import Carousel from 'components/atoms/Carousel'
 import { Footer } from 'styles/pages/Product'
-import { AiFillFacebook, AiFillPhone, AiOutlineWhatsApp } from 'react-icons/ai'
+import {
+  AiFillFacebook,
+  AiFillPhone,
+  AiOutlineWhatsApp,
+  AiOutlineSearch
+} from 'react-icons/ai'
+
 import { Button } from 'components/atoms/Button'
 import { api } from 'services/apiClient'
 import router from 'next/router'
+import { Input } from 'components/molecules/Input'
+import { CardServices } from 'components/molecules/CardServices'
 
 interface Landing {
   stores: []
@@ -15,7 +23,7 @@ interface Landing {
 
 const Landing = ({ stores }: Landing) => {
   return (
-    <>
+    <Wrapper>
       <Head>
         <title>Landing | Último</title>
       </Head>
@@ -24,52 +32,66 @@ const Landing = ({ stores }: Landing) => {
 
       <Container>
         <Banner>
-          <SelectInput type="text" />
+          {/* <SelectInput type="text" /> */}
+          <img
+            src="/images/logo2.svg"
+            alt="banner"
+            width={319.19}
+            height={185.22}
+          />
         </Banner>
 
-        <Content>
-          <h1>Buscar por:</h1>
+        <Content
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            paddingLeft: '8rem',
+            paddingRight: '8rem'
+          }}
+        >
           <div className="search-boxes">
-            <Select>
-              <option>Cidade</option>
-              <option>Teresina</option>
-              <option>São Paulo</option>
-              <option>Picos</option>
-              <option>Barra grande</option>
-              <option>Parnaiba</option>
-            </Select>
-
-            <Select>
-              <option>Categoria</option>
-              <option>Comida</option>
-              <option>Brinquedo</option>
-              <option>Móveis</option>
-              <option>Eletrodomésticos</option>
-            </Select>
+            <Input
+              type="text"
+              placeholder="Pesquise por produto, serviço, estabelecimento ou cidade"
+              icon={<AiOutlineSearch size={25} />}
+              search
+            />
           </div>
 
+          <CardServices />
+
           {stores.length !== 0 && (
-            <div className="carousel-container">
-              <div className="carousel-item">
-                <span className="title">Mercadinho e mercearias</span>
+            <>
+              <div className="carousel-container">
+                <div className="carousel-item">
+                  <span className="title">Em promoção</span>
+                  <Carousel data={stores} isProduct promo />
+                </div>
 
-                <Carousel data={stores} />
+                <div className="carousel-item">
+                  <span className="title">Veja as últimas novidades</span>
+                  <Carousel data={stores} isProduct />
+                </div>
               </div>
+              <h1 style={{ alignSelf: 'flex-start' }}>Lojas</h1>
+              <div className="carousel-container" style={{ marginTop: '2rem' }}>
+                <div className="carousel-item">
+                  <span className="title">Eletrônicos e eletrodomésticos</span>
 
-              <div className="carousel-item">
-                <span className="title">Eletrônicos e eletrodomésticos</span>
-                <Carousel data={stores} />
-              </div>
+                  <Carousel data={stores} />
+                </div>
 
-              <div className="carousel-item">
-                <span className="title">Restaurantes</span>
-                <Carousel data={stores} />
+                <div className="carousel-item">
+                  <span className="title">Restaurantes</span>
+                  <Carousel data={stores} />
+                </div>
               </div>
-            </div>
+            </>
           )}
         </Content>
 
-        <Content style={{ maxWidth: '100%', paddingLeft: 0 }}>
+        {/* <Content style={{ maxWidth: '100%', paddingLeft: 0 }}>
           <section className="description">
             <img src="/images/people.png" alt="People" />
 
@@ -92,28 +114,33 @@ const Landing = ({ stores }: Landing) => {
               </div>
             </div>
           </section>
-        </Content>
+        </Content> */}
 
         <Footer>
-          <h1>Contato</h1>
+          <div>
+            <h1>Contato</h1>
 
-          <span>
-            <AiFillPhone size={24} color="var(--gray-700)" />
-            (89) 99444-5552
-          </span>
+            <span>
+              <AiFillPhone size={24} color="var(--gray-700)" />
+              (89) 99444-5552
+            </span>
 
-          <span>
-            <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-            Whatsapp
-          </span>
+            <span>
+              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+              Whatsapp
+            </span>
 
-          <a href="facebook.com">
-            <AiFillFacebook size={24} color="var(--gray-700)" />
-            Facebook
-          </a>
+            <a href="facebook.com">
+              <AiFillFacebook size={24} color="var(--gray-700)" />
+              Facebook
+            </a>
+          </div>
+          <div className="mapContainer">
+            <img src="/images/map.png" />
+          </div>
         </Footer>
       </Container>
-    </>
+    </Wrapper>
   )
 }
 
@@ -127,9 +154,16 @@ export const getServerSideProps = async (ctx) => {
   }
 }
 
+export const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  background: var(--gray-100);
+`
+
 export const Container = styled.main`
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   align-items: center;
   justify-content: center;
   display: flex;
@@ -140,13 +174,14 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
-  padding: 3rem 6rem;
+  /* padding: 3rem 3rem; */
 
   .search-boxes {
     width: 100%;
     display: flex;
     gap: 2rem;
     margin-top: 1rem;
+    justify-content: center;
   }
 
   .carousel-container {
@@ -197,11 +232,11 @@ export const Content = styled.section`
 
 export const Banner = styled.section`
   width: 100%;
-  height: 800px;
+  height: 250px;
   display: flex;
   justify-content: center;
   padding: 1.5rem 4rem;
-  background: var(--color-primary);
+  /* background: var(--color-primary); */
 `
 
 export const SelectInput = styled.input`

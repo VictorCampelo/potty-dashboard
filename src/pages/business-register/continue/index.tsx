@@ -94,6 +94,7 @@ const BusinessRegister = () => {
               {...register('number')}
               textError={errors.number?.message}
               error={errors.number}
+              maxLength={45}
             />
 
             <Input
@@ -103,6 +104,7 @@ const BusinessRegister = () => {
               {...register('facebookUrl')}
               textError={errors.facebookUrl?.message}
               error={errors.facebookUrl}
+              maxLength={45}
             />
 
             <Input
@@ -112,6 +114,7 @@ const BusinessRegister = () => {
               {...register('instagramUrl')}
               textError={errors.instagramUrl?.message}
               error={errors.instagramUrl}
+              maxLength={45}
             />
 
             <Input
@@ -121,6 +124,7 @@ const BusinessRegister = () => {
               {...register('whatsappUrl')}
               textError={errors.whatsappUrl?.message}
               error={errors.whatsappUrl}
+              maxLength={45}
             />
           </div>
 

@@ -12,6 +12,7 @@ export const Container = styled.main`
   justify-content: center;
   align-items: center;
   padding-top: 2rem;
+
   form {
     width: 530px;
     background: var(--white);
@@ -22,6 +23,12 @@ export const Container = styled.main`
     align-items: center;
     padding: 2.5rem 3rem 2rem 3rem;
     overflow-x: hidden;
+
+    .confirmImg {
+      width: 180px;
+      height: 180px;
+      margin-bottom: 1.5rem;
+    }
 
     .title {
       width: 100%;

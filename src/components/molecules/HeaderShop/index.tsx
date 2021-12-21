@@ -6,31 +6,33 @@ import Link from 'next/link'
 const Header: React.FC = () => {
   return (
     <Container>
-      <div className="logo"></div>
+      <div className="logo">
+        <img src="/images/logo.svg" alt="logo" />
+      </div>
       <nav>
-        <Link href="/Venda">
-          <a>Categoria</a>
+        <Link href="/categorias">
+          <a>Categorias</a>
         </Link>
 
-        <Link href="/Fidelize">
+        <Link href="/produtos">
           <a>Produtos</a>
         </Link>
 
-        <Link href="/Planos">
+        <Link href="/contatos">
           <a>Contatos</a>
         </Link>
 
-        <Link href="/Gerencie">
+        <Link href="/quem-somos">
           <a>Quem somos</a>
         </Link>
-        
-        <Link href="/cart">
-          <button>
-            <MdShoppingCart />
-            Carrinho
-          </button>
-        </Link>
-
+        <div className="authContainer">
+          <Link href="/cadastro">
+            <a className="register">Criar conta</a>
+          </Link>
+          <Link href="/login">
+            <button>Entrar</button>
+          </Link>
+        </div>
       </nav>
     </Container>
   )
