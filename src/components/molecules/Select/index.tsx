@@ -2,8 +2,9 @@ import Select, { OptionTypeBase, ValueType } from 'react-select'
 
 import { Container, SelectStylesMulti } from './styles'
 
-interface SelectInterface extends React.InputHTMLAttributes<HTMLSelectElement> {
+interface SelectInterface {
   placeholder: string
+  style?: any
   name: string
   selectedValue: {
     value: string
@@ -25,14 +26,15 @@ export const MultiSelect = ({
   setSelectedValue,
   loading,
   name,
-  colorTheme
+  colorTheme,
+  ...rest
 }: SelectInterface) => {
   const handleChange = (value: ValueType<OptionTypeBase, false>, event) => {
     setSelectedValue(value)
   }
 
   return (
-    <Container>
+    <Container {...rest}>
       <label> {name} </label>
 
       <Select
