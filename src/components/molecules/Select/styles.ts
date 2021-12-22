@@ -14,7 +14,6 @@ export const Container = styled.div`
 
   label {
     margin-bottom: 0.5rem;
-    color: var(--gray-700);
   }
 
   .css-fwy4cj-control {
