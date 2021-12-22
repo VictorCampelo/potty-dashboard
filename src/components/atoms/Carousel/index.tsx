@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
+import { GoLocation } from 'react-icons/go'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { api } from 'services/apiClient'
@@ -20,7 +21,7 @@ interface Carousel {
   promo?: boolean
 }
 
-const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
+const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
   const carousel = useRef(null)
 
   function handleScrollLeft(
@@ -51,7 +52,16 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
         {data.map((store) => (
           <Link href={`/store/${store.formatedName}`} key={store.id}>
             <Item isProduct={isProduct}>
-              <div className="head">
+              <div
+                className="head"
+                style={
+                  widthScreen
+                    ? undefined
+                    : isProduct
+                    ? undefined
+                    : { display: 'none' }
+                }
+              >
                 <img
                   src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg"
                   className="store-banner"
@@ -94,8 +104,14 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
                       })}
                       <small>({store.sumStars})</small>
                     </div>
+                    {!widthScreen && (
+                      <span className="city">
+                        <GoLocation size={15} color="var(--gray-600)" />
+                        {store.city}
+                      </span>
+                    )}
                   </div>
-                  <span className="city">{store.city}</span>
+                  {widthScreen && <span className="city">{store.city}</span>}
                 </>
               )}
               {isProduct && (
@@ -117,7 +133,7 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
                   </span>
                 </div>
               )}
-              {isProduct && (
+              {isProduct && widthScreen && (
                 <>
                   <ButtonProduct className="btnProductLeft">
                     <BiChevronLeft size={15} color="black" />
@@ -127,7 +143,7 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
                   </ButtonProduct>
                 </>
               )}
-              {promo && (
+              {promo && widthScreen && (
                 <img src="/images/promo.svg" alt="promo" className="promo" />
               )}
             </Item>
@@ -140,14 +156,16 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
           <BiChevronRight size={26} color="black" />
         </Button>
       )}
-      <div className="buttonsContainer">
-        <ButtonMobile onClick={handleScrollLeft}>
-          <BiChevronLeft size={26} color="black" />
-        </ButtonMobile>
-        <ButtonMobile onClick={handleScrollRight}>
-          <BiChevronRight size={26} color="black" />
-        </ButtonMobile>
-      </div>
+      {!widthScreen && (
+        <div className="buttonsContainer">
+          <ButtonMobile onClick={handleScrollLeft}>
+            <BiChevronLeft size={26} color="black" />
+          </ButtonMobile>
+          <ButtonMobile onClick={handleScrollRight}>
+            <BiChevronRight size={26} color="black" />
+          </ButtonMobile>
+        </div>
+      )}
     </Wrapper>
   )
 }
@@ -164,7 +182,7 @@ const Wrapper = styled.div`
 
   ${[sizes.down('lgMob')]} {
     flex-direction: column;
-
+    /* padding: 0 0 0 2rem; */
     .buttonsContainer {
       width: 100%;
       margin-top: 1rem;
@@ -219,9 +237,25 @@ const Container = styled.div`
 type ItemProps = {
   isProduct: boolean
 }
+
 const Item = styled.div<ItemProps>`
   width: 260px;
   height: 360px;
+
+  ${[sizes.down('lgMob')]} {
+    width: 175px;
+    height: 300px;  
+    border-radius: 16px;
+    ${(props) => props.isProduct === false && 'width: 329px;'}
+    ${(props) => props.isProduct === false && 'height: 120px;'}
+
+    ${(props) => props.isProduct === false && 'flex-direction: row;'}
+
+  }
+
+
+
+
   background: white;
   flex: none;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -279,6 +313,12 @@ const Item = styled.div<ItemProps>`
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
+    ${[sizes.down('lgMob')]} {
+      width: 120px;
+      height: 90px;
+      margin: auto;
+      margin-left: 1rem;
+    }
     img {
       width: 100%;
       height: 100%;
@@ -330,13 +370,31 @@ const Item = styled.div<ItemProps>`
     width: 100%;
     border-bottom: 1px solid var(--gray-100);
 
+    ${[sizes.down('lgMob')]} {
+      border-bottom: 0;
+      align-items: flex-start;
+      margin-left: 1rem;
+
+      h3 {
+        font-size: 2rem;
+      }
+    }
+
     .stars {
       padding-left: 0.8rem;
+
+      ${[sizes.down('lgMob')]} {
+        padding: 0;
+      }
     }
+
   }
 
   .city {
     margin-top: 0.6rem;
     color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 `
