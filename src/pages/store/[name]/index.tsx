@@ -1,4 +1,5 @@
 import HeaderShop from '../../../components/molecules/HeaderShop'
+import Link from 'next/link'
 import Head from 'next/head'
 import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 import {
@@ -30,6 +31,7 @@ import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
 import { ellipsis } from 'functions/ellipsis'
+import styled from 'styled-components'
 
 const Products = () => {
   const router = useRouter()
@@ -150,8 +152,8 @@ const Products = () => {
       </Head>
 
       <TopoPage>
-        <img src="/images/capa.png" alt="capa" />
-        <HeaderShop />
+        <img className='capa' src="/images/capa.png" alt="capa" />
+        <HeaderShop isMain={false} />
       </TopoPage>
 
       <InfoSerch>

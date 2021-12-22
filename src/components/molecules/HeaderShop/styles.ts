@@ -1,12 +1,18 @@
+import { filterProps } from 'recharts/types/util/types'
 import styled from 'styled-components'
 import sizes from '../../../utils/sizes'
 
-export const Container = styled.header`
-  //width: 100%;
+interface ContainerProps {
+  isMain: boolean
+}
+
+export const Container = styled.header<ContainerProps>`
   z-index: 5;
   padding: 1rem 20px;
-  /* background: rgba(0, 0, 0, 0.1); */
 
+  ${(props) => props.isMain === false && 'background: rgba(0,0,0,0.4);'}
+  ${(props) => props.isMain === false && 'color: var(--white);'}
+  
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,6 +24,7 @@ export const Container = styled.header`
 
   nav {
     width: 80%;
+    ${(props) => props.isMain === false && 'width: 100%;'}
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -71,7 +78,7 @@ export const Container = styled.header`
 
       :hover {
         padding: 5px;
-        background: var(--yellow);
+        background: #f5f5f544;
       }
     }
   }

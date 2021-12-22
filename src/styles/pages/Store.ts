@@ -17,12 +17,13 @@ export const TopoPage = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
-  img {
+  .capa {
     z-index: 2;
-    margin-top: -86px;
+    margin-top: -105px;
     width: 100%;
   }
-`
+` 
+
 export const InfoSerch = styled.div`
   display: flex;
   flex-direction: column;

@@ -3,9 +3,12 @@ import { Container } from './styles'
 import { MdShoppingCart } from 'react-icons/md'
 import Link from 'next/link'
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isMain?: boolean
+}
+const Header = ({ isMain }: HeaderProps) => {
   return (
-    <Container>
+    <Container isMain={isMain}>
       <div className="logo">
         <img src="/images/logo.svg" alt="logo" />
       </div>
