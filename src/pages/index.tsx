@@ -102,6 +102,9 @@ const Landing = ({ stores }: Landing) => {
 
         <Footer>
           <div>
+            <h1>Boa de Venda</h1>
+            <span>CNPJ: 00.000.000/0000-00</span>
+            <span>Inscrição Estadual: 00.000.00-0</span>
             <h1>Contato</h1>
 
             <span>
@@ -121,6 +124,7 @@ const Landing = ({ stores }: Landing) => {
           </div>
           <div className="mapContainer">
             <img src="/images/map.png" />
+            <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
           </div>
         </Footer>
       </Container>
