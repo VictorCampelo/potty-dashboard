@@ -104,6 +104,18 @@ export const Container = styled.div`
 
       height: 100%;
     }
+
+    .cupons-container {
+      padding: 20px 85px;
+
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      flex-wrap: wrap;
+      align-items: flex-start;
+
+      height: 100%;
+    }
   }
 `
 
@@ -145,6 +157,16 @@ export const AddProductModalContainer = styled.div`
 
     svg {
       cursor: pointer;
+    }
+  }
+
+  .radio-area {
+    color: var(--gray-700);
+    margin-bottom: 0.5rem;
+
+    label {
+      font-size: 0.865rem;
+      margin-left: 0.5rem;
     }
   }
 
@@ -299,6 +321,11 @@ export const AddProductModalContainer = styled.div`
         }
       }
     }
+  }
+
+  small {
+    color: var(--gray-600);
+    margin-top: 0.2rem;
   }
 `
 

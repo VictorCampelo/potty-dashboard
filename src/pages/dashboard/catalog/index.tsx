@@ -53,6 +53,8 @@ import { MultiSelect } from 'components/molecules/MultiSelect'
 import { Point } from 'react-easy-crop/types'
 import getCroppedImg from 'functions/cropImage'
 import Cropper from 'react-easy-crop'
+import CupomItem from 'components/molecules/CupomItem'
+import { Checkbox } from 'components/atoms/Checkbox'
 
 type CategoryType = {
   name: string
@@ -87,6 +89,12 @@ interface CatalogType {
   storeId: string
 }
 
+interface Cupom {
+  code: string
+  discountPorcent: number
+  maxUsage: number
+}
+
 const catalog = ({ storeId }: CatalogType) => {
   const [excludeModal, setExcludeModal] = useState(false)
   const [confirmExclude, setConfirmExclude] = useState(false)
@@ -96,6 +104,8 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
+
+  const [addCupomModal, setAddCupomModal] = useState(false)
 
   const [editProduct, setEditProduct] = useState(false)
   const [editProductId, setEditProductId] = useState('')
@@ -116,6 +126,13 @@ const catalog = ({ storeId }: CatalogType) => {
     value: '1',
     label: '1x'
   })
+
+  const [cupons, setCupons] = useState<Cupom[]>([
+    { code: 'ENFIMNATAL', discountPorcent: 10, maxUsage: 1000 },
+    { code: 'DESCONTO10', discountPorcent: 15, maxUsage: 3123 },
+    { code: 'DICONTIN', discountPorcent: 3, maxUsage: 10 },
+    { code: 'DESCONTAI', discountPorcent: 4, maxUsage: 5 }
+  ])
 
   const [previewImage, setPreviewImage] = useState(null)
   const [imageSrc, setImageSrc] = useState(null)
@@ -185,6 +202,10 @@ const catalog = ({ storeId }: CatalogType) => {
   function toggleEditCategoryModal() {
     setCategory('')
     setEditCategoryModal(!editCategoryModal)
+  }
+
+  function toggleAddCupomModal() {
+    setAddCupomModal(!addCupomModal)
   }
 
   // Toasts
@@ -1003,6 +1024,123 @@ const catalog = ({ storeId }: CatalogType) => {
         </AddProductModalContainer>
       </CustomModal>
 
+      {/* Add product */}
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleAddCupomModal}
+        modalVisible={addCupomModal}
+      >
+        <AddProductModalContainer>
+          <h1 className="titulo-cadastro">Cadastrar Cupom</h1>
+          <div className="input-infos">
+            <div className="left-area">
+              <div className="radio-area">
+                <span>Valor do desconto</span>
+                <div className="radio-container">
+                  <input type="radio" name="type" value="1" id="real" />
+                  <label htmlFor="all">Real</label>
+                </div>
+
+                <div className="radio-container">
+                  <input type="radio" name="type" value="2" id="perc" />
+                  <label htmlFor="cat">Porcentagem</label>
+                </div>
+              </div>
+
+              <Input
+                label="Valor do desconto"
+                icon={<FaMoneyBill />}
+                placeholder="R$ 0"
+                mask="monetary"
+              />
+
+              <div className="row">
+                <Input label="Validade" placeholder="02/12/2021" mask="date" />
+
+                <Input label="N° de cupons" placeholder="0" mask="number" />
+              </div>
+
+              <div className="radio-area">
+                <input type="checkbox" name="type" value="1" id="ilim" />
+                <label htmlFor="ilim">Cupons ilimitados</label>
+              </div>
+
+              <div className="row">
+                <Input label="Nome do cupom" placeholder="CUPOM10" />
+              </div>
+
+              <small>
+                Código que será digitado pelo cliente, deverá possuir apenas
+                letras e número.
+              </small>
+            </div>
+
+            <div className="right-area">
+              <div className="radio-area">
+                <span>Tipo de desconto</span>
+                <div className="radio-container">
+                  <input type="radio" name="type" value="1" id="all" />
+                  <label htmlFor="all">Toda a loja</label>
+                </div>
+
+                <div className="radio-container">
+                  <input type="radio" name="type" value="2" id="cat" />
+                  <label htmlFor="cat">Categorias selecionadas</label>
+                </div>
+
+                <div className="radio-container">
+                  <input type="radio" name="type" value="3" id="first" />
+                  <label htmlFor="first">Primeira compra</label>
+                </div>
+              </div>
+
+              <div className="input-container">
+                <Input
+                  label="Quantidade atual"
+                  icon={<FaCoins />}
+                  placeholder="0"
+                  mask="number"
+                />
+              </div>
+
+              <MultiSelect
+                loading={false}
+                name="Categorias"
+                options={categories.map((cat) => ({
+                  value: String(cat.id),
+                  label: cat.name
+                }))}
+                placeholder="Suas categorias"
+                selectedValue={selectedCategories}
+                setSelectedValue={setSelectedCategories}
+              />
+              <h3>{'Categorias adicionadas: ' + selectedCategories.length}</h3>
+
+              <div className="radio-area">
+                <input type="checkbox" name="type" value="1" id="priv" />
+                <label htmlFor="priv">Cupom privado</label>
+                <br />
+                <small>
+                  Cupons privados só serão acessíveis para quem tiver o nome do
+                  cupom.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div className="buttonContainer">
+            <Button
+              title="Voltar"
+              border
+              style={{ marginRight: 16 }}
+              onClick={toggleAddCupomModal}
+            />
+
+            <Button title="Salvar" />
+          </div>
+        </AddProductModalContainer>
+      </CustomModal>
+
       {/* Crop Image Modal */}
       <CustomModal
         buttons={false}
@@ -1063,7 +1201,11 @@ const catalog = ({ storeId }: CatalogType) => {
               <button
                 className="addBtn"
                 onClick={
-                  toggleState == 1 ? handleOpenAddModal : toggleAddCategoryModal
+                  toggleState == 1
+                    ? handleOpenAddModal
+                    : toggleState == 2
+                    ? toggleAddCategoryModal
+                    : toggleAddCupomModal
                 }
               >
                 <FiPlus size={20} color="var(--white)" />
@@ -1078,10 +1220,12 @@ const catalog = ({ storeId }: CatalogType) => {
                 />
               </div>
             </header>
+
             <main>
               <CatalogTabs
                 tab1="Produtos"
                 tab2="Categorias"
+                tab3="Cupons"
                 setToggleState={setToggleState}
                 toggleState={toggleState}
                 content1={
@@ -1164,6 +1308,27 @@ const catalog = ({ storeId }: CatalogType) => {
                             title="Cadastrar"
                             onClick={toggleAddCategoryModal}
                           />
+                        </div>
+                      </EmptyContainer>
+                    )}
+                  </div>
+                }
+                content3={
+                  <div className="cupons-container">
+                    {cupons.length !== 0 ? (
+                      cupons.map((it) => (
+                        <CupomItem
+                          code={it.code}
+                          info={`Desconto de ${it.discountPorcent} com o máximo de usos: ${it.maxUsage}`}
+                          key={it.code}
+                        />
+                      ))
+                    ) : (
+                      <EmptyContainer>
+                        <div>
+                          <img src="/images/emptyCategories.svg" />
+                          <p>Nenhuma cupom cadastrado</p>
+                          <Button title="Cadastrar" onClick={() => {}} />
                         </div>
                       </EmptyContainer>
                     )}
