@@ -21,7 +21,7 @@ export const Container = styled.header<ContainerProps>`
     display: flex;
     align-content: center;
   }
-  
+
   nav {
     width: 80%;
     ${(props) => props.isMain === false && 'width: 100%;'}
@@ -78,7 +78,7 @@ export const Container = styled.header<ContainerProps>`
 
       :hover {
         padding: 5px;
-        background: var(--yellow);
+        background: #f5f5f544;
       }
     }
   }
