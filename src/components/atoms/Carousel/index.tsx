@@ -182,13 +182,14 @@ const Wrapper = styled.div`
 
   ${[sizes.down('lgMob')]} {
     flex-direction: column;
-    /* padding: 0 0 0 2rem; */
+    padding: 0 0 0 2rem;
     .buttonsContainer {
       width: 100%;
       margin-top: 1rem;
       display: flex;
       gap: 3rem;
       justify-content: flex-end;
+      margin-right: 1rem;
     }
   }
 `
@@ -248,13 +249,9 @@ const Item = styled.div<ItemProps>`
     border-radius: 16px;
     ${(props) => props.isProduct === false && 'width: 329px;'}
     ${(props) => props.isProduct === false && 'height: 120px;'}
-
     ${(props) => props.isProduct === false && 'flex-direction: row;'}
 
   }
-
-
-
 
   background: white;
   flex: none;
