@@ -4,6 +4,8 @@ import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { api } from 'services/apiClient'
+import useMedia from 'use-media'
+import sizes from 'utils/sizes'
 
 interface Carousel {
   data: {
@@ -35,11 +37,15 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
     carousel.current.scrollLeft += 276
   }
 
+  const widthScreen = useMedia({ minWidth: '426px' })
+
   return (
     <Wrapper>
-      <Button onClick={handleScrollLeft} position="left">
-        <BiChevronLeft size={26} color="black" />
-      </Button>
+      {widthScreen && (
+        <Button onClick={handleScrollLeft} position="left">
+          <BiChevronLeft size={26} color="black" />
+        </Button>
+      )}
 
       <Container ref={carousel}>
         {data.map((store) => (
@@ -129,9 +135,19 @@ const Carousel = ({ data = [], isProduct, promo }: Carousel) => {
         ))}
       </Container>
 
-      <Button onClick={handleScrollRight} position="right">
-        <BiChevronRight size={26} color="black" />
-      </Button>
+      {widthScreen && (
+        <Button onClick={handleScrollRight} position="right">
+          <BiChevronRight size={26} color="black" />
+        </Button>
+      )}
+      <div className="buttonsContainer">
+        <ButtonMobile onClick={handleScrollLeft}>
+          <BiChevronLeft size={26} color="black" />
+        </ButtonMobile>
+        <ButtonMobile onClick={handleScrollRight}>
+          <BiChevronRight size={26} color="black" />
+        </ButtonMobile>
+      </div>
     </Wrapper>
   )
 }
@@ -145,6 +161,18 @@ const Wrapper = styled.div`
   align-items: center;
   transform: translateX(-7%);
   padding: 0 2rem;
+
+  ${[sizes.down('lgMob')]} {
+    flex-direction: column;
+
+    .buttonsContainer {
+      width: 100%;
+      margin-top: 1rem;
+      display: flex;
+      gap: 3rem;
+      justify-content: flex-end;
+    }
+  }
 `
 
 type ButtonProp = {
@@ -167,6 +195,10 @@ const Button = styled.button<ButtonProp>`
 const ButtonProduct = styled(Button)`
   width: 1.8rem;
   height: 1.8rem;
+`
+const ButtonMobile = styled(Button)`
+  width: 2.5rem;
+  height: 2.5rem;
 `
 
 const Container = styled.div`
