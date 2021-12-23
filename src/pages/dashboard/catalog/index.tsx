@@ -376,7 +376,7 @@ const catalog = ({ storeId }: CatalogType) => {
       price: Number(
         values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
       ),
-      description: values.description,
+      description: descriptionProduct,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
@@ -441,7 +441,7 @@ const catalog = ({ storeId }: CatalogType) => {
       price: Number(
         values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
       ),
-      description: values.description,
+      description: descriptionProduct,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
