@@ -17,6 +17,7 @@ import { api } from 'services/apiClient'
 import router from 'next/router'
 import { Input } from 'components/molecules/Input'
 import { CardServices } from 'components/molecules/CardServices'
+import sizes from 'utils/sizes'
 
 interface Landing {
   stores: []
@@ -26,7 +27,7 @@ const Landing = ({ stores }: Landing) => {
   return (
     <Wrapper>
       <Head>
-        <title>Landing | Último</title>
+        <title>Home | Boa de Venda</title>
       </Head>
 
       <Header />
@@ -41,15 +42,7 @@ const Landing = ({ stores }: Landing) => {
           />
         </Banner>
 
-        <Content
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingLeft: '8rem',
-            paddingRight: '8rem'
-          }}
-        >
+        <ContentProduct>
           <div className="search-boxes">
             <Input
               type="text"
@@ -60,23 +53,22 @@ const Landing = ({ stores }: Landing) => {
           </div>
 
           <CardServices />
-          <div   
+          <div
             style={{
-                marginTop: '2rem',
-                alignSelf: 'flex-end',
-                display: 'flex',
-              }}
+              marginTop: '2rem',
+              alignSelf: 'flex-end',
+              display: 'flex'
+            }}
           >
-          
             <p
               style={{
-                color:'var(--color-primary)',
+                color: 'var(--color-primary)',
                 fontWeight: 'bold'
               }}
-              >
+            >
               Ver todas as categorias
             </p>
-            <AiOutlineRight size={25} color='var(--color-primary)' />
+            <AiOutlineRight size={25} color="var(--color-primary)" />
           </div>
           {stores.length !== 0 && (
             <>
@@ -106,10 +98,13 @@ const Landing = ({ stores }: Landing) => {
               </div>
             </>
           )}
-        </Content>
+        </ContentProduct>
 
         <Footer>
           <div>
+            <h1>Boa de Venda</h1>
+            <span>CNPJ: 00.000.000/0000-00</span>
+            <span>Inscrição Estadual: 00.000.00-0</span>
             <h1>Contato</h1>
 
             <span>
@@ -129,6 +124,7 @@ const Landing = ({ stores }: Landing) => {
           </div>
           <div className="mapContainer">
             <img src="/images/map.png" />
+            <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
           </div>
         </Footer>
       </Container>
@@ -219,6 +215,16 @@ export const Content = styled.section`
         margin-bottom: 2rem !important;
       }
     }
+  }
+`
+export const ContentProduct = styled(Content)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 8rem 0 8rem;
+
+  ${[sizes.down('lgMob')]} {
+    padding: 0 2rem 0 2rem;
   }
 `
 
