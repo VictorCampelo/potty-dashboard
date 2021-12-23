@@ -198,7 +198,7 @@ export const CardProduct = styled.div`
           justify-content: center;
           align-items: center;
 
-          background: #2dd1ac;
+          background: var(--color-primary);
           border-radius: 8px;
 
           font-family: 'Poppins';
@@ -211,22 +211,47 @@ export const CardProduct = styled.div`
         }
       }
 
-      h1 {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 40px;
-        line-height: 60px;
+      .price {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        div {
+          width: 50px;
+          height: 28px;
 
-        color: #2dd1ac;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
 
-        small {
+          background: var(--color-primary);
+          border-radius: 8px;
+
           font-family: 'Poppins';
           font-style: normal;
           font-weight: 600;
-          font-size: 20px;
+          font-size: 14px;
+          line-height: 27px;
 
-          color: #b2b5ba;
+          color: #ffffff;
+        }
+        h1 {
+          font-family: 'Poppins';
+          font-style: normal;
+          font-weight: 600;
+          font-size: 40px;
+          line-height: 60px;
+
+          color: var(--color-primary);
+
+          small {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+
+            color: #b2b5ba;
+          }
         }
       }
     }
@@ -245,7 +270,7 @@ export const CardProduct = styled.div`
         max-width: 270px;
         height: 54px;
         background: #ffffff;
-        border: 2px solid #2dd1ac;
+        border: 2px solid var(--color-primary);
         box-sizing: border-box;
         border-radius: 30px;
 
@@ -256,7 +281,7 @@ export const CardProduct = styled.div`
         font-weight: 600;
         font-size: 18px;
 
-        color: #2dd1ac;
+        color: var(--color-primary);
 
         :first-child {
           margin-right: 24px;
@@ -265,13 +290,23 @@ export const CardProduct = styled.div`
         :last-child {
           max-width: 290px;
           color: #ffffff;
-          background: #2dd1ac;
+          background: var(--color-primary);
         }
       }
     }
   }
 `
-
+export const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 32px;
+  background: var(--white);
+  border: 1px solid var(--white);
+  border-radius: 50%;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+`
 export const CardDesc = styled.div`
   margin-top: 24px;
 
@@ -307,7 +342,6 @@ export const CardDesc = styled.div`
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-
         padding-left: 10px;
         padding-right: 30px;
 
@@ -319,7 +353,6 @@ export const CardDesc = styled.div`
           flex-direction: column;
           align-items: center;
           justify-content: space-between;
-
           img {
             width: 130px;
             height: 130px;

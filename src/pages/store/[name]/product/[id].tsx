@@ -8,7 +8,8 @@ import {
   ProductWrapper,
   Footer,
   FilterCard,
-  Installments
+  Installments,
+  Button
 } from '../../../../styles/pages/Product'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
@@ -19,7 +20,9 @@ import {
   AiFillFacebook,
   AiFillPhone,
   AiFillStar,
-  AiOutlineWhatsApp
+  AiOutlineWhatsApp,
+  AiOutlineUp,
+  AiOutlineDown
 } from 'react-icons/ai'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
@@ -247,7 +250,7 @@ const ProductShow = () => {
         <title>Produto | Último</title>
       </Head>
 
-      <HeaderShop />
+      <HeaderShop isMain={false} />
       <Container>
         <header className="header">
           <Input icon={<FaSearch />} placeholder="Pesquisar na loja" />
@@ -256,6 +259,10 @@ const ProductShow = () => {
           <CardProduct>
             <div className="image-container">
               <div className="list-images">
+                <Button style={{ marginBottom: '1rem' }}>
+                  {' '}
+                  <AiOutlineUp size={20} color="var(--gray-600" />
+                </Button>
                 {images.map((data) => {
                   return (
                     <img
@@ -266,6 +273,10 @@ const ProductShow = () => {
                     />
                   )
                 })}
+                <Button style={{ marginTop: '1rem' }}>
+                  {' '}
+                  <AiOutlineDown size={20} color="var(--gray-600" />
+                </Button>
               </div>
               <img src={imagePreview} alt="Foto do produto" />
             </div>
@@ -285,10 +296,13 @@ const ProductShow = () => {
                       <h4>R$ {price}</h4>
                       <div>-{discount}%</div>
                     </div>
-                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                    <div className="price">
+                      <div>12x</div>
+                      <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                    </div>
                     <p>
                       Em até 12x sem juros ou{' '}
-                      <strong>{priceWithDiscount}</strong> à vista
+                      <strong>R$ {priceWithDiscount}</strong> à vista
                     </p>
                   </>
                 ) : (
@@ -396,7 +410,7 @@ const ProductShow = () => {
                   <>
                     <button>COMPRAR AGORA</button>
                     <button onClick={handleAddToCart}>
-                      ADICIONAR AO CARRINHO
+                      ADICIONE AO CARRINHO
                     </button>
                   </>
                 )}
@@ -416,6 +430,10 @@ const ProductShow = () => {
                     <div className="left-container">
                       <div className="image-container">
                         <div className="list-images">
+                          <Button style={{ marginBottom: '1rem' }}>
+                            {' '}
+                            <AiOutlineUp size={20} color="var(--gray-600" />
+                          </Button>
                           {images.map((data) => {
                             return (
                               <img
@@ -428,6 +446,10 @@ const ProductShow = () => {
                               />
                             )
                           })}
+                          <Button style={{ marginTop: '1rem' }}>
+                            {' '}
+                            <AiOutlineDown size={20} color="var(--gray-600" />
+                          </Button>
                         </div>
                         <img src={imagePreviewDesc} alt="Foto do produto" />
                       </div>
