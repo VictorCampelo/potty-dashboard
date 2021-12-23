@@ -18,12 +18,20 @@ import router from 'next/router'
 import { Input } from 'components/molecules/Input'
 import { CardServices } from 'components/molecules/CardServices'
 import sizes from 'utils/sizes'
+import { useContext } from 'react'
+import { CartContext } from 'contexts/CartContext'
 
 interface Landing {
   stores: []
 }
 
 const Landing = ({ stores }: Landing) => {
+  const { items } = useContext(CartContext)
+
+  const total = items.reduce((prev, curr) => {
+    return prev + Number(curr.price) * Number(curr.amount)
+  }, 0)
+
   return (
     <Wrapper>
       <Head>
@@ -128,6 +136,19 @@ const Landing = ({ stores }: Landing) => {
           </div>
         </Footer>
       </Container>
+
+      <ContainerCart onClick={() => router.push('/cart')}>
+        <div className="cart-container">
+          <img src="/images/cartIcon.png" alt="Cart" />
+          <div className="product-len">{items.length}</div>
+        </div>
+
+        {items.length > 0 && (
+          <p>
+            {' | '} R$ {total.toFixed(2)}
+          </p>
+        )}
+      </ContainerCart>
     </Wrapper>
   )
 }
@@ -141,6 +162,54 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 }
+
+export const ContainerCart = styled.button`
+  position: absolute;
+  border: none;
+  right: 60px;
+  bottom: 60px;
+  background: var(--color-primary);
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 30px;
+  padding: 0 1.5rem;
+  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+
+  p {
+    margin-left: 1rem;
+    color: white;
+    font-size: 1rem;
+  }
+
+  .cart-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .product-len {
+    background: var(--color-secondary);
+    position: absolute;
+    padding: 0 0.5rem;
+    top: 6px;
+    right: -10px;
+    color: white;
+    font-size: 12px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`
 
 export const Wrapper = styled.div`
   width: 100vw;
