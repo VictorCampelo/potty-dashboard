@@ -432,15 +432,18 @@ const catalog = ({ storeId }: CatalogType) => {
     }
   }
 
-  const handleUpdateProduct = async () => {
+  const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
+    values,
+    event
+  ) => {
     const body = {
-      title: titleProduct,
+      title: values.title,
       price: Number(
-        priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
       ),
-      description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0'),
-      discount: Number(discountProduct),
+      description: values.description,
+      inventory: Number(values.inventory || '0'),
+      discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
       files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
@@ -868,16 +871,15 @@ const catalog = ({ storeId }: CatalogType) => {
         setModalOpen={toggleEditProduct}
         modalVisible={editProduct}
       >
-        <AddProductModalContainer>
-          <h1 className="titulo-cadastro">Editar Produto</h1>
+        <AddProductModalContainer onSubmit={handleSubmit(handleUpdateProduct)}>
+          <h1 className="titulo-cadastro">Cadastrar Produto</h1>
           <div className="input-infos">
             <div className="left-area">
               <Input
                 label="Nome do produto"
                 icon={<FiBox />}
                 placeholder="Nome do produto"
-                value={titleProduct}
-                onChange={(e) => setTitleProduct(e.target.value)}
+                {...register('title')}
               />
 
               <TextArea
@@ -886,6 +888,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
                 value={descriptionProduct}
+                {...register('description')}
                 onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
@@ -895,10 +898,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                   mask="monetary"
-                  value={priceProduct}
-                  onChange={(e) => {
-                    setPriceProduct(e.target.value)
-                  }}
+                  {...register('price')}
                 />
 
                 <Select
@@ -917,15 +917,29 @@ const catalog = ({ storeId }: CatalogType) => {
                   label="Desconto"
                   icon={<FaPercentage />}
                   mask="number"
-                  placeholder="0"
+                  placeholder="0.0%"
+                  {...register('discount')}
                 />
+
                 <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
+
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
+                  value={(
+                    (Number(
+                      getValues?.('discount')
+                        ?.replace('R$ ', '')
+                        ?.replaceAll('.', '')
+                        ?.replaceAll(',', '.') || '0'
+                    ) *
+                      Number(discountProduct)) /
+                    100
+                  ).toFixed(2)}
+                  disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                 />
@@ -939,8 +953,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
-                  value={inventoryProduct}
-                  onChange={(e) => setInventoryProduct(e.target.value)}
+                  {...register('inventory')}
                 />
               </div>
 
@@ -959,62 +972,91 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <h2>Foto do produto</h2>
 
-              <div className="foto">
-                <div className="title-foto">Foto</div>
-                <label htmlFor="image">
-                  <input
-                    id="image"
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    multiple={true}
-                    maxLength={3}
-                    onChange={onFileChange}
-                    style={{ display: 'none' }}
-                  />
+              {/*<div className="foto">
+                 <div className="title-foto">Foto</div>
+                 <label htmlFor="image">
                   Enviar foto
                   <MdUpload size={20} />
                 </label>
-              </div>
+              </div> */}
 
               <div className="array-fotos">
                 <MdOutlineArrowBackIosNew />
-                <div className="card-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc.one}
-                      width="100%"
-                      height="100%"
-                      alt="Foto Produto"
-                    />
-                  ) : (
-                    <IoMdCamera size={25} color="#6C7079" />
-                  )}
-                </div>
-                <div className="card-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc.two}
-                      width="100%"
-                      height="100%"
-                      alt="Foto Produto"
-                    />
-                  ) : (
-                    <IoMdCamera size={25} color="#6C7079" />
-                  )}
-                </div>
-                <div className="card-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc.three}
-                      width="100%"
-                      height="100%"
-                      alt="Foto Produto"
-                    />
-                  ) : (
-                    <IoMdCamera size={25} color="#6C7079" />
-                  )}
-                </div>
+                <input
+                  id="image"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(1)}
+                />
+                <input
+                  id="image1"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(2)}
+                />
+                <input
+                  id="image2"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(3)}
+                />
+                <label htmlFor="image">
+                  <div className="card-image">
+                    {imageSrc ? (
+                      <img
+                        src={imageSrc}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
+                <label htmlFor="image1">
+                  <div className="card-image">
+                    {imageSrc1 ? (
+                      <img
+                        src={imageSrc1}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
+                <label htmlFor="image2">
+                  <div className="card-image">
+                    {imageSrc2 ? (
+                      <img
+                        src={imageSrc2}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
                 <MdOutlineArrowForwardIos />
               </div>
             </div>
@@ -1025,10 +1067,10 @@ const catalog = ({ storeId }: CatalogType) => {
               title="Voltar"
               border
               style={{ marginRight: 16 }}
-              onClick={toggleEditProduct}
+              onClick={toggleAddModal}
             />
 
-            <Button title="Salvar" onClick={() => handleUpdateProduct()} />
+            <Button title="Salvar" type="submit" />
           </div>
         </AddProductModalContainer>
       </CustomModal>
