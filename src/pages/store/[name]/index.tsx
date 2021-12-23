@@ -152,7 +152,7 @@ const Products = () => {
       </Head>
 
       <TopoPage>
-        <img className='capa' src="/images/capa.png" alt="capa" />
+        <img className="capa" src="/images/capa.png" alt="capa" />
         <HeaderShop isMain={false} />
       </TopoPage>
 
@@ -343,9 +343,12 @@ const Products = () => {
                           />
                           <span className="title">{ellipsis(e.title, 30)}</span>
                           <div className="price">
-                            <span>R$ {e.price}</span>
+                            <span>R$ {e.price.toFixed(2)}</span>
                             <small>
-                              {e.discount ? 'R$ ' + e.discount : null}
+                              {e.discount
+                                ? 'R$ ' +
+                                  ((1 - e.discount) * e.price).toFixed(2)
+                                : null}
                             </small>
                           </div>
                           <div className="score">
@@ -391,7 +394,7 @@ const Products = () => {
                               </span>
                             </div>
                             <div className="price">
-                              <span>R$ {e.price}</span>
+                              <span>R$ {e.price.toFixed(2)}</span>
                               <small>
                                 {e.descont ? 'R$ ' + e.descont : null}
                               </small>

@@ -119,7 +119,7 @@ export const Container = styled.div`
   }
 `
 
-export const AddProductModalContainer = styled.div`
+export const AddProductModalContainer = styled.form`
   width: auto;
   max-width: 850px;
 

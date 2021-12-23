@@ -54,7 +54,9 @@ import { Point } from 'react-easy-crop/types'
 import getCroppedImg from 'functions/cropImage'
 import Cropper from 'react-easy-crop'
 import CupomItem from 'components/molecules/CupomItem'
-import { Checkbox } from 'components/atoms/Checkbox'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 type CategoryType = {
   name: string
@@ -94,6 +96,24 @@ interface Cupom {
   discountPorcent: number
   maxUsage: number
 }
+
+type CreateProductFormData = {
+  title: string
+  price: string
+  description: string
+  inventory: string
+  discount: string
+  parcelAmount: string
+}
+
+const createProductFormSchema = yup.object().shape({
+  title: yup.string(),
+  price: yup.string(),
+  description: yup.string(),
+  inventory: yup.string(),
+  discount: yup.string(),
+  parcelAmount: yup.string()
+})
 
 const catalog = ({ storeId }: CatalogType) => {
   const [excludeModal, setExcludeModal] = useState(false)
@@ -338,15 +358,27 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  async function handleCreateProduct() {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting }
+  } = useForm({
+    resolver: yupResolver(createProductFormSchema)
+  })
+
+  const handleCreateProduct: SubmitHandler<CreateProductFormData> = async (
+    values,
+    event
+  ) => {
     const body = {
-      title: titleProduct,
+      title: values.title,
       price: Number(
-        priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
       ),
-      description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0'),
-      discount: Number(discountProduct),
+      description: values.description,
+      inventory: Number(values.inventory || '0'),
+      discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
       files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
@@ -355,15 +387,7 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       await createProduct({ data: body })
 
-      toast.success('Produto criado com sucesso', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
+      toast.success('Produto criado com sucesso')
 
       setAddModal(false)
       setTitleProduct('')
@@ -390,15 +414,7 @@ const catalog = ({ storeId }: CatalogType) => {
         )
       }
 
-      toast.error('Erro ao criar produto', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
+      toast.error('Erro ao criar produto')
     }
 
     loadData()
@@ -642,7 +658,7 @@ const catalog = ({ storeId }: CatalogType) => {
         setModalOpen={toggleAddModal}
         modalVisible={addModal}
       >
-        <AddProductModalContainer>
+        <AddProductModalContainer onSubmit={handleSubmit(handleCreateProduct)}>
           <h1 className="titulo-cadastro">Cadastrar Produto</h1>
           <div className="input-infos">
             <div className="left-area">
@@ -650,8 +666,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 label="Nome do produto"
                 icon={<FiBox />}
                 placeholder="Nome do produto"
-                value={titleProduct}
-                onChange={(e) => setTitleProduct(e.target.value)}
+                {...register('title')}
               />
 
               <TextArea
@@ -660,6 +675,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
                 value={descriptionProduct}
+                {...register('description')}
                 onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
@@ -669,10 +685,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                   mask="monetary"
-                  value={priceProduct}
-                  onChange={(e) => {
-                    setPriceProduct(e.target.value)
-                  }}
+                  {...register('price')}
                 />
 
                 <Select
@@ -692,10 +705,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaPercentage />}
                   mask="number"
                   placeholder="0.0%"
-                  value={discountProduct}
-                  onChange={(e) => {
-                    setDiscountProduct(e.target.value)
-                  }}
+                  {...register('discount')}
                 />
 
                 <div className="arrows">
@@ -708,10 +718,10 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="monetary"
                   value={(
                     (Number(
-                      priceProduct
-                        .replace('R$ ', '')
-                        .replaceAll('.', '')
-                        .replaceAll(',', '.')
+                      getValues?.('discount')
+                        ?.replace('R$ ', '')
+                        ?.replaceAll('.', '')
+                        ?.replaceAll(',', '.') || '0'
                     ) *
                       Number(discountProduct)) /
                     100
@@ -730,8 +740,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
-                  value={inventoryProduct}
-                  onChange={(e) => setInventoryProduct(e.target.value)}
+                  {...register('inventory')}
                 />
               </div>
 
@@ -848,7 +857,7 @@ const catalog = ({ storeId }: CatalogType) => {
               onClick={toggleAddModal}
             />
 
-            <Button title="Salvar" onClick={handleCreateProduct} />
+            <Button title="Salvar" type="submit" />
           </div>
         </AddProductModalContainer>
       </CustomModal>
@@ -1134,6 +1143,7 @@ const catalog = ({ storeId }: CatalogType) => {
               border
               style={{ marginRight: 16 }}
               onClick={toggleAddCupomModal}
+              type="button"
             />
 
             <Button title="Salvar" />
