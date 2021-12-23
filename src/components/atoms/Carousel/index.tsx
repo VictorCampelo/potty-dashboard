@@ -245,7 +245,7 @@ const Item = styled.div<ItemProps>`
 
   ${[sizes.down('lgMob')]} {
     width: 175px;
-    height: 300px;  
+    height: 300px;
     border-radius: 16px;
     ${(props) => props.isProduct === false && 'width: 329px;'}
     ${(props) => props.isProduct === false && 'height: 120px;'}
@@ -373,7 +373,7 @@ const Item = styled.div<ItemProps>`
       margin-left: 1rem;
 
       h3 {
-        font-size: 2rem;
+        font-size: 1.5rem;
       }
     }
 

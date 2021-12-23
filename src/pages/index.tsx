@@ -27,7 +27,7 @@ const Landing = ({ stores }: Landing) => {
   return (
     <Wrapper>
       <Head>
-        <title>Landing | Último</title>
+        <title>Home | Boa de Venda</title>
       </Head>
 
       <Header />

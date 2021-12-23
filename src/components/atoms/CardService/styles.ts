@@ -36,6 +36,7 @@ export const Container = styled.div<ContainerProps>`
     font-weight: bold;
     ${[sizes.down('lgMob')]} {
       color: var(--white);
+      padding-left: 10px;
     }
   }
 `
