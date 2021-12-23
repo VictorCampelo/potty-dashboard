@@ -3,8 +3,8 @@ interface Breakpoints {
 }
 
 const breakpoints: Breakpoints = {
-  smMob: '320px',
-  mdMob: '375px',
+  smMob: '321px',
+  mdMob: '376px',
   lgMob: '426px',
   sm: '600px',
   md: '960px',

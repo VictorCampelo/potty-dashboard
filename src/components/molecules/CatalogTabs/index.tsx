@@ -5,10 +5,10 @@ import { Container } from './styles'
 interface CatalogProps extends React.AllHTMLAttributes<HTMLAllCollection> {
   tab1: string
   tab2: string
-  tab3: string
+  tab3?: string
   content1: React.ReactElement
   content2: React.ReactElement
-  content3: React.ReactElement
+  content3?: React.ReactElement
   toggleState: number
   setToggleState: React.Dispatch<React.SetStateAction<number>>
 }
@@ -44,12 +44,14 @@ const CatalogTabs = ({
           >
             {tab2}
           </button>
-          <button
-            className={toggleState === 3 ? 'tabs active-tabs' : 'tabs'}
-            onClick={() => toggleTab(3)}
-          >
-            {tab3}
-          </button>
+          {tab3 && (
+            <button
+              className={toggleState === 3 ? 'tabs active-tabs' : 'tabs'}
+              onClick={() => toggleTab(3)}
+            >
+              {tab3}
+            </button>
+          )}
         </div>
 
         <div className="content-tabs">
@@ -69,13 +71,15 @@ const CatalogTabs = ({
             {content2}
           </div>
 
-          <div
-            className={
-              toggleState === 3 ? 'content  active-content' : 'content'
-            }
-          >
-            {content3}
-          </div>
+          {content3 && (
+            <div
+              className={
+                toggleState === 3 ? 'content  active-content' : 'content'
+              }
+            >
+              {content3}
+            </div>
+          )}
         </div>
       </div>
     </Container>

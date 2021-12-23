@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Container = styled.main`
   display: flex;
@@ -546,7 +547,7 @@ export const ProductWrapper = styled.div`
 
 export const Footer = styled.footer`
   width: 90%;
-  height: 260px;
+  height: 320px;
   border-radius: 30px;
   background: var(--white);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -555,6 +556,18 @@ export const Footer = styled.footer`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+    height: 490px;
+    margin-bottom: 0;
+    border-radius: 30px 30px 0 0;
+    flex-direction: column;
+    img {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
   h1 {
     margin-bottom: 1rem;
   }
@@ -568,5 +581,9 @@ export const Footer = styled.footer`
     svg {
       margin-right: 0.5rem;
     }
+  }
+
+  .mapContainer {
+    text-align: center;
   }
 `
