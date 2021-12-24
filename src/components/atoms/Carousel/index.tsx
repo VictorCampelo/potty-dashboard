@@ -182,14 +182,17 @@ const Wrapper = styled.div`
 
   ${[sizes.down('lgMob')]} {
     flex-direction: column;
-    padding: 0 0 0 2rem;
+    padding: 0 0 0 var(--spacing-xs);
+
     .buttonsContainer {
-      width: 100%;
-      margin-top: 1rem;
       display: flex;
-      gap: 3rem;
+
+      width: 100%;
+      margin-top: var(--spacing-xxxs);
+
+      gap: 1.5rem;
       justify-content: flex-end;
-      margin-right: 1rem;
+      margin-right: var(--spacing-xxxs);
     }
   }
 `
@@ -198,17 +201,21 @@ type ButtonProp = {
   position?: string
 }
 const Button = styled.button<ButtonProp>`
-  width: 4rem;
-  height: 4rem;
-  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: none;
+
+  width: 2rem;
+  height: 2rem;
+
   border: none;
-  border-radius: 50%;
+  border-radius: var(--border-radius-md);
+
   ${(props) => props.position === 'right' && 'border-radius: 0 50% 50% 0;'}
   ${(props) => props.position === 'left' && 'border-radius: 50% 0 0 50%;'}
-  background: white;
+
+  background: var(--white);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `
 const ButtonProduct = styled(Button)`
@@ -223,9 +230,8 @@ const ButtonMobile = styled(Button)`
 const Container = styled.div`
   display: flex;
   width: 100%;
-  /* padding: 0.5rem 2rem; */
-  padding: 0.5rem 0.25rem;
 
+  padding: var(--spacing-nano) var(--spacing-quarck);
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;
@@ -240,41 +246,42 @@ type ItemProps = {
 }
 
 const Item = styled.div<ItemProps>`
+  display: flex;
+  flex: none;
+  align-items: center;
+  flex-direction: column;
+
   width: 260px;
   height: 360px;
+  background: var(--white);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: var(--border-radius-gg);
+
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  margin-top: var(--spacing-xxxs);
 
   ${[sizes.down('lgMob')]} {
     width: 175px;
     height: 300px;
-    border-radius: 16px;
+    border-radius: var(--border-radius-md);
+
     ${(props) => props.isProduct === false && 'width: 329px;'}
     ${(props) => props.isProduct === false && 'height: 120px;'}
     ${(props) => props.isProduct === false && 'flex-direction: row;'}
-
   }
-
-  background: white;
-  flex: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-  margin-top: 1rem;
 
   .btnProductLeft {
     position: absolute;
-    left: 5px;
+    left: var(--spacing-quarck);
     top: 30%;
     z-index: 3;
   }
 
   .btnProductRight {
     position: absolute;
-    right: 5px;
+    right: var(--spacing-quarck);
     top: 30%;
     z-index: 3;
   }
@@ -287,26 +294,32 @@ const Item = styled.div<ItemProps>`
   }
 
   .head {
-    width: 100%;
-    height: 190px;
     display: flex;
     align-items: center;
+
+    width: 100%;
+    height: 190px;
     overflow: hidden;
+
     ${(props) => props.isProduct && 'padding: 1.2rem 1.2rem 0 1.2rem;'}
     ${(props) => props.isProduct && 'height: 300px;'}
+
     img {
       ${(props) => props.isProduct && 'border-radius: 10px;'}
     }
   }
 
   .logo {
+    display: flex;
+
     width: 4rem;
     height: 4rem;
+
     border-radius: 50%;
-    display: flex;
+
     text-align: left;
     border: 4px solid white;
-    margin-top: -2.5rem;
+    margin-top: calc(var(--spacing-sm) * -1);
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
@@ -314,7 +327,7 @@ const Item = styled.div<ItemProps>`
       width: 120px;
       height: 90px;
       margin: auto;
-      margin-left: 1rem;
+      margin-left: var(--spacing-xxxs);
     }
     img {
       width: 100%;
@@ -326,20 +339,24 @@ const Item = styled.div<ItemProps>`
     width: 100%;
     height: 100%;
   }
+
   .infoProduct {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 0.2rem;
-    padding: 0 1rem 1rem 1rem;
+
     width: 100%;
+
+    margin-top: var(--spacing-quarck);
+    padding: 0 var(--spacing-xxxs) var(--spacing-xxxs) var(--spacing-xxxs);
+
     bottom: 0;
     span {
       font-size: 0.7rem;
     }
     h3 {
       content: '...'
-      font-size: 1.5rem;
+      font-size: var(--font-size-md);
       color: var(--color-primary);
     }
   }
@@ -351,8 +368,8 @@ const Item = styled.div<ItemProps>`
       align-items: center;
 
       small {
-        font-size: 0.75rem;
-        margin-left: 0.25rem;
+        font-size: var(--font-size-xxxxs);
+        margin-left: var(--spacing-quarck);
         color: var(--gray-600);
       }
     }
@@ -362,18 +379,21 @@ const Item = styled.div<ItemProps>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 0.5rem;
-    padding-bottom: 1rem;
+
     width: 100%;
-    border-bottom: 1px solid var(--gray-100);
+
+    margin-top: var(--spacing-nano);
+    padding-bottom: var(--spacing-xxxs);
+    border-bottom: var(--border-width-hairline) solid var(--gray-100);
+
 
     ${[sizes.down('lgMob')]} {
       border-bottom: 0;
       align-items: flex-start;
-      margin-left: 1rem;
+      margin-left: var(--spacing-xxxs);
 
       h3 {
-        font-size: 1.5rem;
+        font-size: var(--font-size-md);
       }
     }
 
@@ -388,10 +408,11 @@ const Item = styled.div<ItemProps>`
   }
 
   .city {
-    margin-top: 0.6rem;
-    color: var(--gray-600);
     display: flex;
     align-items: center;
+
+    margin-top: var(--spacing-nano);
+    color: var(--gray-600);
     gap: 10px;
   }
 `

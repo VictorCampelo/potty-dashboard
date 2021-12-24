@@ -11,6 +11,7 @@ export const Container = styled.div<ContainerProps>`
   align-items: center;
   width: 200px;
   height: 222px;
+  cursor: pointer;
 
   ${[sizes.down('lgMob')]} {
     width: 160px;
