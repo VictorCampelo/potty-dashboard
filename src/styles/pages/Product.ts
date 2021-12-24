@@ -558,7 +558,6 @@ export const Footer = styled.footer`
 
   ${[sizes.down('lgMob')]} {
     width: 100%;
-    height: 490px;
     margin-bottom: 0;
     border-radius: 30px 30px 0 0;
     flex-direction: column;

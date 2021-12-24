@@ -182,14 +182,17 @@ const Wrapper = styled.div`
 
   ${[sizes.down('lgMob')]} {
     flex-direction: column;
-    padding: 0 0 0 2rem;
+    padding: 0 0 0 var(--spacing-xs);
+
     .buttonsContainer {
-      width: 100%;
-      margin-top: 1rem;
       display: flex;
-      gap: 3rem;
+
+      width: 100%;
+      margin-top: var(--spacing-xxxs);
+
+      gap: 1.5rem;
       justify-content: flex-end;
-      margin-right: 1rem;
+      margin-right: var(--spacing-xxxs);
     }
   }
 `
