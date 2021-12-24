@@ -7,58 +7,63 @@ interface ContainerProps {
 }
 
 export const Container = styled.header<ContainerProps>`
-  z-index: 5;
-  padding: 1rem 20px;
-
-  ${(props) => props.isMain === false && 'background: rgba(0,0,0,0.4);'}
-  ${(props) => props.isMain === false && 'color: var(--white);'}
-  
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: var(--spacing-xxxs) var(--spacing-xxs);
+
+  ${(props) => props.isMain === false && 'background: rgba(0,0,0,0.4);'}
+  ${(props) => props.isMain === false && 'color: var(--white);'}
+
   border-bottom: 1px solid var(--gray-300);
+  z-index: 5;
+
   .logo {
     display: flex;
     align-content: center;
   }
 
   nav {
-    width: 80%;
-    ${(props) => props.isMain === false && 'width: 100%;'}
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+    width: 80%;
+
+    ${(props) => props.isMain === false && 'width: 100%;'}
     list-style-type: none;
 
     .authContainer {
       display: flex;
       align-items: center;
-      margin-left: 4rem;
+      margin-left: var(--spacing-lg);
+
       .register {
         color: var(--color-primary);
       }
 
       button {
-        padding: 8px 2rem;
-
-        border-radius: 30px;
-        border: none;
-        background: var(--color-primary);
-        margin-right: 4rem;
-        margin-left: 1rem;
-        cursor: pointer;
-
-        font-family: Poppins;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 1.5rem;
-        transition: 0.2s background;
-
-        color: #ffffff;
-
         display: flex;
         justify-content: center;
         align-items: center;
+
+        background: var(--color-primary);
+
+        margin-right: var(--spacing-lg);
+        margin-left: var(--spacing-xxxs);
+        padding: var(--spacing-nano) var(--spacing-xs);
+
+        border-radius: var(--border-radius-gg);
+        border: none;
+        cursor: pointer;
+
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-style-normal);
+        font-size: var(--spacing-xxs);
+        transition: 0.2s background;
+
+        color: var(--white);
 
         :hover {
           background: var(--color-primary-darker);
@@ -68,17 +73,16 @@ export const Container = styled.header<ContainerProps>`
     a {
       text-decoration: none;
       cursor: pointer;
-      margin-left: 2rem;
-      font-size: 1.2rem;
-      /* color: var(--white); */
+      margin-left: var(--spacing-xs);
+      font-size: var(--font-size-sm);
       transition: 0.2s background;
-      padding: 5px;
-      border-radius: 10px;
+      padding: var(--spacing-quarck);
+      border-radius: var(--border-radius-sm);
       border: none;
 
       :hover {
-        padding: 5px;
-        background: #f5f5f544;
+        padding: var(--spacing-quarck);
+        background: var(--gray-200);
       }
     }
   }
