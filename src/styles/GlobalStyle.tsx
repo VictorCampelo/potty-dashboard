@@ -63,6 +63,18 @@ export default createGlobalStyle`
     --font-size-display: 5rem; // 80px
     --font-size-giant: 6rem; // 96px
 
+    /* FONT WEIGHT */
+    --font-weight-bold: 700;
+    --font-weight-medium: 600;
+    --font-weight-regular: 500;
+    --font-weight-light: 400;
+
+    /* LINE HEIGHT */
+    --line-height-tight: 100%;
+    --line-height-md: 120%;
+    --line-height-distant: 150%;
+    --line-height-super-distant: 200%;
+
     /* =============================== */
 
     /* ========== [BORDER] =========== */

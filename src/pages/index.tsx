@@ -61,23 +61,10 @@ const Landing = ({ stores }: Landing) => {
           </div>
 
           <CardServices />
-          <div
-            style={{
-              marginTop: '2rem',
-              alignSelf: 'flex-end',
-              display: 'flex'
-            }}
-          >
-            <p
-              style={{
-                color: 'var(--color-primary)',
-                fontWeight: 'bold'
-              }}
-            >
-              Ver todas as categorias
-            </p>
+          <MoreCategory>
+            <p>Ver todas as categorias</p>
             <AiOutlineRight size={25} color="var(--color-primary)" />
-          </div>
+          </MoreCategory>
           {stores.length !== 0 && (
             <>
               <div className="carousel-container">
@@ -124,19 +111,11 @@ const Landing = ({ stores }: Landing) => {
               Whatsapp
             </span>
 
-            {/* <a href="facebook.com">
-              <AiFillFacebook size={24} color="var(--gray-700)" />
-              Facebook
-            </a> */}
             <ContainerTerms>
               <a href=""><span>Termos de Uso e Políticas de Privacidade</span></a>
               <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
             </ContainerTerms>
           </div>
-          {/* <div className="mapContainer">
-            <img src="/images/map.png" />
-            <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
-          </div> */}
         </Footer>
       </Container>
 
@@ -336,6 +315,21 @@ export const Select = styled.select`
 
 export const ContainerTerms = styled.div`
   padding-top: var(--spacing-xs);
+`
+
+export const MoreCategory = styled.div`
+  display: flex;
+  margin-top: 2rem;
+  align-self: flex-end;
+  cursor: pointer;
+
+  p {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    :hover {
+      text-decoration: underline;
+    }
+  }
 `
 
 export default Landing
