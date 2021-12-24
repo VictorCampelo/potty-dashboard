@@ -401,7 +401,7 @@ export const CardDesc = styled.div`
         font-size: 24px;
         line-height: 36px;
 
-        color: #3c8efc;
+        color: var(--color-secondary-darker);
 
         margin-bottom: 24px;
       }
@@ -431,7 +431,7 @@ export const CardDesc = styled.div`
       padding: 0 39px;
 
       color: #fff;
-      background: #6598d9;
+      background: var(--color-secondary);
 
       div {
         display: flex;
@@ -541,7 +541,7 @@ export const FilterCard = styled.div`
       font-size: 24px;
       line-height: 36px;
 
-      color: #3c8efc;
+      color: var(--color-secondary-darker);
 
       margin-bottom: 18px;
       margin-top: 18px;
@@ -563,19 +563,16 @@ export const ProductWrapper = styled.div`
   width: 100%;
   min-height: 900px;
   height: auto;
-
-  margin-top: 64px;
+  margin-top: 2rem;
   margin-bottom: 74px;
 
-  padding: 0 50px;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
+  padding: 0 8rem;
 
   gap: 1rem;
+
+  h1 {
+    font-weight: 400;
+  }
 `
 
 export const Footer = styled.footer`

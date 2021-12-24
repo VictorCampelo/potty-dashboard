@@ -33,7 +33,7 @@ import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
-
+import Carousel from 'components/atoms/Carousel'
 const fakeFeedBack = [
   {
     id: 1
@@ -57,22 +57,52 @@ const fakeFeedBack = [
 
 const fakeProducts = [
   {
-    id: 1
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 2
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 3
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 4
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 5
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 6
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   }
 ]
 
@@ -573,29 +603,13 @@ const ProductShow = () => {
           </CardDesc>
 
           <ProductWrapper>
-            {fakeProducts.map((e) => {
-              return (
-                <ProductCard key={e.id} onClick={(e) => handleOpenProduct(e)}>
-                  <img
-                    src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                    alt="geladeira frost free"
-                  />
-                  <span className="title">Refrigerador Brastemp BRM44HK</span>
-                  <div className="price">
-                    <span>R$ 2.999,00</span>
-                    <small>R$ 4.999,00</small>
-                  </div>
-                  <div className="score">
-                    <AiFillStar size={18} color="var(--gold)" />
-                    <span>5.0 | 5412 Pedidos</span>
-                  </div>
-                  <p>
-                    Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                    Legumes Fresh Zone Inox - 375L
-                  </p>
-                </ProductCard>
-              )
-            })}
+            <h1>Produtos relacionados</h1>
+            <div>
+              <Carousel data={fakeProducts} isProduct />
+            </div>
+            <div>
+              <Carousel data={fakeProducts} isProduct />
+            </div>
           </ProductWrapper>
           <Footer>
             <h1>Contato</h1>

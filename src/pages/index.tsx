@@ -24,6 +24,7 @@ interface Landing {
 }
 
 const Landing = ({ stores }: Landing) => {
+  console.log(stores)
   return (
     <Wrapper>
       <Head>
