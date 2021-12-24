@@ -10,7 +10,9 @@ const Header = ({ isMain }: HeaderProps) => {
   return (
     <Container isMain={isMain}>
       <div className="logo">
-        <img src="/images/logo.svg" alt="logo" />
+        <a href="/">
+          <img src="/images/logo.svg" alt="logo" />
+        </a>
       </div>
       <nav>
         <Link href="/categorias">
