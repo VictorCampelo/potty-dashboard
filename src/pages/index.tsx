@@ -152,14 +152,14 @@ export const ContainerCart = styled.button`
 
   position: absolute;
   border: none;
-  right: 60px;
-  bottom: 60px;
+  right: var(--spacing-lg);
+  bottom: var(--spacing-lg);
   background: var(--color-primary);
   height: 62px;
 
-  color: white;
-  border-radius: 30px;
-  padding: 0 1.5rem;
+  color: var(--white);
+  border-radius: var(--border-radius-gg);
+  padding: 0 var(--spacing-xxs);
   box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
 
   ${[sizes.down('lgMob')]} {
@@ -168,16 +168,16 @@ export const ContainerCart = styled.button`
   }
 
   p {
-    margin-left: 1rem;
-    color: white;
-    font-size: 1rem;
+    margin-left: var(--spacing-xxxs);
+    color: var(--white);
+    font-size: var(--font-size-xxs);
   }
 
   .cart-container {
-    position: relative;
-    height: 100%;
     display: flex;
     align-items: center;
+    position: relative;
+    height: 100%;
 
     img {
       width: 30px;
@@ -186,17 +186,19 @@ export const ContainerCart = styled.button`
   }
 
   .product-len {
-    background: var(--color-secondary);
-    position: absolute;
-    padding: 0 0.5rem;
-    top: 6px;
-    right: -10px;
-    color: white;
-    font-size: 12px;
-    border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background: var(--color-secondary);
+    position: absolute;
+    padding: 0 var(--spacing-nano);
+    top: var(--spacing-nano);
+    right: -10px;
+    color: var(--white);
+
+    font-size: var(--font-size-xxxxs);
+    border-radius: var(--border-radius-sm);
   }
 `
 
@@ -208,11 +210,12 @@ export const Wrapper = styled.div`
 `
 
 export const Container = styled.main`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
 `
 
 export const Content = styled.section`
@@ -224,21 +227,21 @@ export const Content = styled.section`
     width: 100%;
     display: flex;
     gap: 2rem;
-    margin-top: 1rem;
+    margin-top: var(--spacing-xxxs);
     justify-content: center;
   }
 
   .carousel-container {
     width: 100%;
-    margin-top: 4rem;
+    margin-top: var(--spacing-lg);
   }
 
   .carousel-item {
     width: 100%;
-    margin-bottom: 3rem;
+    margin-bottom: var(--spacing-md);
 
     .title {
-      font-size: 1.5rem;
+      font-size: var(--font-size-md);
     }
   }
 
@@ -252,23 +255,24 @@ export const Content = styled.section`
     }
 
     .description-text {
-      height: auto;
-      max-width: 550px;
       display: flex;
       flex-direction: column;
       justify-content: center;
 
+      height: auto;
+      max-width: 550px;
+
       h1 {
-        font-size: 2rem;
+        font-size: var(--font-size-xlg);
       }
 
       span {
-        font-size: 1.25rem;
+        font-size: var(--font-size-sm);
       }
 
       h1,
       span {
-        margin-bottom: 2rem !important;
+        margin-bottom: var(--font-size-xlg) !important;
       }
     }
   }
@@ -280,39 +284,40 @@ export const ContentProduct = styled(Content)`
   padding: 0 8rem 0 8rem;
 
   ${[sizes.down('lgMob')]} {
-    padding: 0 2rem 0 2rem;
+    padding: 0 var(--font-size-xlg) 0 var(--font-size-xlg);
   }
 `
 
 export const Banner = styled.section`
-  width: 100%;
-  height: 250px;
   display: flex;
   justify-content: center;
-  padding: 1.5rem 4rem;
-  /* background: var(--color-primary); */
+
+  width: 100%;
+  height: 250px;
+
+  padding: var(--font-size-md) var(--font-size-xxxxl);
 `
 
 export const SelectInput = styled.input`
-  background: white;
+  background: var(--white);
   border: none;
   height: 48px;
   max-width: 1420px;
   width: 100%;
   border-radius: 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 0 1.5rem;
+  padding: 0 var(--font-size-md);
 `
 
 export const Select = styled.select`
-  background: white;
+  background: var(--white);
   border: none;
   height: 60px;
   max-width: 1420px;
   width: 100%;
-  border-radius: 30px;
+  border-radius: var(--border-radius-gg);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 0 1.5rem;
+  padding: 0 var(--spacing-xxs);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -324,13 +329,14 @@ export const ContainerTerms = styled.div`
 
 export const MoreCategory = styled.div`
   display: flex;
-  margin-top: 2rem;
+  margin-top: var(--spacing-xs);
   align-self: flex-end;
   cursor: pointer;
 
   p {
     color: var(--color-primary);
     font-weight: var(--font-weight-bold);
+
     :hover {
       text-decoration: underline;
     }
