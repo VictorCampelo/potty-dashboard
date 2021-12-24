@@ -111,13 +111,12 @@ const Landing = ({ stores }: Landing) => {
         <Footer>
           <div>
             <h1>Boa de Venda</h1>
-            <span>CNPJ: 00.000.000/0000-00</span>
-            <span>Inscrição Estadual: 00.000.00-0</span>
+            <span>CNPJ: 26.745.054/0001-70</span>
             <h1>Contato</h1>
 
             <span>
               <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 99444-5552
+              +55 (86) 9 8178-9622
             </span>
 
             <span>
@@ -125,15 +124,19 @@ const Landing = ({ stores }: Landing) => {
               Whatsapp
             </span>
 
-            <a href="facebook.com">
+            {/* <a href="facebook.com">
               <AiFillFacebook size={24} color="var(--gray-700)" />
               Facebook
-            </a>
+            </a> */}
+            <ContainerTerms>
+              <a href=""><span>Termos de Uso e Políticas de Privacidade</span></a>
+              <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
+            </ContainerTerms>
           </div>
-          <div className="mapContainer">
+          {/* <div className="mapContainer">
             <img src="/images/map.png" />
             <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
-          </div>
+          </div> */}
         </Footer>
       </Container>
 
@@ -329,6 +332,10 @@ export const Select = styled.select`
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
+`
+
+export const ContainerTerms = styled.div`
+  padding-top: var(--spacing-xs);
 `
 
 export default Landing
