@@ -49,7 +49,7 @@ export default createGlobalStyle`
     /* ================================== */
 
      /* ======== [FONT SIZE] ============ */
-     --font-size-xxxxs: .75rem; // 12px
+    --font-size-xxxxs: .75rem; // 12px
     --font-size-xxxs: .875rem; // 14px
     --font-size-xxs: 1rem; // 16px
     --font-size-xs: 1.125rem; // 18px
@@ -65,7 +65,7 @@ export default createGlobalStyle`
 
     /* =============================== */
 
-    /* ========== [RADIUS] =========== */
+    /* ========== [BORDER] =========== */
     --border-radius-xxs: 4px;
     --border-radius-sm: 8px;
     --border-radius-md: 16px;
@@ -73,6 +73,13 @@ export default createGlobalStyle`
     --border-radius-gg: 28px;
     --border-radius-pill: 500px;
     --border-radius-circular: 50%;
+
+    /* WIDTH */
+    --border-width-none: 0;
+    --border-width-hairline: 1px;
+    --border-width-thin: 2px;
+    --border-width-thick: 4px;
+    --border-width-heavy: 8px;
 
     /* ============================== */
 
