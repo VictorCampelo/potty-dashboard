@@ -146,19 +146,26 @@ export const getServerSideProps = async (ctx) => {
 }
 
 export const ContainerCart = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   position: absolute;
   border: none;
   right: 60px;
   bottom: 60px;
   background: var(--color-primary);
   height: 62px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   color: white;
   border-radius: 30px;
   padding: 0 1.5rem;
   box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+
+  ${[sizes.down('lgMob')]} {
+    right: var(--spacing-xxs);
+    bottom: var(--spacing-xs);
+  }
 
   p {
     margin-left: 1rem;
@@ -202,7 +209,6 @@ export const Wrapper = styled.div`
 
 export const Container = styled.main`
   width: 100%;
-  /* height: 100%; */
   align-items: center;
   justify-content: center;
   display: flex;
@@ -213,7 +219,6 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
-  /* padding: 3rem 3rem; */
 
   .search-boxes {
     width: 100%;
