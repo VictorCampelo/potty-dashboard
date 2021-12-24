@@ -612,21 +612,27 @@ const ProductShow = () => {
             </div>
           </ProductWrapper>
           <Footer>
-            <h1>Contato</h1>
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 8854-2341
-            </span>
+            <div>
+              <h1>Contato</h1>
+              <span>
+                <AiFillPhone size={24} color="var(--gray-700)" />
+                (89) 99444-5552
+              </span>
 
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              (89) 8854-2341
-            </span>
+              <span>
+                <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                Whatsapp
+              </span>
 
-            <a href="facebook.com">
-              <AiFillFacebook size={24} color="var(--gray-700)" />
-              Facebook
-            </a>
+              <a href="facebook.com">
+                <AiFillFacebook size={24} color="var(--gray-700)" />
+                Facebook
+              </a>
+            </div>
+            <div className="mapContainer">
+              <img src="/images/map.png" />
+              <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
+            </div>
           </Footer>
         </main>
       </Container>
