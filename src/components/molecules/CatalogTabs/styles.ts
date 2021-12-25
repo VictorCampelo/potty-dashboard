@@ -59,7 +59,7 @@ export const Container = styled.div`
     left: 50%;
 
     transform: translateX(-50%);
-    width: 70%;
+    width: 85%;
     height: 5px;
 
     background: var(--color-secondary);
