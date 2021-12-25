@@ -85,18 +85,20 @@ export const Container = styled.div`
     }
 
     .products-container {
-      padding: 20px 70px;
+      padding: var(--spacing-xxs) var(--spacing-md);
 
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       overflow-y: auto;
 
+      background-color: var(--white);
+
       height: 100%;
     }
 
     .categories-container {
-      padding: 20px 85px;
+      padding: var(--spacing-xxs) var(--spacing-md);
 
       display: flex;
       flex-direction: column;

@@ -106,7 +106,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
               </div>
             </Link>
 
-            <Link href={`/dashboard/catalog`}>
+            <Link href={`/dashboard/catalogo`}>
               <div className="option">
                 <FiBox
                   className="icon"

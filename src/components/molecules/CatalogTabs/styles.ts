@@ -75,7 +75,6 @@ export const Container = styled.div`
   }
 
   .content {
-    background: white;
     width: 100%;
     height: 100%;
     display: none;

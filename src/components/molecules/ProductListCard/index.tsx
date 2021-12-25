@@ -1,4 +1,4 @@
-import { Container } from './styles'
+import { Container, ContainerButtons } from './styles'
 import { IoTrashBinOutline } from 'react-icons/io5'
 import { RiPencilFill, RiCamera2Fill } from 'react-icons/ri'
 import { ellipsis } from 'functions/ellipsis'
@@ -49,8 +49,8 @@ export const ProductListCard = ({
               <td className="title">Preço</td>
             </tr>
             <tr>
-              <td className="children">{ellipsis(name, 10)}</td>
-              <td className="children">{ellipsis(code, 10)}</td>
+              <td className="children">{ellipsis(name, 12)}</td>
+              <td className="children">{ellipsis(code, 8)}</td>
               <td className="children">{ellipsis(category, 10)}</td>
               <td className="children">{ellipsis(String(amount), 10)}</td>
               <td className="children">
@@ -60,19 +60,15 @@ export const ProductListCard = ({
             </tr>
           </div>
         </div>
-        <div className="edit-btn">
-          <button onClick={editBtn} className="edit-btn">
-            <RiPencilFill size={20} />
-            Editar
-          </button>
-        </div>
-        <div className="exclude-btn">
-          <button onClick={excludeBtn} className="close-btn">
-            <IoTrashBinOutline size={20} />
-            Excluir
-          </button>
-        </div>
       </div>
+      <ContainerButtons>
+        <button onClick={editBtn} className="edit-btn">
+          <RiPencilFill size={20} />
+        </button>
+        <button onClick={excludeBtn} className="close-btn">
+          <IoTrashBinOutline size={20} />
+        </button>
+      </ContainerButtons>
     </Container>
   )
 }
