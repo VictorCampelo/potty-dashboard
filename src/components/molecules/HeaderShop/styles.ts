@@ -10,17 +10,20 @@ export const Container = styled.header<ContainerProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-xxxs) var(--spacing-xxs);
+  padding: var(--spacing-nano) var(--spacing-xxxs);
 
   ${(props) => props.isMain === false && 'background: rgba(0,0,0,0.4);'}
   ${(props) => props.isMain === false && 'color: var(--white);'}
 
-  border-bottom: 1px solid var(--gray-300);
+  border-bottom: var(--border-width-hairline) solid var(--gray-300);
   z-index: 5;
 
   .logo {
     display: flex;
     align-content: center;
+    img {
+      max-width: 80%;
+    }
   }
 
   nav {
