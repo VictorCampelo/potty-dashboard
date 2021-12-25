@@ -502,7 +502,7 @@ const catalog = ({ storeId }: CatalogType) => {
   return (
     <>
       <Head>
-        <title> Catálogo | Último </title>
+        <title> Catálogo | Boa de Venda </title>
       </Head>
 
       {/* Remove category */}
@@ -1245,7 +1245,7 @@ const catalog = ({ storeId }: CatalogType) => {
       </CustomModal>
 
       <Container>
-        <DrawerLateral activated={true} greenOption={4} />
+        <DrawerLateral greenOption={4} />
 
         <div className="area">
           <div className="list-container">
@@ -1290,7 +1290,7 @@ const catalog = ({ storeId }: CatalogType) => {
                             icon=""
                             name={product?.title}
                             code={product?.id}
-                            category={product?.tags}
+                            category={product?.categories}
                             amount={product?.inventory}
                             price={product?.price}
                             excludeBtn={() => {

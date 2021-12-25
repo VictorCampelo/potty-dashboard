@@ -2,27 +2,26 @@ import { Button } from 'components/atoms/Button'
 import styled from 'styled-components'
 
 export const ConfigButton = styled(Button)`
-  margin-top: 20px;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  margin-top: var(--spacing-xxs);
+  padding-top: var(--spacing-xxxs);
+  padding-bottom: var(--spacing-xxxs);
 `
 
 export const Container = styled.div`
+  display: flex;
+
   width: 100%;
   height: 100vh;
   background: #fffdf9;
 
-  display: flex;
-
   div.cards-area {
+    display: flex;
+
     max-width: 100%;
     width: auto;
 
-    padding: 20px 20px;
-
-    padding-left: 7rem;
-
-    display: flex;
+    padding: var(--spacing-xxs) var(--spacing-xxs);
+    padding-left: var(--spacing-huge);
 
     .left-area {
       display: flex;
@@ -31,22 +30,22 @@ export const Container = styled.div`
 
       height: 95vh;
 
-      margin-right: 20px;
+      margin-right: var(--spacing-xxs);
 
       .config-button {
         width: 23vw;
         height: 6vh;
-        margin-top: 20px;
+        margin-top: var(--spacing-xxs);
 
         background: var(--color-primary);
-        border-radius: 30px;
+        border-radius: var(--border-radius-gg);
         border: none;
 
-        font-style: normal;
-        font-weight: 600;
-        font-size: 1rem;
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-xxs);
 
-        color: #ffffff;
+        color: var(--white);
       }
     }
 
@@ -56,30 +55,33 @@ export const Container = styled.div`
       height: 95vh;
 
       section + section {
-        margin-top: 20px;
+        margin-top: var(--spacing-xxs);
       }
     }
   }
 `
 
 export const ModalContainer = styled.div`
-  width: auto;
-  max-width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  width: auto;
+  max-width: 800px;
+
   .exit-container {
-    width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+
+    width: 100%;
+    margin-bottom: var(--spacing-xs);
+
     h1 {
-      font-family: 'Poppins';
-      font-style: normal;
-      font-weight: 600;
-      font-size: 24px;
+      font-family: var(--font-family-primary);
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-md);
       line-height: 36px;
 
       color: var(--color-secondary-darker);
@@ -98,63 +100,62 @@ export const ModalContainer = styled.div`
       width: 300px;
       margin-right: 72px;
     }
-    .dates {
-      width: 350px;
 
+    .dates {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
 
-      margin-bottom: 20px;
+      width: 350px;
+      margin-bottom: var(--spacing-xxs);
 
       > * {
         &:last-child {
-          margin-left: 32px;
+          margin-left: var(--spacing-xs);
         }
       }
 
       p {
         width: 71px;
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: normal;
-        font-size: 15px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-xxs);
         line-height: 22px;
 
-        color: #363f4e;
+        color: var(--black-800);
 
-        margin-right: 27px;
+        margin-right: var(--spacing-xxs);
       }
     }
   }
 
   .categories-container {
-    width: 500px;
-
     display: flex;
     justify-content: center;
     align-items: center;
 
-    margin-bottom: 30px;
+    width: 500px;
+    margin-bottom: var(--spacing-xs);
   }
 
   .category-container {
-    width: auto;
-    max-width: 500px;
-    height: auto;
-
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+
+    width: auto;
+    max-width: 500px;
+    height: auto;
   }
 
   .desc-container {
     width: 100%;
     height: 50vh;
 
-    padding: 3px 20px;
+    padding: var(--spacing-quarck) var(--spacing-xxs);
 
     overflow-x: hidden;
     overflow-y: auto;
@@ -169,17 +170,17 @@ export const ModalContainer = styled.div`
           width: 100%;
           height: 200px;
           object-fit: cover;
-          border-radius: 8px;
+          border-radius: var(--border-radius-sm);
         }
 
         #imageBtn {
-          position: absolute;
-          right: 10px;
-          bottom: 15px;
-
           display: flex;
           align-items: center;
           justify-content: center;
+
+          position: absolute;
+          right: var(--spacing-nano);
+          bottom: var(--spacing-xxxs);
 
           width: 41px;
           height: 41px;
@@ -187,7 +188,7 @@ export const ModalContainer = styled.div`
           background-color: var(--color-primary);
 
           border-radius: 100%;
-          border: 4px solid var(--white);
+          border: var(--border-width-thick) solid var(--white);
 
           label {
             display: flex;
@@ -208,12 +209,13 @@ export const ModalContainer = styled.div`
     }
 
     .bottom {
+      display: flex;
+      flex-direction: column;
+
       margin-top: 70px;
       width: 500px;
       height: auto;
 
-      display: flex;
-      flex-direction: column;
       gap: 1rem;
     }
   }
@@ -224,10 +226,10 @@ export const ModalContainer = styled.div`
 
     justify-content: space-between;
 
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-xxs);
     > * {
       &:first-child {
-        margin-right: 24px;
+        margin-right: var(--spacing-xxs);
       }
     }
   }
@@ -235,11 +237,11 @@ export const ModalContainer = styled.div`
   .last-inputRow {
     display: flex;
     flex-direction: row;
-
     justify-content: space-between;
+
     > * {
       &:first-child {
-        margin-right: 24px;
+        margin-right: var(--spacing-xxs);
       }
     }
   }
@@ -248,9 +250,9 @@ export const ModalContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
-    margin-top: 48px;
     width: 100%;
+
+    margin-top: var(--spacing-md);
 
     Button {
       width: 132px;
@@ -262,7 +264,7 @@ export const ModalContainer = styled.div`
 
     > * {
       &:first-child {
-        margin-bottom: 24px;
+        margin-bottom: var(--spacing-xxs);
       }
     }
 
@@ -272,7 +274,7 @@ export const ModalContainer = styled.div`
       justify-content: space-between;
       > * {
         &:first-child {
-          margin-right: 24px;
+          margin-right: var(--spacing-xxs);
         }
       }
     }
@@ -283,7 +285,7 @@ export const ModalContainer = styled.div`
       justify-content: space-between;
       > * {
         &:first-child {
-          margin-right: 24px;
+          margin-right: var(--spacing-xxs);
         }
       }
     }

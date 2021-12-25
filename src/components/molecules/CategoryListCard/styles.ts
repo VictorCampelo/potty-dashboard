@@ -9,7 +9,9 @@ interface ContainerProp {
 export const Container = styled.div<ContainerProp>`
   width: 100%;
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-xxxs);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: var(--border-radius-sm);
 
   .section {
     display: flex;
@@ -17,72 +19,69 @@ export const Container = styled.div<ContainerProp>`
     width: 100%;
 
     .card-container {
-      width: 100%;
-      height: 68px;
-      z-index: 1;
-
       display: flex;
       align-items: center;
 
+      width: 100%;
+      height: 100%;
+
       background: #f4f5f6;
-      border-radius: 8px;
+      border-radius: var(--border-radius-sm);
 
       user-select: none;
-
       cursor: pointer;
+
+      z-index: 1;
 
       .icon-btn {
         ${(props) => props.isOpen && 'transform: rotate(180deg);'}
         transition: 0.4s;
-        margin: 16px 23px;
+        margin: var(--spacing-xxxs) var(--spacing-xxs);
       }
 
       .title {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 15px;
-        line-height: 22px;
-
         display: flex;
         align-items: center;
 
-        color: #000000;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-xxs);
+        line-height: 22px;
+
+        color: var(--black-1000);
       }
     }
 
     .children-container {
-      width: 767px;
-      margin-left: 40px;
-
       display: none;
-      ${(props) => props.isOpen && 'display: block;'}
-
       align-items: center;
 
-      margin-top: 15px;
+      width: 767px;
+      height: 100%;
+      margin-left: var(--spacing-sm);
+
+      ${(props) => props.isOpen && 'display: block;'}
+
+      margin-top: var(--spacing-xxxs);
 
       .items {
-        width: 767px;
-        height: 29px;
-
         display: flex;
         align-items: center;
+
+        width: 767px;
 
         background: #f4f4f4;
-        border-radius: 30px;
+        border-radius: var(--border-radius-gg);
 
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: normal;
-        font-size: 13px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-xxxs);
 
-        display: flex;
-        align-items: center;
+        margin-bottom: var(--spacing-xxxs);
 
-        margin-bottom: 11px;
-
-        color: #000000;
+        color: var(--black-1000);
 
         .text {
           width: 170px;
@@ -94,32 +93,33 @@ export const Container = styled.div<ContainerProp>`
       }
 
       p {
-        padding: 3px 18px;
+        padding: var(--spacing-quarck) var(--spacing-xxxs);
       }
     }
   }
 
   button {
-    width: 50px;
-    height: 45%;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0 15px;
+    width: 50px;
+    height: 80%;
 
-    background: #ffffff;
-    border-radius: 8px;
+    padding: 0 var(--spacing-xxxs);
 
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
+    background: var(--white);
+    border-radius: var(--border-radius-sm);
+
+    font-family: var(--font-family-primary);
+    font-style: var(--font-style-normal);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-xxxs);
+
     line-height: 22px;
 
     &:first-child {
-      margin-right: 16px;
+      margin-right: var(--spacing-xxxs);
     }
 
     :hover {
@@ -139,16 +139,14 @@ export const Container = styled.div<ContainerProp>`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 64px;
+    height: 67px;
     width: 80px;
-    padding: 4px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: rgba(99, 99, 99, 0.15) 0px 0px 3px 0px;
+    padding: var(--spacing-quarck);
+    border-radius: var(--border-radius-sm);
     z-index: 0;
     margin-top: 2px;
 
     margin-left: -14px;
-    padding-left: 20px;
+    padding-left: var(--spacing-xxs);
   }
 `

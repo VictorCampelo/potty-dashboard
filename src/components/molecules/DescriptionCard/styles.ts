@@ -2,19 +2,19 @@ import styled from 'styled-components'
 
 export const Container = styled.section`
   width: 35vw;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-xxs);
 
-  background: #ffffff;
+  background: var(--white);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 20px;
+  border-radius: var(--border-radius-lg);
 
   .top {
-    width: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 100%;
 
     section {
       width: 100%;
@@ -25,100 +25,98 @@ export const Container = styled.section`
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 20px 20px 0 0;
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
       }
 
       #icon {
-        width: min-content;
-        position: relative;
-        left: 50%;
-        bottom: 130px;
-        transform: translate(-50%);
-
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
+        position: relative;
+        left: 50%;
+        bottom: var(--spacing-xhuge);
+        transform: translate(-50%);
+
         img {
           width: 150px;
           height: 150px;
-          border: 4px solid #ffffff;
-          border-radius: 447px;
+          border: var(--border-width-thick) solid var(--white);
+          border-radius: var(--border-radius-circular);
         }
 
         h1 {
-          font-family: 'Poppins';
-          font-style: normal;
-          font-weight: normal;
-          font-size: 24px;
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-regular);
+          font-size: var(--font-size-md);
 
-          color: #000000;
+          color: var(--black-1000);
         }
       }
 
       button {
-        width: 100px;
-        height: 35px;
-        background: transparent;
-
-        border: 2px solid var(--color-primary);
-        background: var(--white);
-        box-sizing: border-box;
-        border-radius: 30px;
-
-        font-style: normal;
-        font-weight: normal;
-        font-size: 1rem;
-
-        color: var(--color-primary);
-
         display: flex;
         justify-content: center;
         align-items: center;
 
+        width: 100px;
+        height: 35px;
+        background: transparent;
         position: absolute;
-        top: 15px;
-        right: 15px;
+        top: var(--spacing-xxxs);
+        right: var(--spacing-xxxs);
+
+        border: var(--border-width-thin) solid var(--color-primary);
+        background: var(--white);
+        box-sizing: border-box;
+        border-radius: var(--border-radius-gg);
+
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-regular);
+        font-size: var(--font-size-xxs);
+
+        color: var(--color-primary);
 
         .icon {
-          margin-left: 4px;
+          margin-left: var(--spacing-quarck);
         }
       }
     }
   }
 
   .bottom {
-    margin: 20px 25px;
+    margin: var(--spacing-xxs) var(--spacing-xxs);
     margin-top: 170px;
 
     .voidText {
       display: flex;
       width: 100%;
 
-      margin-top: 3px;
+      margin-top: var(--spacing-quarck);
 
       p {
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-light);
+        font-size: var(--font-size-xxs);
 
-        color: #363f4e;
+        color: var(--black-800);
       }
     }
 
     h1 {
-      font-style: normal;
-      font-weight: 600;
-      font-size: 1.2rem;
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-sm);
 
       color: var(--color-secondary-darker);
     }
 
     p {
-      font-style: normal;
-      font-weight: 500;
-      font-size: 12px;
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-regular);
+      font-size: var(--font-size-xxxxs);
       line-height: 18px;
     }
   }
