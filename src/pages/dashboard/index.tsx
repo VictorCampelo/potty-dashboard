@@ -136,7 +136,7 @@ const Shopkeeper = () => {
   return (
     <>
       <Head>
-        <title>Loja | Último</title>
+        <title>Dashboard | Boa de Venda</title>
       </Head>
       <Container>
         <DrawerLateral greenOption={0} />

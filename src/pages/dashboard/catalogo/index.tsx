@@ -502,7 +502,7 @@ const catalog = ({ storeId }: CatalogType) => {
   return (
     <>
       <Head>
-        <title> Catálogo | Último </title>
+        <title> Catálogo | Boa de Venda </title>
       </Head>
 
       {/* Remove category */}
