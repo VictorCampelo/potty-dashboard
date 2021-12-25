@@ -189,6 +189,10 @@ const CartContinue = () => {
     }
   }
 
+  async function loadCEP(data) {
+    console.log(data.value)
+  }
+
   async function loadData() {
     try {
       // Consumindo os dados da /me para popular a tela de checkout
@@ -198,7 +202,7 @@ const CartContinue = () => {
         setName(name)
       }
     } catch (error) {
-      router.push('/login')
+      // router.push('/login')
       console.log(error)
     }
   }
@@ -242,7 +246,8 @@ const CartContinue = () => {
                 {...register('cep')}
                 textError={errors.cep?.message}
                 error={errors.cep}
-                maxLength={45}
+                maxLength={9}
+                onChange={(e) => loadCEP(e)}
               />
 
               <Input
