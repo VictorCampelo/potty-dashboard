@@ -7,7 +7,7 @@ interface ProductListCard extends React.AllHTMLAttributes<HTMLAllCollection> {
   icon: string
   name: string
   code: string
-  category: string
+  category: any
   amount: number
   price: number
   excludeBtn: any
@@ -49,9 +49,9 @@ export const ProductListCard = ({
               <td className="title">Preço</td>
             </tr>
             <tr>
-              <td className="children">{ellipsis(name, 12)}</td>
+              <td className="children">{ellipsis(name, 10)}</td>
               <td className="children">{ellipsis(code, 8)}</td>
-              <td className="children">{ellipsis(category, 10)}</td>
+              <td className="children">{ellipsis(category.join(''), 10)}</td>
               <td className="children">{ellipsis(String(amount), 10)}</td>
               <td className="children">
                 <span>R$ </span>

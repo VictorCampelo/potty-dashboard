@@ -1,62 +1,63 @@
 import styled from 'styled-components'
 
 export const Container = styled.header`
-  position: absolute;
+  position: flex;
   height: 100%;
-  padding: 20px;
+  padding: var(--font-size-sm);
   z-index: 1;
 
   .showNames {
-    width: 13vw;
-    height: 100%;
-
-    border-radius: 30px;
-    background: var(--white);
-
     display: flex;
     justify-content: center;
     align-items: center;
 
+    width: 13vw;
+    height: 100%;
+
+    border-radius: var(--border-radius-gg);
+    background: var(--white);
+
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     nav {
-      width: 100%;
-      height: 70%;
-      //background-color: lightblue;
-
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
 
+      width: 100%;
+      height: 70%;
+
       .option {
-        width: 70%;
         display: flex;
         align-items: center;
+
+        width: 70%;
         cursor: pointer;
 
         svg {
           width: 1.2rem;
           height: 1.2rem;
-          margin-bottom: 0.2rem;
+          margin-bottom: var(--spacing-quarck);
         }
 
         a {
-          margin-left: 10px;
-          font-family: Poppins;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 0.9rem;
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-regular);
+          font-size: var(--font-size-xxs);
 
-          color: #363f4e;
+          margin-left: var(--spacing-nano);
+          color: var(--black-800);
         }
 
         .red-option {
-          margin-left: 10px;
-          font-family: Poppins;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 0.9rem;
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-regular);
+          font-size: var(--font-size-xxs);
+
+          margin-left: var(--spacing-nano);
 
           color: var(--red);
         }
@@ -65,27 +66,27 @@ export const Container = styled.header`
   }
 
   .noShowNames {
-    width: 70px;
-    height: 100%;
-
-    border-radius: 30px;
-    background: var(--white);
-
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    width: 70px;
+    height: 100%;
+
+    border-radius: var(--border-radius-gg);
+    background: var(--white);
 
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     transition: all 0.3s ease-in-out;
 
     nav {
-      width: 100%;
-      height: 70%;
-
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
+
+      width: 100%;
+      height: 70%;
 
       .option {
         display: flex;
@@ -95,7 +96,7 @@ export const Container = styled.header`
         svg {
           width: 1.2rem;
           height: 1.2rem;
-          margin-bottom: 0.2rem;
+          margin-bottom: var(--spacing-quarck);
         }
 
         a {
@@ -125,20 +126,21 @@ type ResizeProps = {
 }
 
 export const ResizeContainer = styled.div<ResizeProps>`
-  width: 100%;
-  height: 49px;
-
   display: flex;
   justify-content: flex-end;
 
+  width: 100%;
+  height: 49px;
+
   .resbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 50px;
     border-radius: 50px 0 0 50px;
     background: var(--color-primary);
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     svg {
       transition: transform 0.5s;

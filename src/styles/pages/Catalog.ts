@@ -15,8 +15,6 @@ export const Container = styled.div`
 
     padding: 20px 20px;
 
-    padding-left: 16vw;
-
     display: flex;
 
     .list-container {
