@@ -1,13 +1,18 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 interface ContainerProps {
-  confirm: boolean;
+  confirm: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  a {
+    color: var(--color-primary);
+    display: inline;
+  }
 
   .btn {
     width: 20px;
@@ -20,7 +25,7 @@ export const Container = styled.div<ContainerProps>`
     border-radius: 4px;
     border: 1px solid var(--black-800);
     background: var(--white);
-    
+
     margin-right: 10px;
     padding: 4px;
   }
@@ -36,4 +41,4 @@ export const Container = styled.div<ContainerProps>`
       margin-left: 0.2rem;
     }
   }
-`;
+`
