@@ -30,6 +30,7 @@ import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
+import { CartButton } from 'components/atoms/CartButton'
 
 const fakeFeedBack = [
   {
@@ -594,6 +595,8 @@ const ProductShow = () => {
           </Footer>
         </main>
       </Container>
+
+      <CartButton />
     </>
   )
 }

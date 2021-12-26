@@ -32,6 +32,7 @@ import { toast } from 'react-toastify'
 import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
 import { ellipsis } from 'functions/ellipsis'
 import styled from 'styled-components'
+import { CartButton } from 'components/atoms/CartButton'
 
 const Products = () => {
   const router = useRouter()
@@ -146,243 +147,218 @@ const Products = () => {
   }, [name])
 
   return (
-    <Page>
-      <Head>
-        <title>Loja | Último</title>
-      </Head>
+    <>
+      <Page>
+        <Head>
+          <title>Loja | Último</title>
+        </Head>
 
-      <TopoPage>
-        <img className="capa" src="/images/capa.png" alt="capa" />
-        <HeaderShop isMain={false} />
-      </TopoPage>
+        <TopoPage>
+          <img className="capa" src="/images/capa.png" alt="capa" />
+          <HeaderShop isMain={false} />
+        </TopoPage>
 
-      <InfoSerch>
-        <div className="input">
-          <AiOutlineSearch id="search" />
-          <input placeholder="Pesquisar na loja" />
-        </div>
-        <div className="body">
-          <DescriptionShop>
-            <div className="top">
-              <img src="/images/logoLoja.svg" alt="perfil" />
-              <div className="title">
-                <h1>{businessName}</h1>
-                <div className="stars">
-                  {[...new Array(avgstars)].map((e) => {
-                    return (
-                      <AiFillStar
-                        key={e + '123'}
-                        size={24}
-                        color="var(--gold)"
-                      />
-                    )
-                  })}
-                  {[...new Array(5 - avgstars)].map((e) => {
-                    return (
-                      <AiOutlineStar
-                        key={e + '124'}
-                        size={24}
-                        color="var(--gold)"
-                      />
-                    )
-                  })}
-                  <h2>({sumStars})</h2>
-                </div>
-              </div>
-            </div>
-            <p>{desc}</p>
-          </DescriptionShop>
-
-          <StatusCard>
-            <div className="status">
-              <span>Detalhes</span>
-            </div>
-            <div className="body">
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/caixa.svg" alt="icon" />
-                  <h2>Quantidade de Produtos:</h2>
-                </div>
-                <span>{products.length}</span>
-              </div>
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/sacola.svg" alt="icon" />
-                  <h2>Quantidade de vendas:</h2>
-                </div>
-                <span>{sumOrders}</span>
-              </div>
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/loja.svg" alt="icon" />
-                  <h2>Loja cadastrada no site em:</h2>
-                </div>
-                <span>{createAt.getFullYear()}</span>
-              </div>
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/estrela.svg" alt="icon" />
-                  <h2>Quantidade de avaliações:</h2>
-                </div>
-                <span>{sumFeedbacks}</span>
-              </div>
-            </div>
-          </StatusCard>
-
-          <StatusCard>
-            <div className="status">
-              <div className="statusDot" />
-              <span>Aberto agora</span>
-            </div>
-            <div className="text">
-              <p>
-                Hoje: <br />
-                7h às 12h <br />
-                13h às 18h <br />
-              </p>
-            </div>
-          </StatusCard>
-        </div>
-      </InfoSerch>
-
-      <Container>
-        <section className="productsContainer">
-          <div className="products">
-            <div className="filterWrapper">
-              <FilterCard>
-                <span className="orderBy">Ordenar por: </span>
-
-                <button>
-                  <span className="item active">Melhor resultado</span>
-                </button>
-
-                <button>
-                  <span className="item">Mais pedidos</span>
-                </button>
-
-                <button>
-                  <span className="item">Mais recente</span>
-                </button>
-
-                <button>
-                  <span className="item">Preço</span>
-                </button>
-              </FilterCard>
-
-              <FilterCardSecondary>
-                <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
-                  <AiFillStar size={24} color="var(--gold)" />
-                  <label>4.0 ou mais</label>
-                </CheckboxFilter>
-
-                <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
-                  <label>Frete grátis</label>
-                </CheckboxFilter>
-              </FilterCardSecondary>
-
-              <FilterCardTertiary>
-                <button id="button-left" onClick={() => setButtonOn(true)}>
-                  <img
-                    src={
-                      buttonOn ? '/images/quadro.svg' : '/images/quadroOff.svg'
-                    }
-                    alt="button"
-                  />
-                </button>
-                <hr />
-                <button id="button-right" onClick={() => setButtonOn(false)}>
-                  <img
-                    src={buttonOn ? '/images/stack.svg' : '/images/stackOn.svg'}
-                    alt="button"
-                  />
-                </button>
-              </FilterCardTertiary>
-            </div>
-
-            <div className="bottom">
-              <div className="categoriesContainer">
-                <CategoriesCard>
-                  <div className="title">
-                    <span>Categorias da loja:</span>
-                  </div>
-
-                  <div className="item">
-                    <a>Todas as categorias</a>
-                  </div>
-
-                  <div className="item">
-                    <a>Cozinha</a>
-                  </div>
-
-                  <div className="item">
-                    <a>Quartos</a>
-                  </div>
-
-                  <div className="item">
-                    <a className="active">Sala de estar</a>
-                  </div>
-
-                  <div className="item">
-                    <a>Escritório</a>
-                  </div>
-                </CategoriesCard>
-              </div>
-
-              <div className="productWrapper">
-                {buttonOn ? (
-                  <>
-                    {products.map((e) => {
+        <InfoSerch>
+          <div className="input">
+            <AiOutlineSearch id="search" />
+            <input placeholder="Pesquisar na loja" />
+          </div>
+          <div className="body">
+            <DescriptionShop>
+              <div className="top">
+                <img src="/images/logoLoja.svg" alt="perfil" />
+                <div className="title">
+                  <h1>{businessName}</h1>
+                  <div className="stars">
+                    {[...new Array(avgstars)].map((e) => {
                       return (
-                        <ProductCard
-                          key={e.id}
-                          onClick={() => handleOpenProduct(e.id)}
-                        >
-                          <img
-                            src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                            alt="geladeira frost free"
-                          />
-                          <span className="title">{ellipsis(e.title, 30)}</span>
-                          <div className="price">
-                            <span>R$ {e.price.toFixed(2)}</span>
-                            <small>
-                              {e.discount
-                                ? 'R$ ' +
-                                  ((1 - e.discount) * e.price).toFixed(2)
-                                : null}
-                            </small>
-                          </div>
-                          <div className="score">
-                            <AiFillStar
-                              key={e.id}
-                              size={18}
-                              color="var(--gold)"
-                            />
-                            <span>
-                              {e.avgStars} | {e.sumOrders} Pedidos
-                            </span>
-                          </div>
-                          <p>{ellipsis(e.description, 120)}</p>
-                        </ProductCard>
+                        <AiFillStar
+                          key={e + '123'}
+                          size={24}
+                          color="var(--gold)"
+                        />
                       )
                     })}
-                  </>
-                ) : (
-                  <div className="horizon">
-                    {products.map((e) => {
+                    {[...new Array(5 - avgstars)].map((e) => {
                       return (
-                        <HorizonCard
-                          key={e.id}
-                          onClick={() => handleOpenProduct(e.id)}
-                        >
-                          <img
+                        <AiOutlineStar
+                          key={e + '124'}
+                          size={24}
+                          color="var(--gold)"
+                        />
+                      )
+                    })}
+                    <h2>({sumStars})</h2>
+                  </div>
+                </div>
+              </div>
+              <p>{desc}</p>
+            </DescriptionShop>
+
+            <StatusCard>
+              <div className="status">
+                <span>Detalhes</span>
+              </div>
+              <div className="body">
+                <div className="info-produto">
+                  <div className="left-part">
+                    <img src="/images/caixa.svg" alt="icon" />
+                    <h2>Quantidade de Produtos:</h2>
+                  </div>
+                  <span>{products.length}</span>
+                </div>
+                <div className="info-produto">
+                  <div className="left-part">
+                    <img src="/images/sacola.svg" alt="icon" />
+                    <h2>Quantidade de vendas:</h2>
+                  </div>
+                  <span>{sumOrders}</span>
+                </div>
+                <div className="info-produto">
+                  <div className="left-part">
+                    <img src="/images/loja.svg" alt="icon" />
+                    <h2>Loja cadastrada no site em:</h2>
+                  </div>
+                  <span>{createAt.getFullYear()}</span>
+                </div>
+                <div className="info-produto">
+                  <div className="left-part">
+                    <img src="/images/estrela.svg" alt="icon" />
+                    <h2>Quantidade de avaliações:</h2>
+                  </div>
+                  <span>{sumFeedbacks}</span>
+                </div>
+              </div>
+            </StatusCard>
+
+            <StatusCard>
+              <div className="status">
+                <div className="statusDot" />
+                <span>Aberto agora</span>
+              </div>
+              <div className="text">
+                <p>
+                  Hoje: <br />
+                  7h às 12h <br />
+                  13h às 18h <br />
+                </p>
+              </div>
+            </StatusCard>
+          </div>
+        </InfoSerch>
+
+        <Container>
+          <section className="productsContainer">
+            <div className="products">
+              <div className="filterWrapper">
+                <FilterCard>
+                  <span className="orderBy">Ordenar por: </span>
+
+                  <button>
+                    <span className="item active">Melhor resultado</span>
+                  </button>
+
+                  <button>
+                    <span className="item">Mais pedidos</span>
+                  </button>
+
+                  <button>
+                    <span className="item">Mais recente</span>
+                  </button>
+
+                  <button>
+                    <span className="item">Preço</span>
+                  </button>
+                </FilterCard>
+
+                <FilterCardSecondary>
+                  <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
+                    <AiFillStar size={24} color="var(--gold)" />
+                    <label>4.0 ou mais</label>
+                  </CheckboxFilter>
+
+                  <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
+                    <label>Frete grátis</label>
+                  </CheckboxFilter>
+                </FilterCardSecondary>
+
+                <FilterCardTertiary>
+                  <button id="button-left" onClick={() => setButtonOn(true)}>
+                    <img
+                      src={
+                        buttonOn
+                          ? '/images/quadro.svg'
+                          : '/images/quadroOff.svg'
+                      }
+                      alt="button"
+                    />
+                  </button>
+                  <hr />
+                  <button id="button-right" onClick={() => setButtonOn(false)}>
+                    <img
+                      src={
+                        buttonOn ? '/images/stack.svg' : '/images/stackOn.svg'
+                      }
+                      alt="button"
+                    />
+                  </button>
+                </FilterCardTertiary>
+              </div>
+
+              <div className="bottom">
+                <div className="categoriesContainer">
+                  <CategoriesCard>
+                    <div className="title">
+                      <span>Categorias da loja:</span>
+                    </div>
+
+                    <div className="item">
+                      <a>Todas as categorias</a>
+                    </div>
+
+                    <div className="item">
+                      <a>Cozinha</a>
+                    </div>
+
+                    <div className="item">
+                      <a>Quartos</a>
+                    </div>
+
+                    <div className="item">
+                      <a className="active">Sala de estar</a>
+                    </div>
+
+                    <div className="item">
+                      <a>Escritório</a>
+                    </div>
+                  </CategoriesCard>
+                </div>
+
+                <div className="productWrapper">
+                  {buttonOn ? (
+                    <>
+                      {products.map((e) => {
+                        return (
+                          <ProductCard
                             key={e.id}
-                            src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                            alt="geladeira frost free"
-                          />
-                          <div className="infos">
+                            onClick={() => handleOpenProduct(e.id)}
+                          >
+                            <img
+                              src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                              alt="geladeira frost free"
+                            />
                             <span className="title">
-                              {ellipsis(e.title, 70)}
+                              {ellipsis(e.title, 30)}
                             </span>
+                            <div className="price">
+                              <span>R$ {e.price.toFixed(2)}</span>
+                              <small>
+                                {e.discount
+                                  ? 'R$ ' +
+                                    ((1 - e.discount) * e.price).toFixed(2)
+                                  : null}
+                              </small>
+                            </div>
                             <div className="score">
                               <AiFillStar
                                 key={e.id}
@@ -393,51 +369,86 @@ const Products = () => {
                                 {e.avgStars} | {e.sumOrders} Pedidos
                               </span>
                             </div>
-                            <div className="price">
-                              <span>R$ {e.price.toFixed(2)}</span>
-                              <small>
-                                {e.descont ? 'R$ ' + e.descont : null}
-                              </small>
-                            </div>
-
                             <p>{ellipsis(e.description, 120)}</p>
-                          </div>
-                        </HorizonCard>
-                      )
-                    })}
-                  </div>
-                )}
+                          </ProductCard>
+                        )
+                      })}
+                    </>
+                  ) : (
+                    <div className="horizon">
+                      {products.map((e) => {
+                        return (
+                          <HorizonCard
+                            key={e.id}
+                            onClick={() => handleOpenProduct(e.id)}
+                          >
+                            <img
+                              key={e.id}
+                              src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                              alt="geladeira frost free"
+                            />
+                            <div className="infos">
+                              <span className="title">
+                                {ellipsis(e.title, 70)}
+                              </span>
+                              <div className="score">
+                                <AiFillStar
+                                  key={e.id}
+                                  size={18}
+                                  color="var(--gold)"
+                                />
+                                <span>
+                                  {e.avgStars} | {e.sumOrders} Pedidos
+                                </span>
+                              </div>
+                              <div className="price">
+                                <span>R$ {e.price.toFixed(2)}</span>
+                                <small>
+                                  {e.descont ? 'R$ ' + e.descont : null}
+                                </small>
+                              </div>
+
+                              <p>{ellipsis(e.description, 120)}</p>
+                            </div>
+                          </HorizonCard>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <Footer>
-          <h1>Contato</h1>
+          <Footer>
+            <h1>Contato</h1>
 
-          {telefone && (
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              {telefone}
-            </span>
-          )}
+            {telefone && (
+              <span>
+                <AiFillPhone size={24} color="var(--gray-700)" />
+                {telefone}
+              </span>
+            )}
 
-          {whatsApp && (
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              {whatsApp}
-            </span>
-          )}
+            {whatsApp && (
+              <span>
+                <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                {whatsApp}
+              </span>
+            )}
 
-          {whatsApp && (
-            <a href="facebook.com">
-              <AiFillFacebook size={24} color="var(--gray-700)" />
-              {facebook}
-            </a>
-          )}
-        </Footer>
-      </Container>
-    </Page>
+            {whatsApp && (
+              <a href="facebook.com">
+                <AiFillFacebook size={24} color="var(--gray-700)" />
+                {facebook}
+              </a>
+            )}
+          </Footer>
+        </Container>
+      </Page>
+
+      <CartButton />
+    </>
   )
 }
 
