@@ -3,10 +3,14 @@ import sizes from 'utils/sizes'
 
 export const Page = styled.div`
   width: 100%;
-  background: #fefdf9;
+  background: var(--background);
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ${sizes.down('lgMob')} {
+    background: white;
+  }
 `
 
 export const Wrapper = styled.div`
@@ -73,7 +77,7 @@ export const Drawer = styled.div`
     transition: width 0.3s;
     align-items: center;
     list-style: none;
-    padding-top: 4rem;
+    padding-top: 2rem;
     z-index: 77;
 
     li {
@@ -94,6 +98,17 @@ export const Drawer = styled.div`
     .content {
       width: 230px;
     }
+  }
+
+  .outside {
+    flex: 1;
+    height: 100%;
+  }
+
+  .close-btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 `
 
@@ -165,18 +180,14 @@ export const DescriptionShop = styled.div`
   box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
   border-radius: 30px;
 
-  ${sizes.down('lgMob')} {
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
   .top {
     display: flex;
     align-items: center;
+
     img {
       margin-right: 20px;
     }
+
     h1 {
       font-family: Poppins;
       font-style: normal;
@@ -190,6 +201,11 @@ export const DescriptionShop = styled.div`
     }
     .stars {
       display: flex;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
 
       #star {
         color: #ffe249;
@@ -223,6 +239,40 @@ export const DescriptionShop = styled.div`
     text-align: justify;
 
     color: #363f4e;
+  }
+
+  ${sizes.down('lgMob')} {
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+
+    .top {
+      img {
+        width: 90px;
+        height: 90px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        line-height: 2.3rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .stars {
+      svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+      }
+
+      h2 {
+        font-size: 0.865rem !important;
+        margin-left: 0.5rem !important;
+      }
+    }
   }
 `
 

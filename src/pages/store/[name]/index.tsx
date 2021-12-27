@@ -37,13 +37,14 @@ import styled from 'styled-components'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { IoIosClose } from 'react-icons/io'
 
 const Products = () => {
   const router = useRouter()
   const { name } = router.query
 
   const [buttonOn, setButtonOn] = useState(true)
-  const [drawerActive, setDrawerActive] = useState(true)
+  const [drawerActive, setDrawerActive] = useState(false)
 
   const [businessName, setBusinessName] = useState('')
   const [desc, setDesc] = useState('')
@@ -167,17 +168,24 @@ const Products = () => {
               />
               <input placeholder="Pesquisar na loja" />
 
-              <Drawer
-                className={drawerActive && 'active'}
-                onClick={() => setDrawerActive(false)}
-              >
-                <ul className="content" onClick={() => {}}>
+              <Drawer className={drawerActive && 'active'}>
+                <ul className="content">
+                  <div
+                    className="close-btn"
+                    onClick={() => setDrawerActive(false)}
+                  >
+                    <IoIosClose size={30} color={'#363F4E'} />
+                  </div>
                   <li onClick={() => router.push('/login')}>Fazer Login</li>
                   <li onClick={() => router.push('/cadastro')}>
                     Fazer Cadastro
                   </li>
                   <li onClick={() => router.push('/')}>Fazer logoff</li>
                 </ul>
+                <div
+                  className="outside"
+                  onClick={() => setDrawerActive(false)}
+                />
               </Drawer>
             </HeaderMob>
           )}
@@ -281,13 +289,7 @@ const Products = () => {
                 <h1>{businessName}</h1>
                 <div className="stars">
                   {[...new Array(avgstars)].map((e) => {
-                    return (
-                      <AiFillStar
-                        key={e + '123'}
-                        size={24}
-                        color="var(--gold)"
-                      />
-                    )
+                    return <AiFillStar key={e + '123'} color="var(--gold)" />
                   })}
                   {[...new Array(5 - avgstars)].map((e) => {
                     return (
