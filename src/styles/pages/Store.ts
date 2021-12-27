@@ -7,6 +7,7 @@ export const Page = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: auto;
 
   ${sizes.down('lgMob')} {
     background: white;
@@ -44,6 +45,7 @@ export const HeaderMob = styled.header`
 
   svg {
     margin-right: 1rem;
+    flex: none;
   }
 
   input {
@@ -56,15 +58,15 @@ export const HeaderMob = styled.header`
 `
 
 export const Drawer = styled.div`
-  position: absolute;
   left: 0;
   top: 0;
-  bottom: 0;
+  height: 100vh;
   z-index: 66;
   overflow: hidden;
   right: 100%;
   transition: background 2s, right 1s;
   background: transparent;
+  position: fixed;
 
   .content {
     display: flex;
@@ -78,7 +80,6 @@ export const Drawer = styled.div`
     align-items: center;
     list-style: none;
     padding-top: 2rem;
-    z-index: 77;
 
     li {
       width: 60%;
