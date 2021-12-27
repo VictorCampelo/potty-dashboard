@@ -23,7 +23,8 @@ import {
   StatusCard,
   TopoPage,
   FilterCardTertiary,
-  HorizonCard
+  HorizonCard,
+  HeaderMob
 } from '../../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -33,6 +34,8 @@ import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
 import { ellipsis } from 'functions/ellipsis'
 import styled from 'styled-components'
 import { CartButton } from 'components/atoms/CartButton'
+import useMedia from 'use-media'
+import { GiHamburgerMenu } from 'react-icons/gi'
 
 const Products = () => {
   const router = useRouter()
@@ -58,13 +61,6 @@ const Products = () => {
 
   const [businessAddress, setBusinessAddress] = useState('')
 
-  const [businessState, setBusinessState] = useState('')
-  const [businessCity, setBusinessCity] = useState('')
-  const [publicPlace, setPublicPlace] = useState('')
-  const [number, setNumer] = useState('')
-  const [district, setDistrict] = useState('')
-  const [cep, setCep] = useState('')
-
   const [dom, setDom] = useState([])
   const [seg, setSeg] = useState([])
   const [ter, setTer] = useState([])
@@ -74,6 +70,8 @@ const Products = () => {
   const [sab, setSab] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
+
+  const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
     router.push(`/store/${name}/product/${id}`)
@@ -155,184 +153,233 @@ const Products = () => {
 
         <TopoPage>
           <img className="capa" src="/images/capa.png" alt="capa" />
+
           <HeaderShop isMain={false} />
+
+          {!widthScreen && (
+            <HeaderMob>
+              <GiHamburgerMenu size={24} color="black" />
+              <input placeholder="Pesquisar na loja" />
+            </HeaderMob>
+          )}
         </TopoPage>
 
-        <InfoSerch>
-          <div className="input">
-            <AiOutlineSearch id="search" />
-            <input placeholder="Pesquisar na loja" />
-          </div>
-          <div className="body">
-            <DescriptionShop>
-              <div className="top">
-                <img src="/images/logoLoja.svg" alt="perfil" />
-                <div className="title">
-                  <h1>{businessName}</h1>
-                  <div className="stars">
-                    {[...new Array(avgstars)].map((e) => {
-                      return (
-                        <AiFillStar
-                          key={e + '123'}
-                          size={24}
-                          color="var(--gold)"
-                        />
-                      )
-                    })}
-                    {[...new Array(5 - avgstars)].map((e) => {
-                      return (
-                        <AiOutlineStar
-                          key={e + '124'}
-                          size={24}
-                          color="var(--gold)"
-                        />
-                      )
-                    })}
-                    <h2>({sumStars})</h2>
-                  </div>
-                </div>
-              </div>
-              <p>{desc}</p>
-            </DescriptionShop>
+        {widthScreen ? (
+          <InfoSerch>
+            <div className="input">
+              <AiOutlineSearch id="search" />
+              <input placeholder="Pesquisar na loja" />
+            </div>
 
-            <StatusCard>
-              <div className="status">
-                <span>Detalhes</span>
-              </div>
-              <div className="body">
-                <div className="info-produto">
-                  <div className="left-part">
-                    <img src="/images/caixa.svg" alt="icon" />
-                    <h2>Quantidade de Produtos:</h2>
+            <div className="body">
+              <DescriptionShop>
+                <div className="top">
+                  <img src="/images/logoLoja.svg" alt="perfil" />
+                  <div className="title">
+                    <h1>{businessName}</h1>
+                    <div className="stars">
+                      {[...new Array(avgstars)].map((e) => {
+                        return (
+                          <AiFillStar
+                            key={e + '123'}
+                            size={24}
+                            color="var(--gold)"
+                          />
+                        )
+                      })}
+                      {[...new Array(5 - avgstars)].map((e) => {
+                        return (
+                          <AiOutlineStar
+                            key={e + '124'}
+                            size={24}
+                            color="var(--gold)"
+                          />
+                        )
+                      })}
+                      <h2>({sumStars})</h2>
+                    </div>
                   </div>
-                  <span>{products.length}</span>
                 </div>
-                <div className="info-produto">
-                  <div className="left-part">
-                    <img src="/images/sacola.svg" alt="icon" />
-                    <h2>Quantidade de vendas:</h2>
-                  </div>
-                  <span>{sumOrders}</span>
-                </div>
-                <div className="info-produto">
-                  <div className="left-part">
-                    <img src="/images/loja.svg" alt="icon" />
-                    <h2>Loja cadastrada no site em:</h2>
-                  </div>
-                  <span>{createAt.getFullYear()}</span>
-                </div>
-                <div className="info-produto">
-                  <div className="left-part">
-                    <img src="/images/estrela.svg" alt="icon" />
-                    <h2>Quantidade de avaliações:</h2>
-                  </div>
-                  <span>{sumFeedbacks}</span>
-                </div>
-              </div>
-            </StatusCard>
+                <p>{desc}</p>
+              </DescriptionShop>
 
-            <StatusCard>
-              <div className="status">
-                <div className="statusDot" />
-                <span>Aberto agora</span>
+              <StatusCard>
+                <div className="status">
+                  <span>Detalhes</span>
+                </div>
+                <div className="body">
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/caixa.svg" alt="icon" />
+                      <h2>Quantidade de Produtos:</h2>
+                    </div>
+                    <span>{products.length}</span>
+                  </div>
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/sacola.svg" alt="icon" />
+                      <h2>Quantidade de vendas:</h2>
+                    </div>
+                    <span>{sumOrders}</span>
+                  </div>
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/loja.svg" alt="icon" />
+                      <h2>Loja cadastrada no site em:</h2>
+                    </div>
+                    <span>{createAt.getFullYear()}</span>
+                  </div>
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/estrela.svg" alt="icon" />
+                      <h2>Quantidade de avaliações:</h2>
+                    </div>
+                    <span>{sumFeedbacks}</span>
+                  </div>
+                </div>
+              </StatusCard>
+
+              <StatusCard>
+                <div className="status">
+                  <div className="statusDot" />
+                  <span>Aberto agora</span>
+                </div>
+                <div className="text">
+                  <p>
+                    Hoje: <br />
+                    7h às 12h <br />
+                    13h às 18h <br />
+                  </p>
+                </div>
+              </StatusCard>
+            </div>
+          </InfoSerch>
+        ) : (
+          <DescriptionShop>
+            <div className="top">
+              <img src="/images/logoLoja.svg" alt="perfil" />
+              <div className="title">
+                <h1>{businessName}</h1>
+                <div className="stars">
+                  {[...new Array(avgstars)].map((e) => {
+                    return (
+                      <AiFillStar
+                        key={e + '123'}
+                        size={24}
+                        color="var(--gold)"
+                      />
+                    )
+                  })}
+                  {[...new Array(5 - avgstars)].map((e) => {
+                    return (
+                      <AiOutlineStar
+                        key={e + '124'}
+                        size={24}
+                        color="var(--gold)"
+                      />
+                    )
+                  })}
+                  <h2>({sumStars})</h2>
+                </div>
               </div>
-              <div className="text">
-                <p>
-                  Hoje: <br />
-                  7h às 12h <br />
-                  13h às 18h <br />
-                </p>
-              </div>
-            </StatusCard>
-          </div>
-        </InfoSerch>
+            </div>
+            <p>{desc}</p>
+          </DescriptionShop>
+        )}
 
         <Container>
           <section className="productsContainer">
             <div className="products">
-              <div className="filterWrapper">
-                <FilterCard>
-                  <span className="orderBy">Ordenar por: </span>
+              {widthScreen && (
+                <div className="filterWrapper">
+                  <FilterCard>
+                    <span className="orderBy">Ordenar por: </span>
 
-                  <button>
-                    <span className="item active">Melhor resultado</span>
-                  </button>
+                    <button>
+                      <span className="item active">Melhor resultado</span>
+                    </button>
 
-                  <button>
-                    <span className="item">Mais pedidos</span>
-                  </button>
+                    <button>
+                      <span className="item">Mais pedidos</span>
+                    </button>
 
-                  <button>
-                    <span className="item">Mais recente</span>
-                  </button>
+                    <button>
+                      <span className="item">Mais recente</span>
+                    </button>
 
-                  <button>
-                    <span className="item">Preço</span>
-                  </button>
-                </FilterCard>
+                    <button>
+                      <span className="item">Preço</span>
+                    </button>
+                  </FilterCard>
 
-                <FilterCardSecondary>
-                  <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
-                    <AiFillStar size={24} color="var(--gold)" />
-                    <label>4.0 ou mais</label>
-                  </CheckboxFilter>
+                  <FilterCardSecondary>
+                    <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
+                      <AiFillStar size={24} color="var(--gold)" />
+                      <label>4.0 ou mais</label>
+                    </CheckboxFilter>
 
-                  <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
-                    <label>Frete grátis</label>
-                  </CheckboxFilter>
-                </FilterCardSecondary>
+                    <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
+                      <label>Frete grátis</label>
+                    </CheckboxFilter>
+                  </FilterCardSecondary>
 
-                <FilterCardTertiary>
-                  <button id="button-left" onClick={() => setButtonOn(true)}>
-                    <img
-                      src={
-                        buttonOn
-                          ? '/images/quadro.svg'
-                          : '/images/quadroOff.svg'
-                      }
-                      alt="button"
-                    />
-                  </button>
-                  <hr />
-                  <button id="button-right" onClick={() => setButtonOn(false)}>
-                    <img
-                      src={
-                        buttonOn ? '/images/stack.svg' : '/images/stackOn.svg'
-                      }
-                      alt="button"
-                    />
-                  </button>
-                </FilterCardTertiary>
-              </div>
+                  <FilterCardTertiary>
+                    <button id="button-left" onClick={() => setButtonOn(true)}>
+                      <img
+                        src={
+                          buttonOn
+                            ? '/images/quadro.svg'
+                            : '/images/quadroOff.svg'
+                        }
+                        alt="button"
+                      />
+                    </button>
+                    <hr />
+                    <button
+                      id="button-right"
+                      onClick={() => setButtonOn(false)}
+                    >
+                      <img
+                        src={
+                          buttonOn ? '/images/stack.svg' : '/images/stackOn.svg'
+                        }
+                        alt="button"
+                      />
+                    </button>
+                  </FilterCardTertiary>
+                </div>
+              )}
 
               <div className="bottom">
-                <div className="categoriesContainer">
-                  <CategoriesCard>
-                    <div className="title">
-                      <span>Categorias da loja:</span>
-                    </div>
+                {widthScreen && (
+                  <div className="categoriesContainer">
+                    <CategoriesCard>
+                      <div className="title">
+                        <span>Categorias da loja:</span>
+                      </div>
 
-                    <div className="item">
-                      <a>Todas as categorias</a>
-                    </div>
+                      <div className="item">
+                        <a>Todas as categorias</a>
+                      </div>
 
-                    <div className="item">
-                      <a>Cozinha</a>
-                    </div>
+                      <div className="item">
+                        <a>Cozinha</a>
+                      </div>
 
-                    <div className="item">
-                      <a>Quartos</a>
-                    </div>
+                      <div className="item">
+                        <a>Quartos</a>
+                      </div>
 
-                    <div className="item">
-                      <a className="active">Sala de estar</a>
-                    </div>
+                      <div className="item">
+                        <a className="active">Sala de estar</a>
+                      </div>
 
-                    <div className="item">
-                      <a>Escritório</a>
-                    </div>
-                  </CategoriesCard>
-                </div>
+                      <div className="item">
+                        <a>Escritório</a>
+                      </div>
+                    </CategoriesCard>
+                  </div>
+                )}
 
                 <div className="productWrapper">
                   {buttonOn ? (
@@ -420,30 +467,32 @@ const Products = () => {
             </div>
           </section>
 
-          <Footer>
-            <h1>Contato</h1>
+          {widthScreen && (
+            <Footer>
+              <h1>Contato</h1>
 
-            {telefone && (
-              <span>
-                <AiFillPhone size={24} color="var(--gray-700)" />
-                {telefone}
-              </span>
-            )}
+              {telefone && (
+                <span>
+                  <AiFillPhone size={24} color="var(--gray-700)" />
+                  {telefone}
+                </span>
+              )}
 
-            {whatsApp && (
-              <span>
-                <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-                {whatsApp}
-              </span>
-            )}
+              {whatsApp && (
+                <span>
+                  <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                  {whatsApp}
+                </span>
+              )}
 
-            {whatsApp && (
-              <a href="facebook.com">
-                <AiFillFacebook size={24} color="var(--gray-700)" />
-                {facebook}
-              </a>
-            )}
-          </Footer>
+              {whatsApp && (
+                <a href="facebook.com">
+                  <AiFillFacebook size={24} color="var(--gray-700)" />
+                  {facebook}
+                </a>
+              )}
+            </Footer>
+          )}
         </Container>
       </Page>
 

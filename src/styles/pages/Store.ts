@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Page = styled.div`
   width: 100%;
@@ -22,7 +23,33 @@ export const TopoPage = styled.div`
     margin-top: -105px;
     width: 100%;
   }
-` 
+
+  ${sizes.down('lgMob')} {
+    .capa {
+      margin-top: 0;
+    }
+  }
+`
+
+export const HeaderMob = styled.header`
+  height: 70px;
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 0 1.25rem;
+
+  svg {
+    margin-right: 1rem;
+  }
+
+  input {
+    flex: 1;
+    height: 36px;
+    padding: 0 1rem;
+    border-radius: 40px;
+    border: 1px solid var(--gray-700);
+  }
+`
 
 export const InfoSerch = styled.div`
   display: flex;
@@ -91,6 +118,13 @@ export const DescriptionShop = styled.div`
   background: #ffffff;
   box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
   border-radius: 30px;
+
+  ${sizes.down('lgMob')} {
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .top {
     display: flex;
     align-items: center;
@@ -305,10 +339,35 @@ export const ProductCard = styled.div`
 
   p {
     width: 100%;
-    text-align: justify;
     color: var(--black-800);
+    hyphens: auto;
     margin-top: 0.5rem;
     font-size: 0.875rem;
+  }
+
+  ${sizes.down('lgMob')} {
+    width: 165px;
+    height: 270px;
+    border-radius: 10px;
+    padding: 10px;
+
+    .title {
+      font-size: 0.8rem !important;
+    }
+
+    span {
+      font-size: 1.25rem !important;
+    }
+
+    p {
+      display: none;
+    }
+
+    .score {
+      span {
+        font-size: 0.6rem !important;
+      }
+    }
   }
 `
 
