@@ -19,6 +19,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
 import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import router from 'next/router'
+import { signUp } from 'services/auth.services'
+import { toast } from 'react-toastify'
 
 type registerFormData = {
   firstName: string
@@ -29,6 +31,12 @@ type registerFormData = {
   number: string
   district: string
   cep: string
+}
+
+type UserInfo = {
+  email: string
+  password: string
+  passwordConfirmation: string
 }
 
 const RegisterFormSchema = yup.object().shape({
@@ -46,7 +54,7 @@ const BusinessRegister = () => {
   // Estados, funções e variáveis referentes a responsividade da tela
   const [show, setShow] = useState(0)
   const [terms, setTerms] = useState(false)
-  const [userInfo, setUserInfo] = useState({})
+  const [userInfo, setUserInfo] = useState<UserInfo>()
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function showNext() {
@@ -86,23 +94,32 @@ const BusinessRegister = () => {
       firstName: values.firstName,
       lastName: values.lastName,
       city: values.clientCity,
-      state: values.clientState,
-      publicPlace: values.publicPlace,
-      number: values.number,
-      district: values.district,
-      cep: values.cep,
-      ...userInfo
+      uf: values.clientState,
+      street: values.publicPlace,
+      logradouro: values.publicPlace,
+      adressNumber: Number(values.number),
+      neighborhood: values.district,
+      zipcode: values.cep,
+      complement: '',
+      email: userInfo?.email,
+      password: userInfo?.password,
+      passwordConfirmation: userInfo?.passwordConfirmation
     }
 
-    // const res = await signUp(user)
+    try {
+      const res = await signUp(data)
 
-    // if (res.status === 200 || res.status === 201) {
-    //   return router.push('/confirmacao-cadastro')
-    // }
+      if (res.status === 200 || res.status === 201) {
+        sessionStorage.removeItem('ultimo.register.user')
+        return router.push('/confirmacao-cadastro')
+      }
+    } catch (e) {
+      toast.error('Erro ao criar conta')
+    }
   }
 
   useEffect(() => {
-    const userData = localStorage.getItem('ultimo.register.user')
+    const userData = sessionStorage.getItem('ultimo.register.user')
 
     if (!userData) {
       router.push('/cadastro')

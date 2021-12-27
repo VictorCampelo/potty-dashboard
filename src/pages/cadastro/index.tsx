@@ -67,7 +67,7 @@ const Register = () => {
         passwordConfirmation: values.passwordConfirmation
       }
 
-      localStorage.setItem('ultimo.register.user', JSON.stringify(user))
+      sessionStorage.setItem('ultimo.register.user', JSON.stringify(user))
       router.push('/cadastro/continue')
     } catch (e) {
       console.log(e)
