@@ -3,32 +3,25 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Container, Wrapper } from '../../styles/pages/preLogin'
 
-import { FiLock, FiMail, FiUser } from 'react-icons/fi'
+import { FiLock, FiMail } from 'react-icons/fi'
 import { Input } from '../../components/molecules/Input'
-import { Checkbox } from '../../components/atoms/Checkbox'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { FaFacebook } from 'react-icons/fa'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import { useRouter } from 'next/router'
-import { signUp } from '../../services/auth.services'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ErrorToast } from 'utils/toasts'
 import { useMedia } from 'use-media'
 
 type SignUpFormData = {
-  firstName: string
-  lastName: string
   email: string
   password: string
   passwordConfirmation: string
 }
 
 const registerFormSchema = yup.object().shape({
-  firstName: yup.string().required('Primeiro nome obrigatório'),
-  lastName: yup.string().required('Último nome obrigatório'),
   email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
   password: yup
     .string()
@@ -69,18 +62,13 @@ const Register = () => {
   const handleSignUp: SubmitHandler<SignUpFormData> = async (values, event) => {
     try {
       const user = {
-        firstName: values.firstName,
-        lastName: values.lastName,
         email: values.email,
         password: values.password,
         passwordConfirmation: values.passwordConfirmation
       }
 
-      const res = await signUp(user)
-
-      if (res.status === 200 || res.status === 201) {
-        return router.push('/confirmacao-cadastro')
-      }
+      sessionStorage.setItem('ultimo.register.user', JSON.stringify(user))
+      router.push('/cadastro/continue')
     } catch (e) {
       console.log(e)
     }
@@ -103,24 +91,6 @@ const Register = () => {
           </div>
           {widthWindow ? (
             <div className="inputContainer">
-              <Input
-                label="Primeiro Nome"
-                placeholder="Nome"
-                icon={<FiUser size={20} color="var(--black-800)" />}
-                {...register('firstName')}
-                textError={errors.firstName?.message}
-                error={errors.firstName}
-              />
-
-              <Input
-                label="Sobrenome"
-                placeholder="Sobrenome"
-                className="name"
-                icon={<FiUser size={20} color="var(--black-800)" />}
-                {...register('lastName')}
-                textError={errors.lastName?.message}
-                error={errors.lastName}
-              />
               <Input
                 label="Email"
                 placeholder="exemplo@gmail.com"
@@ -155,30 +125,6 @@ const Register = () => {
             </div>
           ) : (
             <>
-              <div
-                className="inputContainer"
-                style={show == 2 ? { display: 'none' } : undefined}
-              >
-                <Input
-                  label="Primeiro Nome"
-                  placeholder="Nome"
-                  icon={<FiUser size={20} color="var(--black-800)" />}
-                  {...register('firstName')}
-                  textError={errors.firstName ? errors.firstName : ''}
-                  error={errors.firstName}
-                />
-
-                <Input
-                  label="Sobrenome"
-                  placeholder="Sobrenome"
-                  className="name"
-                  icon={<FiUser size={20} color="var(--black-800)" />}
-                  {...register('lastName')}
-                  textError={errors.lastName ? errors.lastName : ''}
-                  error={errors.lastName}
-                />
-              </div>
-
               <div
                 className="inputContainer"
                 style={show == 1 ? { display: 'none' } : undefined}
@@ -217,15 +163,7 @@ const Register = () => {
           )}
 
           <div className="buttonContainer">
-            {widthWindow || show === 2 ? (
-              <Button title="CONTINUAR" type="submit" />
-            ) : (
-              <Button
-                title="CONTINUAR"
-                onClick={showSecondary}
-                disabled={!watch('firstName') || !watch('lastName')}
-              />
-            )}
+            {widthWindow && <Button title="CONTINUAR" type="submit" />}
           </div>
 
           <div className="divisorContainer">
