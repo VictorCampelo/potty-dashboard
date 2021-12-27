@@ -36,25 +36,12 @@ const registerFormSchema = yup.object().shape({
 const Register = () => {
   const router = useRouter()
   // Estado para fazer a responsividade
-  const [show, setShow] = useState(1)
   const widthWindow = useMedia({ minWidth: '426px' })
-
-  function showPrimary(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault()
-    setShow(1)
-  }
-
-  function showSecondary(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault()
-    setShow(2)
-  }
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues,
-    watch
+    formState: { errors, isSubmitting }
   } = useForm({
     resolver: yupResolver(registerFormSchema)
   })
@@ -125,10 +112,7 @@ const Register = () => {
             </div>
           ) : (
             <>
-              <div
-                className="inputContainer"
-                style={show == 1 ? { display: 'none' } : undefined}
-              >
+              <div className="inputContainer">
                 <Input
                   label="Email"
                   placeholder="exemplo@gmail.com"

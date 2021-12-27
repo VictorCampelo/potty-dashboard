@@ -24,7 +24,8 @@ import {
   TopoPage,
   FilterCardTertiary,
   HorizonCard,
-  HeaderMob
+  HeaderMob,
+  Drawer
 } from '../../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -42,6 +43,7 @@ const Products = () => {
   const { name } = router.query
 
   const [buttonOn, setButtonOn] = useState(true)
+  const [drawerActive, setDrawerActive] = useState(true)
 
   const [businessName, setBusinessName] = useState('')
   const [desc, setDesc] = useState('')
@@ -158,8 +160,25 @@ const Products = () => {
 
           {!widthScreen && (
             <HeaderMob>
-              <GiHamburgerMenu size={24} color="black" />
+              <GiHamburgerMenu
+                onClick={() => setDrawerActive(true)}
+                size={24}
+                color="black"
+              />
               <input placeholder="Pesquisar na loja" />
+
+              <Drawer
+                className={drawerActive && 'active'}
+                onClick={() => setDrawerActive(false)}
+              >
+                <ul className="content" onClick={() => {}}>
+                  <li onClick={() => router.push('/login')}>Fazer Login</li>
+                  <li onClick={() => router.push('/cadastro')}>
+                    Fazer Cadastro
+                  </li>
+                  <li onClick={() => router.push('/')}>Fazer logoff</li>
+                </ul>
+              </Drawer>
             </HeaderMob>
           )}
         </TopoPage>

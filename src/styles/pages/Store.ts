@@ -51,6 +51,52 @@ export const HeaderMob = styled.header`
   }
 `
 
+export const Drawer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 66;
+  overflow: hidden;
+  right: 100%;
+  transition: background 2s, right 1s;
+  background: transparent;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 0;
+    background: white;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s;
+    align-items: center;
+    list-style: none;
+    padding-top: 4rem;
+    z-index: 77;
+
+    li {
+      width: 60%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &.active {
+    background: rgba(0, 0, 0, 0.4);
+    right: 0;
+    display: flex;
+
+    .content {
+      width: 230px;
+    }
+  }
+`
+
 export const InfoSerch = styled.div`
   display: flex;
   flex-direction: column;
