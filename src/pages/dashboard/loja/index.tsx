@@ -314,7 +314,7 @@ const Shop = ({ storeId, id, images }: Shop) => {
   return (
     <>
       <Head>
-        <title>Loja | Último</title>
+        <title>Loja | Boa de Venda</title>
       </Head>
 
       <Container>

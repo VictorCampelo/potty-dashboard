@@ -7,38 +7,40 @@ export const Container = styled.main`
   align-items: center;
 
   .header {
-    max-width: 1420px;
-    width: 100%;
-    height: 80px;
-
-    padding-left: 20px;
-
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: left;
+
+    width: 100%;
+    height: 80px;
+
+    max-width: 1420px;
+    padding-left: var(--spacing-xxs);
   }
 
   .body {
-    max-width: 1420px;
-    height: 2950px;
-
-    padding: 20px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+
+    height: 2950px;
+    max-width: 1420px;
+
+    padding: var(--spacing-xxs);
   }
 `
 
 export const Installments = styled.div`
-  position: absolute;
-  top: 30px;
   display: flex;
   flex-direction: column;
-  background: white;
-  border-radius: 30px;
+
+  position: absolute;
+  top: var(--spacing-xs);
+
+  background: var(--white);
+  border-radius: var(--border-radius-gg);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   align-items: center;
 
@@ -50,12 +52,12 @@ export const Installments = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0.5rem;
+    padding: var(--spacing-nano) var(--spacing-nano);
 
     .title {
-      color: black !important;
-      font-size: 1.5rem !important;
-      margin: 0 1rem;
+      color: var(--black-1000) !important;
+      font-size: var(--spacing-xxs) !important;
+      margin: 0 var(--spacing-xxxs);
     }
   }
 
@@ -66,50 +68,50 @@ export const Installments = styled.div`
   .list {
     display: flex;
     gap: 1rem;
-    padding: 1rem 2rem;
+    padding: var(--spacing-xxxs) var(--spacing-xs);
   }
 `
 
 export const CardProduct = styled.div`
-  width: 100%;
-  height: 750px;
-
-  background: #fff;
-
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 30px;
-
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: left;
 
-  .image-container {
-    width: 700px;
-    height: 100%;
+  width: 100%;
+  height: 750px;
 
+  background: var(--white);
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: var(--border-radius-gg);
+
+  .image-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    padding-left: 10px;
-    padding-right: 30px;
+    width: 700px;
+    height: 100%;
+
+    padding-left: var(--spacing-nano);
+    padding-right: var(--spacing-xs);
 
     .list-images {
-      width: 180px;
-      height: 60%;
-
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
 
+      width: 180px;
+      height: 60%;
+
       img {
         width: 130px;
         height: 130px;
 
-        border-radius: 5px;
+        border-radius: var(--border-radius-xxs);
 
         :hover {
           cursor: pointer;
@@ -126,7 +128,7 @@ export const CardProduct = styled.div`
       height: 500px;
       object-fit: cover;
 
-      border-radius: 5px;
+      border-radius: var(--border-radius-xxs);
     }
   }
 
@@ -134,30 +136,31 @@ export const CardProduct = styled.div`
     max-width: 550;
     height: 100%;
 
-    padding: 50px;
-    padding-top: 85px;
+    padding: var(--spacing-md);
+    padding-top: var(--spacing-xxl);
 
     .title {
     }
 
     .desc {
-      max-width: 315px;
-      height: 24px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+
+      max-width: 315px;
+      height: 24px;
     }
 
     .price-container {
-      max-width: 100%;
-      height: 200px;
-
-      margin: 24px 0px;
-
       display: flex;
       flex-direction: column;
       justify-content: center;
+
+      max-width: 100%;
+      height: 200px;
+
+      margin: var(--spacing-xxs) 0;
 
       .installments {
         position: relative;
@@ -180,19 +183,15 @@ export const CardProduct = styled.div`
 
         h4 {
           text-decoration: line-through;
-          font-family: 'Poppins';
-          font-style: normal;
-          font-weight: 600;
-          font-size: 20px;
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-medium);
+          font-size: var(--font-size-sm);
           line-height: 30px;
-          color: #b2b5ba;
+          color: var(--gray-300);
         }
 
         div {
-          margin-left: 8px;
-          width: 50px;
-          height: 28px;
-
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -200,14 +199,19 @@ export const CardProduct = styled.div`
 
           background: var(--color-primary);
           border-radius: 8px;
+          width: 50px;
+          height: 28px;
 
-          font-family: 'Poppins';
-          font-style: normal;
-          font-weight: 600;
-          font-size: 14px;
+          border-radius: var(--border-radius-sm);
+          margin-left: var(--spacing-nano);
+
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-medium);
+          font-size: var(--font-size-xxxs);
           line-height: 27px;
 
-          color: #ffffff;
+          color: var(--white);
         }
       }
 
@@ -236,6 +240,11 @@ export const CardProduct = styled.div`
           color: #ffffff;
         }
         h1 {
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-medium);
+          font-size: var(--font-size-xxl);
+          line-height: 60px;
           font-family: 'Poppins';
           font-style: normal;
           font-weight: 600;
@@ -245,46 +254,48 @@ export const CardProduct = styled.div`
           color: var(--color-primary);
 
           small {
-            font-family: 'Poppins';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 20px;
+            font-family: var(--font-family-primary);
+            font-style: var(--font-style-normal);
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-sm);
 
-            color: #b2b5ba;
+            color: var(--gray-300);
+
+            /* color: #b2b5ba; */
           }
         }
       }
     }
 
     .button-container {
-      max-width: 530px;
-      margin-top: 1rem;
-      height: 54px;
-
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
 
+      max-width: 530px;
+      margin-top: var(--spacing-xxxs);
+      height: 54px;
+
       button {
         max-width: 270px;
         height: 54px;
-        background: #ffffff;
-        border: 2px solid var(--color-primary);
+        background: var(--white);
+        border: var(--border-width-thin) solid var(--color-primary);
         box-sizing: border-box;
-        border-radius: 30px;
+        border-radius: var(--border-radius-gg);
 
-        padding: 0 24px;
+        padding: 0 var(--spacing-xxs);
 
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-xs);
 
         color: var(--color-primary);
 
         :first-child {
-          margin-right: 24px;
+          margin-right: var(--spacing-xxs);
         }
 
         :last-child {
@@ -308,56 +319,55 @@ export const Button = styled.button`
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
 `
 export const CardDesc = styled.div`
-  margin-top: 24px;
-
-  width: 100%;
-  height: auto;
-
-  background: #fff;
-
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 30px;
-
-  padding: 25px 0;
-
   display: flex;
   flex-direction: column;
 
-  .description-container {
-    height: 550px;
-    padding: 25px 50px;
+  width: 100%;
+  height: auto;
+  background: var(--white);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: var(--border-radius-gg);
 
+  margin-top: var(--spacing-xxs);
+  padding: var(--spacing-xxs) 0;
+
+  .description-container {
     display: flex;
     flex-direction: row;
+
+    height: 550px;
+    padding: var(--spacing-xxs) var(--spacing-md);
 
     .left-container {
       width: 730px;
       height: 100%;
 
       .image-container {
-        width: 700px;
-        height: 100%;
-
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding-left: 10px;
-        padding-right: 30px;
+
+        width: 700px;
+        height: 100%;
+
+        padding-left: var(--spacing-nano);
+        padding-right: var(--spacing-xs);
 
         .list-images {
-          width: 180px;
-          height: 410px;
-
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: space-between;
+
+          width: 180px;
+          height: 410px;
+
           img {
             width: 130px;
             height: 130px;
 
-            border-radius: 5px;
+            border-radius: var(--border-radius-xxs);
 
             :hover {
               cursor: pointer;
@@ -374,7 +384,7 @@ export const CardDesc = styled.div`
           height: 500px;
           object-fit: cover;
 
-          border-radius: 5px;
+          border-radius: var(--border-radius-xxs);
         }
       }
     }
@@ -391,29 +401,29 @@ export const CardDesc = styled.div`
 
       ::-webkit-scrollbar-thumb {
         background-color: #3332;
-        border-radius: 20px;
+        border-radius: var(--border-radius-lg);
       }
 
       h1 {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: bold;
-        font-size: 24px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-md);
         line-height: 36px;
 
         color: var(--color-secondary-darker);
 
-        margin-bottom: 24px;
+        margin-bottom: var(--spacing-xxs);
       }
 
       p {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-light);
+        font-size: var(--font-size-xxs);
         line-height: 24px;
 
-        color: #000;
+        color: var(--black-1000);
       }
     }
   }
@@ -422,14 +432,12 @@ export const CardDesc = styled.div`
     height: 650px;
 
     header {
-      width: 100%;
-      height: 70px;
-
       display: flex;
       align-items: center;
 
-      padding: 0 39px;
-
+      width: 100%;
+      height: 70px;
+      padding: 0 var(--spacing-sm);
       color: #fff;
       background: var(--color-secondary);
 
@@ -439,60 +447,61 @@ export const CardDesc = styled.div`
         align-items: center;
         justify-content: center;
 
-        margin-right: 15px;
+        margin-right: var(--spacing-xxxs);
 
         h1 {
-          margin-right: 10px;
-          font-family: 'Poppins';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 32px;
+          margin-right: var(--spacing-nano);
+
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-light);
+          font-size: var(--font-size-xlg);
           line-height: 48px;
 
-          color: #ffffff;
+          color: var(--white);
         }
       }
 
       h1 {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: bold;
-        font-size: 24px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-md);
         line-height: 36px;
-        color: #ffffff;
+        color: var(--white);
       }
 
       p {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: normal;
-        font-size: 24px;
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-md);
         line-height: 36px;
-        color: #ffffff;
+        color: var(--white);
       }
 
       .rate {
-        margin-right: 32px;
+        margin-right: var(--spacing-xs);
       }
     }
 
     .container {
-      width: 100%;
-      height: 550px;
-
       display: flex;
       flex-direction: row;
 
-      .left-container {
-        width: 80%;
-        height: auto;
+      width: 100%;
+      height: 550px;
 
+      .left-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
 
-        padding: 30px 40px;
+        width: 80%;
+        height: auto;
+
+        padding: var(--spacing-xs) var(--spacing-sm);
 
         overflow-y: auto;
 
@@ -502,7 +511,7 @@ export const CardDesc = styled.div`
 
         ::-webkit-scrollbar-thumb {
           background-color: #3332;
-          border-radius: 20px;
+          border-radius: var(--border-radius-lg);
         }
       }
 
@@ -517,41 +526,41 @@ export const CardDesc = styled.div`
 export const FilterCard = styled.div`
   width: 100%;
   height: 100%;
-  padding: 30px 40px;
+  padding: var(--spacing-xs) var(--spacing-sm);
 
   .filter {
-    width: 100%;
-    height: 100%;
-
-    background: #ffffff;
-    border: 1px solid #d8d9dd;
-    box-sizing: border-box;
-    border-radius: 30px;
-    padding: 32px;
-
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
 
+    width: 100%;
+    height: 100%;
+
+    background: var(---white);
+    border: var(--border-width-hairline) solid #d8d9dd;
+    box-sizing: border-box;
+    border-radius: var(--border-radius-gg);
+    padding: var(--spacing-xs);
+
     h1 {
-      font-family: 'Poppins';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 24px;
+      font-family: var(--font-family-primary);
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-regular);
+      font-size: var(--font-size-md);
       line-height: 36px;
 
       color: var(--color-secondary-darker);
 
-      margin-bottom: 18px;
-      margin-top: 18px;
+      margin-bottom: var(--spacing-xxxs);
+      margin-top: var(--spacing-xxxs);
     }
 
     h4 {
-      font-family: 'Poppins';
-      font-style: normal;
-      font-weight: 600;
-      font-size: 18px;
+      font-family: var(--font-family-primary);
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-xs);
       line-height: 27px;
 
       color: #6c7079;
@@ -567,7 +576,20 @@ export const ProductWrapper = styled.div`
   margin-bottom: 74px;
 
   padding: 0 8rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
 
+  width: 100%;
+  min-height: 900px;
+  height: auto;
+
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+
+  padding: 0 var(--spacing-md);
   gap: 1rem;
 
   h1 {
@@ -576,40 +598,40 @@ export const ProductWrapper = styled.div`
 `
 
 export const Footer = styled.footer`
-  width: 90%;
-  height: 320px;
-  border-radius: 30px;
-  background: var(--white);
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 2rem 3rem;
-  margin: 1.5rem 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
+  width: 90%;
+  border-radius: var(--border-radius-gg);
+  background: var(--white);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin: var(--spacing-xxs) 0;
+
   ${[sizes.down('lgMob')]} {
     width: 100%;
-    height: 490px;
     margin-bottom: 0;
-    border-radius: 30px 30px 0 0;
+    border-radius: var(--border-radius-gg) var(--border-radius-gg) 0 0;
     flex-direction: column;
+
     img {
-      margin-top: 1rem;
+      margin-top: var(--spacing-xxxs);
       width: 100%;
     }
   }
   h1 {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-xxxs);
   }
 
   span,
   a {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-nano);
 
     svg {
-      margin-right: 0.5rem;
+      margin-right: var(--spacing-nano);
     }
   }
 

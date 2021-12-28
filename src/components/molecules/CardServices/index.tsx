@@ -7,6 +7,7 @@ import { MdPets } from 'react-icons/md'
 import { AiOutlineTool } from 'react-icons/ai'
 import useMedia from 'use-media'
 import sizes from 'utils/sizes'
+
 export const CardServices = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 

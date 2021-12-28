@@ -13,6 +13,7 @@ export default createGlobalStyle`
   }
 
   :root {
+    /* ========= [COLORS] ================ */
     --white: #FFFFFF;
     --background: #FEFAEF;
     --black-1000: #000000;
@@ -40,6 +41,78 @@ export default createGlobalStyle`
 
     --wave-1: #F9EFDC;
     --wave-2: #F5E7CD;
+    /* ================================== */
+
+    /* ========= [TYPOGRAPHY] ========= */
+    --font-family-primary: 'Poppins', sans-serif;
+    --font-style-normal: normal;
+    /* ================================== */
+
+     /* ======== [FONT SIZE] ============ */
+    --font-size-xxxxs: .75rem; // 12px
+    --font-size-xxxs: .875rem; // 14px
+    --font-size-xxs: 1rem; // 16px
+    --font-size-xs: 1.125rem; // 18px
+    --font-size-sm: 1.25rem; // 20px
+    --font-size-md: 1.5rem; // 24px
+    --font-size-lg: 1.75rem; //28px
+    --font-size-xlg: 2rem; // 32px
+    --font-size-xxl: 2.5rem; // 40px
+    --font-size-xxxl: 3rem; // 48px
+    --font-size-xxxxl: 4rem; // 64px
+    --font-size-display: 5rem; // 80px
+    --font-size-giant: 6rem; // 96px
+
+    /* FONT WEIGHT */
+    --font-weight-bold: 700;
+    --font-weight-medium: 600;
+    --font-weight-regular: 500;
+    --font-weight-light: 400;
+
+    /* LINE HEIGHT */
+    --line-height-tight: 100%;
+    --line-height-md: 120%;
+    --line-height-distant: 150%;
+    --line-height-super-distant: 200%;
+
+    /* =============================== */
+
+    /* ========== [BORDER] =========== */
+    --border-radius-xxs: 4px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 24px;
+    --border-radius-gg: 28px;
+    --border-radius-pill: 500px;
+    --border-radius-circular: 50%;
+
+    /* WIDTH */
+    --border-width-none: 0;
+    --border-width-hairline: 1px;
+    --border-width-thin: 2px;
+    --border-width-thick: 4px;
+    --border-width-heavy: 8px;
+
+    /* ============================== */
+
+    /* ========== SPACINGS ========== */
+
+    --spacing-quarck: .25rem; // 4px
+    --spacing-nano: .5rem; // 8px
+    --spacing-xxxs: 1rem; // 16px
+    --spacing-xxs: 1.5rem; // 24px
+    --spacing-xs: 2rem; // 32px
+    --spacing-sm: 2.5rem; //40px
+    --spacing-md: 3rem; //48px
+    --spacing-lg: 4rem; // 64px
+    --spacing-xl: 5rem; // 80px
+    --spacing-xxl: 5.5rem; // 88px
+    --spacing-xxxl: 6rem; // 96px
+    --spacing-xxxxl: 6.5rem; // 104px
+    --spacing-huge: 7rem; // 112px
+    --spacing-xhuge: 7.5rem; // 120px
+
+    /* =============================== */
   }
 
   @media (max-width: 1080px) {
@@ -62,7 +135,7 @@ export default createGlobalStyle`
     font: 400 1rem "Poppins", sans-serif;
     color: var(--black-800);
   }
-  
+
   p {
     color: var(--gray-600);
   }

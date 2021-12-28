@@ -13,7 +13,9 @@ export const Container = styled.div<ContainerProp>`
   display: flex;
   align-items: center;
 
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-xxxs);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: var(--border-radius-sm);
 
   .card-container {
     display: flex;
@@ -21,17 +23,17 @@ export const Container = styled.div<ContainerProp>`
     align-items: center;
 
     .color {
-      width: 810px;
-      height: 76px;
-
       display: flex;
       flex-direction: row;
       align-items: center;
 
-      background: rgba(216, 217, 221, 0.28);
+      width: 1000px;
+      height: 76px;
+
+      background-color: #f4f5f6;
       border-radius: 8px;
 
-      margin-right: 25px;
+      z-index: 5;
 
       .icon {
         width: 60px;
@@ -41,11 +43,12 @@ export const Container = styled.div<ContainerProp>`
         justify-content: center;
         flex-grow: 0;
 
-        border-radius: 5px;
+        border-radius: var(--border-radius-xxs);
 
-        margin-left: 10px;
-        margin-right: 10px;
-        background-color: white;
+        background-color: var(--white);
+
+        margin-left: var(--spacing-nano);
+        margin-right: var(--spacing-nano);
       }
 
       .desc-container {
@@ -54,97 +57,93 @@ export const Container = styled.div<ContainerProp>`
         align-items: center;
         justify-content: center;
 
-        width: auto;
+        width: 100%;
         height: 76px;
         border-radius: 0;
 
-        padding-right: 50px;
+        padding-right: var(--spacing-md);
 
         tr {
+          width: 100%;
           display: flex;
           flex-direction: row;
+          justify-content: space-around;
         }
 
         .title {
-          width: 86px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+
+          width: 100px;
           height: 16px;
 
           display: flex;
           align-items: center;
           justify-content: center;
 
-          margin-left: 50px;
-          margin-bottom: 3px;
+          margin-left: var(--spacing-md);
+          margin-bottom: var(--spacing-quarck);
 
-          background: rgba(216, 217, 221, 0.48);
+          background: #e7e8ea;
+          border-radius: var(--border-radius-xxs);
 
-          font-family: 'Poppins';
-          font-style: normal;
-          font-weight: normal;
-          font-size: 13px;
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-light);
+          font-size: var(--font-size-xxxxs);
           line-height: 19px;
-          display: flex;
-          align-items: center;
-          text-align: center;
 
           color: #6c7079;
         }
 
         .children {
-          width: 86px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+
+          width: 100px;
           height: 24px;
 
           display: flex;
           align-items: center;
           justify-content: center;
 
-          margin-left: 50px;
+          margin-left: var(--spacing-md);
 
-          font-family: 'Poppins';
-          font-style: normal;
-          font-weight: normal;
-          font-size: 16px;
+          font-family: var(--font-family-primary);
+          font-style: var(--font-style-normal);
+          font-weight: var(--font-weight-light);
+          font-size: var(--font-size-xxs);
+
           line-height: 24px;
-          display: flex;
-          align-items: center;
-          text-align: center;
-
           color: #363f4e;
         }
       }
     }
+  }
+`
+export const ContainerButtons = styled.div`
+  display: flex;
+  flex-direction: column;
 
-    button {
-      width: 99px;
-      height: 50px;
+  justify-content: space-around;
+  align-items: center;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  width: 200px;
+  height: 100%;
+  border-radius: var(--border-radius-sm);
+  margin-left: calc(var(--spacing-xxs) * -1);
+  z-index: 4;
+  background-color: var(--white);
+  padding-left: var(--spacing-xxxs);
 
-      padding: 0 15px;
+  button {
+    background: var(--white);
+    color: var(--red);
+  }
 
-      background: #ffffff;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-      border-radius: 30px;
-
-      font-family: 'Poppins';
-      font-style: normal;
-      font-weight: normal;
-      font-size: 15px;
-      line-height: 22px;
-
-      &:first-child {
-        margin-right: 16px;
-      }
-    }
-
-    .edit-btn {
-      ${(props) => props.isGreen && 'color: #2DD1AC;'}
-    }
-
-    .close-btn {
-      ${(props) => props.isRed && 'color: #FF4D4B;'}
-    }
+  .edit-btn {
+    color: #000;
   }
 `

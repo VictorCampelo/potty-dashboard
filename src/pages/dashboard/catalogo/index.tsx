@@ -54,7 +54,9 @@ import { Point } from 'react-easy-crop/types'
 import getCroppedImg from 'functions/cropImage'
 import Cropper from 'react-easy-crop'
 import CupomItem from 'components/molecules/CupomItem'
-import { Checkbox } from 'components/atoms/Checkbox'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 type CategoryType = {
   name: string
@@ -94,6 +96,24 @@ interface Cupom {
   discountPorcent: number
   maxUsage: number
 }
+
+type CreateProductFormData = {
+  title: string
+  price: string
+  description: string
+  inventory: string
+  discount: string
+  parcelAmount: string
+}
+
+const createProductFormSchema = yup.object().shape({
+  title: yup.string(),
+  price: yup.string(),
+  description: yup.string(),
+  inventory: yup.string(),
+  discount: yup.string(),
+  parcelAmount: yup.string()
+})
 
 const catalog = ({ storeId }: CatalogType) => {
   const [excludeModal, setExcludeModal] = useState(false)
@@ -338,15 +358,27 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  async function handleCreateProduct() {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting }
+  } = useForm({
+    resolver: yupResolver(createProductFormSchema)
+  })
+
+  const handleCreateProduct: SubmitHandler<CreateProductFormData> = async (
+    values,
+    event
+  ) => {
     const body = {
-      title: titleProduct,
+      title: values.title,
       price: Number(
-        priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
       ),
       description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0'),
-      discount: Number(discountProduct),
+      inventory: Number(values.inventory || '0'),
+      discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
       files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
@@ -355,15 +387,7 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       await createProduct({ data: body })
 
-      toast.success('Produto criado com sucesso', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
+      toast.success('Produto criado com sucesso')
 
       setAddModal(false)
       setTitleProduct('')
@@ -390,15 +414,7 @@ const catalog = ({ storeId }: CatalogType) => {
         )
       }
 
-      toast.error('Erro ao criar produto', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
+      toast.error('Erro ao criar produto')
     }
 
     loadData()
@@ -416,15 +432,18 @@ const catalog = ({ storeId }: CatalogType) => {
     }
   }
 
-  const handleUpdateProduct = async () => {
+  const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
+    values,
+    event
+  ) => {
     const body = {
-      title: titleProduct,
+      title: values.title,
       price: Number(
-        priceProduct.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
       ),
       description: descriptionProduct,
-      inventory: Number(inventoryProduct || '0'),
-      discount: Number(discountProduct),
+      inventory: Number(values.inventory || '0'),
+      discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
       files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
@@ -483,7 +502,7 @@ const catalog = ({ storeId }: CatalogType) => {
   return (
     <>
       <Head>
-        <title> Catálogo | Último </title>
+        <title> Catálogo | Boa de Venda </title>
       </Head>
 
       {/* Remove category */}
@@ -642,7 +661,7 @@ const catalog = ({ storeId }: CatalogType) => {
         setModalOpen={toggleAddModal}
         modalVisible={addModal}
       >
-        <AddProductModalContainer>
+        <AddProductModalContainer onSubmit={handleSubmit(handleCreateProduct)}>
           <h1 className="titulo-cadastro">Cadastrar Produto</h1>
           <div className="input-infos">
             <div className="left-area">
@@ -650,8 +669,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 label="Nome do produto"
                 icon={<FiBox />}
                 placeholder="Nome do produto"
-                value={titleProduct}
-                onChange={(e) => setTitleProduct(e.target.value)}
+                {...register('title')}
               />
 
               <TextArea
@@ -660,6 +678,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
                 value={descriptionProduct}
+                {...register('description')}
                 onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
@@ -669,10 +688,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                   mask="monetary"
-                  value={priceProduct}
-                  onChange={(e) => {
-                    setPriceProduct(e.target.value)
-                  }}
+                  {...register('price')}
                 />
 
                 <Select
@@ -692,10 +708,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaPercentage />}
                   mask="number"
                   placeholder="0.0%"
-                  value={discountProduct}
-                  onChange={(e) => {
-                    setDiscountProduct(e.target.value)
-                  }}
+                  {...register('discount')}
                 />
 
                 <div className="arrows">
@@ -708,10 +721,10 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="monetary"
                   value={(
                     (Number(
-                      priceProduct
-                        .replace('R$ ', '')
-                        .replaceAll('.', '')
-                        .replaceAll(',', '.')
+                      getValues?.('discount')
+                        ?.replace('R$ ', '')
+                        ?.replaceAll('.', '')
+                        ?.replaceAll(',', '.') || '0'
                     ) *
                       Number(discountProduct)) /
                     100
@@ -730,8 +743,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
-                  value={inventoryProduct}
-                  onChange={(e) => setInventoryProduct(e.target.value)}
+                  {...register('inventory')}
                 />
               </div>
 
@@ -848,7 +860,7 @@ const catalog = ({ storeId }: CatalogType) => {
               onClick={toggleAddModal}
             />
 
-            <Button title="Salvar" onClick={handleCreateProduct} />
+            <Button title="Salvar" type="submit" />
           </div>
         </AddProductModalContainer>
       </CustomModal>
@@ -859,16 +871,15 @@ const catalog = ({ storeId }: CatalogType) => {
         setModalOpen={toggleEditProduct}
         modalVisible={editProduct}
       >
-        <AddProductModalContainer>
-          <h1 className="titulo-cadastro">Editar Produto</h1>
+        <AddProductModalContainer onSubmit={handleSubmit(handleUpdateProduct)}>
+          <h1 className="titulo-cadastro">Cadastrar Produto</h1>
           <div className="input-infos">
             <div className="left-area">
               <Input
                 label="Nome do produto"
                 icon={<FiBox />}
                 placeholder="Nome do produto"
-                value={titleProduct}
-                onChange={(e) => setTitleProduct(e.target.value)}
+                {...register('title')}
               />
 
               <TextArea
@@ -877,6 +888,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
                 value={descriptionProduct}
+                {...register('description')}
                 onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
@@ -886,10 +898,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                   mask="monetary"
-                  value={priceProduct}
-                  onChange={(e) => {
-                    setPriceProduct(e.target.value)
-                  }}
+                  {...register('price')}
                 />
 
                 <Select
@@ -908,15 +917,29 @@ const catalog = ({ storeId }: CatalogType) => {
                   label="Desconto"
                   icon={<FaPercentage />}
                   mask="number"
-                  placeholder="0"
+                  placeholder="0.0%"
+                  {...register('discount')}
                 />
+
                 <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
+
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
+                  value={(
+                    (Number(
+                      getValues?.('discount')
+                        ?.replace('R$ ', '')
+                        ?.replaceAll('.', '')
+                        ?.replaceAll(',', '.') || '0'
+                    ) *
+                      Number(discountProduct)) /
+                    100
+                  ).toFixed(2)}
+                  disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                 />
@@ -930,8 +953,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
-                  value={inventoryProduct}
-                  onChange={(e) => setInventoryProduct(e.target.value)}
+                  {...register('inventory')}
                 />
               </div>
 
@@ -950,62 +972,91 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <h2>Foto do produto</h2>
 
-              <div className="foto">
-                <div className="title-foto">Foto</div>
-                <label htmlFor="image">
-                  <input
-                    id="image"
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    multiple={true}
-                    maxLength={3}
-                    onChange={onFileChange}
-                    style={{ display: 'none' }}
-                  />
+              {/*<div className="foto">
+                 <div className="title-foto">Foto</div>
+                 <label htmlFor="image">
                   Enviar foto
                   <MdUpload size={20} />
                 </label>
-              </div>
+              </div> */}
 
               <div className="array-fotos">
                 <MdOutlineArrowBackIosNew />
-                <div className="card-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc.one}
-                      width="100%"
-                      height="100%"
-                      alt="Foto Produto"
-                    />
-                  ) : (
-                    <IoMdCamera size={25} color="#6C7079" />
-                  )}
-                </div>
-                <div className="card-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc.two}
-                      width="100%"
-                      height="100%"
-                      alt="Foto Produto"
-                    />
-                  ) : (
-                    <IoMdCamera size={25} color="#6C7079" />
-                  )}
-                </div>
-                <div className="card-image">
-                  {imageSrc ? (
-                    <img
-                      src={imageSrc.three}
-                      width="100%"
-                      height="100%"
-                      alt="Foto Produto"
-                    />
-                  ) : (
-                    <IoMdCamera size={25} color="#6C7079" />
-                  )}
-                </div>
+                <input
+                  id="image"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(1)}
+                />
+                <input
+                  id="image1"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(2)}
+                />
+                <input
+                  id="image2"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple={false}
+                  maxLength={1}
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                  onClick={() => setCurrentImage(3)}
+                />
+                <label htmlFor="image">
+                  <div className="card-image">
+                    {imageSrc ? (
+                      <img
+                        src={imageSrc}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
+                <label htmlFor="image1">
+                  <div className="card-image">
+                    {imageSrc1 ? (
+                      <img
+                        src={imageSrc1}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
+                <label htmlFor="image2">
+                  <div className="card-image">
+                    {imageSrc2 ? (
+                      <img
+                        src={imageSrc2}
+                        width="100%"
+                        height="100%"
+                        alt="Foto Produto"
+                      />
+                    ) : (
+                      <IoMdCamera size={25} color="#6C7079" />
+                    )}
+                  </div>
+                </label>
                 <MdOutlineArrowForwardIos />
               </div>
             </div>
@@ -1016,10 +1067,10 @@ const catalog = ({ storeId }: CatalogType) => {
               title="Voltar"
               border
               style={{ marginRight: 16 }}
-              onClick={toggleEditProduct}
+              onClick={toggleAddModal}
             />
 
-            <Button title="Salvar" onClick={() => handleUpdateProduct()} />
+            <Button title="Salvar" type="submit" />
           </div>
         </AddProductModalContainer>
       </CustomModal>
@@ -1134,6 +1185,7 @@ const catalog = ({ storeId }: CatalogType) => {
               border
               style={{ marginRight: 16 }}
               onClick={toggleAddCupomModal}
+              type="button"
             />
 
             <Button title="Salvar" />
@@ -1193,7 +1245,7 @@ const catalog = ({ storeId }: CatalogType) => {
       </CustomModal>
 
       <Container>
-        <DrawerLateral activated={true} greenOption={4} />
+        <DrawerLateral greenOption={4} />
 
         <div className="area">
           <div className="list-container">
@@ -1238,7 +1290,7 @@ const catalog = ({ storeId }: CatalogType) => {
                             icon=""
                             name={product?.title}
                             code={product?.id}
-                            category={product?.tags}
+                            category={product?.categories}
                             amount={product?.inventory}
                             price={product?.price}
                             excludeBtn={() => {

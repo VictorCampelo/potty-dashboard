@@ -7,7 +7,7 @@ export function setupApiClient(ctx = undefined) {
   const cookies = parseCookies(ctx)
 
   const api = axios.create({
-    baseURL: 'http://ec2-3-21-123-66.us-east-2.compute.amazonaws.com:3001',
+    baseURL: 'https://api-dev.boadevenda.com.br/',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${cookies['ultimo.auth.token']}`

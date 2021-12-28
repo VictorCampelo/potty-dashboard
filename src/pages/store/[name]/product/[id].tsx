@@ -34,6 +34,8 @@ import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
+import { CartButton } from 'components/atoms/CartButton'
+
 const fakeFeedBack = [
   {
     id: 1
@@ -636,6 +638,8 @@ const ProductShow = () => {
           </Footer>
         </main>
       </Container>
+
+      <CartButton />
     </>
   )
 }
