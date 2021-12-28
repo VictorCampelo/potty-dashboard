@@ -607,9 +607,12 @@ const ProductShow = () => {
           <ProductWrapper>
             <h1>Produtos relacionados</h1>
 
-            <Carousel data={fakeProducts} isProduct />
-
-            <Carousel data={fakeProducts} isProduct />
+            <div>
+              <Carousel data={fakeProducts} isProduct />
+            </div>
+            <div>
+              <Carousel data={fakeProducts} isProduct />
+            </div>
           </ProductWrapper>
           <Footer>
             <div>
