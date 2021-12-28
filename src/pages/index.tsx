@@ -207,7 +207,8 @@ export const ContentProduct = styled(Content)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 8rem 0 8rem;
+  /* padding: 0 8rem 0 8rem; */
+  padding-left: 8rem;
 
   ${[sizes.down('lgMob')]} {
     padding: 0 var(--font-size-xlg) 0 var(--font-size-xlg);

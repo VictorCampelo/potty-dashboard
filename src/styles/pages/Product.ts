@@ -15,7 +15,7 @@ export const Container = styled.main`
     width: 100%;
     height: 80px;
 
-    max-width: 1420px;
+    /* max-width: 1420px; */
     padding-left: var(--spacing-xxs);
   }
 
@@ -25,8 +25,8 @@ export const Container = styled.main`
     align-items: center;
     justify-content: flex-start;
 
-    height: 2950px;
-    max-width: 1420px;
+    /* height: 2950px;
+    max-width: 1420px; */
 
     padding: var(--spacing-xxs);
   }
@@ -569,27 +569,19 @@ export const FilterCard = styled.div`
 `
 
 export const ProductWrapper = styled.div`
-  width: 100%;
+  max-width: 100vw;
   min-height: 900px;
   height: auto;
-  margin-top: 2rem;
-  margin-bottom: 74px;
-
-  padding: 0 8rem;
+  border: 1px solid red;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 0 0 0 8rem;
+  /* padding-left: 8rem; */
   align-items: flex-start;
-  justify-content: center;
-
-  width: 100%;
-  min-height: 900px;
-  height: auto;
-
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 
-  padding: 0 var(--spacing-md);
+  /* padding: 0 var(--spacing-md); */
   gap: 1rem;
 
   h1 {

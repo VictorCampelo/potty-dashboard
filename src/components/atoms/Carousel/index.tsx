@@ -173,7 +173,7 @@ const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
 export default Carousel
 
 const Wrapper = styled.div`
-  width: 114%;
+  /* width: 114%; */
   display: flex;
   /* gap: 2rem; */
   align-items: center;
@@ -181,6 +181,7 @@ const Wrapper = styled.div`
   padding: 0 2rem;
 
   ${[sizes.down('lgMob')]} {
+    width: 114%;
     flex-direction: column;
     padding: 0 0 0 var(--spacing-xs);
 
@@ -201,12 +202,9 @@ type ButtonProp = {
   position?: string
 }
 const Button = styled.button<ButtonProp>`
-<<<<<<< HEAD
   width: 2rem;
   height: 2rem;
   flex: none;
-=======
->>>>>>> b64cef75d19dab0733a83ff6943744881b2895fa
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,9 +233,9 @@ const ButtonMobile = styled(Button)`
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
-
-  padding: var(--spacing-nano) var(--spacing-quarck);
+  max-width: 100vw !important;
+  border: 1px solid blue;
+  /* padding: var(--spacing-nano) var(--spacing-quarck); */
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;
