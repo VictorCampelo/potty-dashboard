@@ -221,6 +221,14 @@ export const Banner = styled.section`
   height: 250px;
 
   padding: var(--font-size-md) var(--font-size-xxxxl);
+
+  ${[sizes.down('lgMob')]} {
+    height: 150px;
+    img {
+      width: 171.19px;
+      height: 99.34px;
+    }
+  }
 `
 
 export const SelectInput = styled.input`
