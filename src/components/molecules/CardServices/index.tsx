@@ -101,4 +101,9 @@ export const Container = styled.div`
   ${[sizes.down('lgMob')]} {
     gap: 1rem 2rem;
   }
+
+  ${[sizes.down('mdMob')]} {
+    justify-content: space-around;
+    gap: 1rem;
+  }
 `
