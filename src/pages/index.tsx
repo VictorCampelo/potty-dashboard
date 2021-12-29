@@ -17,13 +17,20 @@ import { Input } from 'components/molecules/Input'
 import { CardServices } from 'components/molecules/CardServices'
 import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
+import useMedia from 'use-media'
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { useState } from 'react'
+import { Drawer } from 'styles/pages/Store'
+import { IoIosClose } from 'react-icons/io'
+import router from 'next/router'
 
 interface Landing {
   stores: []
 }
 
 const Landing = ({ stores }: Landing) => {
-  console.log(stores)
+  const widthScreen = useMedia({ minWidth: '426px' })
+  const [drawerActive, setDrawerActive] = useState(false)
   return (
     <Wrapper>
       <Head>
@@ -33,6 +40,30 @@ const Landing = ({ stores }: Landing) => {
       <Header />
 
       <Container>
+        {!widthScreen && (
+          <HeaderMob>
+            <GiHamburgerMenu
+              onClick={() => setDrawerActive(true)}
+              size={24}
+              color="black"
+            />
+
+            <Drawer className={drawerActive && 'active'}>
+              <ul className="content">
+                <div
+                  className="close-btn"
+                  onClick={() => setDrawerActive(false)}
+                >
+                  <IoIosClose size={30} color={'#363F4E'} />
+                </div>
+                <li onClick={() => router.push('/login')}>Fazer Login</li>
+                <li onClick={() => router.push('/cadastro')}>Fazer Cadastro</li>
+                <li onClick={() => router.push('/')}>Fazer logoff</li>
+              </ul>
+              <div className="outside" onClick={() => setDrawerActive(false)} />
+            </Drawer>
+          </HeaderMob>
+        )}
         <Banner>
           <img
             src="/images/logo2.svg"
@@ -223,6 +254,14 @@ export const Banner = styled.section`
   height: 250px;
 
   padding: var(--font-size-md) var(--font-size-xxxxl);
+
+  ${[sizes.down('lgMob')]} {
+    height: 150px;
+    img {
+      width: 171.19px;
+      height: 99.34px;
+    }
+  }
 `
 
 export const SelectInput = styled.input`
@@ -267,6 +306,26 @@ export const MoreCategory = styled.div`
     :hover {
       text-decoration: underline;
     }
+  }
+`
+export const HeaderMob = styled.header`
+  height: 70px;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0 1.25rem;
+
+  svg {
+    margin-right: 1rem;
+    flex: none;
+  }
+
+  input {
+    flex: 1;
+    height: 36px;
+    padding: 0 1rem;
+    border-radius: 40px;
+    border: 1px solid var(--gray-700);
   }
 `
 

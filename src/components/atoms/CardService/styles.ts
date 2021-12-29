@@ -19,7 +19,8 @@ export const Container = styled.div<ContainerProps>`
   }
 
   ${[sizes.down('mdMob')]} {
-    width: 140px;
+    width: 125px;
+    font-size: 0.9rem;
   }
 
   /* margin: 0 0 1rem 0; */
