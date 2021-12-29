@@ -97,7 +97,6 @@ export const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-
   ${[sizes.down('lgMob')]} {
     gap: 1rem 2rem;
   }

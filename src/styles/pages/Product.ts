@@ -1,34 +1,37 @@
 import styled from 'styled-components'
 import sizes from 'utils/sizes'
 
+export const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+`
+
 export const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding: var(--spacing-nano) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
 
+  ${[sizes.down('lgMob')]} {
+    padding: 0;
+  }
   .header {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: left;
-
     width: 100%;
     height: 80px;
 
-    max-width: 1440px;
+    /* max-width: 1440px; */
     padding-left: var(--spacing-xxs);
-  }
 
-  .body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-    /* height: 2950px;*/
-    max-width: 1440px;
-
-    padding: var(--spacing-xxs);
+    ${[sizes.down('lgMob')]} {
+      display: none;
+    }
   }
 `
 
@@ -86,6 +89,11 @@ export const CardProduct = styled.div`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: var(--border-radius-gg);
 
+  ${[sizes.down('lgMob')]} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .image-container {
     display: flex;
     flex-direction: row;
@@ -97,7 +105,15 @@ export const CardProduct = styled.div`
 
     padding-left: var(--spacing-nano);
     padding-right: var(--spacing-xs);
+    border: 1px solid red;
 
+    ${[sizes.down('lgMob')]} {
+      width: 100%;
+    }
+    .product-image {
+      width: 250px;
+      height: 250px;
+    }
     .list-images {
       display: flex;
       flex-direction: column;
@@ -106,7 +122,9 @@ export const CardProduct = styled.div`
 
       width: 180px;
       height: 60%;
-
+      ${[sizes.down('lgMob')]} {
+        display: none;
+      }
       img {
         width: 130px;
         height: 130px;
@@ -572,18 +590,23 @@ export const ProductWrapper = styled.div`
   max-width: 100%;
   min-height: 900px;
   height: auto;
-  border: 1px solid red;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* align-items: flex-start;  */
-  justify-items: center;
+  justify-content: center;
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 
   padding: 0 var(--spacing-md);
   gap: 1rem;
 
+  .carousel-container {
+    max-width: 100%;
+    padding: 2rem;
+    .carousel-item {
+      max-width: 100%;
+    }
+  }
   h1 {
     font-weight: 400;
   }
