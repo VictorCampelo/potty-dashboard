@@ -39,6 +39,7 @@ import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
 import styled from 'styled-components'
+import useMedia from 'use-media'
 
 const fakeFeedBack = [
   {
@@ -158,6 +159,8 @@ const ProductShow = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [showInstallment, setShowInstallment] = useState(false)
+
+  const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
     router.push(`/product/${id}`)
@@ -345,7 +348,7 @@ const ProductShow = () => {
                     <div>12x</div>
                     <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
                   </div>
-                  <p>
+                  <p style={!widthScreen ? { display: 'none' } : undefined}>
                     Em até 12x sem juros ou{' '}
                     <strong>R$ {priceWithDiscount}</strong> à vista
                   </p>

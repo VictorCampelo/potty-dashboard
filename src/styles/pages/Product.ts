@@ -164,7 +164,15 @@ export const CardProduct = styled.div`
     padding: var(--spacing-md);
     padding-top: var(--spacing-xxl);
 
-    
+    ${[sizes.down('lgMob')]} {
+      padding: var(--spacing-xxl) 0; 
+
+      .title, .desc, .discount, a {
+        margin-left: var(--spacing-xxs);
+      }
+
+    }
+ 
     .desc {
       display: flex;
       flex-direction: row;
@@ -200,6 +208,9 @@ export const CardProduct = styled.div`
 
       margin: var(--spacing-xxs) 0;
 
+      ${[sizes.down('lgMob')]} {
+        margin: 0;
+      }
       .installments {
         position: relative;
       }
@@ -212,6 +223,11 @@ export const CardProduct = styled.div`
         -moz-user-select: none; /* Old versions of Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none;
+        text-decoration: underline;
+
+        ${[sizes.down('lgMob')]} {
+          font-size: var(--font-size-md);
+        }
       }
 
       .discount {
@@ -263,7 +279,9 @@ export const CardProduct = styled.div`
         gap: 1rem;
 
         ${[sizes.down('lgMob')]} {
+          margin-top: var(--spacing-nano);
           background: var(--white);
+          padding: var(--spacing-xxs);
         }
         div {
           width: 50px;
@@ -327,6 +345,11 @@ export const CardProduct = styled.div`
       margin-top: var(--spacing-xxxs);
       height: 54px;
 
+      ${[sizes.down('lgMob')]} {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-xxxs);
+      }
       button {
         max-width: 270px;
         height: 54px;

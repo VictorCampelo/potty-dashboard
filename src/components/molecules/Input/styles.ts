@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 interface ContainerProps {
   error: boolean
@@ -15,7 +16,10 @@ export const Container = styled.div<ContainerProps>`
   ${(props) => 'flex: ' + props.flex + ';'}
   ${(props) => props.search && 'max-width: 90%;'}
   ${(props) => props.inverse && 'max-width: 30%;'}
-  
+  ${[sizes.down('lgMob')]} {
+    ${(props) => props.inverse && 'max-width: 100%;'}
+  }
+
   .bar {
     width: 2px;
     height: 100%;
