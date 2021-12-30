@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
 `
 
 export const Container = styled.main`
+  background: var(--gray-100);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,10 +28,10 @@ export const Container = styled.main`
     height: 80px;
 
     /* max-width: 1440px; */
-    padding-left: var(--spacing-xxs);
+    /* padding-left: var(--spacing-xxs);   */
 
     ${[sizes.down('lgMob')]} {
-      display: none;
+      width: 50%;
     }
   }
 `
@@ -84,8 +85,11 @@ export const CardProduct = styled.div`
   width: 100%;
   height: 750px;
 
-  background: var(--white);
+  background: var(--white); 
 
+  ${[sizes.down('lgMob')]} {
+    background: var(--gray-100);
+  }
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: var(--border-radius-gg);
 
@@ -93,6 +97,7 @@ export const CardProduct = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 0%;
   }
   .image-container {
     display: flex;
@@ -105,14 +110,10 @@ export const CardProduct = styled.div`
 
     padding-left: var(--spacing-nano);
     padding-right: var(--spacing-xs);
-    border: 1px solid red;
 
     ${[sizes.down('lgMob')]} {
       width: 100%;
-    }
-    .product-image {
-      width: 250px;
-      height: 250px;
+      background: var(--white);
     }
     .list-images {
       display: flex;
@@ -147,6 +148,12 @@ export const CardProduct = styled.div`
       object-fit: cover;
 
       border-radius: var(--border-radius-xxs);
+
+      ${[sizes.down('lgMob')]} {
+        width: 250px;
+        height: 250px;
+      }
+    }
     }
   }
 
@@ -157,17 +164,30 @@ export const CardProduct = styled.div`
     padding: var(--spacing-md);
     padding-top: var(--spacing-xxl);
 
-    .title {
-    }
-
+    
     .desc {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-
+      
       max-width: 315px;
       height: 24px;
+      
+      .separate {
+        display: none;
+      }
+
+      ${[sizes.down('lgMob')]} {
+        justify-content: flex-start;
+        gap: var(--spacing-quarck);
+        .avaliations {
+          display: none;
+        }
+        .separate {
+          display: block;
+        }
+      }
     }
 
     .price-container {
@@ -230,6 +250,10 @@ export const CardProduct = styled.div`
           line-height: 27px;
 
           color: var(--white);
+
+          ${[sizes.down('lgMob')]} {
+            background: var(--color-secondary);
+          }
         }
       }
 
@@ -237,6 +261,10 @@ export const CardProduct = styled.div`
         display: flex;
         align-items: center;
         gap: 1rem;
+
+        ${[sizes.down('lgMob')]} {
+          background: var(--white);
+        }
         div {
           width: 50px;
           height: 28px;
@@ -256,6 +284,10 @@ export const CardProduct = styled.div`
           line-height: 27px;
 
           color: #ffffff;
+
+          ${[sizes.down('lgMob')]} {
+            display: none;
+          }
         }
         h1 {
           font-family: var(--font-family-primary);
@@ -380,7 +412,9 @@ export const CardDesc = styled.div`
 
           width: 180px;
           height: 410px;
-
+          ${[sizes.down('lgMob')]} {
+            display: none;
+          }
           img {
             width: 130px;
             height: 130px;
@@ -401,8 +435,12 @@ export const CardDesc = styled.div`
           width: 500px;
           height: 500px;
           object-fit: cover;
-
           border-radius: var(--border-radius-xxs);
+
+          ${[sizes.down('lgMob')]} {
+            width: 250px;
+            height: 250px;
+          }
         }
       }
     }
@@ -593,22 +631,23 @@ export const ProductWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 
   padding: 0 var(--spacing-md);
-  gap: 1rem;
+  gap: 0 1rem;
 
   .carousel-container {
     max-width: 100%;
-    padding: 2rem;
+    padding: 0 var(--spacing-lg);
     .carousel-item {
       max-width: 100%;
     }
   }
   h1 {
     font-weight: 400;
+    margin-left: var(--spacing-xs);
   }
 `
 

@@ -1,6 +1,7 @@
 import { Input } from '../../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
+import { VscSearch } from 'react-icons/vsc'
 import {
   Wrapper,
   Container,
@@ -36,6 +37,7 @@ import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
+import styled from 'styled-components'
 
 const fakeFeedBack = [
   {
@@ -286,14 +288,14 @@ const ProductShow = () => {
       <HeaderShop isMain={false} />
       <Container>
         <header className="header">
-          <Input icon={<FaSearch />} placeholder="Pesquisar na loja" />
+          <InputHeader icon={<VscSearch />} placeholder="Pesquisar na loja" />
         </header>
         <CardProduct>
           <div className="image-container">
             <div className="list-images">
               <Button style={{ marginBottom: '1rem' }}>
                 {' '}
-                <AiOutlineUp size={20} color="var(--gray-600" />
+                <AiOutlineUp size={20} color="var(--gray-600)" />
               </Button>
               {images.map((data) => {
                 return (
@@ -307,7 +309,7 @@ const ProductShow = () => {
               })}
               <Button style={{ marginTop: '1rem' }}>
                 {' '}
-                <AiOutlineDown size={20} color="var(--gray-600" />
+                <AiOutlineDown size={20} color="var(--gray-600)" />
               </Button>
             </div>
             <img
@@ -321,7 +323,8 @@ const ProductShow = () => {
             <div className="desc">
               <ReactStars count={1} size={23} value={1} edit={false} />
               <p>{avgStars}</p>
-              <p>{sumFeedbacks} avaliações</p>
+              <p className="avaliations">{sumFeedbacks} avaliações</p>
+              <p className="separate">|</p>
               <p>{sumOrders} pedidos</p>
             </div>
 
@@ -645,3 +648,9 @@ const ProductShow = () => {
 }
 
 export default ProductShow
+
+export const InputHeader = styled(Input)`
+  .inputContainter {
+    border: 1px solid white;
+  }
+`
