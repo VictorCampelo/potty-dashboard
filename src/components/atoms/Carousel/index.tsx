@@ -178,7 +178,8 @@ const Wrapper = styled.div`
   /* gap: 2rem; */
   align-items: center;
   transform: translateX(-7%);
-  padding: 0 2rem;
+  padding: 1rem 2rem;
+
   ${[sizes.down('lgMob')]} {
     width: 114%;
     flex-direction: column;
@@ -238,7 +239,7 @@ const Container = styled.div`
   scroll-behavior: smooth;
   gap: 1rem;
   scrollbar-width: none;
-
+  padding: var(--spacing-nano) 0;
   &::-webkit-scrollbar {
     display: none;
   }

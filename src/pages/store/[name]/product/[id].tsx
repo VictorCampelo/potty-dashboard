@@ -24,7 +24,8 @@ import {
   AiFillStar,
   AiOutlineWhatsApp,
   AiOutlineUp,
-  AiOutlineDown
+  AiOutlineDown,
+  AiOutlineMail
 } from 'react-icons/ai'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
@@ -288,7 +289,12 @@ const ProductShow = () => {
       <HeaderShop isMain={false} />
       <Container>
         <header className="header">
-          <InputHeader icon={<VscSearch />} placeholder="Pesquisar na loja" />
+          <Input
+            icon={<VscSearch />}
+            placeholder="Pesquisar na loja"
+            search
+            inverse
+          />
         </header>
         <CardProduct>
           <div className="image-container">
@@ -630,10 +636,14 @@ const ProductShow = () => {
               Whatsapp
             </span>
 
-            <a href="facebook.com">
+            {/* <a href="facebook.com">
               <AiFillFacebook size={24} color="var(--gray-700)" />
               Facebook
-            </a>
+            </a> */}
+            <span>
+              <AiOutlineMail size={24} color="var(--gray-700)" />
+              emailexample@gmail.com
+            </span>
           </div>
           <div className="mapContainer">
             <img src="/images/map.png" />
@@ -648,9 +658,3 @@ const ProductShow = () => {
 }
 
 export default ProductShow
-
-export const InputHeader = styled(Input)`
-  .inputContainter {
-    border: 1px solid white;
-  }
-`

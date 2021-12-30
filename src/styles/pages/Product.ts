@@ -361,7 +361,7 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 25px;
+  width: 20px;
   height: 32px;
   background: var(--white);
   border: 1px solid var(--white);
@@ -636,7 +636,7 @@ export const ProductWrapper = styled.div`
   margin-bottom: var(--spacing-xl);
 
   padding: 0 var(--spacing-md);
-  gap: 0 1rem;
+  gap: 1rem;
 
   .carousel-container {
     max-width: 100%;

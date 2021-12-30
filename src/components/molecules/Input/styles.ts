@@ -4,6 +4,7 @@ interface ContainerProps {
   error: boolean
   flex: number
   search: boolean
+  inverse: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -13,8 +14,14 @@ export const Container = styled.div<ContainerProps>`
   flex-direction: column;
   ${(props) => 'flex: ' + props.flex + ';'}
   ${(props) => props.search && 'max-width: 90%;'}
- 
+  ${(props) => props.inverse && 'max-width: 30%;'}
   
+  .bar {
+    width: 2px;
+    height: 100%;
+    background: var(--gray-200);
+  }
+
   .labelContent {
     display: flex;
     justify-content: space-between;
@@ -51,6 +58,9 @@ export const Container = styled.div<ContainerProps>`
 
     ${(props) => props.search && 'border: 1px solid white;'}
     ${(props) => props.search && 'border-radius: 50px;'}
+    ${(props) => props.inverse && 'box-shadow: 0 0 1rem rgba(0,0,0,0.1);'}
+    ${(props) => props.inverse && 'border-radius: 15px;'}
+
     input {
       width: 100%;
       height: 100%;
