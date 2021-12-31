@@ -165,7 +165,7 @@ export const CardProduct = styled.div`
     padding-top: var(--spacing-xxl);
 
     ${[sizes.down('lgMob')]} {
-      padding: var(--spacing-xxl) 0; 
+      padding: var(--spacing-lg) 0; 
 
       .title, .desc, .discount, a {
         margin-left: var(--spacing-xxs);
@@ -224,9 +224,10 @@ export const CardProduct = styled.div`
         -ms-user-select: none; /* Internet Explorer/Edge */
         user-select: none;
         text-decoration: underline;
-
+        font-weight: bold;
         ${[sizes.down('lgMob')]} {
           font-size: var(--font-size-md);
+
         }
       }
 
@@ -354,6 +355,7 @@ export const CardProduct = styled.div`
         flex-wrap: wrap;
         justify-content: center;
         gap: var(--spacing-xxxs);
+        height: 125px;
       }
       button {
         max-width: 270px;
@@ -385,6 +387,7 @@ export const CardProduct = styled.div`
     }
   }
 `
+
 export const Button = styled.button`
   display: flex;
   align-items: center;
@@ -396,6 +399,7 @@ export const Button = styled.button`
   border-radius: 50%;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
 `
+
 export const CardDesc = styled.div`
   display: flex;
   flex-direction: column;
@@ -602,6 +606,61 @@ export const CardDesc = styled.div`
       .right-container {
         width: 40%;
         height: auto;
+      }
+    }
+  }
+`
+
+export const CardDescMobile = styled.div`
+  width: 100%;
+  padding: var(--spacing-xxs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+
+  .divisor {
+    width: 100%;
+    height: 4px;
+    background: var(--gray-200);
+  }
+  .description-container,
+  .rated-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxxs);
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .rated-container {
+    .star-container {
+      display: flex;
+      justify-content: space-between;
+      .left-container {
+        padding-left: var(--spacing-xxs);
+        .star {
+          gap: var(--spacing-xxxs);
+          h1 {
+            font-size: var(--font-size-xxxl);
+            font-weight: var(--font-weight-medium);
+          }
+          display: flex;
+          align-items: center;
+        }
+      }
+      .right-container {
+        .stars-container {
+          div {
+            display: flex;
+            align-items: center;
+            p {
+              margin-left: var(--spacing-nano);
+            }
+          }
+        }
       }
     }
   }

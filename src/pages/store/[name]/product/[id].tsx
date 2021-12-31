@@ -7,6 +7,7 @@ import {
   Container,
   CardProduct,
   CardDesc,
+  CardDescMobile,
   ProductWrapper,
   Footer,
   FilterCard,
@@ -26,7 +27,8 @@ import {
   AiOutlineWhatsApp,
   AiOutlineUp,
   AiOutlineDown,
-  AiOutlineMail
+  AiOutlineMail,
+  AiOutlineRight
 } from 'react-icons/ai'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
@@ -473,163 +475,253 @@ const ProductShow = () => {
                 <>
                   {/* <button>COMPRAR AGORA</button> */}
                   <BigButton border title="COMPRAR AGORA" />
-                  <button onClick={handleAddToCart}>
+                  {/* <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
-                  </button>
+                  </button> */}
+                  <BigButton title="ADICIONAR AO CARRINHO" />
                 </>
               )}
             </div>
           </div>
         </CardProduct>
 
-        <CardDesc>
-          <CatalogTabs
-            tab1="Descrição"
-            tab2="Avaliação"
-            setToggleState={setToggleState}
-            toggleState={toggleState}
-            content1={
-              <>
-                <div className="description-container">
-                  <div className="left-container">
-                    <div className="image-container">
-                      <div className="list-images">
-                        <Button style={{ marginBottom: '1rem' }}>
-                          {' '}
-                          <AiOutlineUp size={20} color="var(--gray-600" />
-                        </Button>
-                        {images.map((data) => {
+        {widthScreen ? (
+          <CardDesc>
+            <CatalogTabs
+              tab1="Descrição"
+              tab2="Avaliação"
+              setToggleState={setToggleState}
+              toggleState={toggleState}
+              content1={
+                <>
+                  <div className="description-container">
+                    <div className="left-container">
+                      <div className="image-container">
+                        <div className="list-images">
+                          <Button style={{ marginBottom: '1rem' }}>
+                            {' '}
+                            <AiOutlineUp size={20} color="var(--gray-600" />
+                          </Button>
+                          {images.map((data) => {
+                            return (
+                              <img
+                                key={data.title}
+                                onClick={(e) =>
+                                  setImagePreviewDesc(data.original)
+                                }
+                                src={data.thumbnail}
+                                alt={data.title}
+                              />
+                            )
+                          })}
+                          <Button style={{ marginTop: '1rem' }}>
+                            {' '}
+                            <AiOutlineDown size={20} color="var(--gray-600" />
+                          </Button>
+                        </div>
+                        <img src={imagePreviewDesc} alt="Foto do produto" />
+                      </div>
+                    </div>
+                    <div className="right-container">
+                      <h1>{title}</h1>
+                      <p>{desc}</p>
+                    </div>
+                  </div>
+                </>
+              }
+              content2={
+                <>
+                  <div className="rated-container">
+                    <header>
+                      <h1 className="rate">Avaliações de Clientes</h1>
+                      <div>
+                        <h1>{avgStars}</h1>
+                        <ReactStars
+                          count={5}
+                          size={50}
+                          value={5}
+                          edit={false}
+                        />
+                      </div>
+                      <p>({sumFeedbacks} avaliações)</p>
+                    </header>
+                    <div className="container">
+                      <div className="left-container">
+                        {fakeFeedBack.map((e) => {
                           return (
-                            <img
-                              key={data.title}
-                              onClick={(e) =>
-                                setImagePreviewDesc(data.original)
-                              }
-                              src={data.thumbnail}
-                              alt={data.title}
+                            <CardFeedback
+                              key={e.id}
+                              name="Henrique Soares"
+                              quantStar={5} //max stars is 5
+                              text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
+                              time="30/09/2021"
+                              width={850}
                             />
                           )
                         })}
-                        <Button style={{ marginTop: '1rem' }}>
-                          {' '}
-                          <AiOutlineDown size={20} color="var(--gray-600" />
-                        </Button>
                       </div>
-                      <img src={imagePreviewDesc} alt="Foto do produto" />
-                    </div>
-                  </div>
-                  <div className="right-container">
-                    <h1>{title}</h1>
-                    <p>{desc}</p>
-                  </div>
-                </div>
-              </>
-            }
-            content2={
-              <>
-                <div className="rated-container">
-                  <header>
-                    <h1 className="rate">Avaliações de Clientes</h1>
-                    <div>
-                      <h1>{avgStars}</h1>
-                      <ReactStars count={5} size={50} value={5} edit={false} />
-                    </div>
-                    <p>({sumFeedbacks} avaliações)</p>
-                  </header>
-                  <div className="container">
-                    <div className="left-container">
-                      {fakeFeedBack.map((e) => {
-                        return (
-                          <CardFeedback
-                            key={e.id}
-                            name="Henrique Soares"
-                            quantStar={5} //max stars is 5
-                            text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
-                            time="30/09/2021"
-                            width={850}
-                          />
-                        )
-                      })}
-                    </div>
-                    <div className="right-container">
-                      <FilterCard>
-                        <div className="filter">
-                          <h1>Ordenar</h1>
-                          <h4>Recente</h4>
-                          <h4>Melhor avaliação</h4>
-                          <h4>Pior avaliação</h4>
-                          <h1>Filtros</h1>
-                          <div>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={5}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={4}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={3}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={2}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={1}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
+                      <div className="right-container">
+                        <FilterCard>
+                          <div className="filter">
+                            <h1>Ordenar</h1>
+                            <h4>Recente</h4>
+                            <h4>Melhor avaliação</h4>
+                            <h4>Pior avaliação</h4>
+                            <h1>Filtros</h1>
+                            <div>
+                              <CheckboxFilter
+                                confirm={false}
+                                toggleConfirm={() => {}}
+                              >
+                                <ReactStars
+                                  color1="#e9e9e9"
+                                  count={5}
+                                  size={24}
+                                  value={5}
+                                  edit={false}
+                                />
+                              </CheckboxFilter>
+                              <CheckboxFilter
+                                confirm={false}
+                                toggleConfirm={() => {}}
+                              >
+                                <ReactStars
+                                  color1="#e9e9e9"
+                                  count={5}
+                                  size={24}
+                                  value={4}
+                                  edit={false}
+                                />
+                              </CheckboxFilter>
+                              <CheckboxFilter
+                                confirm={false}
+                                toggleConfirm={() => {}}
+                              >
+                                <ReactStars
+                                  color1="#e9e9e9"
+                                  count={5}
+                                  size={24}
+                                  value={3}
+                                  edit={false}
+                                />
+                              </CheckboxFilter>
+                              <CheckboxFilter
+                                confirm={false}
+                                toggleConfirm={() => {}}
+                              >
+                                <ReactStars
+                                  color1="#e9e9e9"
+                                  count={5}
+                                  size={24}
+                                  value={2}
+                                  edit={false}
+                                />
+                              </CheckboxFilter>
+                              <CheckboxFilter
+                                confirm={false}
+                                toggleConfirm={() => {}}
+                              >
+                                <ReactStars
+                                  color1="#e9e9e9"
+                                  count={5}
+                                  size={24}
+                                  value={1}
+                                  edit={false}
+                                />
+                              </CheckboxFilter>
+                            </div>
                           </div>
-                        </div>
-                      </FilterCard>
+                        </FilterCard>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              }
+            />
+          </CardDesc>
+        ) : (
+          <CardDescMobile>
+            <div className="description-container">
+              <div className="title">
+                <h2>Descrição</h2>
+                <AiOutlineRight size={20} />
+              </div>
+              <div className="description">
+                <p>{desc}</p>
+              </div>
+            </div>
+            <div className="rated-container">
+              <div className="title">
+                <h2>Avaliações</h2>
+                <AiOutlineRight size={20} />
+              </div>
+              <div className="divisor" />
+              <div className="star-container">
+                <div className="left-container">
+                  <div className="star">
+                    <h1>{avgStars}</h1>
+                    <ReactStars count={1} size={50} value={1} edit={false} />
+                  </div>
+                  <p>{sumFeedbacks} avaliações</p>
+                </div>
+                <div className="right-container">
+                  <div className="stars-container">
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={5}
+                        edit={false}
+                      />
+                      <p>90%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={4}
+                        edit={false}
+                      />
+                      <p>4%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={3}
+                        edit={false}
+                      />
+                      <p>2%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={2}
+                        edit={false}
+                      />
+                      <p>3%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={1}
+                        edit={false}
+                      />
+                      <p>1%</p>
                     </div>
                   </div>
                 </div>
-              </>
-            }
-          />
-        </CardDesc>
+              </div>
+            </div>
+          </CardDescMobile>
+        )}
 
         <ProductWrapper>
           <h1>Produtos relacionados</h1>
