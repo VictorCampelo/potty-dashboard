@@ -734,33 +734,36 @@ const ProductShow = () => {
             </div>
           </div>
         </ProductWrapper>
-        <Footer>
-          <div>
-            <h1>Contato</h1>
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 99444-5552
-            </span>
 
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              Whatsapp
-            </span>
+        {widthScreen && (
+          <Footer>
+            <div>
+              <h1>Contato</h1>
+              <span>
+                <AiFillPhone size={24} color="var(--gray-700)" />
+                (89) 99444-5552
+              </span>
 
-            {/* <a href="facebook.com">
+              <span>
+                <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                Whatsapp
+              </span>
+
+              {/* <a href="facebook.com">
               <AiFillFacebook size={24} color="var(--gray-700)" />
               Facebook
             </a> */}
-            <span>
-              <AiOutlineMail size={24} color="var(--gray-700)" />
-              emailexample@gmail.com
-            </span>
-          </div>
-          <div className="mapContainer">
-            <img src="/images/map.png" />
-            <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
-          </div>
-        </Footer>
+              <span>
+                <AiOutlineMail size={24} color="var(--gray-700)" />
+                emailexample@gmail.com
+              </span>
+            </div>
+            <div className="mapContainer">
+              <img src="/images/map.png" />
+              <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
+            </div>
+          </Footer>
+        )}
       </Container>
 
       <CartButton />
