@@ -282,8 +282,13 @@ export const CardProduct = styled.div`
           margin-top: var(--spacing-nano);
           background: var(--white);
           padding: var(--spacing-xxs);
+          box-shadow: inset 0px 3px 14px -7px var(--gray-200);
+          
+          .values {
+            width: 100%;
+          }
         }
-        div {
+        .parcel {
           width: 50px;
           height: 28px;
 

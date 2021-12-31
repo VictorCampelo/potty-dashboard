@@ -13,6 +13,7 @@ import {
   Installments,
   Button
 } from '../../../../styles/pages/Product'
+import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
 import CatalogTabs from '../../../../components/molecules/CatalogTabs'
@@ -345,8 +346,22 @@ const ProductShow = () => {
                     <div>-{discount}%</div>
                   </div>
                   <div className="price">
-                    <div>12x</div>
-                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                    <div className="parcel">12x</div>
+                    <div className="values">
+                      <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                      <p style={widthScreen ? { display: 'none' } : undefined}>
+                        12x de <strong>R$ {priceWithDiscount}</strong>
+                      </p>
+                    </div>
+                    {!widthScreen && (
+                      <BigButton
+                        title="COMPRAR AGORA"
+                        style={{
+                          paddingLeft: '0.5rem',
+                          paddingRight: '0.5rem'
+                        }}
+                      />
+                    )}
                   </div>
                   <p style={!widthScreen ? { display: 'none' } : undefined}>
                     Em até 12x sem juros ou{' '}
@@ -456,7 +471,8 @@ const ProductShow = () => {
             <div className="button-container">
               {!isLoading && (
                 <>
-                  <button>COMPRAR AGORA</button>
+                  {/* <button>COMPRAR AGORA</button> */}
+                  <BigButton border title="COMPRAR AGORA" />
                   <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
                   </button>
