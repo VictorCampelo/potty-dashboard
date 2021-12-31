@@ -1,14 +1,17 @@
 import { Input } from '../../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
+import { VscSearch } from 'react-icons/vsc'
 import {
+  Wrapper,
   Container,
   CardProduct,
   CardDesc,
   ProductWrapper,
   Footer,
   FilterCard,
-  Installments
+  Installments,
+  Button
 } from '../../../../styles/pages/Product'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
@@ -19,7 +22,10 @@ import {
   AiFillFacebook,
   AiFillPhone,
   AiFillStar,
-  AiOutlineWhatsApp
+  AiOutlineWhatsApp,
+  AiOutlineUp,
+  AiOutlineDown,
+  AiOutlineMail
 } from 'react-icons/ai'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
@@ -30,7 +36,9 @@ import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
+import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
+import styled from 'styled-components'
 
 const fakeFeedBack = [
   {
@@ -55,22 +63,52 @@ const fakeFeedBack = [
 
 const fakeProducts = [
   {
-    id: 1
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 2
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 3
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 4
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 5
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 6
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   }
 ]
 
@@ -243,361 +281,379 @@ const ProductShow = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title>Produto | Último</title>
       </Head>
 
-      <HeaderShop />
+      <HeaderShop isMain={false} />
       <Container>
         <header className="header">
-          <Input icon={<FaSearch />} placeholder="Pesquisar na loja" />
+          <Input
+            icon={<VscSearch />}
+            placeholder="Pesquisar na loja"
+            search
+            inverse
+          />
         </header>
-        <main className="body">
-          <CardProduct>
-            <div className="image-container">
-              <div className="list-images">
-                {images.map((data) => {
-                  return (
-                    <img
-                      key={data.title}
-                      onClick={(e) => setImagePreview(data.original)}
-                      src={data.thumbnail}
-                      alt={data.title}
-                    />
-                  )
-                })}
-              </div>
-              <img src={imagePreview} alt="Foto do produto" />
+        <CardProduct>
+          <div className="image-container">
+            <div className="list-images">
+              <Button style={{ marginBottom: '1rem' }}>
+                {' '}
+                <AiOutlineUp size={20} color="var(--gray-600)" />
+              </Button>
+              {images.map((data) => {
+                return (
+                  <img
+                    key={data.title}
+                    onClick={(e) => setImagePreview(data.original)}
+                    src={data.thumbnail}
+                    alt={data.title}
+                  />
+                )
+              })}
+              <Button style={{ marginTop: '1rem' }}>
+                {' '}
+                <AiOutlineDown size={20} color="var(--gray-600)" />
+              </Button>
             </div>
-            <div className="description-container">
-              <h1 className="title">{title}</h1>
-              <div className="desc">
-                <ReactStars count={1} size={23} value={1} edit={false} />
-                <p>{avgStars}</p>
-                <p>{sumFeedbacks} avaliações</p>
-                <p>{sumOrders} pedidos</p>
-              </div>
-
-              <div className="price-container">
-                {discount ? (
-                  <>
-                    <div className="discount">
-                      <h4>R$ {price}</h4>
-                      <div>-{discount}%</div>
-                    </div>
-                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
-                    <p>
-                      Em até 12x sem juros ou{' '}
-                      <strong>{priceWithDiscount}</strong> à vista
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <h1>
-                      R$ {getDiscount(price, 10).toFixed(2)}{' '}
-                      <small>à vista</small>{' '}
-                    </h1>
-                    <p>
-                      Ou <strong>R$ {price}</strong> à prazo
-                    </p>
-                  </>
-                )}
-
-                <div className="installments">
-                  <a onClick={() => setShowInstallment(!showInstallment)}>
-                    Ver parcelas
-                  </a>
-
-                  {showInstallment && (
-                    <Installments>
-                      <div className="head">
-                        <div className=""></div>
-
-                        <h1 className="title">Formas de parcelamento</h1>
-
-                        <IoIosClose
-                          onClick={() => setShowInstallment(!showInstallment)}
-                          size={30}
-                          color={'#363F4E'}
-                        />
-                      </div>
-
-                      <img src="/images/cards.png" alt="bandeiras aceitas" />
-
-                      <div className="list">
-                        <p className="list1">
-                          <strong>R$ {priceWithDiscount} à vista</strong> <br />
-                          2x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 2
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          3x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 3
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          4x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 4
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          5x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 5
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          6x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 6
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                        </p>
-
-                        <p className="list2">
-                          7x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 7
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          8x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 8
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          9x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 9
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          10x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 10
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          11x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 11
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          12x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 12
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                        </p>
-                      </div>
-                    </Installments>
-                  )}
-                </div>
-              </div>
-              <div className="button-container">
-                {!isLoading && (
-                  <>
-                    <button>COMPRAR AGORA</button>
-                    <button onClick={handleAddToCart}>
-                      ADICIONAR AO CARRINHO
-                    </button>
-                  </>
-                )}
-              </div>
+            <img
+              src={imagePreview}
+              alt="Foto do produto"
+              className="product-image"
+            />
+          </div>
+          <div className="description-container">
+            <h1 className="title">{title}</h1>
+            <div className="desc">
+              <ReactStars count={1} size={23} value={1} edit={false} />
+              <p>{avgStars}</p>
+              <p className="avaliations">{sumFeedbacks} avaliações</p>
+              <p className="separate">|</p>
+              <p>{sumOrders} pedidos</p>
             </div>
-          </CardProduct>
 
-          <CardDesc>
-            <CatalogTabs
-              tab1="Descrição"
-              tab2="Avaliação"
-              setToggleState={setToggleState}
-              toggleState={toggleState}
-              content1={
+            <div className="price-container">
+              {discount ? (
                 <>
-                  <div className="description-container">
-                    <div className="left-container">
-                      <div className="image-container">
-                        <div className="list-images">
-                          {images.map((data) => {
-                            return (
-                              <img
-                                key={data.title}
-                                onClick={(e) =>
-                                  setImagePreviewDesc(data.original)
-                                }
-                                src={data.thumbnail}
-                                alt={data.title}
-                              />
-                            )
-                          })}
-                        </div>
-                        <img src={imagePreviewDesc} alt="Foto do produto" />
-                      </div>
-                    </div>
-                    <div className="right-container">
-                      <h1>{title}</h1>
-                      <p>{desc}</p>
-                    </div>
+                  <div className="discount">
+                    <h4>R$ {price}</h4>
+                    <div>-{discount}%</div>
                   </div>
+                  <div className="price">
+                    <div>12x</div>
+                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                  </div>
+                  <p>
+                    Em até 12x sem juros ou{' '}
+                    <strong>R$ {priceWithDiscount}</strong> à vista
+                  </p>
                 </>
-              }
-              content2={
+              ) : (
                 <>
-                  <div className="rated-container">
-                    <header>
-                      <h1 className="rate">Avaliações de Clientes</h1>
-                      <div>
-                        <h1>{avgStars}</h1>
-                        <ReactStars
-                          count={5}
-                          size={50}
-                          value={5}
-                          edit={false}
-                        />
-                      </div>
-                      <p>({sumFeedbacks} avaliações)</p>
-                    </header>
-                    <div className="container">
-                      <div className="left-container">
-                        {fakeFeedBack.map((e) => {
+                  <h1>
+                    R$ {getDiscount(price, 10).toFixed(2)}{' '}
+                    <small>à vista</small>{' '}
+                  </h1>
+                  <p>
+                    Ou <strong>R$ {price}</strong> à prazo
+                  </p>
+                </>
+              )}
+
+              <div className="installments">
+                <a onClick={() => setShowInstallment(!showInstallment)}>
+                  Ver parcelas
+                </a>
+
+                {showInstallment && (
+                  <Installments>
+                    <div className="head">
+                      <div className=""></div>
+
+                      <h1 className="title">Formas de parcelamento</h1>
+
+                      <IoIosClose
+                        onClick={() => setShowInstallment(!showInstallment)}
+                        size={30}
+                        color={'#363F4E'}
+                      />
+                    </div>
+
+                    <img src="/images/cards.png" alt="bandeiras aceitas" />
+
+                    <div className="list">
+                      <p className="list1">
+                        <strong>R$ {priceWithDiscount} à vista</strong> <br />
+                        2x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 2
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        3x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 3
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        4x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 4
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        5x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 5
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        6x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 6
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                      </p>
+
+                      <p className="list2">
+                        7x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 7
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        8x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 8
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        9x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 9
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        10x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 10
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        11x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 11
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        12x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 12
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                      </p>
+                    </div>
+                  </Installments>
+                )}
+              </div>
+            </div>
+            <div className="button-container">
+              {!isLoading && (
+                <>
+                  <button>COMPRAR AGORA</button>
+                  <button onClick={handleAddToCart}>
+                    ADICIONE AO CARRINHO
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </CardProduct>
+
+        <CardDesc>
+          <CatalogTabs
+            tab1="Descrição"
+            tab2="Avaliação"
+            setToggleState={setToggleState}
+            toggleState={toggleState}
+            content1={
+              <>
+                <div className="description-container">
+                  <div className="left-container">
+                    <div className="image-container">
+                      <div className="list-images">
+                        <Button style={{ marginBottom: '1rem' }}>
+                          {' '}
+                          <AiOutlineUp size={20} color="var(--gray-600" />
+                        </Button>
+                        {images.map((data) => {
                           return (
-                            <CardFeedback
-                              key={e.id}
-                              name="Henrique Soares"
-                              quantStar={5} //max stars is 5
-                              text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
-                              time="30/09/2021"
-                              width={850}
+                            <img
+                              key={data.title}
+                              onClick={(e) =>
+                                setImagePreviewDesc(data.original)
+                              }
+                              src={data.thumbnail}
+                              alt={data.title}
                             />
                           )
                         })}
+                        <Button style={{ marginTop: '1rem' }}>
+                          {' '}
+                          <AiOutlineDown size={20} color="var(--gray-600" />
+                        </Button>
                       </div>
-                      <div className="right-container">
-                        <FilterCard>
-                          <div className="filter">
-                            <h1>Ordenar</h1>
-                            <h4>Recente</h4>
-                            <h4>Melhor avaliação</h4>
-                            <h4>Pior avaliação</h4>
-                            <h1>Filtros</h1>
-                            <div>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={5}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={4}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={3}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={2}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={1}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                            </div>
-                          </div>
-                        </FilterCard>
-                      </div>
+                      <img src={imagePreviewDesc} alt="Foto do produto" />
                     </div>
                   </div>
-                </>
-              }
-            />
-          </CardDesc>
+                  <div className="right-container">
+                    <h1>{title}</h1>
+                    <p>{desc}</p>
+                  </div>
+                </div>
+              </>
+            }
+            content2={
+              <>
+                <div className="rated-container">
+                  <header>
+                    <h1 className="rate">Avaliações de Clientes</h1>
+                    <div>
+                      <h1>{avgStars}</h1>
+                      <ReactStars count={5} size={50} value={5} edit={false} />
+                    </div>
+                    <p>({sumFeedbacks} avaliações)</p>
+                  </header>
+                  <div className="container">
+                    <div className="left-container">
+                      {fakeFeedBack.map((e) => {
+                        return (
+                          <CardFeedback
+                            key={e.id}
+                            name="Henrique Soares"
+                            quantStar={5} //max stars is 5
+                            text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
+                            time="30/09/2021"
+                            width={850}
+                          />
+                        )
+                      })}
+                    </div>
+                    <div className="right-container">
+                      <FilterCard>
+                        <div className="filter">
+                          <h1>Ordenar</h1>
+                          <h4>Recente</h4>
+                          <h4>Melhor avaliação</h4>
+                          <h4>Pior avaliação</h4>
+                          <h1>Filtros</h1>
+                          <div>
+                            <CheckboxFilter
+                              confirm={false}
+                              toggleConfirm={() => {}}
+                            >
+                              <ReactStars
+                                color1="#e9e9e9"
+                                count={5}
+                                size={24}
+                                value={5}
+                                edit={false}
+                              />
+                            </CheckboxFilter>
+                            <CheckboxFilter
+                              confirm={false}
+                              toggleConfirm={() => {}}
+                            >
+                              <ReactStars
+                                color1="#e9e9e9"
+                                count={5}
+                                size={24}
+                                value={4}
+                                edit={false}
+                              />
+                            </CheckboxFilter>
+                            <CheckboxFilter
+                              confirm={false}
+                              toggleConfirm={() => {}}
+                            >
+                              <ReactStars
+                                color1="#e9e9e9"
+                                count={5}
+                                size={24}
+                                value={3}
+                                edit={false}
+                              />
+                            </CheckboxFilter>
+                            <CheckboxFilter
+                              confirm={false}
+                              toggleConfirm={() => {}}
+                            >
+                              <ReactStars
+                                color1="#e9e9e9"
+                                count={5}
+                                size={24}
+                                value={2}
+                                edit={false}
+                              />
+                            </CheckboxFilter>
+                            <CheckboxFilter
+                              confirm={false}
+                              toggleConfirm={() => {}}
+                            >
+                              <ReactStars
+                                color1="#e9e9e9"
+                                count={5}
+                                size={24}
+                                value={1}
+                                edit={false}
+                              />
+                            </CheckboxFilter>
+                          </div>
+                        </div>
+                      </FilterCard>
+                    </div>
+                  </div>
+                </div>
+              </>
+            }
+          />
+        </CardDesc>
 
-          <ProductWrapper>
-            {fakeProducts.map((e) => {
-              return (
-                <ProductCard key={e.id} onClick={(e) => handleOpenProduct(e)}>
-                  <img
-                    src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                    alt="geladeira frost free"
-                  />
-                  <span className="title">Refrigerador Brastemp BRM44HK</span>
-                  <div className="price">
-                    <span>R$ 2.999,00</span>
-                    <small>R$ 4.999,00</small>
-                  </div>
-                  <div className="score">
-                    <AiFillStar size={18} color="var(--gold)" />
-                    <span>5.0 | 5412 Pedidos</span>
-                  </div>
-                  <p>
-                    Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                    Legumes Fresh Zone Inox - 375L
-                  </p>
-                </ProductCard>
-              )
-            })}
-          </ProductWrapper>
-          <Footer>
+        <ProductWrapper>
+          <h1>Produtos relacionados</h1>
+          <div className="carousel-container">
+            <div className="carousel-item">
+              <Carousel data={fakeProducts} isProduct />
+            </div>
+            <div className="carousel-item">
+              <Carousel data={fakeProducts} isProduct />
+            </div>
+          </div>
+        </ProductWrapper>
+        <Footer>
+          <div>
             <h1>Contato</h1>
             <span>
               <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 8854-2341
+              (89) 99444-5552
             </span>
 
             <span>
               <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              (89) 8854-2341
+              Whatsapp
             </span>
 
-            <a href="facebook.com">
+            {/* <a href="facebook.com">
               <AiFillFacebook size={24} color="var(--gray-700)" />
               Facebook
-            </a>
-          </Footer>
-        </main>
+            </a> */}
+            <span>
+              <AiOutlineMail size={24} color="var(--gray-700)" />
+              emailexample@gmail.com
+            </span>
+          </div>
+          <div className="mapContainer">
+            <img src="/images/map.png" />
+            <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
+          </div>
+        </Footer>
       </Container>
 
       <CartButton />
-    </>
+    </Wrapper>
   )
 }
 

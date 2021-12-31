@@ -30,7 +30,7 @@ export const Container = styled.div<ContainerProp>`
       width: 1000px;
       height: 76px;
 
-      background-color: #F4F5F6;
+      background-color: #f4f5f6;
       border-radius: 8px;
 
       z-index: 5;
@@ -85,7 +85,7 @@ export const Container = styled.div<ContainerProp>`
           margin-left: var(--spacing-md);
           margin-bottom: var(--spacing-quarck);
 
-          background: #E7E8EA;
+          background: #e7e8ea;
           border-radius: var(--border-radius-xxs);
 
           font-family: var(--font-family-primary);
