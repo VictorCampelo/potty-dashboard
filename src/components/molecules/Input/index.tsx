@@ -66,7 +66,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
 
       <div className="inputContainter">
         {!search || (inverse && !!icon && icon)}
-        {inverse && <div className="bar" />}
+        {/* {inverse && <div className="bar" />} */}
         <input
           type={password && isInputVisible ? 'password' : 'text'}
           ref={ref}

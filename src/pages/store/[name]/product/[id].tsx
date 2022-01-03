@@ -30,6 +30,7 @@ import {
   AiOutlineMail,
   AiOutlineRight
 } from 'react-icons/ai'
+import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
@@ -329,6 +330,27 @@ const ProductShow = () => {
               alt="Foto do produto"
               className="product-image"
             />
+            {!widthScreen && (
+              <div className="actions">
+                <div className="top">
+                  <div className="share">
+                    <BsShareFill size={25} color="var(--color-primary)" />
+                  </div>
+                </div>
+                <div className="mid">
+                  <div className="btn">
+                    <Button style={{ width: 40, height: 40 }}>
+                      <AiOutlineRight size={20} />
+                    </Button>
+                  </div>
+                </div>
+                <div className="bot">
+                  <div className="progress">
+                    <p>1 de 4</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="description-container">
             <h1 className="title">{title}</h1>
@@ -478,7 +500,7 @@ const ProductShow = () => {
                   {/* <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
                   </button> */}
-                  <BigButton title="ADICIONAR AO CARRINHO" />
+                  <BigButton title="ADICIONE AO CARRINHO" />
                 </>
               )}
             </div>
@@ -647,6 +669,7 @@ const ProductShow = () => {
                 <AiOutlineRight size={20} />
               </div>
               <div className="description">
+                <h4>{title}</h4>
                 <p>{desc}</p>
               </div>
             </div>

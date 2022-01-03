@@ -116,7 +116,57 @@ export const CardProduct = styled.div`
       width: 100%;
       background: var(--white);
       padding: 0;
+      justify-content: flex-end;
+    }
+
+    .actions {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
       
+      .top {
+        width: 100%;
+        height: 125px;
+        display: flex;
+        justify-content: flex-end;
+        .share {
+          display: flex;
+          align-items: center;
+          box-shadow: 0 0 1rem var(--gray-200);
+          top: 0; 
+          padding: 0.5rem 0;
+          padding-left: 1rem;
+          border-radius: 20px 0 0 20px;
+          margin-top: var(--spacing-nano);
+          width: 75%;
+          height: 35%;
+          right: 0;
+        }
+
+      }
+
+      .mid {
+        width: 100%;
+        height: 125px;
+        display: flex;
+        justify-content: center;
+        align-content: flex-start;
+      }
+
+      .bot {
+        display: flex;
+        align-content: flex-end;
+        justify-content: flex-start;
+        .progress {
+          background: var(--gray-300);
+          border-radius: 5px;
+          padding: var(--spacing-quarck) var(--spacing-nano);
+          p{
+            color: var(--white);
+          }
+        }
+
+      }
     }
     .list-images {
       display: flex;
@@ -349,18 +399,23 @@ export const CardProduct = styled.div`
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-
+      gap: var(--spacing-xxxs);
       max-width: 530px;
       margin-top: var(--spacing-xxxs);
       height: 54px;
-
       ${[sizes.down('lgMob')]} {
         flex-wrap: wrap;
         justify-content: center;
         gap: var(--spacing-xxxs);
-        height: 125px;
+        padding: var(--spacing-xxs) var(--spacing-xxxl); 
+        height: 150px;
       }
-      button {
+      ${[sizes.down('mdMob')]} {
+        padding: var(--spacing-xxs) var(--spacing-md);
+        height: 170px;
+        /* margin-top: var(--spacing-xxs); */
+      }
+      /* button {
         max-width: 270px;
         height: 54px;
         background: var(--white);
@@ -386,7 +441,7 @@ export const CardProduct = styled.div`
           color: #ffffff;
           background: var(--color-primary);
         }
-      }
+      } */
     }
   }
 `
