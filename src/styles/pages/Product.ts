@@ -4,10 +4,11 @@ import sizes from 'utils/sizes'
 export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
+  background: var(--gray-100);
 `
 
 export const Container = styled.main`
-  background: var(--gray-100);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,6 +115,8 @@ export const CardProduct = styled.div`
     ${[sizes.down('lgMob')]} {
       width: 100%;
       background: var(--white);
+      padding: 0;
+      
     }
     .list-images {
       display: flex;
@@ -725,6 +728,19 @@ export const ProductWrapper = styled.div`
   padding: 0 var(--spacing-md);
   gap: 1rem;
 
+  ${[sizes.down('lgMob')]} {
+    padding: 0;
+    gap: 0;
+
+    .carousel-container {
+      margin-left: 1rem;
+      max-width: 100% !important;
+    }
+
+    h1 {
+      margin: 0;
+    }
+  }
   .carousel-container {
     max-width: 100%;
     padding: 0 var(--spacing-lg);
@@ -734,6 +750,7 @@ export const ProductWrapper = styled.div`
   }
   h1 {
     font-weight: 400;
+    font-size: var(--font-size-lg);
     margin-left: var(--spacing-xs);
   }
 `
