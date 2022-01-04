@@ -678,6 +678,11 @@ export const CardDesc = styled.div`
     }
   }
 `
+export const Divisor = styled.div`
+  width: 100%;
+  height: 4px;
+  background: var(--gray-200);
+`
 
 export const CardDescMobile = styled.div`
   width: 100%;
@@ -686,11 +691,7 @@ export const CardDescMobile = styled.div`
   flex-direction: column;
   gap: var(--spacing-xs);
   margin-top: 220px;
-  .divisor {
-    width: 100%;
-    height: 4px;
-    background: var(--gray-200);
-  }
+
   .description-container,
   .rated-container {
     display: flex;
@@ -711,12 +712,12 @@ export const CardDescMobile = styled.div`
         padding-left: var(--spacing-xxs);
         .star {
           gap: var(--spacing-xxxs);
+          display: flex;
+          align-items: center;
           h1 {
             font-size: var(--font-size-xxxl);
             font-weight: var(--font-weight-medium);
           }
-          display: flex;
-          align-items: center;
         }
       }
       .right-container {

@@ -12,7 +12,8 @@ import {
   Footer,
   FilterCard,
   Installments,
-  Button
+  Button,
+  Divisor
 } from '../../../../styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
@@ -28,7 +29,8 @@ import {
   AiOutlineUp,
   AiOutlineDown,
   AiOutlineMail,
-  AiOutlineRight
+  AiOutlineRight,
+  AiOutlineArrowLeft
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
@@ -44,6 +46,7 @@ import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
 import styled from 'styled-components'
 import useMedia from 'use-media'
+import CustomModal from 'components/molecules/CustomModal'
 
 const fakeFeedBack = [
   {
@@ -165,6 +168,17 @@ const ProductShow = () => {
   const [showInstallment, setShowInstallment] = useState(false)
 
   const widthScreen = useMedia({ minWidth: '426px' })
+
+  const [descModalVisible, setDescModalVisible] = useState(false)
+  const [avalModalVisible, setAvalModalVisible] = useState(false)
+
+  function toggleDescModalVisible() {
+    setDescModalVisible(!descModalVisible)
+  }
+
+  function toggleAvalModalVisible() {
+    setAvalModalVisible(!avalModalVisible)
+  }
 
   function handleOpenProduct(id) {
     router.push(`/product/${id}`)
@@ -699,21 +713,24 @@ const ProductShow = () => {
         ) : (
           <CardDescMobile>
             <div className="description-container">
-              <div className="title">
+              {/* <button> */}
+
+              <div className="title" onClick={toggleDescModalVisible}>
                 <h2>Descrição</h2>
                 <AiOutlineRight size={20} />
               </div>
+              {/* </button> */}
               <div className="description">
                 <h4>{title}</h4>
                 <p>{desc}</p>
               </div>
             </div>
             <div className="rated-container">
-              <div className="title">
+              <div className="title" onClick={toggleAvalModalVisible}>
                 <h2>Avaliações</h2>
                 <AiOutlineRight size={20} />
               </div>
-              <div className="divisor" />
+              <Divisor />
               <div className="star-container">
                 <div className="left-container">
                   <div className="star">
@@ -823,6 +840,109 @@ const ProductShow = () => {
           </Footer>
         )}
       </Container>
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleDescModalVisible}
+        modalVisible={descModalVisible}
+        under
+      >
+        <div className="modalDescription">
+          <div className="title">
+            <AiOutlineArrowLeft
+              size={25}
+              className="arrow"
+              onClick={toggleDescModalVisible}
+            />
+            <h2>Descrição</h2>
+          </div>
+          <Divisor />
+          <h2>{title}</h2>
+          <p>{desc}</p>
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleAvalModalVisible}
+        modalVisible={avalModalVisible}
+        under
+      >
+        <div className="modalAvaliations">
+          <div className="title">
+            <AiOutlineArrowLeft
+              size={25}
+              className="arrow"
+              onClick={toggleAvalModalVisible}
+            />
+            <h2>Avaliações</h2>
+          </div>
+          <Divisor />
+          <h2>{title}</h2>
+          <div className="star-container">
+            <div className="top-container">
+              <h1>{avgStars.toFixed(1)}</h1>
+              <div className="star">
+                <ReactStars count={5} size={32} value={5} edit={false} />
+                <p>{sumFeedbacks} avaliações</p>
+              </div>
+            </div>
+            <div className="bot-container">
+              <div className="stars-container">
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={5}
+                    edit={false}
+                  />
+                  <p>90%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={4}
+                    edit={false}
+                  />
+                  <p>4%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={3}
+                    edit={false}
+                  />
+                  <p>2%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={2}
+                    edit={false}
+                  />
+                  <p>3%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={1}
+                    edit={false}
+                  />
+                  <p>1%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CustomModal>
 
       <CartButton />
     </Wrapper>
