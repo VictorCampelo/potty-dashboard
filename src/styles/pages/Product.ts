@@ -265,6 +265,9 @@ export const CardProduct = styled.div`
       ${[sizes.down('lgMob')]} {
         margin: 0;
       }
+      ${[sizes.down('smMob')]} {
+        height: 220px;
+      }
       .installments {
         position: relative;
       }
@@ -380,7 +383,9 @@ export const CardProduct = styled.div`
           line-height: 60px;
 
           color: var(--color-primary);
-
+          ${[sizes.down('smMob')]} {
+            font-size: var(--font-size-xlg);
+          }
           small {
             font-family: var(--font-family-primary);
             font-style: var(--font-style-normal);
@@ -415,6 +420,10 @@ export const CardProduct = styled.div`
         padding: var(--spacing-xxs) var(--spacing-md);
         height: 170px;
         /* margin-top: var(--spacing-xxs); */
+      }
+      ${[sizes.down('smMob')]} {
+        padding: 0 var(--spacing-md) var(--spacing-xxs) var(--spacing-md);
+        gap: 0;
       }
       /* button {
         max-width: 270px;
