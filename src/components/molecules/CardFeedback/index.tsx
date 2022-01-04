@@ -34,13 +34,14 @@ const CardFeedback = ({
   return (
     <Container width={width}>
       <div className="title">
-        <h1>{name}</h1>
-        <div className="stars">{stars}</div>
+        <div className="left">
+          <h1>{name}</h1>
+          <div className="stars">{stars}</div>
+        </div>
+        <h3>{time}</h3>
       </div>
 
       <p>{text}</p>
-
-      <h3>{time}</h3>
     </Container>
   )
 }
