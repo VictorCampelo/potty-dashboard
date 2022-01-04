@@ -592,67 +592,100 @@ const ProductShow = () => {
                             <h4>Melhor avaliação</h4>
                             <h4>Pior avaliação</h4>
                             <h1>Filtros</h1>
-                            <div>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={5}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={4}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={3}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={2}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={1}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
+                            <div className="stars-container">
+                              <div style={{ marginBottom: 10 }}>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <p style={{ margin: 0 }}>Somente com foto</p>
+                                </CheckboxFilter>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={5}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>85%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={4}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>10%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={3}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>3%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={2}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>0%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={1}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>2%</p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </FilterCard>

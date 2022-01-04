@@ -737,7 +737,7 @@ export const CardDescMobile = styled.div`
 export const FilterCard = styled.div`
   width: 100%;
   height: 100%;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: var(--spacing-xxxs) var(--spacing-sm);
 
   .filter {
     display: flex;
@@ -754,6 +754,24 @@ export const FilterCard = styled.div`
     border-radius: var(--border-radius-gg);
     padding: var(--spacing-xs);
 
+    .stars-container {
+      width: 100%;
+
+      div {
+        display: flex;
+        align-items: center;
+
+        .percentil {
+          border: 1px solid var(--gray-200);
+          border-radius: 10px;
+          margin-left: var(--spacing-lg);
+          width: 66px;
+          p {
+            margin: auto;
+          }
+        }
+      }
+    }
     h1 {
       font-family: var(--font-family-primary);
       font-style: var(--font-style-normal);
