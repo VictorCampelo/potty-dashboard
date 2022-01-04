@@ -84,14 +84,14 @@ export const CardProduct = styled.div`
   justify-content: left;
 
   width: 100%;
-  height: 750px;
+  height: 548px;
 
   background: var(--white); 
 
   ${[sizes.down('lgMob')]} {
     background: var(--gray-100);
   }
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0  .2) 0px 2px 8px 0px;
   border-radius: var(--border-radius-gg);
 
   ${[sizes.down('lgMob')]} {
@@ -106,8 +106,8 @@ export const CardProduct = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    width: 700px;
-    height: 100%;
+    width: 650px;
+    height: 460px;
 
     padding-left: var(--spacing-nano);
     padding-right: var(--spacing-xs);
@@ -128,18 +128,19 @@ export const CardProduct = styled.div`
         width: 100%;
         height: 125px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         .share {
-          display: flex;
-          align-items: center;
-          box-shadow: 0 0 1rem var(--gray-200);
+          /* display: flex; */
+          /* align-items: center; */
+          /* box-shadow: 0 0 1rem var(--gray-200); */
           top: 0; 
-          padding: 0.5rem 0;
-          padding-left: 1rem;
-          border-radius: 20px 0 0 20px;
+          /* padding: 0.5rem 0; */
+          /* padding-left: 1rem; */
+          /* border-radius: 20px 0 0 20px; */
           margin-top: var(--spacing-nano);
-          width: 75%;
-          height: 35%;
+          /* width: 75%; */
+          /* height: 35%; */
+          /* justify-content: center; */
           right: 0;
         }
 
@@ -175,13 +176,13 @@ export const CardProduct = styled.div`
       justify-content: space-between;
 
       width: 180px;
-      height: 60%;
+      /* height: 500px; */
       ${[sizes.down('lgMob')]} {
         display: none;
       }
       img {
-        width: 130px;
-        height: 130px;
+        width: 126px;
+        height: 126px;
 
         border-radius: var(--border-radius-xxs);
 
@@ -196,8 +197,8 @@ export const CardProduct = styled.div`
     }
 
     img {
-      width: 500px;
-      height: 500px;
+      width: 460px;
+      height: 460px;
       object-fit: cover;
 
       border-radius: var(--border-radius-xxs);
@@ -213,12 +214,12 @@ export const CardProduct = styled.div`
   .description-container {
     max-width: 550;
     height: 100%;
-
     padding: var(--spacing-md);
-    padding-top: var(--spacing-xxl);
+    /* padding-top: var(--spacing-xxl); */
 
     ${[sizes.down('lgMob')]} {
       padding: var(--spacing-lg) 0; 
+      margin-bottom: 2rem;
 
       .title, .desc, .discount, a {
         margin-left: var(--spacing-xxs);
@@ -450,7 +451,7 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
+  width: 32px;
   height: 32px;
   background: var(--white);
   border: 1px solid var(--white);
@@ -479,9 +480,9 @@ export const CardDesc = styled.div`
     padding: var(--spacing-xxs) var(--spacing-md);
 
     .left-container {
-      width: 730px;
+      width: 600px;
       height: 100%;
-
+      display: flex;
       .image-container {
         display: flex;
         flex-direction: row;
@@ -501,13 +502,13 @@ export const CardDesc = styled.div`
           justify-content: space-between;
 
           width: 180px;
-          height: 410px;
+          height: 500px;
           ${[sizes.down('lgMob')]} {
             display: none;
           }
           img {
-            width: 130px;
-            height: 130px;
+            width: 126px;
+            height: 126px;
 
             border-radius: var(--border-radius-xxs);
 
@@ -522,8 +523,8 @@ export const CardDesc = styled.div`
         }
 
         img {
-          width: 500px;
-          height: 500px;
+          width: 380px;
+          height: 380px;
           object-fit: cover;
           border-radius: var(--border-radius-xxs);
 
@@ -675,7 +676,7 @@ export const CardDescMobile = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-
+  margin-top: 220px;
   .divisor {
     width: 100%;
     height: 4px;

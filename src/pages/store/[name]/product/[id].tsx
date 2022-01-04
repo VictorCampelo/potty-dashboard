@@ -334,7 +334,9 @@ const ProductShow = () => {
               <div className="actions">
                 <div className="top">
                   <div className="share">
-                    <BsShareFill size={25} color="var(--color-primary)" />
+                    <Button style={{ width: 40, height: 40 }}>
+                      <BsShareFill size={25} />
+                    </Button>
                   </div>
                 </div>
                 <div className="mid">
