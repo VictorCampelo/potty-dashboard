@@ -13,22 +13,22 @@ import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 import { api } from '../../../services/apiClient'
 import image from 'next/image'
 
-type imageProps = {
-  lastModified: number
-  lastModifiedDate: Date
-  name: string
-  size: number
-  type: string
-  webkitRelativePath: string
-}
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
-  const [imageSrc, setImageSrc] = useState('nul')
+  const [image, setImage] = useState({})
 
   const { userDto, storeDto } = useContext(ShopkeeperContext)
 
   async function handleFinishRegister() {
     const body = {
+      avatar: {
+        lastModified: image.lastModified,
+        lastModifiedDate: image.lastModifiedDate,
+        name: image.name,
+        size: image.size,
+        type: image.type,
+        webkitRelativePath: image.webkitRelativePath
+      },
       userDto: {
         ...userDto
       },
@@ -41,70 +41,19 @@ const BusinessRegister = () => {
         facebook_link: storeDto.facebook_link,
         instagram_link: storeDto.instagram_link,
         whatsapp_link: storeDto.whatsapp_link,
-        image: imageSrc,
+        image: image,
         description: desc,
         address: `${storeDto.publicPlace}, n° ${storeDto.number}, ${storeDto.district}, CEP: ${storeDto.cep}`
       }
     }
 
-    // storeDto2.append("name", storeDto.name)
-    // storeDto2.append("CNPJ", storeDto.CNPJ)
-    // storeDto2.append("phone", storeDto.phone)
-    // storeDto2.append("city", storeDto.city)
-    // storeDto2.append("state", storeDto.state)
-    // storeDto2.append("facebook_link", storeDto.facebook_link)
-    // storeDto2.append("instagram_link", storeDto.instagram_link)
-    // storeDto2.append("whatsapp_link", storeDto.whatsapp_link)
-    // storeDto2.append("imagem", imageSrc)
-    // storeDto2.append("description", desc)
-    // storeDto2.append("address", `${storeDto.publicPlace}, nº ${storeDto.number}, ${storeDto.district}, CEP: ${storeDto.cep}`)
-
     try {
-      // function updateUser(data) {
-      //   let state = store.getState().profileImage.image;
+      const formData = new FormData()
+      formData.append('avatar', JSON.stringify(body.avatar))
+      formData.append('userDto', JSON.stringify(body.userDto))
+      formData.append('storeDto', JSON.stringify(body.storeDto))
 
-      //   let validate = validateFile(state);
-
-      //   if(validate == true){
-      //     const fd = new FormData();
-      //     if(state != ''){
-      //       fd.append('file', state);
-      //     }
-      //     fd.append('name', data.name);
-      //     fd.append('date_of_birth', convertDateToBack(data.date_of_birth));
-      //     fd.append('phone', data.phone);
-      //     fd.append('course', data.course);
-      //     fd.append('occupation', data.occupation);
-
-      //     return axios.put(`/user`, fd).then(response => {
-      //     });
-      //   } else {
-      //     window.location.href = '/user/home'
-      //   }
-      // }
-      const storeDto2 = new FormData()
-      storeDto2.append('avatar', imageSrc)
-      storeDto2.append('userDto', JSON.stringify(body.userDto))
-      storeDto2.append('storeDto', JSON.stringify(body.storeDto))
-      // storeDto2.append('avatar', imageSrc)
-
-      // storeDto2.append('userDto', body.userDto)
-      // storeDto2.append('storeDto', body.storeDto)
-      // for (let key in imageSrc) {
-      //   storeDto2.append(key, imageSrc[key])
-      // }
-      // for (let key in body.userDto) {
-      //   storeDto2.append(key, body.userDto[key])
-      // }
-      // for (let key in body.storeDto) {
-      //   storeDto2.append(key, body.storeDto[key])
-      // }
-      // for (let key of storeDto2.entries()) {
-      //   console.log(key[0] + ', ' + key[1])
-      // }
-      // await api.post('/auth/signup-store', body)
-
-      await api.post('/auth/signup-store', storeDto2, {
+      await api.post('/auth/signup-store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -127,9 +76,8 @@ const BusinessRegister = () => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
       const imageDataUrl = await readFile(file)
-      // setImageSrc(imageDataUrl)
-      console.log(file)
-      setImageSrc(file)
+
+      setImage(file)
     }
   }
 
@@ -148,7 +96,7 @@ const BusinessRegister = () => {
 
           <div className="imageContainer">
             <ShopImage
-              imageSrc={imageSrc} // Imagem para o perfil do Shop
+              imageSrc={image} // Imagem para o perfil do Shop
               icon={<AiFillShop size={70} color="var(--white)" />}
               btnIcon={<AiFillCamera size={23} color="var(--white)" />}
               btn={
