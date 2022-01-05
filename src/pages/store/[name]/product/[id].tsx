@@ -7,12 +7,15 @@ import {
   Container,
   CardProduct,
   CardDesc,
+  CardDescMobile,
   ProductWrapper,
   Footer,
   FilterCard,
   Installments,
-  Button
+  Button,
+  Divisor
 } from '../../../../styles/pages/Product'
+import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
 import CatalogTabs from '../../../../components/molecules/CatalogTabs'
@@ -25,8 +28,11 @@ import {
   AiOutlineWhatsApp,
   AiOutlineUp,
   AiOutlineDown,
-  AiOutlineMail
+  AiOutlineMail,
+  AiOutlineRight,
+  AiOutlineArrowLeft
 } from 'react-icons/ai'
+import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
@@ -39,6 +45,8 @@ import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
 import styled from 'styled-components'
+import useMedia from 'use-media'
+import CustomModal from 'components/molecules/CustomModal'
 
 const fakeFeedBack = [
   {
@@ -158,6 +166,19 @@ const ProductShow = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [showInstallment, setShowInstallment] = useState(false)
+
+  const widthScreen = useMedia({ minWidth: '426px' })
+
+  const [descModalVisible, setDescModalVisible] = useState(false)
+  const [avalModalVisible, setAvalModalVisible] = useState(false)
+
+  function toggleDescModalVisible() {
+    setDescModalVisible(!descModalVisible)
+  }
+
+  function toggleAvalModalVisible() {
+    setAvalModalVisible(!avalModalVisible)
+  }
 
   function handleOpenProduct(id) {
     router.push(`/product/${id}`)
@@ -323,6 +344,29 @@ const ProductShow = () => {
               alt="Foto do produto"
               className="product-image"
             />
+            {!widthScreen && (
+              <div className="actions">
+                <div className="top">
+                  <div className="share">
+                    <Button style={{ width: 40, height: 40 }}>
+                      <BsShareFill size={25} />
+                    </Button>
+                  </div>
+                </div>
+                <div className="mid">
+                  <div className="btn">
+                    <Button style={{ width: 40, height: 40 }}>
+                      <AiOutlineRight size={20} />
+                    </Button>
+                  </div>
+                </div>
+                <div className="bot">
+                  <div className="progress">
+                    <p>1 de 4</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="description-container">
             <h1 className="title">{title}</h1>
@@ -342,10 +386,24 @@ const ProductShow = () => {
                     <div>-{discount}%</div>
                   </div>
                   <div className="price">
-                    <div>12x</div>
-                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                    <div className="parcel">12x</div>
+                    <div className="values">
+                      <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                      <p style={widthScreen ? { display: 'none' } : undefined}>
+                        12x de <strong>R$ {priceWithDiscount}</strong>
+                      </p>
+                    </div>
+                    {!widthScreen && (
+                      <BigButton
+                        title="COMPRAR AGORA"
+                        style={{
+                          paddingLeft: '0.5rem',
+                          paddingRight: '0.5rem'
+                        }}
+                      />
+                    )}
                   </div>
-                  <p>
+                  <p style={!widthScreen ? { display: 'none' } : undefined}>
                     Em até 12x sem juros ou{' '}
                     <strong>R$ {priceWithDiscount}</strong> à vista
                   </p>
@@ -453,164 +511,292 @@ const ProductShow = () => {
             <div className="button-container">
               {!isLoading && (
                 <>
-                  <button>COMPRAR AGORA</button>
-                  <button onClick={handleAddToCart}>
+                  {/* <button>COMPRAR AGORA</button> */}
+                  <BigButton border title="COMPRAR AGORA" />
+                  {/* <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
-                  </button>
+                  </button> */}
+                  <BigButton title="ADICIONE AO CARRINHO" />
                 </>
               )}
             </div>
           </div>
         </CardProduct>
 
-        <CardDesc>
-          <CatalogTabs
-            tab1="Descrição"
-            tab2="Avaliação"
-            setToggleState={setToggleState}
-            toggleState={toggleState}
-            content1={
-              <>
-                <div className="description-container">
-                  <div className="left-container">
-                    <div className="image-container">
-                      <div className="list-images">
-                        <Button style={{ marginBottom: '1rem' }}>
-                          {' '}
-                          <AiOutlineUp size={20} color="var(--gray-600" />
-                        </Button>
-                        {images.map((data) => {
+        {widthScreen ? (
+          <CardDesc>
+            <CatalogTabs
+              tab1="Descrição"
+              tab2="Avaliação"
+              setToggleState={setToggleState}
+              toggleState={toggleState}
+              content1={
+                <>
+                  <div className="description-container">
+                    <div className="left-container">
+                      <div className="image-container">
+                        <div className="list-images">
+                          <Button style={{ marginBottom: '1rem' }}>
+                            {' '}
+                            <AiOutlineUp size={20} color="var(--gray-600" />
+                          </Button>
+                          {images.map((data) => {
+                            return (
+                              <img
+                                key={data.title}
+                                onClick={(e) =>
+                                  setImagePreviewDesc(data.original)
+                                }
+                                src={data.thumbnail}
+                                alt={data.title}
+                              />
+                            )
+                          })}
+                          <Button style={{ marginTop: '1rem' }}>
+                            {' '}
+                            <AiOutlineDown size={20} color="var(--gray-600" />
+                          </Button>
+                        </div>
+                        <img src={imagePreviewDesc} alt="Foto do produto" />
+                      </div>
+                    </div>
+                    <div className="right-container">
+                      <h1>{title}</h1>
+                      <p>{desc}</p>
+                    </div>
+                  </div>
+                </>
+              }
+              content2={
+                <>
+                  <div className="rated-container">
+                    <header>
+                      <h1 className="rate">Avaliações de Clientes</h1>
+                      <div>
+                        <h1>{avgStars}</h1>
+                        <ReactStars
+                          count={5}
+                          size={50}
+                          value={5}
+                          edit={false}
+                        />
+                      </div>
+                      <p>({sumFeedbacks} avaliações)</p>
+                    </header>
+                    <div className="container">
+                      <div className="left-container">
+                        {fakeFeedBack.map((e) => {
                           return (
-                            <img
-                              key={data.title}
-                              onClick={(e) =>
-                                setImagePreviewDesc(data.original)
-                              }
-                              src={data.thumbnail}
-                              alt={data.title}
+                            <CardFeedback
+                              key={e.id}
+                              name="Henrique Soares"
+                              quantStar={5} //max stars is 5
+                              text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
+                              time="30/09/2021"
+                              width={850}
                             />
                           )
                         })}
-                        <Button style={{ marginTop: '1rem' }}>
-                          {' '}
-                          <AiOutlineDown size={20} color="var(--gray-600" />
-                        </Button>
                       </div>
-                      <img src={imagePreviewDesc} alt="Foto do produto" />
-                    </div>
-                  </div>
-                  <div className="right-container">
-                    <h1>{title}</h1>
-                    <p>{desc}</p>
-                  </div>
-                </div>
-              </>
-            }
-            content2={
-              <>
-                <div className="rated-container">
-                  <header>
-                    <h1 className="rate">Avaliações de Clientes</h1>
-                    <div>
-                      <h1>{avgStars}</h1>
-                      <ReactStars count={5} size={50} value={5} edit={false} />
-                    </div>
-                    <p>({sumFeedbacks} avaliações)</p>
-                  </header>
-                  <div className="container">
-                    <div className="left-container">
-                      {fakeFeedBack.map((e) => {
-                        return (
-                          <CardFeedback
-                            key={e.id}
-                            name="Henrique Soares"
-                            quantStar={5} //max stars is 5
-                            text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
-                            time="30/09/2021"
-                            width={850}
-                          />
-                        )
-                      })}
-                    </div>
-                    <div className="right-container">
-                      <FilterCard>
-                        <div className="filter">
-                          <h1>Ordenar</h1>
-                          <h4>Recente</h4>
-                          <h4>Melhor avaliação</h4>
-                          <h4>Pior avaliação</h4>
-                          <h1>Filtros</h1>
-                          <div>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={5}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={4}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={3}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={2}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
-                            <CheckboxFilter
-                              confirm={false}
-                              toggleConfirm={() => {}}
-                            >
-                              <ReactStars
-                                color1="#e9e9e9"
-                                count={5}
-                                size={24}
-                                value={1}
-                                edit={false}
-                              />
-                            </CheckboxFilter>
+                      <div className="right-container">
+                        <FilterCard>
+                          <div className="filter">
+                            <h1>Ordenar</h1>
+                            <h4>Recente</h4>
+                            <h4>Melhor avaliação</h4>
+                            <h4>Pior avaliação</h4>
+                            <h1>Filtros</h1>
+                            <div className="stars-container">
+                              <div style={{ marginBottom: 10 }}>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <p style={{ margin: 0 }}>Somente com foto</p>
+                                </CheckboxFilter>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={5}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>85%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={4}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>10%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={3}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>3%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={2}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>0%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={1}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>2%</p>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </FilterCard>
+                        </FilterCard>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              }
+            />
+          </CardDesc>
+        ) : (
+          <CardDescMobile>
+            <div className="description-container">
+              {/* <button> */}
+
+              <div className="title" onClick={toggleDescModalVisible}>
+                <h2>Descrição</h2>
+                <AiOutlineRight size={20} />
+              </div>
+              {/* </button> */}
+              <div className="description">
+                <h4>{title}</h4>
+                <p>{desc}</p>
+              </div>
+            </div>
+            <div className="rated-container">
+              <div className="title" onClick={toggleAvalModalVisible}>
+                <h2>Avaliações</h2>
+                <AiOutlineRight size={20} />
+              </div>
+              <Divisor />
+              <div className="star-container">
+                <div className="left-container">
+                  <div className="star">
+                    <h1>{avgStars}</h1>
+                    <ReactStars count={1} size={50} value={1} edit={false} />
+                  </div>
+                  <p>{sumFeedbacks} avaliações</p>
+                </div>
+                <div className="right-container">
+                  <div className="stars-container">
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={5}
+                        edit={false}
+                      />
+                      <p>90%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={4}
+                        edit={false}
+                      />
+                      <p>4%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={3}
+                        edit={false}
+                      />
+                      <p>2%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={2}
+                        edit={false}
+                      />
+                      <p>3%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={1}
+                        edit={false}
+                      />
+                      <p>1%</p>
                     </div>
                   </div>
                 </div>
-              </>
-            }
-          />
-        </CardDesc>
+              </div>
+            </div>
+          </CardDescMobile>
+        )}
 
         <ProductWrapper>
           <h1>Produtos relacionados</h1>
@@ -623,34 +809,140 @@ const ProductShow = () => {
             </div>
           </div>
         </ProductWrapper>
-        <Footer>
-          <div>
-            <h1>Contato</h1>
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 99444-5552
-            </span>
 
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              Whatsapp
-            </span>
+        {widthScreen && (
+          <Footer>
+            <div>
+              <h1>Contato</h1>
+              <span>
+                <AiFillPhone size={24} color="var(--gray-700)" />
+                (89) 99444-5552
+              </span>
 
-            {/* <a href="facebook.com">
+              <span>
+                <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                Whatsapp
+              </span>
+
+              {/* <a href="facebook.com">
               <AiFillFacebook size={24} color="var(--gray-700)" />
               Facebook
             </a> */}
-            <span>
-              <AiOutlineMail size={24} color="var(--gray-700)" />
-              emailexample@gmail.com
-            </span>
-          </div>
-          <div className="mapContainer">
-            <img src="/images/map.png" />
-            <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
-          </div>
-        </Footer>
+              <span>
+                <AiOutlineMail size={24} color="var(--gray-700)" />
+                emailexample@gmail.com
+              </span>
+            </div>
+            <div className="mapContainer">
+              <img src="/images/map.png" />
+              <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
+            </div>
+          </Footer>
+        )}
       </Container>
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleDescModalVisible}
+        modalVisible={descModalVisible}
+        under
+      >
+        <div className="modalDescription">
+          <div className="title">
+            <AiOutlineArrowLeft
+              size={25}
+              className="arrow"
+              onClick={toggleDescModalVisible}
+            />
+            <h2>Descrição</h2>
+          </div>
+          <Divisor />
+          <h2>{title}</h2>
+          <p>{desc}</p>
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleAvalModalVisible}
+        modalVisible={avalModalVisible}
+        under
+      >
+        <div className="modalAvaliations">
+          <div className="title">
+            <AiOutlineArrowLeft
+              size={25}
+              className="arrow"
+              onClick={toggleAvalModalVisible}
+            />
+            <h2>Avaliações</h2>
+          </div>
+          <Divisor />
+          <h2>{title}</h2>
+          <div className="star-container">
+            <div className="top-container">
+              <h1>{avgStars.toFixed(1)}</h1>
+              <div className="star">
+                <ReactStars count={5} size={32} value={5} edit={false} />
+                <p>{sumFeedbacks} avaliações</p>
+              </div>
+            </div>
+            <div className="bot-container">
+              <div className="stars-container">
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={5}
+                    edit={false}
+                  />
+                  <p>90%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={4}
+                    edit={false}
+                  />
+                  <p>4%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={3}
+                    edit={false}
+                  />
+                  <p>2%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={2}
+                    edit={false}
+                  />
+                  <p>3%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={1}
+                    edit={false}
+                  />
+                  <p>1%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CustomModal>
 
       <CartButton />
     </Wrapper>

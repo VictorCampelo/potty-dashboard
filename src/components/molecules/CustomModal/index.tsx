@@ -7,6 +7,7 @@ interface CustomModal extends React.InputHTMLAttributes<HTMLInputElement> {
   buttons: boolean
   modalVisible: boolean
   setModalOpen: () => void
+  under?: boolean
 }
 
 const customStyles = {
@@ -30,11 +31,25 @@ const customStyles = {
   }
 }
 
+const customStylesUnder = {
+  content: {
+    ...customStyles.content,
+    bottom: '-50%',
+    left: '50%',
+    right: 0,
+    top: '75%'
+  },
+  overlay: {
+    ...customStyles.overlay
+  }
+}
+
 const CustomModal = ({
   title,
   buttons = false,
   modalVisible,
   setModalOpen,
+  under = false,
   ...rest
 }: CustomModal) => {
   const [visible, setVisible] = useState(false)
@@ -49,9 +64,9 @@ const CustomModal = ({
       onRequestClose={setModalOpen}
       isOpen={visible}
       ariaHideApp={false}
-      style={customStyles}
+      style={under ? customStylesUnder : customStyles}
     >
-      <Container>
+      <Container under={under}>
         <div className="modal">
           <h1>{title}</h1>
           {rest.children}

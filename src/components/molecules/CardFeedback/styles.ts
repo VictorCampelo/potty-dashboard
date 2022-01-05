@@ -12,24 +12,29 @@ export const Container = styled.div<ContainerProp>`
 
   border: 1px solid #d8d9dd;
   box-sizing: border-box;
-  border-radius: 11px;
+  border-radius: 25px;
 
-  padding: 5px 10px;
+  padding: var(--spacing-xxxs);
 
   .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    h1 {
-      font-style: normal;
-      font-weight: 500;
-      font-size: 1rem;
-
-      color: #363f4e;
-    }
-    .stars {
+    margin-bottom: var(--spacing-xxxs);
+    .left {
       display: flex;
+      align-items: center;
+      gap: var(--spacing-xxxs);
+      h1 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 1rem;
+
+        color: #363f4e;
+      }
+      .stars {
+        display: flex;
+      }
     }
   }
 
