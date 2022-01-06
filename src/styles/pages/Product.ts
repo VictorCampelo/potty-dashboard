@@ -207,6 +207,9 @@ export const CardProduct = styled.div`
         width: 250px;
         height: 250px;
       }
+      ${[sizes.down('smMob')]} {
+        width: 200px;
+      }
     }
     }
   }
@@ -536,7 +539,7 @@ export const CardDesc = styled.div`
           height: 380px;
           object-fit: cover;
           border-radius: var(--border-radius-xxs);
-
+          border: 1px solid red;
           ${[sizes.down('lgMob')]} {
             width: 250px;
             height: 250px;
