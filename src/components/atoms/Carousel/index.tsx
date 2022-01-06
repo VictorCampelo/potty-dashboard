@@ -178,9 +178,10 @@ const Wrapper = styled.div`
   /* gap: 2rem; */
   align-items: center;
   transform: translateX(-7%);
-  padding: 0 2rem;
+  padding: 1rem 2rem;
 
   ${[sizes.down('lgMob')]} {
+    width: 114%;
     flex-direction: column;
     padding: 0 0 0 var(--spacing-xs);
 
@@ -201,6 +202,9 @@ type ButtonProp = {
   position?: string
 }
 const Button = styled.button<ButtonProp>`
+  width: 2rem;
+  height: 2rem;
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -229,14 +233,13 @@ const ButtonMobile = styled(Button)`
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
-
-  padding: var(--spacing-nano) var(--spacing-quarck);
+  max-width: 100vw !important;
+  /* padding: var(--spacing-nano) var(--spacing-quarck); */
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;
   scrollbar-width: none;
-
+  padding: var(--spacing-nano) 0;
   &::-webkit-scrollbar {
     display: none;
   }

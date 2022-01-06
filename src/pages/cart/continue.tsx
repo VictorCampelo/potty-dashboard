@@ -4,10 +4,11 @@ import HeaderProducts from 'components/molecules/HeaderShop'
 import { BsWhatsapp } from 'react-icons/bs'
 import { FiChevronLeft, FiPlus } from 'react-icons/fi'
 import { MultiSelect as Select } from 'components/molecules/Select'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import router from 'next/router'
 import { CartContext } from 'contexts/CartContext'
 import { api } from 'services/apiClient'
+import { getUser } from 'services/client.services'
 import useMedia from 'use-media'
 import { toast } from 'react-toastify'
 import CustomModal from 'components/molecules/CustomModal'
@@ -47,6 +48,9 @@ const adressRegisterFormSchema = yup.object().shape({
 const CartContinue = () => {
   const { items } = useContext(CartContext)
   const [addAdressModal, setAddAdressModal] = useState(false)
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('')
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
@@ -185,6 +189,27 @@ const CartContinue = () => {
     }
   }
 
+  async function loadCEP(data) {
+    console.log(data.value)
+  }
+
+  async function loadData() {
+    try {
+      // Consumindo os dados da /me para popular a tela de checkout
+      const response = await getUser()
+      if (response.status == 200) {
+        const name = `${response?.data?.firstName} ${response?.data?.lastName}`
+        setName(name)
+      }
+    } catch (error) {
+      // router.push('/login')
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    loadData()
+  }, [])
+
   return (
     <>
       <Head>
@@ -221,7 +246,8 @@ const CartContinue = () => {
                 {...register('cep')}
                 textError={errors.cep?.message}
                 error={errors.cep}
-                maxLength={45}
+                maxLength={9}
+                onChange={(e) => loadCEP(e)}
               />
 
               <Input
@@ -304,7 +330,7 @@ const CartContinue = () => {
 
                 <AdressInfo>
                   <span>
-                    <strong>Nome do usuário:</strong> Vitor Rafael
+                    <strong>Nome do usuário:</strong> {name}
                   </span>
 
                   <span>

@@ -1060,6 +1060,14 @@ caniuse-lite@^1.0.30001202, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.300012
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001248.tgz#26ab45e340f155ea5da2920dadb76a533cb8ebce"
   integrity sha512-NwlQbJkxUFJ8nMErnGtT0QTM2TJ33xgz4KXJSMIrjXIbDVdaYueGyjOrLKRtJC+rTiWfi6j5cnZN1NBiSBJGNw==
 
+cep-promise@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/cep-promise/-/cep-promise-4.1.1.tgz#21a5b98bab22e77a711ac3644bcf54c7f137076d"
+  integrity sha512-SXxOV4qsY2vt31zuoOQfCz164Y4Aa8WrzCC1TZ74WeO8GeSqlAKEjsa+3sYH0iG6cD0qKhX6JDysF/TixhTIdw==
+  dependencies:
+    node-fetch "2.6.1"
+    unfetch "4.1.0"
+
 chalk@2.4.2, chalk@^2.0.0:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -4485,6 +4493,11 @@ unbox-primitive@^1.0.1:
     has-bigints "^1.0.1"
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
+
+unfetch@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/unfetch/-/unfetch-4.1.0.tgz#6ec2dd0de887e58a4dee83a050ded80ffc4137db"
+  integrity sha512-crP/n3eAPUJxZXM9T80/yv0YhkTEx2K1D3h7D1AJM6fzsWZrxdyRuLN0JH/dkZh1LNH8LxCnBzoPFCPbb2iGpg==
 
 unpipe@1.0.0:
   version "1.0.0"

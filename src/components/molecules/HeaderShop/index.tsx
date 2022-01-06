@@ -2,6 +2,8 @@ import { Container } from './styles'
 
 import { MdShoppingCart } from 'react-icons/md'
 import Link from 'next/link'
+import { useContext } from 'react'
+import { AuthContext } from 'contexts/AuthContext'
 
 interface HeaderProps {
   isMain?: boolean

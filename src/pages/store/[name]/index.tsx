@@ -23,7 +23,9 @@ import {
   StatusCard,
   TopoPage,
   FilterCardTertiary,
-  HorizonCard
+  HorizonCard,
+  HeaderMob,
+  Drawer
 } from '../../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -32,12 +34,17 @@ import { toast } from 'react-toastify'
 import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
 import { ellipsis } from 'functions/ellipsis'
 import styled from 'styled-components'
+import { CartButton } from 'components/atoms/CartButton'
+import useMedia from 'use-media'
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { IoIosClose } from 'react-icons/io'
 
 const Products = () => {
   const router = useRouter()
   const { name } = router.query
 
   const [buttonOn, setButtonOn] = useState(true)
+  const [drawerActive, setDrawerActive] = useState(false)
 
   const [businessName, setBusinessName] = useState('')
   const [desc, setDesc] = useState('')
@@ -57,13 +64,6 @@ const Products = () => {
 
   const [businessAddress, setBusinessAddress] = useState('')
 
-  const [businessState, setBusinessState] = useState('')
-  const [businessCity, setBusinessCity] = useState('')
-  const [publicPlace, setPublicPlace] = useState('')
-  const [number, setNumer] = useState('')
-  const [district, setDistrict] = useState('')
-  const [cep, setCep] = useState('')
-
   const [dom, setDom] = useState([])
   const [seg, setSeg] = useState([])
   const [ter, setTer] = useState([])
@@ -73,6 +73,8 @@ const Products = () => {
   const [sab, setSab] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
+
+  const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
     router.push(`/store/${name}/product/${id}`)
@@ -146,22 +148,140 @@ const Products = () => {
   }, [name])
 
   return (
-    <Page>
-      <Head>
-        <title>Loja | Último</title>
-      </Head>
+    <>
+      <Page>
+        <Head>
+          <title>Loja | Último</title>
+        </Head>
 
-      <TopoPage>
-        <img className="capa" src="/images/capa.png" alt="capa" />
-        <HeaderShop isMain={false} />
-      </TopoPage>
+        <TopoPage>
+          <img className="capa" src="/images/capa.png" alt="capa" />
 
-      <InfoSerch>
-        <div className="input">
-          <AiOutlineSearch id="search" />
-          <input placeholder="Pesquisar na loja" />
-        </div>
-        <div className="body">
+          <HeaderShop isMain={false} />
+
+          {!widthScreen && (
+            <HeaderMob>
+              <GiHamburgerMenu
+                onClick={() => setDrawerActive(true)}
+                size={24}
+                color="black"
+              />
+              <input placeholder="Pesquisar na loja" />
+
+              <Drawer className={drawerActive && 'active'}>
+                <ul className="content">
+                  <div
+                    className="close-btn"
+                    onClick={() => setDrawerActive(false)}
+                  >
+                    <IoIosClose size={30} color={'#363F4E'} />
+                  </div>
+                  <li onClick={() => router.push('/login')}>Fazer Login</li>
+                  <li onClick={() => router.push('/cadastro')}>
+                    Fazer Cadastro
+                  </li>
+                  <li onClick={() => router.push('/')}>Fazer logoff</li>
+                </ul>
+                <div
+                  className="outside"
+                  onClick={() => setDrawerActive(false)}
+                />
+              </Drawer>
+            </HeaderMob>
+          )}
+        </TopoPage>
+
+        {widthScreen ? (
+          <InfoSerch>
+            <div className="input">
+              <AiOutlineSearch id="search" />
+              <input placeholder="Pesquisar na loja" />
+            </div>
+
+            <div className="body">
+              <DescriptionShop>
+                <div className="top">
+                  <img src="/images/logoLoja.svg" alt="perfil" />
+                  <div className="title">
+                    <h1>{businessName}</h1>
+                    <div className="stars">
+                      {[...new Array(avgstars)].map((e) => {
+                        return (
+                          <AiFillStar
+                            key={e + '123'}
+                            size={24}
+                            color="var(--gold)"
+                          />
+                        )
+                      })}
+                      {[...new Array(5 - avgstars)].map((e) => {
+                        return (
+                          <AiOutlineStar
+                            key={e + '124'}
+                            size={24}
+                            color="var(--gold)"
+                          />
+                        )
+                      })}
+                      <h2>({sumStars})</h2>
+                    </div>
+                  </div>
+                </div>
+                <p>{desc}</p>
+              </DescriptionShop>
+
+              <StatusCard>
+                <div className="status">
+                  <span>Detalhes</span>
+                </div>
+                <div className="body">
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/caixa.svg" alt="icon" />
+                      <h2>Quantidade de Produtos:</h2>
+                    </div>
+                    <span>{products.length}</span>
+                  </div>
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/sacola.svg" alt="icon" />
+                      <h2>Quantidade de vendas:</h2>
+                    </div>
+                    <span>{sumOrders}</span>
+                  </div>
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/loja.svg" alt="icon" />
+                      <h2>Loja cadastrada no site em:</h2>
+                    </div>
+                    <span>{createAt.getFullYear()}</span>
+                  </div>
+                  <div className="info-produto">
+                    <div className="left-part">
+                      <img src="/images/estrela.svg" alt="icon" />
+                      <h2>Quantidade de avaliações:</h2>
+                    </div>
+                    <span>{sumFeedbacks}</span>
+                  </div>
+                </div>
+              </StatusCard>
+
+              <StatusCard>
+                <div className="status">
+                  <div className="statusDot" />
+                  <span>Aberto agora</span>
+                </div>
+                <div className="text">
+                  <p>
+                    Hoje: <br />
+                    7h às 12h <br />
+                    13h às 18h <br />
+                  </p>
+                </div>
+              </StatusCard>
+            </div>
+          </InfoSerch>
+        ) : (
           <DescriptionShop>
             <div className="top">
               <img src="/images/logoLoja.svg" alt="perfil" />
@@ -169,13 +289,7 @@ const Products = () => {
                 <h1>{businessName}</h1>
                 <div className="stars">
                   {[...new Array(avgstars)].map((e) => {
-                    return (
-                      <AiFillStar
-                        key={e + '123'}
-                        size={24}
-                        color="var(--gold)"
-                      />
-                    )
+                    return <AiFillStar key={e + '123'} color="var(--gold)" />
                   })}
                   {[...new Array(5 - avgstars)].map((e) => {
                     return (
@@ -192,197 +306,127 @@ const Products = () => {
             </div>
             <p>{desc}</p>
           </DescriptionShop>
+        )}
 
-          <StatusCard>
-            <div className="status">
-              <span>Detalhes</span>
-            </div>
-            <div className="body">
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/caixa.svg" alt="icon" />
-                  <h2>Quantidade de Produtos:</h2>
+        <Container>
+          <section className="productsContainer">
+            <div className="products">
+              {widthScreen && (
+                <div className="filterWrapper">
+                  <FilterCard>
+                    <span className="orderBy">Ordenar por: </span>
+
+                    <button>
+                      <span className="item active">Melhor resultado</span>
+                    </button>
+
+                    <button>
+                      <span className="item">Mais pedidos</span>
+                    </button>
+
+                    <button>
+                      <span className="item">Mais recente</span>
+                    </button>
+
+                    <button>
+                      <span className="item">Preço</span>
+                    </button>
+                  </FilterCard>
+
+                  <FilterCardSecondary>
+                    <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
+                      <AiFillStar size={24} color="var(--gold)" />
+                      <label>4.0 ou mais</label>
+                    </CheckboxFilter>
+
+                    <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
+                      <label>Frete grátis</label>
+                    </CheckboxFilter>
+                  </FilterCardSecondary>
+
+                  <FilterCardTertiary>
+                    <button id="button-left" onClick={() => setButtonOn(true)}>
+                      <img
+                        src={
+                          buttonOn
+                            ? '/images/quadro.svg'
+                            : '/images/quadroOff.svg'
+                        }
+                        alt="button"
+                      />
+                    </button>
+                    <hr />
+                    <button
+                      id="button-right"
+                      onClick={() => setButtonOn(false)}
+                    >
+                      <img
+                        src={
+                          buttonOn ? '/images/stack.svg' : '/images/stackOn.svg'
+                        }
+                        alt="button"
+                      />
+                    </button>
+                  </FilterCardTertiary>
                 </div>
-                <span>{products.length}</span>
-              </div>
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/sacola.svg" alt="icon" />
-                  <h2>Quantidade de vendas:</h2>
-                </div>
-                <span>{sumOrders}</span>
-              </div>
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/loja.svg" alt="icon" />
-                  <h2>Loja cadastrada no site em:</h2>
-                </div>
-                <span>{createAt.getFullYear()}</span>
-              </div>
-              <div className="info-produto">
-                <div className="left-part">
-                  <img src="/images/estrela.svg" alt="icon" />
-                  <h2>Quantidade de avaliações:</h2>
-                </div>
-                <span>{sumFeedbacks}</span>
-              </div>
-            </div>
-          </StatusCard>
+              )}
 
-          <StatusCard>
-            <div className="status">
-              <div className="statusDot" />
-              <span>Aberto agora</span>
-            </div>
-            <div className="text">
-              <p>
-                Hoje: <br />
-                7h às 12h <br />
-                13h às 18h <br />
-              </p>
-            </div>
-          </StatusCard>
-        </div>
-      </InfoSerch>
+              <div className="bottom">
+                {widthScreen && (
+                  <div className="categoriesContainer">
+                    <CategoriesCard>
+                      <div className="title">
+                        <span>Categorias da loja:</span>
+                      </div>
 
-      <Container>
-        <section className="productsContainer">
-          <div className="products">
-            <div className="filterWrapper">
-              <FilterCard>
-                <span className="orderBy">Ordenar por: </span>
+                      <div className="item">
+                        <a>Todas as categorias</a>
+                      </div>
 
-                <button>
-                  <span className="item active">Melhor resultado</span>
-                </button>
+                      <div className="item">
+                        <a>Cozinha</a>
+                      </div>
 
-                <button>
-                  <span className="item">Mais pedidos</span>
-                </button>
+                      <div className="item">
+                        <a>Quartos</a>
+                      </div>
 
-                <button>
-                  <span className="item">Mais recente</span>
-                </button>
+                      <div className="item">
+                        <a className="active">Sala de estar</a>
+                      </div>
 
-                <button>
-                  <span className="item">Preço</span>
-                </button>
-              </FilterCard>
-
-              <FilterCardSecondary>
-                <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
-                  <AiFillStar size={24} color="var(--gold)" />
-                  <label>4.0 ou mais</label>
-                </CheckboxFilter>
-
-                <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
-                  <label>Frete grátis</label>
-                </CheckboxFilter>
-              </FilterCardSecondary>
-
-              <FilterCardTertiary>
-                <button id="button-left" onClick={() => setButtonOn(true)}>
-                  <img
-                    src={
-                      buttonOn ? '/images/quadro.svg' : '/images/quadroOff.svg'
-                    }
-                    alt="button"
-                  />
-                </button>
-                <hr />
-                <button id="button-right" onClick={() => setButtonOn(false)}>
-                  <img
-                    src={buttonOn ? '/images/stack.svg' : '/images/stackOn.svg'}
-                    alt="button"
-                  />
-                </button>
-              </FilterCardTertiary>
-            </div>
-
-            <div className="bottom">
-              <div className="categoriesContainer">
-                <CategoriesCard>
-                  <div className="title">
-                    <span>Categorias da loja:</span>
+                      <div className="item">
+                        <a>Escritório</a>
+                      </div>
+                    </CategoriesCard>
                   </div>
+                )}
 
-                  <div className="item">
-                    <a>Todas as categorias</a>
-                  </div>
-
-                  <div className="item">
-                    <a>Cozinha</a>
-                  </div>
-
-                  <div className="item">
-                    <a>Quartos</a>
-                  </div>
-
-                  <div className="item">
-                    <a className="active">Sala de estar</a>
-                  </div>
-
-                  <div className="item">
-                    <a>Escritório</a>
-                  </div>
-                </CategoriesCard>
-              </div>
-
-              <div className="productWrapper">
-                {buttonOn ? (
-                  <>
-                    {products.map((e) => {
-                      return (
-                        <ProductCard
-                          key={e.id}
-                          onClick={() => handleOpenProduct(e.id)}
-                        >
-                          <img
-                            src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                            alt="geladeira frost free"
-                          />
-                          <span className="title">{ellipsis(e.title, 30)}</span>
-                          <div className="price">
-                            <span>R$ {e.price.toFixed(2)}</span>
-                            <small>
-                              {e.discount
-                                ? 'R$ ' +
-                                  ((1 - e.discount) * e.price).toFixed(2)
-                                : null}
-                            </small>
-                          </div>
-                          <div className="score">
-                            <AiFillStar
-                              key={e.id}
-                              size={18}
-                              color="var(--gold)"
-                            />
-                            <span>
-                              {e.avgStars} | {e.sumOrders} Pedidos
-                            </span>
-                          </div>
-                          <p>{ellipsis(e.description, 120)}</p>
-                        </ProductCard>
-                      )
-                    })}
-                  </>
-                ) : (
-                  <div className="horizon">
-                    {products.map((e) => {
-                      return (
-                        <HorizonCard
-                          key={e.id}
-                          onClick={() => handleOpenProduct(e.id)}
-                        >
-                          <img
+                <div className="productWrapper">
+                  {buttonOn ? (
+                    <>
+                      {products.map((e) => {
+                        return (
+                          <ProductCard
                             key={e.id}
-                            src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                            alt="geladeira frost free"
-                          />
-                          <div className="infos">
+                            onClick={() => handleOpenProduct(e.id)}
+                          >
+                            <img
+                              src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                              alt="geladeira frost free"
+                            />
                             <span className="title">
-                              {ellipsis(e.title, 70)}
+                              {ellipsis(e.title, 30)}
                             </span>
+                            <div className="price">
+                              <span>R$ {e.price.toFixed(2)}</span>
+                              <small>
+                                {e.discount
+                                  ? 'R$ ' +
+                                    ((1 - e.discount) * e.price).toFixed(2)
+                                  : null}
+                              </small>
+                            </div>
                             <div className="score">
                               <AiFillStar
                                 key={e.id}
@@ -393,51 +437,88 @@ const Products = () => {
                                 {e.avgStars} | {e.sumOrders} Pedidos
                               </span>
                             </div>
-                            <div className="price">
-                              <span>R$ {e.price.toFixed(2)}</span>
-                              <small>
-                                {e.descont ? 'R$ ' + e.descont : null}
-                              </small>
-                            </div>
-
                             <p>{ellipsis(e.description, 120)}</p>
-                          </div>
-                        </HorizonCard>
-                      )
-                    })}
-                  </div>
-                )}
+                          </ProductCard>
+                        )
+                      })}
+                    </>
+                  ) : (
+                    <div className="horizon">
+                      {products.map((e) => {
+                        return (
+                          <HorizonCard
+                            key={e.id}
+                            onClick={() => handleOpenProduct(e.id)}
+                          >
+                            <img
+                              key={e.id}
+                              src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                              alt="geladeira frost free"
+                            />
+                            <div className="infos">
+                              <span className="title">
+                                {ellipsis(e.title, 70)}
+                              </span>
+                              <div className="score">
+                                <AiFillStar
+                                  key={e.id}
+                                  size={18}
+                                  color="var(--gold)"
+                                />
+                                <span>
+                                  {e.avgStars} | {e.sumOrders} Pedidos
+                                </span>
+                              </div>
+                              <div className="price">
+                                <span>R$ {e.price.toFixed(2)}</span>
+                                <small>
+                                  {e.descont ? 'R$ ' + e.descont : null}
+                                </small>
+                              </div>
+
+                              <p>{ellipsis(e.description, 120)}</p>
+                            </div>
+                          </HorizonCard>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <Footer>
-          <h1>Contato</h1>
+          {widthScreen && (
+            <Footer>
+              <h1>Contato</h1>
 
-          {telefone && (
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              {telefone}
-            </span>
+              {telefone && (
+                <span>
+                  <AiFillPhone size={24} color="var(--gray-700)" />
+                  {telefone}
+                </span>
+              )}
+
+              {whatsApp && (
+                <span>
+                  <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                  {whatsApp}
+                </span>
+              )}
+
+              {whatsApp && (
+                <a href="facebook.com">
+                  <AiFillFacebook size={24} color="var(--gray-700)" />
+                  {facebook}
+                </a>
+              )}
+            </Footer>
           )}
+        </Container>
+      </Page>
 
-          {whatsApp && (
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              {whatsApp}
-            </span>
-          )}
-
-          {whatsApp && (
-            <a href="facebook.com">
-              <AiFillFacebook size={24} color="var(--gray-700)" />
-              {facebook}
-            </a>
-          )}
-        </Footer>
-      </Container>
-    </Page>
+      <CartButton />
+    </>
   )
 }
 

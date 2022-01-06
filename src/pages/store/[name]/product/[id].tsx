@@ -1,15 +1,21 @@
 import { Input } from '../../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
+import { VscSearch } from 'react-icons/vsc'
 import {
+  Wrapper,
   Container,
   CardProduct,
   CardDesc,
+  CardDescMobile,
   ProductWrapper,
   Footer,
   FilterCard,
-  Installments
+  Installments,
+  Button,
+  Divisor
 } from '../../../../styles/pages/Product'
+import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
 import CatalogTabs from '../../../../components/molecules/CatalogTabs'
@@ -19,8 +25,14 @@ import {
   AiFillFacebook,
   AiFillPhone,
   AiFillStar,
-  AiOutlineWhatsApp
+  AiOutlineWhatsApp,
+  AiOutlineUp,
+  AiOutlineDown,
+  AiOutlineMail,
+  AiOutlineRight,
+  AiOutlineArrowLeft
 } from 'react-icons/ai'
+import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
 import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
@@ -30,6 +42,11 @@ import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
+import Carousel from 'components/atoms/Carousel'
+import { CartButton } from 'components/atoms/CartButton'
+import styled from 'styled-components'
+import useMedia from 'use-media'
+import CustomModal from 'components/molecules/CustomModal'
 
 const fakeFeedBack = [
   {
@@ -54,22 +71,52 @@ const fakeFeedBack = [
 
 const fakeProducts = [
   {
-    id: 1
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 2
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 3
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 4
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 5
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   },
   {
-    id: 6
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina'
   }
 ]
 
@@ -119,6 +166,19 @@ const ProductShow = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [showInstallment, setShowInstallment] = useState(false)
+
+  const widthScreen = useMedia({ minWidth: '426px' })
+
+  const [descModalVisible, setDescModalVisible] = useState(false)
+  const [avalModalVisible, setAvalModalVisible] = useState(false)
+
+  function toggleDescModalVisible() {
+    setDescModalVisible(!descModalVisible)
+  }
+
+  function toggleAvalModalVisible() {
+    setAvalModalVisible(!avalModalVisible)
+  }
 
   function handleOpenProduct(id) {
     router.push(`/product/${id}`)
@@ -242,168 +302,228 @@ const ProductShow = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <Head>
         <title>Produto | Último</title>
       </Head>
 
-      <HeaderShop />
+      <HeaderShop isMain={false} />
       <Container>
         <header className="header">
-          <Input icon={<FaSearch />} placeholder="Pesquisar na loja" />
+          <Input
+            icon={<VscSearch />}
+            placeholder="Pesquisar na loja"
+            search
+            inverse
+          />
         </header>
-        <main className="body">
-          <CardProduct>
-            <div className="image-container">
-              <div className="list-images">
-                {images.map((data) => {
-                  return (
-                    <img
-                      key={data.title}
-                      onClick={(e) => setImagePreview(data.original)}
-                      src={data.thumbnail}
-                      alt={data.title}
-                    />
-                  )
-                })}
-              </div>
-              <img src={imagePreview} alt="Foto do produto" />
+        <CardProduct>
+          <div className="image-container">
+            <div className="list-images">
+              <Button style={{ marginBottom: '1rem' }}>
+                {' '}
+                <AiOutlineUp size={20} color="var(--gray-600)" />
+              </Button>
+              {images.map((data) => {
+                return (
+                  <img
+                    key={data.title}
+                    onClick={(e) => setImagePreview(data.original)}
+                    src={data.thumbnail}
+                    alt={data.title}
+                  />
+                )
+              })}
+              <Button style={{ marginTop: '1rem' }}>
+                {' '}
+                <AiOutlineDown size={20} color="var(--gray-600)" />
+              </Button>
             </div>
-            <div className="description-container">
-              <h1 className="title">{title}</h1>
-              <div className="desc">
-                <ReactStars count={1} size={23} value={1} edit={false} />
-                <p>{avgStars}</p>
-                <p>{sumFeedbacks} avaliações</p>
-                <p>{sumOrders} pedidos</p>
-              </div>
-
-              <div className="price-container">
-                {discount ? (
-                  <>
-                    <div className="discount">
-                      <h4>R$ {price}</h4>
-                      <div>-{discount}%</div>
-                    </div>
-                    <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
-                    <p>
-                      Em até 12x sem juros ou{' '}
-                      <strong>{priceWithDiscount}</strong> à vista
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <h1>
-                      R$ {getDiscount(price, 10).toFixed(2)}{' '}
-                      <small>à vista</small>{' '}
-                    </h1>
-                    <p>
-                      Ou <strong>R$ {price}</strong> à prazo
-                    </p>
-                  </>
-                )}
-
-                <div className="installments">
-                  <a onClick={() => setShowInstallment(!showInstallment)}>
-                    Ver parcelas
-                  </a>
-
-                  {showInstallment && (
-                    <Installments>
-                      <div className="head">
-                        <div className=""></div>
-
-                        <h1 className="title">Formas de parcelamento</h1>
-
-                        <IoIosClose
-                          onClick={() => setShowInstallment(!showInstallment)}
-                          size={30}
-                          color={'#363F4E'}
-                        />
-                      </div>
-
-                      <img src="/images/cards.png" alt="bandeiras aceitas" />
-
-                      <div className="list">
-                        <p className="list1">
-                          <strong>R$ {priceWithDiscount} à vista</strong> <br />
-                          2x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 2
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          3x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 3
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          4x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 4
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          5x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 5
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          6x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 6
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                        </p>
-
-                        <p className="list2">
-                          7x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 7
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          8x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 8
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          9x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 9
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          10x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 10
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          11x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 11
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          12x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 12
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                        </p>
-                      </div>
-                    </Installments>
-                  )}
+            <img
+              src={imagePreview}
+              alt="Foto do produto"
+              className="product-image"
+            />
+            {!widthScreen && (
+              <div className="actions">
+                <div className="top">
+                  <div className="share">
+                    <Button style={{ width: 40, height: 40 }}>
+                      <BsShareFill size={25} />
+                    </Button>
+                  </div>
+                </div>
+                <div className="mid">
+                  <div className="btn">
+                    <Button style={{ width: 40, height: 40 }}>
+                      <AiOutlineRight size={20} />
+                    </Button>
+                  </div>
+                </div>
+                <div className="bot">
+                  <div className="progress">
+                    <p>1 de 4</p>
+                  </div>
                 </div>
               </div>
-              <div className="button-container">
-                {!isLoading && (
-                  <>
-                    <button>COMPRAR AGORA</button>
-                    <button onClick={handleAddToCart}>
-                      ADICIONAR AO CARRINHO
-                    </button>
-                  </>
+            )}
+          </div>
+          <div className="description-container">
+            <h1 className="title">{title}</h1>
+            <div className="desc">
+              <ReactStars count={1} size={23} value={1} edit={false} />
+              <p>{avgStars}</p>
+              <p className="avaliations">{sumFeedbacks} avaliações</p>
+              <p className="separate">|</p>
+              <p>{sumOrders} pedidos</p>
+            </div>
+
+            <div className="price-container">
+              {discount ? (
+                <>
+                  <div className="discount">
+                    <h4>R$ {price}</h4>
+                    <div>-{discount}%</div>
+                  </div>
+                  <div className="price">
+                    <div className="parcel">12x</div>
+                    <div className="values">
+                      <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                      <p style={widthScreen ? { display: 'none' } : undefined}>
+                        12x de <strong>R$ {priceWithDiscount}</strong>
+                      </p>
+                    </div>
+                    {!widthScreen && (
+                      <BigButton
+                        title="COMPRAR AGORA"
+                        style={{
+                          paddingLeft: '0.5rem',
+                          paddingRight: '0.5rem'
+                        }}
+                      />
+                    )}
+                  </div>
+                  <p style={!widthScreen ? { display: 'none' } : undefined}>
+                    Em até 12x sem juros ou{' '}
+                    <strong>R$ {priceWithDiscount}</strong> à vista
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1>
+                    R$ {getDiscount(price, 10).toFixed(2)}{' '}
+                    <small>à vista</small>{' '}
+                  </h1>
+                  <p>
+                    Ou <strong>R$ {price}</strong> à prazo
+                  </p>
+                </>
+              )}
+
+              <div className="installments">
+                <a onClick={() => setShowInstallment(!showInstallment)}>
+                  Ver parcelas
+                </a>
+
+                {showInstallment && (
+                  <Installments>
+                    <div className="head">
+                      <div className=""></div>
+
+                      <h1 className="title">Formas de parcelamento</h1>
+
+                      <IoIosClose
+                        onClick={() => setShowInstallment(!showInstallment)}
+                        size={30}
+                        color={'#363F4E'}
+                      />
+                    </div>
+
+                    <img src="/images/cards.png" alt="bandeiras aceitas" />
+
+                    <div className="list">
+                      <p className="list1">
+                        <strong>R$ {priceWithDiscount} à vista</strong> <br />
+                        2x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 2
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        3x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 3
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        4x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 4
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        5x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 5
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        6x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 6
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                      </p>
+
+                      <p className="list2">
+                        7x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 7
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        8x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 8
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        9x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 9
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        10x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 10
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        11x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 11
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                        12x R${' '}
+                        {(
+                          Number(getDiscount(price, discount).toFixed(2)) / 12
+                        ).toFixed(2)}{' '}
+                        sem juros <br />
+                      </p>
+                    </div>
+                  </Installments>
                 )}
               </div>
             </div>
-          </CardProduct>
+            <div className="button-container">
+              {!isLoading && (
+                <>
+                  {/* <button>COMPRAR AGORA</button> */}
+                  <BigButton border title="COMPRAR AGORA" />
+                  {/* <button onClick={handleAddToCart}>
+                    ADICIONE AO CARRINHO
+                  </button> */}
+                  <BigButton title="ADICIONE AO CARRINHO" />
+                </>
+              )}
+            </div>
+          </div>
+        </CardProduct>
 
+        {widthScreen ? (
           <CardDesc>
             <CatalogTabs
               tab1="Descrição"
@@ -416,6 +536,10 @@ const ProductShow = () => {
                     <div className="left-container">
                       <div className="image-container">
                         <div className="list-images">
+                          <Button style={{ marginBottom: '1rem' }}>
+                            {' '}
+                            <AiOutlineUp size={20} color="var(--gray-600" />
+                          </Button>
                           {images.map((data) => {
                             return (
                               <img
@@ -428,6 +552,10 @@ const ProductShow = () => {
                               />
                             )
                           })}
+                          <Button style={{ marginTop: '1rem' }}>
+                            {' '}
+                            <AiOutlineDown size={20} color="var(--gray-600" />
+                          </Button>
                         </div>
                         <img src={imagePreviewDesc} alt="Foto do produto" />
                       </div>
@@ -478,67 +606,100 @@ const ProductShow = () => {
                             <h4>Melhor avaliação</h4>
                             <h4>Pior avaliação</h4>
                             <h1>Filtros</h1>
-                            <div>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={5}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={4}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={3}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={2}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
-                              <CheckboxFilter
-                                confirm={false}
-                                toggleConfirm={() => {}}
-                              >
-                                <ReactStars
-                                  color1="#e9e9e9"
-                                  count={5}
-                                  size={24}
-                                  value={1}
-                                  edit={false}
-                                />
-                              </CheckboxFilter>
+                            <div className="stars-container">
+                              <div style={{ marginBottom: 10 }}>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <p style={{ margin: 0 }}>Somente com foto</p>
+                                </CheckboxFilter>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={5}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>85%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={4}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>10%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={3}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>3%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={2}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>0%</p>
+                                </div>
+                              </div>
+                              <div>
+                                <CheckboxFilter
+                                  confirm={false}
+                                  toggleConfirm={() => {}}
+                                >
+                                  <ReactStars
+                                    color1="#e9e9e9"
+                                    count={5}
+                                    size={32}
+                                    value={1}
+                                    edit={false}
+                                  />
+                                </CheckboxFilter>
+                                <div className="percentil">
+                                  <p>2%</p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </FilterCard>
@@ -549,52 +710,242 @@ const ProductShow = () => {
               }
             />
           </CardDesc>
+        ) : (
+          <CardDescMobile>
+            <div className="description-container">
+              {/* <button> */}
 
-          <ProductWrapper>
-            {fakeProducts.map((e) => {
-              return (
-                <ProductCard key={e.id} onClick={(e) => handleOpenProduct(e)}>
-                  <img
-                    src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                    alt="geladeira frost free"
-                  />
-                  <span className="title">Refrigerador Brastemp BRM44HK</span>
-                  <div className="price">
-                    <span>R$ 2.999,00</span>
-                    <small>R$ 4.999,00</small>
+              <div className="title" onClick={toggleDescModalVisible}>
+                <h2>Descrição</h2>
+                <AiOutlineRight size={20} />
+              </div>
+              {/* </button> */}
+              <div className="description">
+                <h4>{title}</h4>
+                <p>{desc}</p>
+              </div>
+            </div>
+            <div className="rated-container">
+              <div className="title" onClick={toggleAvalModalVisible}>
+                <h2>Avaliações</h2>
+                <AiOutlineRight size={20} />
+              </div>
+              <Divisor />
+              <div className="star-container">
+                <div className="left-container">
+                  <div className="star">
+                    <h1>{avgStars}</h1>
+                    <ReactStars count={1} size={50} value={1} edit={false} />
                   </div>
-                  <div className="score">
-                    <AiFillStar size={18} color="var(--gold)" />
-                    <span>5.0 | 5412 Pedidos</span>
+                  <p>{sumFeedbacks} avaliações</p>
+                </div>
+                <div className="right-container">
+                  <div className="stars-container">
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={5}
+                        edit={false}
+                      />
+                      <p>90%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={4}
+                        edit={false}
+                      />
+                      <p>4%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={3}
+                        edit={false}
+                      />
+                      <p>2%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={2}
+                        edit={false}
+                      />
+                      <p>3%</p>
+                    </div>
+                    <div>
+                      <ReactStars
+                        color1="#e9e9e9"
+                        count={5}
+                        size={24}
+                        value={1}
+                        edit={false}
+                      />
+                      <p>1%</p>
+                    </div>
                   </div>
-                  <p>
-                    Refrigerador Brastemp BRM44HK Frost Free com Gavetão de
-                    Legumes Fresh Zone Inox - 375L
-                  </p>
-                </ProductCard>
-              )
-            })}
-          </ProductWrapper>
+                </div>
+              </div>
+            </div>
+          </CardDescMobile>
+        )}
+
+        <ProductWrapper>
+          <h1>Produtos relacionados</h1>
+          <div className="carousel-container">
+            <div className="carousel-item">
+              <Carousel data={fakeProducts} isProduct />
+            </div>
+            <div className="carousel-item">
+              <Carousel data={fakeProducts} isProduct />
+            </div>
+          </div>
+        </ProductWrapper>
+
+        {widthScreen && (
           <Footer>
-            <h1>Contato</h1>
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              (89) 8854-2341
-            </span>
+            <div>
+              <h1>Contato</h1>
+              <span>
+                <AiFillPhone size={24} color="var(--gray-700)" />
+                (89) 99444-5552
+              </span>
 
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              (89) 8854-2341
-            </span>
+              <span>
+                <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                Whatsapp
+              </span>
 
-            <a href="facebook.com">
+              {/* <a href="facebook.com">
               <AiFillFacebook size={24} color="var(--gray-700)" />
               Facebook
-            </a>
+            </a> */}
+              <span>
+                <AiOutlineMail size={24} color="var(--gray-700)" />
+                emailexample@gmail.com
+              </span>
+            </div>
+            <div className="mapContainer">
+              <img src="/images/map.png" />
+              <span>Avenida Paulista, 63892, São Paulo - SP, 000.000-000</span>
+            </div>
           </Footer>
-        </main>
+        )}
       </Container>
-    </>
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleDescModalVisible}
+        modalVisible={descModalVisible}
+        under
+      >
+        <div className="modalDescription">
+          <div className="title">
+            <AiOutlineArrowLeft
+              size={25}
+              className="arrow"
+              onClick={toggleDescModalVisible}
+            />
+            <h2>Descrição</h2>
+          </div>
+          <Divisor />
+          <h2>{title}</h2>
+          <p>{desc}</p>
+        </div>
+      </CustomModal>
+
+      <CustomModal
+        buttons={false}
+        setModalOpen={toggleAvalModalVisible}
+        modalVisible={avalModalVisible}
+        under
+      >
+        <div className="modalAvaliations">
+          <div className="title">
+            <AiOutlineArrowLeft
+              size={25}
+              className="arrow"
+              onClick={toggleAvalModalVisible}
+            />
+            <h2>Avaliações</h2>
+          </div>
+          <Divisor />
+          <h2>{title}</h2>
+          <div className="star-container">
+            <div className="top-container">
+              <h1>{avgStars.toFixed(1)}</h1>
+              <div className="star">
+                <ReactStars count={5} size={32} value={5} edit={false} />
+                <p>{sumFeedbacks} avaliações</p>
+              </div>
+            </div>
+            <div className="bot-container">
+              <div className="stars-container">
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={5}
+                    edit={false}
+                  />
+                  <p>90%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={4}
+                    edit={false}
+                  />
+                  <p>4%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={3}
+                    edit={false}
+                  />
+                  <p>2%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={2}
+                    edit={false}
+                  />
+                  <p>3%</p>
+                </div>
+                <div>
+                  <ReactStars
+                    color1="#e9e9e9"
+                    count={5}
+                    size={40}
+                    value={1}
+                    edit={false}
+                  />
+                  <p>1%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CustomModal>
+
+      <CartButton />
+    </Wrapper>
   )
 }
 

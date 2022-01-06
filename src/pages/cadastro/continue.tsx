@@ -1,52 +1,48 @@
 import Header from '../../components/molecules/Header'
 import Head from 'next/head'
 import Link from 'next/link'
-import {
-  Container,
-  Wrapper,
-  ContainerLojist
-} from '../../styles/pages/preLogin'
+import { Wrapper, ContainerLojist } from '../../styles/pages/preLogin'
 
 import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { Input } from '../../components/molecules/Input'
-import { Checkbox } from '../../components/atoms/Checkbox'
 import { useState, useEffect } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { useContext } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import Router from 'next/router'
-import { ShopkeeperContext } from '../../contexts/ShopkeeperContext'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
+import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
+import router from 'next/router'
+import { signUp } from 'services/auth.services'
+import { toast } from 'react-toastify'
 
-type bussinesRegisterFormData = {
+type registerFormData = {
   firstName: string
   lastName: string
-  businessName: string
-  cpfCnpj: string
-  businessState: string
-  businessCity: string
+  clientState: string
+  clientCity: string
   publicPlace: string
   number: string
   district: string
   cep: string
 }
 
-const bussinesRegisterFormSchema = yup.object().shape({
-  firstName: yup.string().required('Primeiro nome obrigatório'),
-  lastName: yup.string().required('Último nome obrigatório'),
-  businessName: yup.string().required('Nome do negócio obrigatório'),
-  cpfCnpj: yup
-    .string()
-    .required('CPF ou CNPJ obrigatório')
-    .min(14, 'Mínimo 14 caracteres [CPF]')
-    .max(18),
-  businessState: yup.string().required('Estado obrigatório'),
-  businessCity: yup.string().required('Cidade obrigatória'),
+type UserInfo = {
+  email: string
+  password: string
+  passwordConfirmation: string
+}
+
+const RegisterFormSchema = yup.object().shape({
+  firstName: yup.string().required('Nome obrigatório'),
+  lastName: yup.string().required('Sobrenome obrigatório'),
+  clientState: yup.string().required('Estado obrigatório'),
+  clientCity: yup.string().required('Cidade obrigatória'),
   publicPlace: yup.string().required('Logradouro obrigatório'),
   number: yup.string().required('obrigatório'),
   district: yup.string().required('Bairro obrigatório'),
@@ -54,11 +50,10 @@ const bussinesRegisterFormSchema = yup.object().shape({
 })
 
 const BusinessRegister = () => {
-  const { setStore, setUser, userDto } = useContext(ShopkeeperContext)
-  const [cpfCnpj, setCpfCnpj] = useState('')
-
   // Estados, funções e variáveis referentes a responsividade da tela
   const [show, setShow] = useState(0)
+  const [terms, setTerms] = useState(false)
+  const [userInfo, setUserInfo] = useState<UserInfo>()
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function showNext() {
@@ -72,88 +67,84 @@ const BusinessRegister = () => {
 
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem('data'))
-    const user = JSON.parse(sessionStorage.getItem('user'))
     if (data) {
-      setValue('businessName', data.name)
-      setValue('cpfCnpj', data.cpfCnpj)
-      // setValue('address', data.address)
       setValue('publicPlace', data.publicPlace)
       setValue('cep', data.cep)
       setValue('district', data.district)
       setValue('number', data.number)
-      setValue('businessCity', data.city)
-      setValue('businessState', data.state)
-
-      if (user) {
-        setValue('firstName', user.firstName)
-        setValue('lastName', user.lastName)
-      }
+      setValue('city', data.city)
+      setValue('state', data.state)
     }
   }, [])
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues,
-    setValue,
-    watch
+    setValue
   } = useForm({
-    resolver: yupResolver(bussinesRegisterFormSchema)
+    resolver: yupResolver(RegisterFormSchema)
   })
 
-  const handleContinueRegister: SubmitHandler<bussinesRegisterFormData> =
-    async (values, event) => {
-      const store = {
-        name: values.businessName,
-        cpfCnpj: values.cpfCnpj,
-        city: values.businessCity,
-        state: values.businessState,
-        publicPlace: values.publicPlace,
-        number: values.number,
-        district: values.district,
-        cep: values.cep
-      }
-
-      sessionStorage.setItem('data', JSON.stringify(store))
-      setStore(store)
-      setUser({
-        ...userDto,
-        firstName: values.firstName,
-        lastName: values.lastName
-      })
-      sessionStorage.setItem('user', JSON.stringify(userDto))
-      Router.push('/business-register/continue')
+  const handleContinueRegister: SubmitHandler<registerFormData> = async (
+    values,
+    event
+  ) => {
+    const data = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      city: values.clientCity,
+      uf: values.clientState,
+      street: values.publicPlace,
+      logradouro: values.publicPlace,
+      adressNumber: Number(values.number),
+      neighborhood: values.district,
+      zipcode: values.cep,
+      complement: '',
+      email: userInfo?.email,
+      password: userInfo?.password,
+      passwordConfirmation: userInfo?.passwordConfirmation
     }
+
+    try {
+      const res = await signUp(data)
+
+      if (res.status === 200 || res.status === 201) {
+        sessionStorage.removeItem('ultimo.register.user')
+        return router.push('/confirmacao-cadastro')
+      }
+    } catch (e) {
+      toast.error('Erro ao criar conta')
+    }
+  }
+
+  useEffect(() => {
+    const userData = sessionStorage.getItem('ultimo.register.user')
+
+    if (!userData) {
+      router.push('/cadastro')
+    } else {
+      setUserInfo(JSON.parse(userData))
+    }
+  }, [])
 
   return (
     <Wrapper>
       <Head>
-        <title> Registro de Negócio | Último</title>
+        <title> Cadastro | Último</title>
       </Head>
 
       <Header />
       <ContainerLojist>
         <form onSubmit={handleSubmit(handleContinueRegister)}>
           <div className="title">
-            <h1> Registro de Negócio </h1>
+            <h1> Cadastro </h1>
           </div>
           {widthScreen ? (
             <div className="inputContainer">
               <div>
-                <div className="inputCol">
-                  <Input
-                    label="Nome do negócio"
-                    placeholder="Nome do negócio"
-                    icon={<FiMail size={20} color="var(--black-800)" />}
-                    {...register('businessName')}
-                    textError={errors.businessName?.message}
-                    error={errors.businessName}
-                    maxLength={45}
-                  />
-                </div>
                 <div className="inputRow">
                   <Input
-                    label="Nome"
+                    label="Nome do cliente"
                     placeholder="Nome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('firstName')}
@@ -161,9 +152,11 @@ const BusinessRegister = () => {
                     error={errors.firstName}
                     maxLength={45}
                   />
+                </div>
 
+                <div className="inputRow">
                   <Input
-                    label="Sobrenome"
+                    label="Sobrenome do cliente"
                     placeholder="Sobrenome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('lastName')}
@@ -172,18 +165,17 @@ const BusinessRegister = () => {
                     maxLength={45}
                   />
                 </div>
-                <div className="inputCol">
-                  <Input
-                    label="CPF/CNPJ"
-                    placeholder="000.000.000-00"
-                    mask={cpfCnpj.length <= 14 ? 'cpf' : 'cnpj'}
-                    icon={<FiUser size={20} color="var(--black-800)" />}
-                    {...register('cpfCnpj')}
-                    onChange={(e) => setCpfCnpj(e.target.value)}
-                    textError={errors.cpfCnpj?.message}
-                    error={errors.cpfCnpj}
-                    maxLength={45}
-                  />
+
+                <div className="inputRow">
+                  <CheckboxFilter
+                    confirm={terms}
+                    toggleConfirm={() => setTerms(!terms)}
+                  >
+                    <span>
+                      Li e concordo com os <a href="#">termos de uso</a> e{' '}
+                      <a href="#">política de privacidade</a>
+                    </span>
+                  </CheckboxFilter>
                 </div>
               </div>
               <div>
@@ -246,9 +238,9 @@ const BusinessRegister = () => {
                         color="var(--black-800)"
                       />
                     }
-                    {...register('businessState')}
-                    textError={errors.businessState?.message}
-                    error={errors.businessState}
+                    {...register('clientState')}
+                    textError={errors.clientState?.message}
+                    error={errors.clientState}
                     maxLength={45}
                   />
 
@@ -261,9 +253,9 @@ const BusinessRegister = () => {
                         color="var(--black-800)"
                       />
                     }
-                    {...register('businessCity')}
-                    textError={errors.businessCity?.message}
-                    error={errors.businessCity}
+                    {...register('clientCity')}
+                    textError={errors.clientCity?.message}
+                    error={errors.clientCity}
                     maxLength={45}
                   />
                 </div>
@@ -272,20 +264,9 @@ const BusinessRegister = () => {
           ) : (
             <div className="inputContainer">
               <div style={show === 0 ? undefined : { display: 'none' }}>
-                <div className="inputCol">
-                  <Input
-                    label="Nome do negócio"
-                    placeholder="Nome do negócio"
-                    icon={<FiMail size={20} color="var(--black-800)" />}
-                    {...register('businessName')}
-                    textError={errors.businessName?.message}
-                    error={errors.businessName}
-                    maxLength={45}
-                  />
-                </div>
                 <div className="inputRow">
                   <Input
-                    label="Nome"
+                    label="Nome do cliente"
                     placeholder="Nome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('firstName')}
@@ -293,27 +274,16 @@ const BusinessRegister = () => {
                     error={errors.firstName}
                     maxLength={45}
                   />
+                </div>
 
+                <div className="inputRow">
                   <Input
-                    label="Sobrenome"
+                    label="Sobrenome cliente"
                     placeholder="Sobrenome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('lastName')}
                     textError={errors.lastName?.message}
                     error={errors.lastName}
-                    maxLength={45}
-                  />
-                </div>
-                <div className="inputCol">
-                  <Input
-                    label="CPF/CNPJ"
-                    placeholder="000.000.000-00"
-                    mask={cpfCnpj.length <= 14 ? 'cpf' : 'cnpj'}
-                    icon={<FiUser size={20} color="var(--black-800)" />}
-                    {...register('cpfCnpj')}
-                    onChange={(e) => setCpfCnpj(e.target.value)}
-                    textError={errors.cpfCnpj?.message}
-                    error={errors.cpfCnpj}
                     maxLength={45}
                   />
                 </div>
@@ -340,9 +310,9 @@ const BusinessRegister = () => {
                         color="var(--black-800)"
                       />
                     }
-                    {...register('businessState')}
-                    textError={errors.businessState?.message}
-                    error={errors.businessState}
+                    {...register('clientState')}
+                    textError={errors.clientState?.message}
+                    error={errors.clientState}
                     maxLength={45}
                   />
                 </div>
@@ -357,9 +327,9 @@ const BusinessRegister = () => {
                         color="var(--black-800)"
                       />
                     }
-                    {...register('businessCity')}
-                    textError={errors.businessCity?.message}
-                    error={errors.businessCity}
+                    {...register('clientCity')}
+                    textError={errors.clientCity?.message}
+                    error={errors.clientCity}
                     maxLength={45}
                   />
 
@@ -425,10 +395,10 @@ const BusinessRegister = () => {
               )}
             </div>
             <div>
-              {!widthScreen && show < 3 ? (
+              {!widthScreen && show < 1 ? (
                 <Button onClick={showNext} title="Continuar" type="button" />
               ) : (
-                <Button type="submit" title="Continuar" />
+                <Button type="submit" title="Finalizar" />
               )}
             </div>
           </div>

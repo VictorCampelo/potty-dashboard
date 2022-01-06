@@ -12,26 +12,25 @@ import {
   AiOutlineRight
 } from 'react-icons/ai'
 
-import { Button } from 'components/atoms/Button'
 import { api } from 'services/apiClient'
-import router from 'next/router'
 import { Input } from 'components/molecules/Input'
 import { CardServices } from 'components/molecules/CardServices'
 import sizes from 'utils/sizes'
-import { useContext } from 'react'
-import { CartContext } from 'contexts/CartContext'
+import { CartButton } from 'components/atoms/CartButton'
+import useMedia from 'use-media'
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { useState } from 'react'
+import { Drawer } from 'styles/pages/Store'
+import { IoIosClose } from 'react-icons/io'
+import router from 'next/router'
 
 interface Landing {
   stores: []
 }
 
 const Landing = ({ stores }: Landing) => {
-  const { items } = useContext(CartContext)
-
-  const total = items.reduce((prev, curr) => {
-    return prev + Number(curr.price) * Number(curr.amount)
-  }, 0)
-
+  const widthScreen = useMedia({ minWidth: '426px' })
+  const [drawerActive, setDrawerActive] = useState(false)
   return (
     <Wrapper>
       <Head>
@@ -41,6 +40,30 @@ const Landing = ({ stores }: Landing) => {
       <Header />
 
       <Container>
+        {!widthScreen && (
+          <HeaderMob>
+            <GiHamburgerMenu
+              onClick={() => setDrawerActive(true)}
+              size={24}
+              color="black"
+            />
+
+            <Drawer className={drawerActive && 'active'}>
+              <ul className="content">
+                <div
+                  className="close-btn"
+                  onClick={() => setDrawerActive(false)}
+                >
+                  <IoIosClose size={30} color={'#363F4E'} />
+                </div>
+                <li onClick={() => router.push('/login')}>Fazer Login</li>
+                <li onClick={() => router.push('/cadastro')}>Fazer Cadastro</li>
+                <li onClick={() => router.push('/')}>Fazer logoff</li>
+              </ul>
+              <div className="outside" onClick={() => setDrawerActive(false)} />
+            </Drawer>
+          </HeaderMob>
+        )}
         <Banner>
           <img
             src="/images/logo2.svg"
@@ -112,25 +135,16 @@ const Landing = ({ stores }: Landing) => {
             </span>
 
             <ContainerTerms>
-              <a href=""><span>Termos de Uso e Políticas de Privacidade</span></a>
+              <a href="">
+                <span>Termos de Uso e Políticas de Privacidade</span>
+              </a>
               <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
             </ContainerTerms>
           </div>
         </Footer>
       </Container>
 
-      <ContainerCart onClick={() => router.push('/cart')}>
-        <div className="cart-container">
-          <img src="/images/cartIcon.png" alt="Cart" />
-          <div className="product-len">{items.length}</div>
-        </div>
-
-        {items.length > 0 && (
-          <p>
-            {' | '} R$ {total.toFixed(2)}
-          </p>
-        )}
-      </ContainerCart>
+      <CartButton />
     </Wrapper>
   )
 }
@@ -145,63 +159,6 @@ export const getServerSideProps = async (ctx) => {
   }
 }
 
-export const ContainerCart = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: absolute;
-  border: none;
-  right: var(--spacing-lg);
-  bottom: var(--spacing-lg);
-  background: var(--color-primary);
-  height: 62px;
-
-  color: var(--white);
-  border-radius: var(--border-radius-gg);
-  padding: 0 var(--spacing-xxs);
-  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
-
-  ${[sizes.down('lgMob')]} {
-    right: var(--spacing-xxs);
-    bottom: var(--spacing-xs);
-  }
-
-  p {
-    margin-left: var(--spacing-xxxs);
-    color: var(--white);
-    font-size: var(--font-size-xxs);
-  }
-
-  .cart-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    height: 100%;
-
-    img {
-      width: 30px;
-      height: 30px;
-    }
-  }
-
-  .product-len {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: var(--color-secondary);
-    position: absolute;
-    padding: 0 var(--spacing-nano);
-    top: var(--spacing-nano);
-    right: -10px;
-    color: var(--white);
-
-    font-size: var(--font-size-xxxxs);
-    border-radius: var(--border-radius-sm);
-  }
-`
-
 export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -214,7 +171,6 @@ export const Container = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: 100%;
 `
 
@@ -282,7 +238,6 @@ export const ContentProduct = styled(Content)`
   flex-direction: column;
   align-items: center;
   padding: 0 8rem 0 8rem;
-
   ${[sizes.down('lgMob')]} {
     padding: 0 var(--font-size-xlg) 0 var(--font-size-xlg);
   }
@@ -296,6 +251,14 @@ export const Banner = styled.section`
   height: 250px;
 
   padding: var(--font-size-md) var(--font-size-xxxxl);
+
+  ${[sizes.down('lgMob')]} {
+    height: 150px;
+    img {
+      width: 171.19px;
+      height: 99.34px;
+    }
+  }
 `
 
 export const SelectInput = styled.input`
@@ -340,6 +303,26 @@ export const MoreCategory = styled.div`
     :hover {
       text-decoration: underline;
     }
+  }
+`
+export const HeaderMob = styled.header`
+  height: 70px;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0 1.25rem;
+
+  svg {
+    margin-right: 1rem;
+    flex: none;
+  }
+
+  input {
+    flex: 1;
+    height: 36px;
+    padding: 0 1rem;
+    border-radius: 40px;
+    border: 1px solid var(--gray-700);
   }
 `
 

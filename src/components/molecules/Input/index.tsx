@@ -30,6 +30,7 @@ interface Input extends React.InputHTMLAttributes<HTMLInputElement> {
   flex?: number
   mask?: MasksTypes
   search?: boolean
+  inverse?: boolean
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
@@ -42,6 +43,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
     flex = 1,
     mask = 'def',
     search,
+    inverse,
     ...rest
   }: Input,
   ref
@@ -53,7 +55,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
   }
 
   return (
-    <Container flex={flex} error={error} search={search}>
+    <Container flex={flex} error={error} search={search} inverse={inverse}>
       {label ? (
         <section className="labelContent">
           <label>{label}</label>
@@ -63,8 +65,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
       ) : null}
 
       <div className="inputContainter">
-        {!search && !!icon && icon}
-
+        {!search || (inverse && !!icon && icon)}
+        {/* {inverse && <div className="bar" />} */}
         <input
           type={password && isInputVisible ? 'password' : 'text'}
           ref={ref}
@@ -74,7 +76,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
           })}
           {...rest}
         />
-        {search && !!icon && icon}
+        {search && !inverse && !!icon && icon}
         {password &&
           (isInputVisible ? (
             <AiOutlineEye

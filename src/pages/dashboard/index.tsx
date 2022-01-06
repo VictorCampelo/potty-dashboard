@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import DrawerLateral from '../../components/molecules/DrawerLateral'
 import CardShop from '../../components/molecules/CardShop'
 import { Container } from '../../styles/pages/shopkeeper'
@@ -22,6 +22,7 @@ import {
   ReferenceLine,
   ResponsiveContainer
 } from 'recharts'
+import { AuthContext } from 'contexts/AuthContext'
 
 const Shopkeeper = () => {
   const [options, setOptions] = useState({})

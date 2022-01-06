@@ -11,15 +11,24 @@ import Router from 'next/router'
 
 import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 import { api } from '../../../services/apiClient'
+import image from 'next/image'
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
-  const [imageSrc, setImageSrc] = useState(null)
+  const [image, setImage] = useState({})
 
   const { userDto, storeDto } = useContext(ShopkeeperContext)
 
   async function handleFinishRegister() {
     const body = {
+      avatar: {
+        lastModified: image.lastModified,
+        lastModifiedDate: image.lastModifiedDate,
+        name: image.name,
+        size: image.size,
+        type: image.type,
+        webkitRelativePath: image.webkitRelativePath
+      },
       userDto: {
         ...userDto
       },
@@ -32,15 +41,23 @@ const BusinessRegister = () => {
         facebook_link: storeDto.facebook_link,
         instagram_link: storeDto.instagram_link,
         whatsapp_link: storeDto.whatsapp_link,
-        image: imageSrc,
+        image: image,
         description: desc,
         address: `${storeDto.publicPlace}, n° ${storeDto.number}, ${storeDto.district}, CEP: ${storeDto.cep}`
       }
     }
 
     try {
-      await api.post('/auth/signup-store', body)
+      const formData = new FormData()
+      formData.append('avatar', JSON.stringify(body.avatar))
+      formData.append('userDto', JSON.stringify(body.userDto))
+      formData.append('storeDto', JSON.stringify(body.storeDto))
 
+      await api.post('/auth/signup-store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       Router.push(`/confirmacao-cadastro`)
     } catch (e) {
       console.error(e)
@@ -59,7 +76,8 @@ const BusinessRegister = () => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
       const imageDataUrl = await readFile(file)
-      setImageSrc(imageDataUrl)
+
+      setImage(file)
     }
   }
 
@@ -78,7 +96,7 @@ const BusinessRegister = () => {
 
           <div className="imageContainer">
             <ShopImage
-              imageSrc={imageSrc} // Imagem para o perfil do Shop
+              imageSrc={image} // Imagem para o perfil do Shop
               icon={<AiFillShop size={70} color="var(--white)" />}
               btnIcon={<AiFillCamera size={23} color="var(--white)" />}
               btn={
