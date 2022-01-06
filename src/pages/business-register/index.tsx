@@ -72,9 +72,8 @@ const BusinessRegister = () => {
 
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem('data'))
+    const user = JSON.parse(sessionStorage.getItem('user'))
     if (data) {
-      setValue('firstName', data.firstName)
-      setValue('lastName', data.lastName)
       setValue('businessName', data.name)
       setValue('cpfCnpj', data.cpfCnpj)
       // setValue('address', data.address)
@@ -82,8 +81,13 @@ const BusinessRegister = () => {
       setValue('cep', data.cep)
       setValue('district', data.district)
       setValue('number', data.number)
-      setValue('city', data.city)
-      setValue('state', data.state)
+      setValue('businessCity', data.city)
+      setValue('businessState', data.state)
+
+      if (user) {
+        setValue('firstName', user.firstName)
+        setValue('lastName', user.lastName)
+      }
     }
   }, [])
   const {
@@ -117,6 +121,7 @@ const BusinessRegister = () => {
         firstName: values.firstName,
         lastName: values.lastName
       })
+      sessionStorage.setItem('user', JSON.stringify(userDto))
       Router.push('/business-register/continue')
     }
 
