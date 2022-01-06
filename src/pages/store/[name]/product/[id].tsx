@@ -405,18 +405,19 @@ const ProductShow = () => {
                   </div>
                   <p style={!widthScreen ? { display: 'none' } : undefined}>
                     Em até 12x sem juros ou{' '}
-                    <strong>R$ {priceWithDiscount}</strong> à vista
+                    <strong>R$ {priceWithDiscount}</strong> a vista
                   </p>
                 </>
               ) : (
                 <>
-                  <h1>
-                    R$ {getDiscount(price, 10).toFixed(2)}{' '}
-                    <small>à vista</small>{' '}
-                  </h1>
-                  <p>
-                    Ou <strong>R$ {price}</strong> à prazo
-                  </p>
+                  <div className="price">
+                    <div className="values">
+                      <h1>
+                        R$ {price} <small>à prazo</small>
+                      </h1>
+                      <p>Ou R$ {getDiscount(price, 10).toFixed(2)} à vista</p>
+                    </div>
+                  </div>
                 </>
               )}
 
