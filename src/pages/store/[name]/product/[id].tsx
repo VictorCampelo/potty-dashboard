@@ -13,7 +13,8 @@ import {
   FilterCard,
   Installments,
   Button,
-  Divisor
+  Divisor,
+  MenuBottom
 } from '../../../../styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
@@ -956,6 +957,28 @@ const ProductShow = () => {
       </CustomModal>
 
       <CartButton />
+
+      {!widthScreen && (
+        <MenuBottom>
+          <div className="price">
+            <div className="values">
+              <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+              <p style={widthScreen ? { display: 'none' } : undefined}>
+                12x de <strong>R$ {priceWithDiscount}</strong>
+              </p>
+            </div>
+            {!widthScreen && (
+              <BigButton
+                title="COMPRAR AGORA"
+                style={{
+                  paddingLeft: '0.5rem',
+                  paddingRight: '0.5rem'
+                }}
+              />
+            )}
+          </div>
+        </MenuBottom>
+      )}
     </Wrapper>
   )
 }

@@ -6,6 +6,12 @@ export const Wrapper = styled.div`
   height: 100vh;
   overflow-x: hidden;
   background: var(--gray-100);
+
+  ${[sizes.down('lgMob')]} {
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 export const Container = styled.main`
@@ -74,6 +80,52 @@ export const Installments = styled.div`
     display: flex;
     gap: 1rem;
     padding: var(--spacing-xxxs) var(--spacing-xs);
+  }
+`
+
+export const MenuBottom = styled.div`
+  /* position: absolute; */
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  .price {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: var(--spacing-nano);
+    background: var(--white);
+    padding: var(--spacing-nano) var(--spacing-xxs);
+    box-shadow: inset 0px 3px 14px -7px var(--gray-200);
+
+    .values {
+      width: 100%;
+    }
+
+    h1 {
+      font-family: var(--font-family-primary);
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-xlg) !important;
+      line-height: 60px;
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 40px;
+      line-height: 60px;
+
+      color: var(--gray-600);
+
+      small {
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-sm);
+
+        color: var(--gray-300);
+
+        /* color: #b2b5ba; */
+      }
+    }
   }
 `
 
@@ -341,9 +393,9 @@ export const CardProduct = styled.div`
 
         ${[sizes.down('lgMob')]} {
           margin-top: var(--spacing-nano);
-          background: var(--white);
+          /* background: var(--white); */
           padding: var(--spacing-xxs);
-          box-shadow: inset 0px 3px 14px -7px var(--gray-200);
+          /* box-shadow: inset 0px 3px 14px -7px var(--gray-200); */
           
           .values {
             width: 100%;
@@ -539,7 +591,6 @@ export const CardDesc = styled.div`
           height: 380px;
           object-fit: cover;
           border-radius: var(--border-radius-xxs);
-          border: 1px solid red;
           ${[sizes.down('lgMob')]} {
             width: 250px;
             height: 250px;
@@ -809,11 +860,12 @@ export const ProductWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-top: var(--spacing-lg);
+  align-content: flex-start;
+  margin-top: var(--spacing-sm);
   margin-bottom: var(--spacing-xl);
 
   padding: 0 var(--spacing-md);
-  gap: 1rem;
+  /* gap: 1rem; */
 
   ${[sizes.down('lgMob')]} {
     padding: 0;
