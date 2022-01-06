@@ -800,7 +800,7 @@ export const FilterCard = styled.div`
 
 export const ProductWrapper = styled.div`
   max-width: 100%;
-  min-height: 900px;
+  min-height: 450px;
   height: auto;
   display: flex;
   flex-direction: row;

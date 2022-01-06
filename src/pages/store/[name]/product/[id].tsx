@@ -30,6 +30,7 @@ import {
   AiOutlineDown,
   AiOutlineMail,
   AiOutlineRight,
+  AiOutlineLeft,
   AiOutlineArrowLeft
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
@@ -319,6 +320,18 @@ const ProductShow = () => {
         </header>
         <CardProduct>
           <div className="image-container">
+            {!widthScreen && (
+              <div className="actions">
+                <div
+                  className="btn"
+                  style={{ marginTop: 'var(--spacing-xxxs)' }}
+                >
+                  <Button style={{ width: 40, height: 40, margin: 'auto' }}>
+                    <AiOutlineLeft size={20} />
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="list-images">
               <Button style={{ marginBottom: '1rem' }}>
                 {' '}
@@ -800,11 +813,8 @@ const ProductShow = () => {
         )}
 
         <ProductWrapper>
-          <h1>Produtos relacionados</h1>
+          <h1 style={{ height: '40px' }}>Produtos relacionados</h1>
           <div className="carousel-container">
-            <div className="carousel-item">
-              <Carousel data={fakeProducts} isProduct />
-            </div>
             <div className="carousel-item">
               <Carousel data={fakeProducts} isProduct />
             </div>
