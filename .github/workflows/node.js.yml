@@ -37,7 +37,6 @@ jobs:
           cd /var/www/ultimo-front &&
           git pull origin dev &&
           npm i &&
-          NODE_OPTIONS="--max-old-space-size=1024 --openssl-legacy-provider" npm run build &&
           pm2 delete bdv-app &&
           pm2 start npm --name "bdv-app" -- start
           '
