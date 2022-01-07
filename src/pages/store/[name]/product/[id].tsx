@@ -412,7 +412,8 @@ const ProductShow = () => {
                         title="COMPRAR AGORA"
                         style={{
                           paddingLeft: '0.5rem',
-                          paddingRight: '0.5rem'
+                          paddingRight: '0.5rem',
+                          fontWeight: 600
                         }}
                       />
                     )}
@@ -527,11 +528,26 @@ const ProductShow = () => {
               {!isLoading && (
                 <>
                   {/* <button>COMPRAR AGORA</button> */}
-                  <BigButton border title="COMPRAR AGORA" />
+                  <BigButton
+                    border
+                    title="COMPRAR AGORA"
+                    style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      fontWeight: 600
+                    }}
+                  />
                   {/* <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
                   </button> */}
-                  <BigButton title="ADICIONE AO CARRINHO" />
+                  <BigButton
+                    title="ADICIONE AO CARRINHO"
+                    style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      fontWeight: 600
+                    }}
+                  />
                 </>
               )}
             </div>
@@ -956,7 +972,7 @@ const ProductShow = () => {
         </div>
       </CustomModal>
 
-      <CartButton />
+      {widthScreen && <CartButton />}
 
       {!widthScreen && (
         <MenuBottom>
@@ -967,15 +983,15 @@ const ProductShow = () => {
                 12x de <strong>R$ {priceWithDiscount}</strong>
               </p>
             </div>
-            {!widthScreen && (
-              <BigButton
-                title="COMPRAR AGORA"
-                style={{
-                  paddingLeft: '0.5rem',
-                  paddingRight: '0.5rem'
-                }}
-              />
-            )}
+            <BigButton
+              title="COMPRAR AGORA"
+              style={{
+                paddingLeft: '0.5rem',
+                paddingRight: '0.5rem',
+                fontWeight: 600
+              }}
+            />
+            <CartButton isFromProduct />
           </div>
         </MenuBottom>
       )}

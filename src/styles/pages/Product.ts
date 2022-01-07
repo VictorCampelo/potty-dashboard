@@ -97,6 +97,9 @@ export const MenuBottom = styled.div`
     padding: var(--spacing-nano) var(--spacing-xxs);
     box-shadow: inset 0px 3px 14px -7px var(--gray-200);
 
+    ${[sizes.down('smMob')]} {
+      padding: var(--spacing-nano);
+    }
     .values {
       width: 100%;
     }
