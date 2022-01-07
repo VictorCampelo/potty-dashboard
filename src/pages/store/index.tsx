@@ -368,10 +368,6 @@ const Products = () => {
                       <AiFillStar size={24} color="var(--gold)" />
                       <label>4.0 ou mais</label>
                     </CheckboxFilter>
-
-                    <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
-                      <label>Frete grátis</label>
-                    </CheckboxFilter>
                   </FilterCardSecondary>
 
                   <FilterCardTertiary>
