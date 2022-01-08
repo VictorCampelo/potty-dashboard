@@ -7,11 +7,10 @@ import { AuthContext } from 'contexts/AuthContext'
 
 interface HeaderProps {
   isMain?: boolean
-  store?: boolean
 }
-const Header = ({ isMain = false, store = false }: HeaderProps) => {
+const Header = ({ isMain }: HeaderProps) => {
   return (
-    <Container isMain={isMain} store={store}>
+    <Container isMain={isMain}>
       <div className="logo">
         <a href="/">
           <img src="/images/logo.svg" alt="logo" />

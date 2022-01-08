@@ -223,6 +223,10 @@ export const AddProductModalContainer = styled.form`
       .input-container {
         margin-bottom: 1rem;
       }
+
+      h3 {
+        margin-bottom: var(--spacing-xxxs);
+      }
     }
 
     h3 {

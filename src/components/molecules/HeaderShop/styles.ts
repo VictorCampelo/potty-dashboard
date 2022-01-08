@@ -4,7 +4,6 @@ import sizes from '../../../utils/sizes'
 
 interface ContainerProps {
   isMain: boolean
-  store: boolean
 }
 
 export const Container = styled.header<ContainerProps>`
@@ -21,7 +20,7 @@ export const Container = styled.header<ContainerProps>`
   .logo {
     display: flex;
     align-content: center;
-    ${(props) => props.store && 'display: none;'}
+    ${(props) => props.isMain == false && 'display: none;'}
     img {
       max-width: 80%;
     }
