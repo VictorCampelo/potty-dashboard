@@ -270,7 +270,7 @@ export const CardProduct = styled.div`
   }
 
   .description-container {
-    max-width: 550;
+    width: 100%;
     height: 100%;
     padding: var(--spacing-md);
     /* padding-top: var(--spacing-xxl); */
