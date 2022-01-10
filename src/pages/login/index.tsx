@@ -93,6 +93,14 @@ const Login = () => {
     }
   }
 
+  function handleClick(value: number) {
+    if (value === 1) {
+      router.push('/business-register')
+    } else {
+      router.push('/cadastro')
+    }
+  }
+
   return (
     <Wrapper>
       <Head>
@@ -101,7 +109,7 @@ const Login = () => {
 
       <Header />
 
-      <Container>
+      <Container style={{ marginBottom: 'var(--spacing-xxs)' }}>
         <form onSubmit={handleSubmit(handleSignIn)}>
           <div className="title logo">
             <h1>Login</h1>
@@ -190,37 +198,16 @@ const Login = () => {
                     size={20}
                     color="var(--black-800)"
                     onClick={toggleModalVisible}
+                    style={{ cursor: 'pointer' }}
                   />
                 </div>
-                <div className="google">
-                  <div>
-                    <FcGoogle size={25} />
-                  </div>
-                  <Link href="">
-                    <a>
-                      Cadastrar-se com <strong>Google</strong>
-                    </a>
-                  </Link>
-                </div>
-                <div className="facebook">
-                  <div style={{ background: '#3b5998' }}>
-                    <FaFacebookF size={25} color="var(--white)" />
-                  </div>
-                  <Link href="">
-                    <a>
-                      Cadastrar-se com <strong>Facebook</strong>
-                    </a>
-                  </Link>
-                </div>
-                <div className="email">
-                  <div style={{ background: 'var(--black-800)' }}>
-                    <HiMail size={24} color="var(--white)" />
-                  </div>
-                  <Link href="/cadastro">
-                    <a>
-                      Cadastrar-se com <strong>Email</strong>
-                    </a>
-                  </Link>
+                <div className="buttonsContainer">
+                  <Button
+                    title="LOJISTA"
+                    style={{ marginBottom: 'var(--spacing-xxs)' }}
+                  />
+
+                  <Button border title="CLIENTE" />
                 </div>
               </div>
             </CustomModal>
