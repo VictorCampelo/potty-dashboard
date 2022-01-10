@@ -50,7 +50,10 @@ const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
 
       <Container ref={carousel}>
         {data.map((store) => (
-          <Link href={`/store/${store.formatedName}`} key={store.id}>
+          <a
+            href={`http://${store.formatedName}.${process.env.HOST_NAME}/store`}
+            key={store.id}
+          >
             <Item isProduct={isProduct}>
               <div
                 className="head"
@@ -147,7 +150,7 @@ const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
                 <img src="/images/promo.svg" alt="promo" className="promo" />
               )}
             </Item>
-          </Link>
+          </a>
         ))}
       </Container>
 

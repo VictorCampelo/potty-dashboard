@@ -4,7 +4,11 @@ import { useContext } from 'react'
 import styled from 'styled-components'
 import sizes from 'utils/sizes'
 
-export const CartButton = () => {
+interface CartButtonProps {
+  isFromProduct?: boolean
+}
+
+export const CartButton = ({ isFromProduct = false }: CartButtonProps) => {
   const { items } = useContext(CartContext)
 
   const total = items.reduce((prev, curr) => {
@@ -12,10 +16,13 @@ export const CartButton = () => {
   }, 0)
 
   return (
-    <ContainerCart onClick={() => router.push('/cart')}>
+    <ContainerCart
+      onClick={() => router.push('/cart')}
+      isFromProduct={isFromProduct}
+    >
       <div className="cart-container">
         <img src="/images/cartIcon.png" alt="Cart" />
-        <div className="product-len">{items.length}</div>
+        {!isFromProduct && <div className="product-len">{items.length}</div>}
       </div>
 
       {items.length > 0 && (
@@ -27,7 +34,11 @@ export const CartButton = () => {
   )
 }
 
-export const ContainerCart = styled.button`
+interface ContainerCartProps {
+  isFromProduct?: boolean
+}
+
+export const ContainerCart = styled.button<ContainerCartProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,11 +49,15 @@ export const ContainerCart = styled.button`
   bottom: var(--spacing-lg);
   background: var(--color-primary);
   height: 62px;
-
   color: var(--white);
   border-radius: var(--border-radius-gg);
   padding: 0 var(--spacing-xxs);
   box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+  ${(props) => props.isFromProduct && 'position: static;'}
+  ${(props) => props.isFromProduct && 'border-radius:50%;'}
+  ${(props) => props.isFromProduct && 'padding: 0 var(--spacing-xxxs);'}
+  ${(props) => props.isFromProduct && 'background: var(--black-800);'}
+
 
   ${[sizes.down('lgMob')]} {
     right: var(--spacing-xxs);

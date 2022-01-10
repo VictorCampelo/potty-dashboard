@@ -1,4 +1,4 @@
-import { Input } from '../../../../components/molecules/Input'
+import { Input } from '../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
 import { VscSearch } from 'react-icons/vsc'
@@ -13,14 +13,15 @@ import {
   FilterCard,
   Installments,
   Button,
-  Divisor
-} from '../../../../styles/pages/Product'
+  Divisor,
+  MenuBottom
+} from '../../../styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
-import CatalogTabs from '../../../../components/molecules/CatalogTabs'
-import CardFeedback from '../../../../components/molecules/CardFeedback'
-import { ProductCard } from '../../../../styles/pages/Store'
+import CatalogTabs from '../../../components/molecules/CatalogTabs'
+import CardFeedback from '../../../components/molecules/CardFeedback'
+
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -30,11 +31,12 @@ import {
   AiOutlineDown,
   AiOutlineMail,
   AiOutlineRight,
+  AiOutlineLeft,
   AiOutlineArrowLeft
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
-import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
+import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
@@ -44,7 +46,7 @@ import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
-import styled from 'styled-components'
+
 import useMedia from 'use-media'
 import CustomModal from 'components/molecules/CustomModal'
 
@@ -146,8 +148,26 @@ const images = [
 
 const ProductShow = () => {
   const router = useRouter()
-  const { id, name } = router.query
+  const { id } = router.query
   const { items, setItems } = useContext(CartContext)
+
+  let name = ''
+  useEffect(() => {
+    // if (window.location.hostName) {
+    const hostName = window.location.hostname
+
+    let previousName = ''
+    for (let i = 0; i < hostName.length; i++) {
+      if (hostName[i] === '.') {
+        break
+      }
+      previousName += hostName[i]
+    }
+
+    name = previousName
+    console.log(previousName)
+    // }
+  }, [])
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
@@ -319,6 +339,18 @@ const ProductShow = () => {
         </header>
         <CardProduct>
           <div className="image-container">
+            {!widthScreen && (
+              <div className="actions">
+                <div
+                  className="btn"
+                  style={{ marginTop: 'var(--spacing-xxxs)' }}
+                >
+                  <Button style={{ width: 40, height: 40, margin: 'auto' }}>
+                    <AiOutlineLeft size={20} />
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="list-images">
               <Button style={{ marginBottom: '1rem' }}>
                 {' '}
@@ -398,25 +430,27 @@ const ProductShow = () => {
                         title="COMPRAR AGORA"
                         style={{
                           paddingLeft: '0.5rem',
-                          paddingRight: '0.5rem'
+                          paddingRight: '0.5rem',
+                          fontWeight: 600
                         }}
                       />
                     )}
                   </div>
                   <p style={!widthScreen ? { display: 'none' } : undefined}>
                     Em até 12x sem juros ou{' '}
-                    <strong>R$ {priceWithDiscount}</strong> à vista
+                    <strong>R$ {priceWithDiscount}</strong> a vista
                   </p>
                 </>
               ) : (
                 <>
-                  <h1>
-                    R$ {getDiscount(price, 10).toFixed(2)}{' '}
-                    <small>à vista</small>{' '}
-                  </h1>
-                  <p>
-                    Ou <strong>R$ {price}</strong> à prazo
-                  </p>
+                  <div className="price">
+                    <div className="values">
+                      <h1>
+                        R$ {price} <small>à prazo</small>
+                      </h1>
+                      <p>Ou R$ {getDiscount(price, 10).toFixed(2)} à vista</p>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -512,11 +546,26 @@ const ProductShow = () => {
               {!isLoading && (
                 <>
                   {/* <button>COMPRAR AGORA</button> */}
-                  <BigButton border title="COMPRAR AGORA" />
+                  <BigButton
+                    border
+                    title="COMPRAR AGORA"
+                    style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      fontWeight: 600
+                    }}
+                  />
                   {/* <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
                   </button> */}
-                  <BigButton title="ADICIONE AO CARRINHO" />
+                  <BigButton
+                    title="ADICIONE AO CARRINHO"
+                    style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      fontWeight: 600
+                    }}
+                  />
                 </>
               )}
             </div>
@@ -799,11 +848,8 @@ const ProductShow = () => {
         )}
 
         <ProductWrapper>
-          <h1>Produtos relacionados</h1>
+          <h1 style={{ height: '40px' }}>Produtos relacionados</h1>
           <div className="carousel-container">
-            <div className="carousel-item">
-              <Carousel data={fakeProducts} isProduct />
-            </div>
             <div className="carousel-item">
               <Carousel data={fakeProducts} isProduct />
             </div>
@@ -944,7 +990,29 @@ const ProductShow = () => {
         </div>
       </CustomModal>
 
-      <CartButton />
+      {widthScreen && <CartButton />}
+
+      {!widthScreen && (
+        <MenuBottom>
+          <div className="price">
+            <div className="values">
+              <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+              <p style={widthScreen ? { display: 'none' } : undefined}>
+                12x de <strong>R$ {priceWithDiscount}</strong>
+              </p>
+            </div>
+            <BigButton
+              title="COMPRAR AGORA"
+              style={{
+                paddingLeft: '0.5rem',
+                paddingRight: '0.5rem',
+                fontWeight: 600
+              }}
+            />
+            <CartButton isFromProduct />
+          </div>
+        </MenuBottom>
+      )}
     </Wrapper>
   )
 }
