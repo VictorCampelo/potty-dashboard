@@ -13,6 +13,10 @@ export const Container = styled.main`
   align-items: center;
   padding-top: var(--spacing-xxxs);
 
+  .confirmationAuth {
+    text-align: center;
+  }
+
   form {
     width: 530px;
     background: var(--white);
