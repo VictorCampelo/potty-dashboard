@@ -33,7 +33,6 @@ export const Container = styled.main`
   justify-content: center;
   display: flex;
   padding: 0 4rem;
-
   ${[sizes.down('lgMob')]} {
     /* background: var(--white); */
     background: white;

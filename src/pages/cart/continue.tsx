@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
 import { BsWhatsapp } from 'react-icons/bs'
-import { FiChevronLeft, FiPlus } from 'react-icons/fi'
+import { FiChevronLeft, FiPlus, FiArrowLeft } from 'react-icons/fi'
 import { MultiSelect as Select } from 'components/molecules/Select'
 import { useContext, useState, useEffect } from 'react'
 import router from 'next/router'
@@ -21,7 +21,9 @@ import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { FaHome } from 'react-icons/fa'
 import { Button } from 'components/atoms/Button'
-
+import { Container, Content } from 'styles/pages/Cart'
+import sizes from 'utils/sizes'
+import { Checkbox } from 'components/atoms/Checkbox'
 type PaymentForm = {
   value: string
   label: string
@@ -321,7 +323,15 @@ const CartContinue = () => {
 
       <Container>
         <Content>
-          <h1>Finalizar compra</h1>
+          {!widthScreen && (
+            <div className="header" onClick={() => router.push('/')}>
+              <FiArrowLeft size={25} color="var(--black-800)" />
+              <h1>Meu carrinho</h1>
+            </div>
+          )}
+          <h1 style={widthScreen ? undefined : { display: 'none' }}>
+            Finalizar compra
+          </h1>
 
           <CardsContainer>
             <div className="top-container">
@@ -330,7 +340,7 @@ const CartContinue = () => {
 
                 <AdressInfo>
                   <span>
-                    <strong>Nome do usuário:</strong> {name}
+                    <strong>Nome do usuário:</strong> Victor Gabriel
                   </span>
 
                   <span>
@@ -361,7 +371,7 @@ const CartContinue = () => {
                     placeholder="Selecione sua forma de pagamento"
                   />
 
-                  {paymentForm?.value === '0' && (
+                  {paymentForm?.value === '0' && widthScreen && (
                     <Select
                       name="Parcelamento"
                       options={Installments}
@@ -371,6 +381,8 @@ const CartContinue = () => {
                       placeholder="Selecione o número de parcelas"
                     />
                   )}
+
+                  {!widthScreen && <Checkbox label="Parcelar Compra" />}
                 </div>
               </AdressCard>
 
@@ -437,26 +449,6 @@ const CartContinue = () => {
 
 export default CartContinue
 
-const Container = styled.main`
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  padding: 0 4rem;
-`
-
-const Content = styled.section`
-  max-width: 1420px;
-  flex: 1;
-  height: 100%;
-  width: 100%;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-`
-
 const CardsContainer = styled.section`
   width: 100%;
   height: 67vh;
@@ -481,6 +473,15 @@ const AdressCard = styled.section`
   padding: 1.5rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
+  ${[sizes.down('lgMob')]} {
+    box-shadow: none;
+    max-width: 100vw;
+
+    h1 {
+      display: none;
+    }
+  }
+
   h1 {
     font-size: 1.5rem;
     font-weight: 500;
@@ -494,7 +495,14 @@ const AdressInfo = styled.div`
   padding: 0.9rem 0.75rem;
   border-radius: 11px;
   margin-top: 0.5rem;
-
+  ${[sizes.down('lgMob')]} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xxxs);
+    strong {
+      display: none;
+    }
+  }
   span {
     display: block;
   }
@@ -536,6 +544,9 @@ const ProductsContainer = styled.section`
   display: flex;
   flex-direction: column;
 
+  ${[sizes.down('lgMob')]} {
+    display: none;
+  }
   h1 {
     font-size: 1.5rem;
     font-weight: 500;

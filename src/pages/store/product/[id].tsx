@@ -565,6 +565,7 @@ const ProductShow = () => {
                       paddingRight: '0.5rem',
                       fontWeight: 600
                     }}
+                    onClick={handleAddToCart}
                   />
                 </>
               )}
