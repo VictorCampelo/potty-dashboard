@@ -1,4 +1,4 @@
-import { Input } from '../../../../components/molecules/Input'
+import { Input } from '../../../components/molecules/Input'
 import Head from 'next/head'
 import { FaSearch } from 'react-icons/fa'
 import { VscSearch } from 'react-icons/vsc'
@@ -15,13 +15,13 @@ import {
   Button,
   Divisor,
   MenuBottom
-} from '../../../../styles/pages/Product'
+} from '../../../styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
-import CatalogTabs from '../../../../components/molecules/CatalogTabs'
-import CardFeedback from '../../../../components/molecules/CardFeedback'
-import { ProductCard } from '../../../../styles/pages/Store'
+import CatalogTabs from '../../../components/molecules/CatalogTabs'
+import CardFeedback from '../../../components/molecules/CardFeedback'
+
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -36,7 +36,7 @@ import {
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
-import { CheckboxFilter } from '../../../../components/atoms/CheckboxFilter'
+import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
@@ -46,7 +46,7 @@ import { IoIosClose } from 'react-icons/io'
 import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
-import styled from 'styled-components'
+
 import useMedia from 'use-media'
 import CustomModal from 'components/molecules/CustomModal'
 
@@ -148,8 +148,26 @@ const images = [
 
 const ProductShow = () => {
   const router = useRouter()
-  const { id, name } = router.query
+  const { id } = router.query
   const { items, setItems } = useContext(CartContext)
+
+  let name = ''
+  useEffect(() => {
+    // if (window.location.hostName) {
+    const hostName = window.location.hostname
+
+    let previousName = ''
+    for (let i = 0; i < hostName.length; i++) {
+      if (hostName[i] === '.') {
+        break
+      }
+      previousName += hostName[i]
+    }
+
+    name = previousName
+    console.log(previousName)
+    // }
+  }, [])
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)

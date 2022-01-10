@@ -13,9 +13,17 @@ import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 import { api } from '../../../services/apiClient'
 import image from 'next/image'
 
+type ImageProps = {
+  lastModified: number
+  lastModifiedDate: Date
+  name: string
+  size: number
+  type: string
+  webkitRelativePath: string
+}
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
-  const [image, setImage] = useState({})
+  const [image, setImage] = useState({} as ImageProps)
 
   const { userDto, storeDto } = useContext(ShopkeeperContext)
 
@@ -76,7 +84,7 @@ const BusinessRegister = () => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
       const imageDataUrl = await readFile(file)
-
+      console.log(file)
       setImage(file)
     }
   }

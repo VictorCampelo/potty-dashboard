@@ -1,7 +1,7 @@
-import HeaderShop from '../../../components/molecules/HeaderShop'
+import HeaderShop from '../../components/molecules/HeaderShop'
 import Link from 'next/link'
 import Head from 'next/head'
-import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
+import { CheckboxFilter } from '../../components/atoms/CheckboxFilter'
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -26,7 +26,7 @@ import {
   HorizonCard,
   HeaderMob,
   Drawer
-} from '../../../styles/pages/Store'
+} from '../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -41,7 +41,24 @@ import { IoIosClose } from 'react-icons/io'
 
 const Products = () => {
   const router = useRouter()
-  const { name } = router.query
+  // const { name } = router.query
+  let name = ''
+  useEffect(() => {
+    // if (window.location.hostName) {
+    const hostName = window.location.hostname
+
+    let previousName = ''
+    for (let i = 0; i < hostName.length; i++) {
+      if (hostName[i] === '.') {
+        break
+      }
+      previousName += hostName[i]
+    }
+
+    name = previousName
+    console.log(previousName)
+    // }
+  }, [])
 
   const [buttonOn, setButtonOn] = useState(true)
   const [drawerActive, setDrawerActive] = useState(false)
@@ -77,7 +94,7 @@ const Products = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
-    router.push(`/store/${name}/product/${id}`)
+    router.push(`/store/product/${id}`)
   }
 
   async function loadData() {
