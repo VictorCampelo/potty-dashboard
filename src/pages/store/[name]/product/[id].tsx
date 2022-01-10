@@ -13,7 +13,8 @@ import {
   FilterCard,
   Installments,
   Button,
-  Divisor
+  Divisor,
+  MenuBottom
 } from '../../../../styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
@@ -30,6 +31,7 @@ import {
   AiOutlineDown,
   AiOutlineMail,
   AiOutlineRight,
+  AiOutlineLeft,
   AiOutlineArrowLeft
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
@@ -319,6 +321,18 @@ const ProductShow = () => {
         </header>
         <CardProduct>
           <div className="image-container">
+            {!widthScreen && (
+              <div className="actions">
+                <div
+                  className="btn"
+                  style={{ marginTop: 'var(--spacing-xxxs)' }}
+                >
+                  <Button style={{ width: 40, height: 40, margin: 'auto' }}>
+                    <AiOutlineLeft size={20} />
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="list-images">
               <Button style={{ marginBottom: '1rem' }}>
                 {' '}
@@ -398,25 +412,27 @@ const ProductShow = () => {
                         title="COMPRAR AGORA"
                         style={{
                           paddingLeft: '0.5rem',
-                          paddingRight: '0.5rem'
+                          paddingRight: '0.5rem',
+                          fontWeight: 600
                         }}
                       />
                     )}
                   </div>
                   <p style={!widthScreen ? { display: 'none' } : undefined}>
                     Em até 12x sem juros ou{' '}
-                    <strong>R$ {priceWithDiscount}</strong> à vista
+                    <strong>R$ {priceWithDiscount}</strong> a vista
                   </p>
                 </>
               ) : (
                 <>
-                  <h1>
-                    R$ {getDiscount(price, 10).toFixed(2)}{' '}
-                    <small>à vista</small>{' '}
-                  </h1>
-                  <p>
-                    Ou <strong>R$ {price}</strong> à prazo
-                  </p>
+                  <div className="price">
+                    <div className="values">
+                      <h1>
+                        R$ {price} <small>à prazo</small>
+                      </h1>
+                      <p>Ou R$ {getDiscount(price, 10).toFixed(2)} à vista</p>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -512,11 +528,26 @@ const ProductShow = () => {
               {!isLoading && (
                 <>
                   {/* <button>COMPRAR AGORA</button> */}
-                  <BigButton border title="COMPRAR AGORA" />
+                  <BigButton
+                    border
+                    title="COMPRAR AGORA"
+                    style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      fontWeight: 600
+                    }}
+                  />
                   {/* <button onClick={handleAddToCart}>
                     ADICIONE AO CARRINHO
                   </button> */}
-                  <BigButton title="ADICIONE AO CARRINHO" />
+                  <BigButton
+                    title="ADICIONE AO CARRINHO"
+                    style={{
+                      paddingLeft: '0.5rem',
+                      paddingRight: '0.5rem',
+                      fontWeight: 600
+                    }}
+                  />
                 </>
               )}
             </div>
@@ -799,11 +830,8 @@ const ProductShow = () => {
         )}
 
         <ProductWrapper>
-          <h1>Produtos relacionados</h1>
+          <h1 style={{ height: '40px' }}>Produtos relacionados</h1>
           <div className="carousel-container">
-            <div className="carousel-item">
-              <Carousel data={fakeProducts} isProduct />
-            </div>
             <div className="carousel-item">
               <Carousel data={fakeProducts} isProduct />
             </div>
@@ -944,7 +972,29 @@ const ProductShow = () => {
         </div>
       </CustomModal>
 
-      <CartButton />
+      {widthScreen && <CartButton />}
+
+      {!widthScreen && (
+        <MenuBottom>
+          <div className="price">
+            <div className="values">
+              <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+              <p style={widthScreen ? { display: 'none' } : undefined}>
+                12x de <strong>R$ {priceWithDiscount}</strong>
+              </p>
+            </div>
+            <BigButton
+              title="COMPRAR AGORA"
+              style={{
+                paddingLeft: '0.5rem',
+                paddingRight: '0.5rem',
+                fontWeight: 600
+              }}
+            />
+            <CartButton isFromProduct />
+          </div>
+        </MenuBottom>
+      )}
     </Wrapper>
   )
 }
