@@ -877,7 +877,6 @@ const Shop = ({ storeId, id, images }: Shop) => {
                   <ShopImage
                     id="icon"
                     imageSrc={previewIcon} // Imagem para o perfil do Shop
-                    icon={<AiFillShop size={70} color="var(--white)" />}
                     btnIcon={<AiFillCamera size={23} color="var(--white)" />}
                     btn={
                       <input

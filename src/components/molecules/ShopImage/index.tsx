@@ -5,7 +5,6 @@ import { Container } from './styles'
 interface ShopImage extends React.HTMLAttributes<HTMLDivElement> {
   imageSrc: string
   btnIcon: ReactElement
-  icon: ReactElement
   btn: ReactElement
 }
 
@@ -14,18 +13,17 @@ const imageConfig = {
   height: '500'
 }
 
-export const ShopImage = ({
-  imageSrc,
-  icon,
-  btnIcon,
-  btn,
-  ...rest
-}: ShopImage) => {
+export const ShopImage = ({ imageSrc, btnIcon, btn, ...rest }: ShopImage) => {
   return (
     <Container {...rest}>
       <div className="imageContainer">
         {!imageSrc ? (
-          <>{icon}</>
+          <img
+            className="image"
+            src="/images/icon.png"
+            width={imageConfig.width}
+            height={imageConfig.height}
+          />
         ) : (
           <img
             className="image"

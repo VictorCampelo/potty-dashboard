@@ -23,7 +23,8 @@ type ImageProps = {
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState({})
+  const [previewImage, setPreviewImage] = useState(null)
 
   const { userDto, storeDto } = useContext(ShopkeeperContext)
 
@@ -66,19 +67,21 @@ const BusinessRegister = () => {
   }
 
   function readFile(file: File) {
-    return new Promise((resolve) => {
+    const result = new Promise((resolve) => {
       const reader = new FileReader()
       reader.addEventListener('load', () => resolve(reader.result), false)
       reader.readAsDataURL(file)
     })
+    return result
   }
 
   const onFileChange = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
+    if (e.target.files && e.target.files.length === 1) {
       const file = e.target.files[0]
-      const imageDataUrl = await readFile(file)
-      console.log(file)
-      setImage(String(imageDataUrl))
+      const imageDataUrl = await readFile(e.target.files[0])
+
+      setImage(file)
+      setPreviewImage(imageDataUrl)
     }
   }
 
@@ -97,8 +100,7 @@ const BusinessRegister = () => {
 
           <div className="imageContainer">
             <ShopImage
-              imageSrc={image} // Imagem para o perfil do Shop
-              icon={<AiFillShop size={70} color="var(--white)" />}
+              imageSrc={previewImage} // Imagem para o perfil do Shop
               btnIcon={<AiFillCamera size={23} color="var(--white)" />}
               btn={
                 <input
