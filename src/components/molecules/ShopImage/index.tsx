@@ -1,12 +1,8 @@
-import { readFile } from 'fs'
-import image from 'next/image'
-import Image from 'next/image'
-import { ReactElement, useContext, useState } from 'react'
-import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
+import { ReactElement } from 'react'
 
 import { Container } from './styles'
 
-interface ShopImage {
+interface ShopImage extends React.HTMLAttributes<HTMLDivElement> {
   imageSrc: string
   btnIcon: ReactElement
   icon: ReactElement
