@@ -512,6 +512,7 @@ export const CardProduct = styled.div`
       } */
     }
   }
+
 `
 
 export const Button = styled.button`
