@@ -80,7 +80,7 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   //   return fileName;
   // }
 
-  // // DataURL to file
+  // DataURL to file
 
   // const dataURLtoFile = (dataurl, filename) => {
   //   const arr = dataurl.split(",");
@@ -99,3 +99,4 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
 
   return Image;
 }
+

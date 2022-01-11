@@ -76,7 +76,7 @@ const DescriptionCard = ({
                 <RiPencilFill size={15} className="icon" />
               </button>
               <div id="icon">
-                <img src={imgSrc || '/images/shop-test.png'} alt="Ícone" />
+                <img src={imgSrc || '/images/icon.png'} alt="Ícone" />
                 <h1>{title}</h1>
                 <div>{stars}</div>
               </div>

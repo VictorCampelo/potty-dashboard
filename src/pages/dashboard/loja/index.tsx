@@ -1,7 +1,7 @@
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import { IoIosClose } from 'react-icons/io'
 
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   ConfigButton,
   Container,
@@ -26,6 +26,7 @@ import { FiInstagram } from 'react-icons/fi'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import {
+  editBussinesInfo,
   editTimeTable,
   getBusiness
 } from '../../../services/bussiness.services'
@@ -38,6 +39,10 @@ import { ShopImage } from 'components/molecules/ShopImage'
 import { AiFillCamera, AiFillShop } from 'react-icons/ai'
 import { DescriptionInput } from 'components/molecules/DescriptionInput'
 import { api } from 'services/apiClient'
+import { Point } from 'react-easy-crop/types'
+import getCroppedImg from 'functions/cropImage'
+import { CropModalContainer } from 'styles/pages/Catalog'
+import Cropper from 'react-easy-crop'
 
 type TimeTableArrayType = {
   [0]
@@ -52,6 +57,13 @@ type EditTimeTable = {
   sex: Array<TimeTableArrayType>
   sab: Array<TimeTableArrayType>
   dom: Array<TimeTableArrayType>
+}
+
+type EditBussinesInfo = {
+  name: FormDataEntryValue
+  description: FormDataEntryValue
+  avatar: FormDataEntryValue
+  background: FormDataEntryValue
 }
 
 interface Shop {
@@ -69,8 +81,19 @@ const Shop = ({ storeId, id, images }: Shop) => {
   const [contactModal, setContactModal] = useState(false)
   const [configModal, setConfigModal] = useState(false)
 
+  const [previewImage, setPreviewImage] = useState(null)
+
+  const [previewIcon, setPreviewIcon] = useState(null)
+  const [previewBanner, setPreviewBanner] = useState(null)
+
   const [imageIcon, setImageIcon] = useState(null)
   const [imageBanner, setImageBanner] = useState(null)
+  const [currentImage, setCurrentImage] = useState(1)
+
+  const [zoom, setZoom] = useState(1)
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const rotation = 0
 
   const [businessName, setBusinessName] = useState('')
   const [stars, setStars] = useState()
@@ -103,6 +126,32 @@ const Shop = ({ storeId, id, images }: Shop) => {
 
   const router = useRouter()
 
+  // Toasts
+
+  function notifySuccess(message: string) {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
+
+  function notify(message: string) {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
+
   // Categorias
 
   const [category, setCategory] = useState('')
@@ -132,7 +181,7 @@ const Shop = ({ storeId, id, images }: Shop) => {
       }
     }
     try {
-      await editTimeTable(storeId, body)
+      await editTimeTable(body)
 
       toast.success('Horários editado(s) com sucesso!', {
         position: 'top-right',
@@ -214,40 +263,170 @@ const Shop = ({ storeId, id, images }: Shop) => {
 
   function toggleDescModal() {
     setDescModal(!descModal)
+    setPreviewImage(null)
+    setPreviewIcon(null)
+    setPreviewBanner(null)
   }
 
+  const handleEditBussinesDesc: SubmitHandler<EditBussinesInfo> = async (
+    values
+  ) => {
+    const formData = new FormData()
+    formData.append('name', values.name)
+    formData.append('description', values.description)
+    formData.append(
+      'avatar',
+      previewIcon ? dataURLtoFile(previewIcon, getFileName()) : null
+    )
+    formData.append(
+      'background',
+      previewBanner ? dataURLtoFile(previewBanner, getFileName()) : null
+    )
+
+    try {
+      await editBussinesInfo(formData)
+
+      toast.success('Informações editada(s) com sucesso!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+
+      setTimeout(function () {
+        setDescModal(!descModal)
+        router.reload()
+      }, 2500)
+    } catch (e) {
+      if (e.message.includes('401')) {
+        return toast.error(
+          'Usuário deslogado, faça o seu login para prosseguir',
+          {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          }
+        )
+      } else {
+        toast.error('Erro ao editar informações', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      }
+    }
+  }
+
+  // Image Crop Modal
+
+  // Generate file name
+
+  function getFileName() {
+    const chars =
+      '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const passwordLength = 16
+    let name = ''
+
+    for (let i = 0; i < passwordLength; i++) {
+      const randomNumber = Math.floor(Math.random() * chars.length)
+      name += chars.substring(randomNumber, randomNumber + 1)
+    }
+    const fileName = name
+    return fileName
+  }
+
+  // DataURL to file
+
+  const dataURLtoFile = (dataurl, filename) => {
+    const arr = dataurl.split(',')
+    const mime = arr[0].match(/:(.*?);/)[1]
+    const bstr = atob(arr[1])
+    let n = bstr.length
+    const u8arr = new Uint8Array(n)
+    while (n) {
+      u8arr[n - 1] = bstr.charCodeAt(n - 1)
+      n -= 1 // to make eslint happy
+    }
+    return new File([u8arr], filename, { type: mime })
+  }
+
+  function toggleImageModal() {
+    setPreviewImage(!previewImage)
+  }
+
+  function onZoomChange(newValue) {
+    setZoom(newValue)
+  }
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
   function readFile(file: File) {
-    return new Promise((resolve) => {
+    const result = new Promise((resolve) => {
       const reader = new FileReader()
       reader.addEventListener('load', () => resolve(reader.result), false)
       reader.readAsDataURL(file)
     })
+    return result
   }
 
-  const ImageIcon = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]
-      const imageDataUrl = await readFile(file)
-      setImageIcon(imageDataUrl)
+  const onFileChange = async (e) => {
+    if (e.target.files && e.target.files.length === 1) {
+      const file = await readFile(e.target.files[0])
+      setPreviewImage(file)
+    } else {
+      toast.success('Selecione apenas 1 imagem pro vez', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     }
   }
 
-  const ImageBanner = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]
-      const imageDataUrl = await readFile(file)
-      setImageBanner(imageDataUrl)
+  async function cropImage(current) {
+    // Get cropped image file
+
+    const Image = await getCroppedImg(previewImage, croppedAreaPixels, rotation)
+
+    try {
+      if (current === 1) {
+        setPreviewBanner(Image)
+      }
+      if (current === 2) {
+        setPreviewIcon(Image)
+      }
+      notifySuccess('Foto recortada com sucesso!')
+      setPreviewImage(null)
+      toggleImageModal()
+    } catch (e) {
+      notify('Erro interno favor tentar novamente mais tarde!')
     }
   }
-
-  const generateBanner = (query) =>
-    `https://source.unsplash.com/random/?${query}`
 
   // Data
 
   async function loadData() {
     try {
       const { data } = await getBusiness(`${id}`)
+
+      setImageIcon(data?.avatar.url)
+      setImageBanner(data?.background.url)
 
       setBusinessName(data?.name)
       setStars(data?.avgStars)
@@ -670,65 +849,70 @@ const Shop = ({ storeId, id, images }: Shop) => {
               <IoIosClose onClick={toggleDescModal} size={36} color={'black'} />
             </div>
 
-            <div className="desc-container">
-              <div className="top">
-                <section>
-                  <img
-                    id="banner"
-                    src={imageBanner || '/images/capa.png'}
-                    alt="Banner"
+            <form onSubmit={handleSubmit(handleEditBussinesDesc)}>
+              <div className="desc-container">
+                <div className="top">
+                  <section>
+                    <img
+                      id="banner"
+                      src={previewBanner || '/images/capa.png'}
+                      alt="Banner"
+                    />
+                    <button type="button" id="imageBtn">
+                      <label htmlFor="banner[]">
+                        <AiFillCamera size={23} color="var(--white)" />
+                      </label>
+                      <input
+                        type="file"
+                        id="banner[]"
+                        name="banner"
+                        accept="image/*"
+                        multiple={false}
+                        onChange={onFileChange}
+                        style={{ display: 'none' }}
+                        onClick={() => setCurrentImage(1)}
+                      />
+                    </button>
+                  </section>
+                  <ShopImage
+                    id="icon"
+                    imageSrc={previewIcon} // Imagem para o perfil do Shop
+                    btnIcon={<AiFillCamera size={23} color="var(--white)" />}
+                    btn={
+                      <input
+                        type="file"
+                        id="icon[]"
+                        name="icon"
+                        accept="image/*"
+                        multiple={false}
+                        onChange={onFileChange}
+                        style={{ display: 'none' }}
+                        onClick={() => setCurrentImage(2)}
+                      />
+                    }
                   />
-                  <button type="button" id="imageBtn">
-                    <label htmlFor="banner[]">
-                      <AiFillCamera size={23} color="var(--white)" />
-                    </label>
-                    <input
-                      type="file"
-                      id="banner[]"
-                      name="banner"
-                      accept="image/*"
-                      multiple={false}
-                      onChange={ImageBanner}
-                      style={{ display: 'none' }}
-                    />
-                  </button>
-                </section>
-                <ShopImage
-                  id="icon"
-                  imageSrc={imageIcon || '/images/shop-test.png'} // Imagem para o perfil do Shop
-                  icon={<AiFillShop size={70} color="var(--white)" />}
-                  btnIcon={<AiFillCamera size={23} color="var(--white)" />}
-                  btn={
-                    <input
-                      type="file"
-                      id="icon[]"
-                      name="icon"
-                      accept="image/*"
-                      multiple={false}
-                      onChange={ImageIcon}
-                      style={{ display: 'none' }}
-                    />
-                  }
-                />
+                </div>
+                <div className="bottom">
+                  <Input
+                    label="Nome do negócio"
+                    defaultValue={businessName}
+                    placeholder="Exemplo: Café da Maria"
+                    icon={<FaBuilding size={21} color="var(--black-800)" />}
+                    {...register('name')}
+                  />
+                  <DescriptionInput
+                    label="Descrição do negócio"
+                    defaultValue={desc}
+                    placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
+                    {...register('description')}
+                  />
+                </div>
               </div>
-              <div className="bottom">
-                <Input
-                  label="Nome do negócio"
-                  defaultValue={businessName}
-                  placeholder="Exemplo: Café da Maria"
-                  icon={<FaBuilding size={21} color="var(--black-800)" />}
-                />
-                <DescriptionInput
-                  label="Descrição do negócio"
-                  defaultValue={desc}
-                  placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
-                />
-              </div>
-            </div>
 
-            <div className="buttons-container">
-              <Button title="Confirmar" border={true}></Button>
-            </div>
+              <div className="buttons-container">
+                <Button title="Confirmar" border={true}></Button>
+              </div>
+            </form>
           </ModalContainer>
         </CustomModal>
 
@@ -759,13 +943,67 @@ const Shop = ({ storeId, id, images }: Shop) => {
           </ModalContainer>
         </CustomModal>
 
+        {/* Crop Image Modal */}
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleImageModal}
+          modalVisible={previewImage}
+        >
+          <CropModalContainer>
+            <section className="crops">
+              <div className="cropper-container">
+                <div className="crop">
+                  <Cropper
+                    style={{
+                      containerStyle: {
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        width: 400,
+                        height: 400,
+                        top: '20%',
+                        left: '50%',
+                        transform: 'translate(-50%, -20%)'
+                      },
+                      cropAreaStyle: {},
+                      mediaStyle: {}
+                    }}
+                    image={previewImage}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={currentImage === 1 ? 72 / 25 : 1 / 1}
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                  />
+                </div>
+                <div className="controls-container">
+                  <input
+                    type="range"
+                    step="0.1"
+                    min="1"
+                    max="2"
+                    value={zoom}
+                    onChange={(e) => onZoomChange(e.target.value)}
+                  />
+                </div>
+              </div>
+            </section>
+            <section className="btns">
+              <Button title="Cancelar" onClick={toggleImageModal} />
+              <Button
+                title="Recortar"
+                onClick={() => cropImage(currentImage)}
+              />
+            </section>
+          </CropModalContainer>
+        </CustomModal>
+
         <DrawerLateral greenOption={1} />
 
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
-              imgSrc={images[0]}
-              coverSrc={images[1]}
+              imgSrc={imageIcon}
+              coverSrc={imageBanner}
               title={businessName}
               quantStar={stars}
               description={desc}
