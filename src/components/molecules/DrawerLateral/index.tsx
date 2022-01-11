@@ -92,7 +92,7 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
               </div>
             </Link>
 
-            <Link href="/">
+            <Link href="/dashboard/pedidos">
               <div className="option">
                 <BiClipboard
                   className="icon"
