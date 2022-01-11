@@ -6,8 +6,8 @@ import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 
 import { Container } from './styles'
 
-interface ShopImage extends React.ImgHTMLAttributes<HTMLImageElement> {
-  imageSrc?: string
+interface ShopImage {
+  imageSrc: string
   btnIcon: ReactElement
   icon: ReactElement
   btn: ReactElement
