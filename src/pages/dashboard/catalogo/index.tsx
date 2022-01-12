@@ -57,6 +57,7 @@ import CupomItem from 'components/molecules/CupomItem'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 
 type CategoryType = {
   name: string
@@ -138,10 +139,10 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
-  const [priceProduct, setPriceProduct] = useState('')
+  const [priceProduct, setPriceProduct] = useState(0)
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
-  const [discountProduct, setDiscountProduct] = useState('')
+  const [discountProduct, setDiscountProduct] = useState(0)
   const [installments, setInstallments] = useState({
     value: '1',
     label: '1x'
@@ -371,30 +372,44 @@ const catalog = ({ storeId }: CatalogType) => {
     values,
     event
   ) => {
-    const body = {
-      title: values.title,
-      price: Number(
-        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
-      ),
-      description: descriptionProduct,
-      inventory: Number(values.inventory || '0'),
-      discount: Number(values.discount),
-      categoriesIds: selectedCategories.map((cat) => cat.value),
-      files: [imageSrc, imageSrc1, imageSrc2],
-      parcelAmount: Number(installments.value)
-    }
+    const formData = new FormData()
+    formData.append('title', values.title)
+    formData.append(
+      'price',
+      values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+    )
+    formData.append('description', descriptionProduct)
+    formData.append('inventory', values.inventory)
+    formData.append('discount', values.discount || '0')
+    formData.append(
+      'categoriesIds',
+      JSON.stringify(selectedCategories.map((cat) => cat.value))
+    )
+    formData.append('parcelAmount', installments.value)
+    formData.append(
+      'files',
+      imageSrc ? dataURLtoFile(imageSrc, getFileName()) : null
+    )
+    formData.append(
+      'files',
+      imageSrc1 ? dataURLtoFile(imageSrc1, getFileName()) : null
+    )
+    formData.append(
+      'files',
+      imageSrc2 ? dataURLtoFile(imageSrc2, getFileName()) : null
+    )
 
     try {
-      await createProduct({ data: body })
+      await createProduct(formData)
 
       toast.success('Produto criado com sucesso')
 
       setAddModal(false)
       setTitleProduct('')
-      setPriceProduct('')
+      setPriceProduct(0)
       setDescriptionProduct('')
       setInventoryProduct('')
-      setDiscountProduct('')
+      setDiscountProduct(0)
       setSelectedCategories([])
     } catch (e) {
       console.error(e)
@@ -460,11 +475,11 @@ const catalog = ({ storeId }: CatalogType) => {
     }
 
     setTitleProduct('')
-    setPriceProduct('')
+    setPriceProduct(0)
     setDescriptionProduct('')
     setInventoryProduct('')
     setEditProductId('')
-    setDiscountProduct('')
+    setDiscountProduct(0)
     setSelectedCategories([])
     loadData()
     setEditProduct(false)
@@ -719,16 +734,6 @@ const catalog = ({ storeId }: CatalogType) => {
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
-                  value={(
-                    (Number(
-                      getValues?.('discount')
-                        ?.replace('R$ ', '')
-                        ?.replaceAll('.', '')
-                        ?.replaceAll(',', '.') || '0'
-                    ) *
-                      Number(discountProduct)) /
-                    100
-                  ).toFixed(2)}
                   disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
@@ -1075,7 +1080,7 @@ const catalog = ({ storeId }: CatalogType) => {
         </AddProductModalContainer>
       </CustomModal>
 
-      {/* Add product */}
+      {/* Add Cupom */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleAddCupomModal}

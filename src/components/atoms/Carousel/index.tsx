@@ -16,6 +16,12 @@ interface Carousel {
     avgStars: number
     sumStars: number
     city: string
+    avatar: {
+      url: string
+    }
+    background: {
+      url: string
+    }
   }[]
   isProduct?: boolean
   promo?: boolean
@@ -66,7 +72,7 @@ const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
                 }
               >
                 <img
-                  src="https://media-cdn.tripadvisor.com/media/photo-s/19/a4/6c/82/dining-and-bar-area.jpg"
+                  src={store.background?.url || '/images/capa-small.png'}
                   className="store-banner"
                   alt="banner"
                 />
@@ -75,7 +81,7 @@ const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
               {!isProduct && (
                 <div className="logo">
                   <img
-                    src="https://s3.amazonaws.com/thumbnails.venngage.com/template/bcf804f5-e6b0-4389-8c44-d64482f922dc.png"
+                    src={store.avatar?.url || '/images/icon.png'}
                     alt="logo"
                   />
                 </div>
@@ -344,6 +350,7 @@ const Item = styled.div<ItemProps>`
   img.store-banner {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 
   .infoProduct {
@@ -361,7 +368,7 @@ const Item = styled.div<ItemProps>`
       font-size: 0.7rem;
     }
     h3 {
-      content: '...'
+      content: '...';
       font-size: var(--font-size-md);
       color: var(--color-primary);
     }
@@ -392,7 +399,6 @@ const Item = styled.div<ItemProps>`
     padding-bottom: var(--spacing-xxxs);
     border-bottom: var(--border-width-hairline) solid var(--gray-100);
 
-
     ${[sizes.down('lgMob')]} {
       border-bottom: 0;
       align-items: flex-start;
@@ -410,7 +416,6 @@ const Item = styled.div<ItemProps>`
         padding: 0;
       }
     }
-
   }
 
   .city {

@@ -15,7 +15,6 @@ export const Container = styled.header<ContainerProps>`
   ${(props) => props.isMain === false && 'background: rgba(0,0,0,0.4);'}
   ${(props) => props.isMain === false && 'color: var(--white);'}
 
-  border-bottom: var(--border-width-hairline) solid var(--gray-300);
   z-index: 5;
 
   .logo {

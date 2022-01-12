@@ -1,15 +1,11 @@
 import { Container } from './styles'
-import React, { useState, ChangeEvent } from 'react'
+import React from 'react'
 
 import { RiPencilFill } from 'react-icons/ri'
 import { AiFillStar } from 'react-icons/ai'
 import { AiOutlineStar } from 'react-icons/ai'
 
-import { AiFillCamera } from 'react-icons/ai'
-import { IoCloseSharp } from 'react-icons/io5'
-import { FaBuilding } from 'react-icons/fa'
 import { PulseLoader } from 'react-spinners'
-import { Button } from '../../atoms/Button'
 
 interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
   title?: string

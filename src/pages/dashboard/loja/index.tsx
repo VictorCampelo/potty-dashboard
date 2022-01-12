@@ -28,7 +28,7 @@ import { useEffect } from 'react'
 import {
   editBussinesInfo,
   editTimeTable,
-  getBusiness
+  getStore
 } from '../../../services/bussiness.services'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
@@ -43,6 +43,7 @@ import { Point } from 'react-easy-crop/types'
 import getCroppedImg from 'functions/cropImage'
 import { CropModalContainer } from 'styles/pages/Catalog'
 import Cropper from 'react-easy-crop'
+import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 
 type TimeTableArrayType = {
   [0]
@@ -59,20 +60,37 @@ type EditTimeTable = {
   dom: Array<TimeTableArrayType>
 }
 
-type EditBussinesInfo = {
+type EditBusinessInfo = {
   name: FormDataEntryValue
   description: FormDataEntryValue
   avatar: FormDataEntryValue
   background: FormDataEntryValue
 }
 
+type EditContactInfo = {
+  phone: string
+  whatsapp: string
+  instagram: string
+  facebook: string
+}
+
+type EditLocalizationInfo = {
+  CNPJ: string
+  address: string
+  city: string
+  state: string
+  publicPlace: string
+  number: string
+  district: string
+  cep: string
+}
+
 interface Shop {
   storeId: string
   id: string
-  images: Array<TimeTableArrayType>
 }
 
-const Shop = ({ storeId, id, images }: Shop) => {
+const Shop = ({ storeId, id }: Shop) => {
   const [vazio, setVazio] = useState(false)
   const [descModal, setDescModal] = useState(false)
   const [timeTableModal, setTimeTableModal] = useState(false)
@@ -109,7 +127,7 @@ const Shop = ({ storeId, id, images }: Shop) => {
   const [businessState, setBusinessState] = useState('')
   const [businessCity, setBusinessCity] = useState('')
   const [publicPlace, setPublicPlace] = useState('')
-  const [number, setNumer] = useState('')
+  const [number, setNumber] = useState('')
   const [district, setDistrict] = useState('')
   const [cep, setCep] = useState('')
 
@@ -122,51 +140,13 @@ const Shop = ({ storeId, id, images }: Shop) => {
   const [sex, setSex] = useState([])
   const [sab, setSab] = useState([])
 
-  const [isLoading, setIsLoading] = useState(true)
-
-  const router = useRouter()
-
-  // Toasts
-
-  function notifySuccess(message: string) {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
-  }
-
-  function notify(message: string) {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
-  }
-
-  // Categorias
-
   const [category, setCategory] = useState('')
 
-  // Modal de horarios
-
-  function handleOpenTimeModal() {
-    setTimeTableModal(true)
-  }
-
-  function toggleTimeModal() {
-    setTimeTableModal(!timeTableModal)
-  }
-
+  const [isLoading, setIsLoading] = useState(true)
   const { handleSubmit, register } = useForm()
+  const router = useRouter()
+
+  // Functions
 
   const handleEditTimeTable: SubmitHandler<EditTimeTable> = async (values) => {
     const body = {
@@ -225,55 +205,18 @@ const Shop = ({ storeId, id, images }: Shop) => {
     }
   }
 
-  // Modal de categorias
-
-  function handleOpenCategoryModal() {
-    setCategoryModal(true)
-  }
-
-  function toggleCategoryModal() {
-    setCategoryModal(!categoryModal)
-  }
-
-  // Modal de localização
-
-  function handleOpenLocationModal() {
-    setLocationModal(true)
-  }
-
-  function toggleLocationModal() {
-    setLocationModal(!locationModal)
-  }
-
-  // Modal de contatos
-
-  function handleOpenContactModal() {
-    setContactModal(true)
-  }
-
-  function toggleContactModal() {
-    setContactModal(!contactModal)
-  }
-
-  // Modal de descrição
-
-  function handleOpenDescModal() {
-    setDescModal(true)
-  }
-
-  function toggleDescModal() {
-    setDescModal(!descModal)
-    setPreviewImage(null)
-    setPreviewIcon(null)
-    setPreviewBanner(null)
-  }
-
-  const handleEditBussinesDesc: SubmitHandler<EditBussinesInfo> = async (
+  const handleEditBussinesDesc: SubmitHandler<EditBusinessInfo> = async (
     values
   ) => {
+    const body = {
+      storeDto: {
+        name: values.name,
+        description: values.description
+      }
+    }
+
     const formData = new FormData()
-    formData.append('name', values.name)
-    formData.append('description', values.description)
+    formData.append('storeDto', JSON.stringify(body.storeDto))
     formData.append(
       'avatar',
       previewIcon ? dataURLtoFile(previewIcon, getFileName()) : null
@@ -328,38 +271,203 @@ const Shop = ({ storeId, id, images }: Shop) => {
     }
   }
 
+  const handleEditContactInfo: SubmitHandler<EditContactInfo> = async (
+    values
+  ) => {
+    const body = {
+      storeDto: {
+        phone: values.phone,
+        facebookLink: values.facebook,
+        instagramLink: values.instagram,
+        whatsappLink: values.whatsapp
+      }
+    }
+    const formData = new FormData()
+    formData.append('storeDto', JSON.stringify(body.storeDto))
+
+    try {
+      await editBussinesInfo(formData)
+
+      toast.success('Informações editada(s) com sucesso!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+
+      setTimeout(function () {
+        toggleContactModal()
+        router.reload()
+      }, 2500)
+    } catch (e) {
+      if (e.message.includes('401')) {
+        return toast.error(
+          'Usuário deslogado, faça o seu login para prosseguir',
+          {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          }
+        )
+      } else {
+        toast.error('Erro ao editar informações', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      }
+    }
+  }
+
+  const handleEditLocalizationInfo: SubmitHandler<EditLocalizationInfo> =
+    async (values) => {
+      const body = {
+        storeDto: {
+          CNPJ: values.CNPJ,
+          city: values.city,
+          state: values.state,
+          address: `${values.publicPlace}, n° ${values.number}, ${values.district}, CEP: ${values.cep}`
+        }
+      }
+      const formData = new FormData()
+      formData.append('storeDto', JSON.stringify(body.storeDto))
+
+      try {
+        await editBussinesInfo(formData)
+
+        toast.success('Informações editada(s) com sucesso!', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+
+        setTimeout(function () {
+          toggleContactModal()
+          router.reload()
+        }, 2500)
+      } catch (e) {
+        if (e.message.includes('401')) {
+          return toast.error(
+            'Usuário deslogado, faça o seu login para prosseguir',
+            {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined
+            }
+          )
+        } else {
+          toast.error('Erro ao editar informações', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+        }
+      }
+    }
+
+  // Toasts
+
+  function notifySuccess(message: string) {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
+
+  function notify(message: string) {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
+
+  // Modal de horarios
+
+  function handleOpenTimeModal() {
+    setTimeTableModal(true)
+  }
+
+  function toggleTimeModal() {
+    setTimeTableModal(!timeTableModal)
+  }
+
+  // Modal de categorias
+
+  function handleOpenCategoryModal() {
+    setCategoryModal(true)
+  }
+
+  function toggleCategoryModal() {
+    setCategoryModal(!categoryModal)
+  }
+
+  // Modal de localização
+
+  function handleOpenLocationModal() {
+    setLocationModal(true)
+  }
+
+  function toggleLocationModal() {
+    setLocationModal(!locationModal)
+  }
+
+  // Modal de contatos
+
+  function handleOpenContactModal() {
+    setContactModal(true)
+  }
+
+  function toggleContactModal() {
+    setContactModal(!contactModal)
+  }
+
+  // Modal de descrição
+
+  function handleOpenDescModal() {
+    setDescModal(true)
+  }
+
+  function toggleDescModal() {
+    setDescModal(!descModal)
+    setPreviewImage(null)
+    setPreviewIcon(null)
+    setPreviewBanner(null)
+  }
+
   // Image Crop Modal
-
-  // Generate file name
-
-  function getFileName() {
-    const chars =
-      '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    const passwordLength = 16
-    let name = ''
-
-    for (let i = 0; i < passwordLength; i++) {
-      const randomNumber = Math.floor(Math.random() * chars.length)
-      name += chars.substring(randomNumber, randomNumber + 1)
-    }
-    const fileName = name
-    return fileName
-  }
-
-  // DataURL to file
-
-  const dataURLtoFile = (dataurl, filename) => {
-    const arr = dataurl.split(',')
-    const mime = arr[0].match(/:(.*?);/)[1]
-    const bstr = atob(arr[1])
-    let n = bstr.length
-    const u8arr = new Uint8Array(n)
-    while (n) {
-      u8arr[n - 1] = bstr.charCodeAt(n - 1)
-      n -= 1 // to make eslint happy
-    }
-    return new File([u8arr], filename, { type: mime })
-  }
 
   function toggleImageModal() {
     setPreviewImage(!previewImage)
@@ -423,10 +531,10 @@ const Shop = ({ storeId, id, images }: Shop) => {
 
   async function loadData() {
     try {
-      const { data } = await getBusiness(`${id}`)
+      const { data } = await getStore(`${storeId}`)
 
-      setImageIcon(data?.avatar.url)
-      setImageBanner(data?.background.url)
+      setImageIcon(data?.avatar)
+      setImageBanner(data?.background)
 
       setBusinessName(data?.name)
       setStars(data?.avgStars)
@@ -451,6 +559,9 @@ const Shop = ({ storeId, id, images }: Shop) => {
       setWhatsApp(data?.whatsappLink || '')
 
       setBusinessAddress(data?.address)
+      setBusinessCity(data?.city)
+      setBusinessState(data?.state)
+      setPublicPlace(data?.address.substring(0, data?.address.indexOf(',')))
     } catch (e) {
       setVazio(true)
       toast.error('Erro ao buscar dados, tente novamente mais tarde', {
@@ -464,25 +575,6 @@ const Shop = ({ storeId, id, images }: Shop) => {
       })
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  async function handleEditContactInfo() {
-    console.log(storeId)
-
-    try {
-      const res = await api.patch(`stores`, {
-        facebookLink: facebook,
-        instagramLink: instagram,
-        whatsappLink: whatsApp,
-        phone: telefone
-      })
-
-      toast.success('Informações editadas com sucesso!')
-      loadData()
-      toggleContactModal()
-    } catch (e) {
-      toast.error('Houve um erro ao editar suas informações')
     }
   }
 
@@ -701,69 +793,77 @@ const Shop = ({ storeId, id, images }: Shop) => {
                 color={'black'}
               />
             </div>
-            <div className="inputRow">
-              <Input
-                label="Estado"
-                placeholder="Estado"
-                value={businessState}
-                onChange={(e) => setBusinessState(e.target.value)}
-                icon={
-                  <HiOutlineLocationMarker size={20} color="var(--black-800)" />
-                }
-              />
+            <form onSubmit={handleSubmit(handleEditLocalizationInfo)}>
+              <div className="inputRow">
+                <Input
+                  label="Estado"
+                  placeholder="Estado"
+                  defaultValue={businessState}
+                  icon={
+                    <HiOutlineLocationMarker
+                      size={20}
+                      color="var(--black-800)"
+                    />
+                  }
+                  {...register('state')}
+                />
 
-              <Input
-                label="Cidade"
-                placeholder="Cidade"
-                value={businessCity}
-                onChange={(e) => setBusinessCity(e.target.value)}
-                icon={
-                  <HiOutlineLocationMarker size={20} color="var(--black-800)" />
-                }
-              />
-            </div>
-            <div className="inputRow">
-              <Input
-                label="Logradouro"
-                placeholder="Logradouro"
-                flex={3}
-                value={publicPlace}
-                onChange={(e) => setPublicPlace(e.target.value)}
-                icon={<FaRoad size={20} color="var(--black-800)" />}
-              />
+                <Input
+                  label="Cidade"
+                  placeholder="Cidade"
+                  defaultValue={businessCity}
+                  icon={
+                    <HiOutlineLocationMarker
+                      size={20}
+                      color="var(--black-800)"
+                    />
+                  }
+                  {...register('city')}
+                />
+              </div>
+              <div className="inputRow">
+                <Input
+                  label="Logradouro"
+                  placeholder="Logradouro"
+                  flex={3}
+                  defaultValue={publicPlace}
+                  icon={<FaRoad size={20} color="var(--black-800)" />}
+                  {...register('publicPlace')}
+                />
 
-              <Input
-                label="Número"
-                placeholder="0000"
-                value={number}
-                flex={1}
-                type="numeric"
-                maxLength={6}
-                onChange={(e) => setNumer(e.target.value)}
-                icon={<BiBuildings size={20} color="var(--black-800)" />}
-              />
-            </div>
-            <div className="last-inputRow">
-              <Input
-                label="Bairro"
-                placeholder="Bairro"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-                icon={<BiMapAlt size={20} color="var(--black-800)" />}
-              />
+                <Input
+                  label="Número"
+                  placeholder="0000"
+                  defaultValue={number}
+                  flex={1}
+                  type="numeric"
+                  maxLength={6}
+                  icon={<BiBuildings size={20} color="var(--black-800)" />}
+                  {...register('number')}
+                />
+              </div>
+              <div className="last-inputRow">
+                <Input
+                  label="Bairro"
+                  placeholder="Bairro"
+                  defaultValue={district}
+                  icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                  {...register('district')}
+                />
 
-              <Input
-                label="CEP"
-                placeholder="000.000.000-00"
-                mask="cep"
-                value={cep}
-                onChange={(e) => setCep(e.target.value)}
-                icon={<BiMapAlt size={20} color="var(--black-800)" />}
-              />
-            </div>
-            <div className="buttons-container">
-              <Button title="Confirmar" border={true}></Button>
-            </div>
+                <Input
+                  label="CEP"
+                  placeholder="000.000.000-00"
+                  mask="cep"
+                  defaultValue={cep}
+                  icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                  {...register('cep')}
+                />
+              </div>
+              <div className="buttons-container">
+                <Button title="Confirmar" border={true}></Button>
+              </div>
+            </form>
           </ModalContainer>
         </CustomModal>
 
@@ -782,59 +882,57 @@ const Shop = ({ storeId, id, images }: Shop) => {
               />
             </div>
 
-            <div className="contact-container">
-              <div className="top-inputs">
-                <Input
-                  label="Telefone"
-                  placeholder="(00) 0000-0000"
-                  mask="phone"
-                  value={telefone}
-                  flex={2}
-                  maxLength={14}
-                  onChange={(e) => setTelefone(e.target.value)}
-                  icon={<IoMdCall size={20} color="var(--black-800)" />}
-                />
+            <form onSubmit={handleSubmit(handleEditContactInfo)}>
+              <div className="contact-container">
+                <div className="top-inputs">
+                  <Input
+                    label="Telefone"
+                    placeholder="(00) 0000-0000"
+                    mask="phone"
+                    defaultValue={telefone}
+                    flex={2}
+                    maxLength={14}
+                    icon={<IoMdCall size={20} color="var(--black-800)" />}
+                    {...register('phone')}
+                  />
 
-                <Input
-                  label="Instagram do negócio"
-                  placeholder="instagram.com/exemplo"
-                  value={instagram}
-                  flex={2}
-                  type="text"
-                  onChange={(e) => setInstagram(e.target.value)}
-                  icon={<FiInstagram size={20} color="var(--black-800)" />}
-                />
+                  <Input
+                    label="Instagram do negócio"
+                    placeholder="instagram.com/exemplo"
+                    defaultValue={instagram}
+                    flex={2}
+                    type="text"
+                    icon={<FiInstagram size={20} color="var(--black-800)" />}
+                    {...register('instagram')}
+                  />
+                </div>
+
+                <div className="bottom-inputs">
+                  <Input
+                    label="Facebook do negócio"
+                    placeholder="facebook.com/exemplo"
+                    defaultValue={facebook}
+                    flex={2}
+                    type="text"
+                    icon={<FaFacebook size={20} color="var(--black-800)" />}
+                    {...register('facebook')}
+                  />
+                  <Input
+                    label="WhatsApp do negócio"
+                    placeholder="whatsApp.com/exemplo"
+                    defaultValue={whatsApp}
+                    flex={2}
+                    type="text"
+                    icon={<IoLogoWhatsapp size={20} color="var(--black-800)" />}
+                    {...register('whatsApp')}
+                  />
+                </div>
               </div>
 
-              <div className="bottom-inputs">
-                <Input
-                  label="Facebook do negócio"
-                  placeholder="facebook.com/exemplo"
-                  value={facebook}
-                  flex={2}
-                  type="text"
-                  onChange={(e) => setFacebook(e.target.value)}
-                  icon={<FaFacebook size={20} color="var(--black-800)" />}
-                />
-                <Input
-                  label="WhatsApp do negócio"
-                  placeholder="whatsApp.com/exemplo"
-                  value={whatsApp}
-                  flex={2}
-                  type="text"
-                  onChange={(e) => setWhatsApp(e.target.value)}
-                  icon={<IoLogoWhatsapp size={20} color="var(--black-800)" />}
-                />
+              <div className="buttons-container">
+                <Button title="Confirmar" border={true} />
               </div>
-            </div>
-
-            <div className="buttons-container">
-              <Button
-                title="Confirmar"
-                onClick={handleEditContactInfo}
-                border={true}
-              />
-            </div>
+            </form>
           </ModalContainer>
         </CustomModal>
 
@@ -855,7 +953,9 @@ const Shop = ({ storeId, id, images }: Shop) => {
                   <section>
                     <img
                       id="banner"
-                      src={previewBanner || '/images/capa.png'}
+                      src={
+                        previewBanner || imageBanner?.url || '/images/capa.png'
+                      }
                       alt="Banner"
                     />
                     <button type="button" id="imageBtn">
@@ -876,7 +976,7 @@ const Shop = ({ storeId, id, images }: Shop) => {
                   </section>
                   <ShopImage
                     id="icon"
-                    imageSrc={previewIcon} // Imagem para o perfil do Shop
+                    imageSrc={previewIcon || imageIcon?.url} // Imagem para o perfil do Shop
                     btnIcon={<AiFillCamera size={23} color="var(--white)" />}
                     btn={
                       <input
@@ -969,7 +1069,7 @@ const Shop = ({ storeId, id, images }: Shop) => {
                     image={previewImage}
                     crop={crop}
                     zoom={zoom}
-                    aspect={currentImage === 1 ? 72 / 25 : 1 / 1}
+                    aspect={currentImage === 1 ? 96 / 35 : 1 / 1}
                     onCropChange={setCrop}
                     onZoomChange={setZoom}
                     onCropComplete={onCropComplete}
@@ -1002,8 +1102,8 @@ const Shop = ({ storeId, id, images }: Shop) => {
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
-              imgSrc={imageIcon}
-              coverSrc={imageBanner}
+              imgSrc={imageIcon?.url}
+              coverSrc={imageBanner?.url}
               title={businessName}
               quantStar={stars}
               description={desc}
@@ -1098,8 +1198,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   return {
     props: {
       storeId: data.store.id,
-      id: data.store.formatedName,
-      images: data.files
+      id: data.store.formatedName
     }
   }
 })
