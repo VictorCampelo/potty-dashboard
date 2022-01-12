@@ -7,6 +7,8 @@ import styled from 'styled-components'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { Pagination } from 'components/molecules/Pagination'
+import { AiFillEye, AiOutlineSearch } from 'react-icons/ai'
+import { BsChevronDown } from 'react-icons/bs'
 
 const Pedidos = () => {
   return (
@@ -19,113 +21,166 @@ const Pedidos = () => {
 
         <Content>
           <MainArea>
-            <div>
-              <div className="orderby">
-                Ordenar por:
-                <span>Email</span>
-                <span className="enabled">Código</span>
-                <span>Data</span>
-              </div>
-            </div>
-
             <header>
               <h1>Pedidos</h1>
+
+              <SearchButton placeholder="Pesquisar pedido" />
+
+              <AiOutlineSearch size={24} />
             </header>
 
             <OrderHead>
-              <section style={{ flex: 2.5, justifyContent: 'flex-start' }}>
-                <span>21/12/21</span>
+              <section style={{ flex: 0.5 }}>
+                <span>Data</span>
               </section>
 
-              <section>
-                <span>Quantidade</span>
+              <section style={{ flex: 0.75 }}>
+                <span>N° do pedido</span>
               </section>
 
-              <section>
-                <span>Preço</span>
+              <section style={{ flex: 0.35 }}>
+                <span>Valor</span>
               </section>
 
-              <section>
+              <section className="center" style={{ flex: 0.75 }}>
+                <span>Detalhes</span>
+              </section>
+
+              <section style={{ flex: 0.75 }}>
                 <span>Status</span>
               </section>
             </OrderHead>
 
             <OrderBody>
-              <section style={{ flex: 2.5, justifyContent: 'flex-start' }}>
-                <span>vitorafael.r.c@gmail.com</span>
-                <div className="product">
-                  <span>Geladeira</span>
-                  <small>54141af-456qwa</small>
-                </div>
-              </section>
-
-              <section>
-                <span>1</span>
-              </section>
-
-              <section>
-                <span>R$2,999,00</span>
-              </section>
-
-              <button className="statusButton">Processando</button>
-            </OrderBody>
-
-            <OrderBody>
-              <section style={{ flex: 2.5, justifyContent: 'flex-start' }}>
-                <span>vitorafael.r.c@gmail.com</span>
-                <div className="product">
-                  <span>Geladeira</span>
-                  <small>54141af-456qwa</small>
-                </div>
-              </section>
-
-              <section>
-                <span>1</span>
-              </section>
-
-              <section>
-                <span>R$2,999,00</span>
-              </section>
-
-              <button className="statusButton">Processando</button>
-            </OrderBody>
-
-            <OrderHead>
-              <section style={{ flex: 2.5, justifyContent: 'flex-start' }}>
+              <section style={{ flex: 0.5 }}>
                 <span>21/12/21</span>
               </section>
 
-              <section>
-                <span>Quantidade</span>
+              <section style={{ flex: 0.75 }}>
+                <span>54141af-456qwa</span>
               </section>
 
-              <section>
-                <span>Preço</span>
-              </section>
-
-              <section>
-                <span>Status</span>
-              </section>
-            </OrderHead>
-
-            <OrderBody>
-              <section style={{ flex: 2.5, justifyContent: 'flex-start' }}>
-                <span>vitorafael.r.c@gmail.com</span>
-                <div className="product">
-                  <span>Geladeira</span>
-                  <small>54141af-456qwa</small>
-                </div>
-              </section>
-
-              <section>
-                <span>1</span>
-              </section>
-
-              <section>
+              <section style={{ flex: 0.35 }}>
                 <span>R$2,999,00</span>
               </section>
 
-              <button className="statusButton">Processando</button>
+              <section className="center" style={{ flex: 0.75 }}>
+                <AiFillEye size={24} />
+              </section>
+
+              <button className="statusButton" style={{ flex: 0.75 }}>
+                Processando
+              </button>
+            </OrderBody>
+
+            <OrderBody>
+              <section style={{ flex: 0.5 }}>
+                <span>21/12/21</span>
+              </section>
+
+              <section style={{ flex: 0.75 }}>
+                <span>54141af-456qwa</span>
+              </section>
+
+              <section style={{ flex: 0.35 }}>
+                <span>R$2,999,00</span>
+              </section>
+
+              <section className="center" style={{ flex: 0.75 }}>
+                <AiFillEye size={24} />
+              </section>
+
+              <button className="statusButton recived" style={{ flex: 0.75 }}>
+                Recebido
+              </button>
+            </OrderBody>
+
+            <OrderBody>
+              <section style={{ flex: 0.5 }}>
+                <span>21/12/21</span>
+              </section>
+
+              <section style={{ flex: 0.75 }}>
+                <span>54141af-456qwa</span>
+              </section>
+
+              <section style={{ flex: 0.35 }}>
+                <span>R$2,999,00</span>
+              </section>
+
+              <section className="center" style={{ flex: 0.75 }}>
+                <AiFillEye size={24} />
+              </section>
+
+              <button className="statusButton" style={{ flex: 0.75 }}>
+                Processando
+              </button>
+            </OrderBody>
+
+            <OrderBody>
+              <section style={{ flex: 0.5 }}>
+                <span>21/12/21</span>
+              </section>
+
+              <section style={{ flex: 0.75 }}>
+                <span>54141af-456qwa</span>
+              </section>
+
+              <section style={{ flex: 0.35 }}>
+                <span>R$2,999,00</span>
+              </section>
+
+              <section className="center" style={{ flex: 0.75 }}>
+                <AiFillEye size={24} />
+              </section>
+
+              <button className="statusButton confirm" style={{ flex: 0.75 }}>
+                Confirmado
+              </button>
+            </OrderBody>
+
+            <OrderBody>
+              <section style={{ flex: 0.5 }}>
+                <span>21/12/21</span>
+              </section>
+
+              <section style={{ flex: 0.75 }}>
+                <span>54141af-456qwa</span>
+              </section>
+
+              <section style={{ flex: 0.35 }}>
+                <span>R$2,999,00</span>
+              </section>
+
+              <section className="center" style={{ flex: 0.75 }}>
+                <AiFillEye size={24} />
+              </section>
+
+              <button className="statusButton refused" style={{ flex: 0.75 }}>
+                Cancelado
+              </button>
+            </OrderBody>
+
+            <OrderBody>
+              <section style={{ flex: 0.5 }}>
+                <span>21/12/21</span>
+              </section>
+
+              <section style={{ flex: 0.75 }}>
+                <span>54141af-456qwa</span>
+              </section>
+
+              <section style={{ flex: 0.35 }}>
+                <span>R$2,999,00</span>
+              </section>
+
+              <section className="center" style={{ flex: 0.75 }}>
+                <AiFillEye size={24} />
+              </section>
+
+              <button className="statusButton confirm" style={{ flex: 0.75 }}>
+                Confirmado
+              </button>
             </OrderBody>
 
             <footer>
@@ -158,18 +213,41 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   }
 })
 
+const SearchButton = styled.input`
+  margin-left: auto;
+  border: none;
+  background: white;
+  border-radius: 30px;
+  width: 350px;
+  height: 42px;
+  padding: 1rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+`
+
 const OrderBody = styled.div`
   display: flex;
   width: 100%;
-  padding: 0.5rem 0;
-  height: 80px;
+  height: 60px;
   border-bottom: 1px solid var(--gray-150);
   align-items: center;
 
   section {
     flex: 1;
     display: flex;
+  }
+
+  section.center {
     justify-content: center;
+  }
+
+  svg {
+    color: var(--color-secondary);
+    transition: color 0.2s;
+  }
+
+  svg:hover {
+    color: var(--color-secondary-darker);
+    cursor: pointer;
   }
 
   span {
@@ -189,16 +267,20 @@ const OrderBody = styled.div`
     font-weight: bold;
     border: none;
     height: 38px;
-  }
 
-  .product {
-    width: 50%;
-    padding: 0 1rem;
-    display: flex;
-    flex-direction: column;
+    &.confirm {
+      background: var(--confirmation);
+      color: white;
+    }
 
-    small {
-      font-size: 0.7rem;
+    &.refused {
+      background: var(--red);
+      color: white;
+    }
+
+    &.recived {
+      background: var(--gray-700);
+      color: white;
     }
   }
 `
@@ -213,11 +295,14 @@ const OrderHead = styled.div`
   section {
     flex: 1;
     display: flex;
+  }
+
+  section.center {
     justify-content: center;
   }
 
   span {
-    color: var(--color-secondary);
+    color: var(--gray-700);
     font-weight: 700;
     font-size: 1.25rem;
   }
@@ -243,28 +328,16 @@ const MainArea = styled.main`
   padding: 3rem 3rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
-  .orderby {
-    height: 60px;
-    width: fit-content;
-    margin-left: auto;
-    padding: 15px 22px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: var(--border-radius-gg);
-    font-size: 1.125rem;
-    font-weight: 500;
+  header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
 
-    span {
-      padding: 0 12px;
-      color: var(--gray-600);
-      border-left: 1px solid var(--gray-200);
-
-      &.enabled {
-        color: var(--color-secondary);
-      }
-
-      :first-child {
-        border-left: none;
-      }
+    svg {
+      position: absolute;
+      right: 16px;
+      cursor: pointer;
     }
   }
 

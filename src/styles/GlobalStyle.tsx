@@ -39,6 +39,8 @@ export default createGlobalStyle`
 
     --blue-primary: #3C8EFC;
     --blue-dark: #2A78E1;
+    
+    --confirmation: #01AC8A;
 
     --wave-1: #F9EFDC;
     --wave-2: #F5E7CD;
