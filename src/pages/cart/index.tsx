@@ -77,6 +77,22 @@ const Cart = () => {
     }
   }, [items])
 
+  async function handleMakeCheckout() {
+    try {
+      await api.get('users/me')
+
+      router.push('cart/continue')
+    } catch (e) {
+      if (e.response.status === 401) {
+        return toast.error(
+          'Clique aqui para fazer o login e finalizar sua compra!',
+          {
+            onClick: () => router.push('/login')
+          }
+        )
+      }
+    }
+  }
   return (
     <>
       <Head>
@@ -305,12 +321,7 @@ const Cart = () => {
                   ESVAZIAR CARRINHO
                 </button>
 
-                <button
-                  className="finish"
-                  onClick={() => {
-                    router.push('/cart/continue')
-                  }}
-                >
+                <button className="finish" onClick={handleMakeCheckout}>
                   CONTINUAR
                 </button>
               </div>
@@ -318,12 +329,7 @@ const Cart = () => {
                 className="buttonContainerMob"
                 style={widthScreen ? { display: 'none' } : undefined}
               >
-                <button
-                  className="finish"
-                  onClick={() => {
-                    router.push('/cart/continue')
-                  }}
-                >
+                <button className="finish" onClick={handleMakeCheckout}>
                   {' '}
                   <BsWhatsapp size={24} color="white" />
                   <p>FINALIZAR</p>

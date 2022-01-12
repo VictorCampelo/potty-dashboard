@@ -24,6 +24,7 @@ import { Button } from 'components/atoms/Button'
 import { Container, Content } from 'styles/pages/Cart'
 import sizes from 'utils/sizes'
 import { Checkbox } from 'components/atoms/Checkbox'
+
 type PaymentForm = {
   value: string
   label: string
@@ -145,7 +146,8 @@ const CartContinue = () => {
             stores.find((store) =>
               store.orderProducts.push({
                 productId: it.productId,
-                amount: it.amount
+                amount: it.amount,
+                parcels: 2
               })
             )
           } else {
@@ -154,7 +156,8 @@ const CartContinue = () => {
               orderProducts: [
                 {
                   productId: it.productId,
-                  amount: it.amount
+                  amount: it.amount,
+                  parcels: 2
                 }
               ]
             })
