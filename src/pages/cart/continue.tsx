@@ -146,8 +146,7 @@ const CartContinue = () => {
             stores.find((store) =>
               store.orderProducts.push({
                 productId: it.productId,
-                amount: it.amount,
-                parcels: 2
+                amount: it.amount
               })
             )
           } else {
@@ -156,8 +155,7 @@ const CartContinue = () => {
               orderProducts: [
                 {
                   productId: it.productId,
-                  amount: it.amount,
-                  parcels: 2
+                  amount: it.amount
                 }
               ]
             })
@@ -213,6 +211,7 @@ const CartContinue = () => {
   }
   useEffect(() => {
     loadData()
+    console.log(items)
   }, [])
 
   return (
