@@ -58,10 +58,16 @@ const CartContinue = () => {
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
+  // Estado Modal Clear Items
+  const [itemsClear, setItemsClear] = useState(false)
   const [parcel, setParcel] = useState(false)
 
   function toggleParcel() {
     setParcel(!parcel)
+  }
+
+  function handleClear() {
+    setItemsClear(!itemsClear)
   }
 
   const total = items.reduce((prev, curr) => {
@@ -233,19 +239,57 @@ const CartContinue = () => {
 
       <CustomModal
         buttons={false}
+        modalVisible={itemsClear}
+        setModalOpen={handleClear}
+      >
+        <ModalContainer>
+          {/* <div className="clearContainer"> */}
+          <div className="title" style={{ textAlign: 'center' }}>
+            <span>
+              Realmente deseja <strong>esvaziar</strong> o carrinho?
+            </span>
+          </div>
+          <div
+            className="buttonsContainer"
+            style={{ textAlign: 'center', marginTop: 'var(--spacing-xs)' }}
+          >
+            <Button
+              title="ESVAZIAR"
+              onClick={() => {
+                setItems([])
+                handleClear()
+              }}
+              style={{ marginBottom: 'var(--spacing-xxs)' }}
+            />
+            <span onClick={handleClear}>CANCELAR</span>
+          </div>
+          {/* </div> */}
+        </ModalContainer>
+      </CustomModal>
+
+      <CustomModal
+        buttons={false}
         setModalOpen={() => {
           setAddAdressModal(!addAdressModal)
         }}
         modalVisible={addAdressModal}
+        under={!widthScreen}
       >
         <ModalContainer>
           <div className="exit-container">
+            <FiArrowLeft
+              size={25}
+              color="black"
+              onClick={() => setAddAdressModal(false)}
+              style={widthScreen ? { display: 'none' } : undefined}
+            />
             <h1>Adicionar novo endereço</h1>
 
             <IoIosClose
               onClick={() => setAddAdressModal(false)}
               size={36}
               color={'black'}
+              style={widthScreen ? undefined : { display: 'none' }}
             />
           </div>
 
@@ -273,7 +317,7 @@ const CartContinue = () => {
               />
             </div>
 
-            <div className="row">
+            <div className="row mid">
               <Input
                 label="Logradouro"
                 placeholder="Logradouro"
@@ -325,8 +369,12 @@ const CartContinue = () => {
             </div>
 
             <div className="buttons-container">
-              <Button title="Voltar" border />
-              <Button title="Adicionar" />
+              <Button
+                title="Voltar"
+                border
+                style={widthScreen ? undefined : { display: 'none' }}
+              />
+              <Button title="Adicionar" style={{ marginBottom: 80 }} />
             </div>
           </form>
         </ModalContainer>
@@ -505,7 +553,7 @@ const CartContinue = () => {
                       ? items.length + ' item'
                       : items.length + ' itens'}
                     {!widthScreen && (
-                      <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
+                      <a onClick={handleClear}>Esvaziar Carrinho</a>
                     )}
                   </span>
                 </div>
@@ -752,11 +800,15 @@ export const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  span {
+    font-size: var(--font-size-md);
+  }
   .exit-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
+    align-items: center;
 
     h1 {
       font-family: 'Poppins';
@@ -775,11 +827,22 @@ export const ModalContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
 
-  .row {
-    display: flex;
-    gap: 1rem;
+    ${[sizes.down('lgMob')]} {
+      width: 100%;
+
+      .row {
+        flex-direction: column;
+      }
+
+      .mid {
+        flex-direction: row;
+      }
+    }
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
   }
 
   .buttons-container {

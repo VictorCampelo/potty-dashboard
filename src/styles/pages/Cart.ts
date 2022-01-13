@@ -201,8 +201,8 @@ export const CartContainerFooter = styled(
       height: 80px;
       .finish {
         border-radius: 0 30px 0 0;
-        background-color: purple;
-        border: 1px solid purple;
+        background-color: var(--color-primary);
+        border: 1px solid var(--color-primary);
         height: 100%;
         padding: 0 1rem 0 1rem;
         p {

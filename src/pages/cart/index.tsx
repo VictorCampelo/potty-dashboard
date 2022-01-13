@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
 import { useMedia } from 'use-media'
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { FaCheck } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
@@ -331,7 +331,7 @@ const Cart = () => {
               >
                 <button className="finish" onClick={handleMakeCheckout}>
                   {' '}
-                  <BsWhatsapp size={24} color="white" />
+                  <FiArrowRight size={24} color="white" />
                   <p>FINALIZAR</p>
                 </button>
               </div>
