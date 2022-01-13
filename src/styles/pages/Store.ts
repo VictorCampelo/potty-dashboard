@@ -186,6 +186,9 @@ export const DescriptionShop = styled.div`
     align-items: center;
 
     img {
+      width: 138px;
+      height: 138px;
+      border-radius: 100%;
       margin-right: 20px;
     }
 
@@ -408,7 +411,7 @@ export const ProductCard = styled.div`
 
     span {
       font-size: 1.75rem;
-      color: var(--color-primary);
+      color: var(--color-secondary);
       font-weight: 600;
       margin-right: 0.5rem;
     }
@@ -491,10 +494,10 @@ export const DescriptionCard = styled.div`
 
   a {
     display: inline;
-    color: var(--blue-primary);
+    color: var(--color-secondary);
 
     :hover {
-      color: var(--blue-dark);
+      color: var(--color-secondary-darker);
     }
   }
 `
@@ -520,12 +523,12 @@ export const StatusCard = styled.div`
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: var(--color-primary-dark);
+      background: var(--color-secondary-darker);
       margin-right: 0.5rem;
     }
 
     span {
-      color: var(--color-primary-dark);
+      color: var(--color-secondary-darker);
       font-weight: bold;
       font-size: 1.125rem;
     }
@@ -576,7 +579,7 @@ export const StatusCard = styled.div`
       }
       span {
         padding: 0px 2px;
-        background: #3c8efc;
+        background: var(--color-secondary);
         border-radius: 4px;
 
         font-family: Poppins;
@@ -686,7 +689,7 @@ export const FilterCard = styled.div`
     color: var(--gray-600);
 
     &.active {
-      color: var(--blue-primary);
+      color: var(--color-secondary);
     }
   }
 `
@@ -784,7 +787,7 @@ export const HorizonCard = styled.div`
 
     span {
       font-size: 1.75rem;
-      color: var(--color-primary);
+      color: var(--color-secondary);
       font-weight: 600;
       margin-right: 0.5rem;
     }

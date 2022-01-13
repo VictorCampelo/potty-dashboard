@@ -1,30 +1,16 @@
 import { api } from './apiClient'
 
-type CreateProductType = {
-  data: ProductType
-}
-
-type ProductType = {
-  title: string
-  price: number
-  description: string
-  inventory: number
-  files: Array<ImageType>
-}
-
-type ImageType = {
-  one: string
-  two: string
-  three: string
-}
-
 type CategoryType = {
   name: string
   storeId: string
 }
 
-export const createProduct = async ({ data }: CreateProductType) => {
-  const res = await api.post(`/products/`, data)
+export const createProduct = async (data) => {
+  const config = {
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+
+  const res = await api.post(`/products/`, data, config)
 
   return res
 }
@@ -35,8 +21,12 @@ export const deleteProduct = async (id: string) => {
   return res
 }
 
-export const updateProduct = async (id: string, data: ProductType) => {
-  const res = await api.patch(`/products/details/${id}`, data)
+export const updateProduct = async (id: string, data) => {
+  const config = {
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+
+  const res = await api.patch(`/products/details/${id}`, data, config)
 
   return res
 }
