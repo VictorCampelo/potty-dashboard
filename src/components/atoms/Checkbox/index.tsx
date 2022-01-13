@@ -6,7 +6,7 @@ interface CheckboxProps {
   confirm: boolean
   toggleConfirm: () => void
   label: string
-  recovery: boolean
+  recovery?: boolean
 }
 
 export const Checkbox = ({

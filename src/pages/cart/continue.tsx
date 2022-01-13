@@ -21,7 +21,11 @@ import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { FaHome } from 'react-icons/fa'
 import { Button } from 'components/atoms/Button'
-import { Container, Content } from 'styles/pages/Cart'
+import {
+  Container,
+  Content,
+  CartContainerFooter as ContainerFooterMobile
+} from 'styles/pages/Cart'
 import sizes from 'utils/sizes'
 import { Checkbox } from 'components/atoms/Checkbox'
 
@@ -49,11 +53,16 @@ const adressRegisterFormSchema = yup.object().shape({
 })
 
 const CartContinue = () => {
-  const { items } = useContext(CartContext)
+  const { items, setItems } = useContext(CartContext)
   const [addAdressModal, setAddAdressModal] = useState(false)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
+  const [parcel, setParcel] = useState(false)
+
+  function toggleParcel() {
+    setParcel(!parcel)
+  }
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
@@ -363,7 +372,10 @@ const CartContinue = () => {
 
                 <h1>Forma de pagamento</h1>
 
-                <div style={{ display: 'flex', gap: 16 }}>
+                <div
+                  style={{ display: 'flex', gap: 16 }}
+                  className="paymentContainer"
+                >
                   <Select
                     name="Forma de pagamento"
                     options={paymentForms}
@@ -384,7 +396,24 @@ const CartContinue = () => {
                     />
                   )}
 
-                  {!widthScreen && <Checkbox label="Parcelar Compra" />}
+                  {!widthScreen && (
+                    <>
+                      <Checkbox
+                        confirm={parcel}
+                        toggleConfirm={toggleParcel}
+                        label="Parcelar Compra"
+                      />
+                      <Select
+                        name="Parcelamento"
+                        options={Installments}
+                        selectedValue={installments}
+                        setSelectedValue={setInstallments}
+                        loading={false}
+                        placeholder="Selecione o número de parcelas"
+                        style={parcel ? undefined : { display: 'none' }}
+                      />
+                    </>
+                  )}
                 </div>
               </AdressCard>
 
@@ -409,39 +438,86 @@ const CartContinue = () => {
               </ProductsContainer>
             </div>
 
-            <CartContainerFooter>
-              <div className="buttonContainer">
-                <button
-                  className="finish goback"
-                  onClick={() => {
-                    router.push('/cart')
-                  }}
-                >
-                  <FiChevronLeft size={24} color="var(--color-primary)" />
-                  Voltar para o carrinho
-                </button>
-              </div>
-
-              <div className="info">
-                <div>
-                  <span>Total: </span>
-                  <strong>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    }).format(total)}
-                  </strong>
+            {widthScreen ? (
+              <CartContainerFooter>
+                <div className="buttonContainer">
+                  <button
+                    className="finish goback"
+                    onClick={() => {
+                      router.push('/cart')
+                    }}
+                  >
+                    <FiChevronLeft size={24} color="var(--color-primary)" />
+                    Voltar para o carrinho
+                  </button>
                 </div>
-                <span className="spanBottom"></span>
-              </div>
 
-              <div className="buttonContainer">
-                <button className="finish" onClick={handleFinishPurcharse}>
-                  <BsWhatsapp size={24} color="white" />
-                  FINALIZAR COMPRA
-                </button>
-              </div>
-            </CartContainerFooter>
+                <div className="info">
+                  <div>
+                    <span>Total: </span>
+                    <strong>
+                      {new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      }).format(total)}
+                    </strong>
+                  </div>
+                  <span className="spanBottom"></span>
+                </div>
+
+                <div className="buttonContainer">
+                  <button className="finish" onClick={handleFinishPurcharse}>
+                    <BsWhatsapp size={24} color="white" />
+                    FINALIZAR COMPRA
+                  </button>
+                </div>
+              </CartContainerFooter>
+            ) : (
+              <ContainerFooterMobile
+                disabled={items.filter((it) => it.enabled).length === 0}
+              >
+                <div className="info">
+                  <div>
+                    <span>Total: </span>
+                    <strong>
+                      {!widthScreen
+                        ? new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(
+                            items
+                              .filter((it) => it.enabled)
+                              .reduce((prev, curr) => {
+                                return (
+                                  prev +
+                                  Number(curr.price) * Number(curr.amount)
+                                )
+                              }, 0)
+                          )
+                        : new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(total)}
+                    </strong>
+                  </div>
+                  <span className="spanBottom">
+                    {items.filter((it) => it.enabled).length <= 1
+                      ? items.length + ' item'
+                      : items.length + ' itens'}
+                    {!widthScreen && (
+                      <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
+                    )}
+                  </span>
+                </div>
+                <div className="buttonContainerMob">
+                  <button className="finish" onClick={handleFinishPurcharse}>
+                    {' '}
+                    <BsWhatsapp size={24} color="white" />
+                    <p>FINALIZAR</p>
+                  </button>
+                </div>
+              </ContainerFooterMobile>
+            )}
           </CardsContainer>
         </Content>
       </Container>
@@ -478,6 +554,11 @@ const AdressCard = styled.section`
   ${[sizes.down('lgMob')]} {
     box-shadow: none;
     max-width: 100vw;
+
+    .paymentContainer {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
     h1 {
       display: none;
@@ -521,6 +602,9 @@ const NewAdressButton = styled.button`
   margin-bottom: 1rem;
   transition: color 0.2s;
 
+  ${[sizes.down('lgMob')]} {
+    margin-bottom: var(--spacing-md);
+  }
   svg {
     color: var(--color-primary);
     margin-right: 0.5rem;
