@@ -24,8 +24,8 @@ export const TopoPage = styled.div`
   display: flex;
   flex-direction: column-reverse;
   .capa {
-    z-index: 2;
-    margin-top: -105px;
+    /* z-index: 2; */
+    /* margin-top: -105px; */
     width: 100%;
   }
 
@@ -325,7 +325,7 @@ export const Container = styled.main`
         flex-wrap: wrap;
         gap: 1rem;
         padding-bottom: 32px;
-
+        justify-content: flex-end;
         .horizon {
           width: 100%;
           display: flex;
@@ -377,7 +377,7 @@ export const Footer = styled.footer`
 
 export const ProductCard = styled.div`
   cursor: pointer;
-  width: 320px;
+  width: 350px;
   height: 460px;
   border-radius: 30px;
   background: var(--white);
@@ -387,6 +387,9 @@ export const ProductCard = styled.div`
   align-items: center;
   flex-direction: column;
 
+  ${[sizes.down('lg')]} {
+    width: 230px;
+  }
   :hover {
     cursor: pointer;
   }

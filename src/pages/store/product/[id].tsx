@@ -126,10 +126,9 @@ const ProductShow = () => {
   const router = useRouter()
   const { id } = router.query
   const { items, setItems } = useContext(CartContext)
+  const [name, setName] = useState('')
 
-  let name = ''
   useEffect(() => {
-    // if (window.location.hostName) {
     const hostName = window.location.hostname
 
     let previousName = ''
@@ -140,9 +139,7 @@ const ProductShow = () => {
       previousName += hostName[i]
     }
 
-    name = previousName
-    console.log(previousName)
-    // }
+    setName(previousName)
   }, [])
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
@@ -205,11 +202,13 @@ const ProductShow = () => {
   ]
 
   async function loadData() {
-    try {
-      setStoreId(await getStoreId(String(name)))
-    } catch (e) {
-      console.error(e)
-    }
+    // try {
+    //   setStoreId(await getStoreId(name))
+    //   console.log(storeId)
+    //   console.log(name)
+    // } catch (e) {
+    //   console.error(e)
+    // }
 
     try {
       const { data } = await getProduct(`${id}`)
@@ -222,6 +221,7 @@ const ProductShow = () => {
       setPrice(data?.price)
       setDiscount(data?.discount)
       setProductId(data?.id)
+      setStoreId(data?.storeId)
 
       setPriceWithDiscount(
         parseFloat(
@@ -565,6 +565,7 @@ const ProductShow = () => {
                       paddingRight: '0.5rem',
                       fontWeight: 600
                     }}
+                    onClick={handleAddToCart}
                   />
                 </>
               )}

@@ -20,6 +20,7 @@ export const Container = styled.header<ContainerProps>`
   .logo {
     display: flex;
     align-content: center;
+    ${(props) => props.isMain == false && 'display: none;'}
     img {
       max-width: 80%;
     }
