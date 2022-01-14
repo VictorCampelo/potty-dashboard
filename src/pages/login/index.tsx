@@ -93,14 +93,6 @@ const Login = () => {
     }
   }
 
-  function handleClick(value: number) {
-    if (value === 1) {
-      router.push('/business-register')
-    } else {
-      router.push('/cadastro')
-    }
-  }
-
   return (
     <Wrapper>
       <Head>
@@ -205,9 +197,18 @@ const Login = () => {
                   <Button
                     title="LOJISTA"
                     style={{ marginBottom: 'var(--spacing-xxs)' }}
+                    onClick={() => {
+                      router.push('/business-register')
+                    }}
                   />
 
-                  <Button border title="CLIENTE" />
+                  <Button
+                    border
+                    title="CLIENTE"
+                    onClick={() => {
+                      router.push('/cadastro')
+                    }}
+                  />
                 </div>
               </div>
             </CustomModal>

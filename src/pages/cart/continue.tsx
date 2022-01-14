@@ -35,12 +35,13 @@ type PaymentForm = {
 }
 
 type adressRegisterFormData = {
-  state: string
+  uf: string
   city: string
-  publicPlace: string
-  number: string
-  district: string
-  cep: string
+  zipcode: string
+  addressNumber: string
+  complement: string
+  neighborhood: string
+  street: string
 }
 
 const adressRegisterFormSchema = yup.object().shape({
@@ -58,6 +59,17 @@ const CartContinue = () => {
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    async function getUser() {
+      const { data } = await api.get('/users/me')
+      setUser(data)
+    }
+
+    getUser()
+    console.log(user)
+  }, [])
   // Estado Modal Clear Items
   const [itemsClear, setItemsClear] = useState(false)
   const [parcel, setParcel] = useState(false)
@@ -226,7 +238,6 @@ const CartContinue = () => {
   }
   useEffect(() => {
     loadData()
-    console.log(items)
   }, [])
 
   return (
@@ -399,13 +410,13 @@ const CartContinue = () => {
 
                 <AdressInfo>
                   <span>
-                    <strong>Nome do usuário:</strong> Victor Gabriel
+                    <strong>Nome do usuário:</strong> {name}
                   </span>
 
                   <span>
                     <strong>Endereço: </strong>
-                    Avenida José Honório de Sousa 66, Centro, Dom Expedito
-                    Lopes, PI, 64620000, Brasil
+                    {user?.street} {user?.addressNumber}, {user?.neighborhood},
+                    {user?.city}, {user?.uf}, {user?.zipcode}, Brasil
                   </span>
 
                   <span>
