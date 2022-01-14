@@ -84,12 +84,7 @@ const Cart = () => {
       router.push('cart/continue')
     } catch (e) {
       if (e.response.status === 401) {
-        return toast.error(
-          'Clique aqui para fazer o login e finalizar sua compra!',
-          {
-            onClick: () => router.push('/login')
-          }
-        )
+        router.push('/login')
       }
     }
   }
@@ -332,7 +327,7 @@ const Cart = () => {
                 <button className="finish" onClick={handleMakeCheckout}>
                   {' '}
                   <FiArrowRight size={24} color="white" />
-                  <p>FINALIZAR</p>
+                  <p>CONTINUAR</p>
                 </button>
               </div>
             </CartContainerFooter>
