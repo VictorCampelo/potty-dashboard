@@ -35,13 +35,12 @@ type PaymentForm = {
 }
 
 type adressRegisterFormData = {
-  uf: string
+  state: string
   city: string
-  zipcode: string
-  addressNumber: string
-  complement: string
-  neighborhood: string
-  street: string
+  publicPlace: string
+  number: string
+  district: string
+  cep: string
 }
 
 const adressRegisterFormSchema = yup.object().shape({
@@ -53,6 +52,16 @@ const adressRegisterFormSchema = yup.object().shape({
   cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
 })
 
+type AddressProps = {
+  uf: string
+  city: string
+  zipcode: string
+  addressNumber: string
+  complement: string
+  neighborhood: string
+  street: string
+}
+
 const CartContinue = () => {
   const { items, setItems } = useContext(CartContext)
   const [addAdressModal, setAddAdressModal] = useState(false)
@@ -60,16 +69,10 @@ const CartContinue = () => {
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
   const [user, setUser] = useState({})
+  const [addressUser, setAddressUser] = useState<AddressProps | undefined>(
+    {} as AddressProps
+  )
 
-  useEffect(() => {
-    async function getUser() {
-      const { data } = await api.get('/users/me')
-      setUser(data)
-    }
-
-    getUser()
-    console.log(user)
-  }, [])
   // Estado Modal Clear Items
   const [itemsClear, setItemsClear] = useState(false)
   const [parcel, setParcel] = useState(false)
@@ -228,8 +231,18 @@ const CartContinue = () => {
       // Consumindo os dados da /me para popular a tela de checkout
       const response = await getUser()
       if (response.status == 200) {
-        const name = `${response?.data?.firstName} ${response?.data?.lastName}`
+        const data = response?.data
+        const name = `${data?.firstName} ${data?.lastName}`
         setName(name)
+        setAddressUser({
+          uf: data?.uf,
+          city: data?.city,
+          zipcode: data?.zipcode,
+          addressNumber: data?.addressNumber,
+          complement: data?.complement,
+          neighborhood: data?.neighborhood,
+          street: data?.street
+        })
       }
     } catch (error) {
       // router.push('/login')
@@ -415,8 +428,9 @@ const CartContinue = () => {
 
                   <span>
                     <strong>Endereço: </strong>
-                    {user?.street} {user?.addressNumber}, {user?.neighborhood},
-                    {user?.city}, {user?.uf}, {user?.zipcode}, Brasil
+                    {addressUser?.street} {addressUser?.addressNumber},{' '}
+                    {addressUser?.neighborhood},{addressUser?.city},{' '}
+                    {addressUser?.uf}, {addressUser?.zipcode}, Brasil
                   </span>
 
                   <span>
