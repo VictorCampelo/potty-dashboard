@@ -78,7 +78,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   },
   {
     id: '2',
