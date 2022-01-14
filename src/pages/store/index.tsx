@@ -178,7 +178,6 @@ const Products = () => {
         </Head>
 
         <TopoPage>
-<<<<<<< HEAD:src/pages/store/index.tsx
           <img
             className="capa"
             src={imageBanner?.url || '/images/capa.png'}
@@ -186,10 +185,6 @@ const Products = () => {
           />
 
           <HeaderShop isMain={false} />
-=======
-          <img className="capa" src="/images/capa.png" alt="capa" />
-          <HeaderShop />
->>>>>>> feat: adjust the layout of cupons register:src/pages/store/[name]/index.tsx
 
           {!widthScreen && (
             <HeaderMob>
