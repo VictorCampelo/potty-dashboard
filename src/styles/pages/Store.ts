@@ -24,8 +24,8 @@ export const TopoPage = styled.div`
   display: flex;
   flex-direction: column-reverse;
   .capa {
-    z-index: 2;
-    margin-top: -105px;
+    /* z-index: 2; */
+    /* margin-top: -105px; */
     width: 100%;
   }
 
@@ -186,6 +186,9 @@ export const DescriptionShop = styled.div`
     align-items: center;
 
     img {
+      width: 138px;
+      height: 138px;
+      border-radius: 100%;
       margin-right: 20px;
     }
 
@@ -322,7 +325,7 @@ export const Container = styled.main`
         flex-wrap: wrap;
         gap: 1rem;
         padding-bottom: 32px;
-
+        justify-content: flex-end;
         .horizon {
           width: 100%;
           display: flex;
@@ -374,7 +377,7 @@ export const Footer = styled.footer`
 
 export const ProductCard = styled.div`
   cursor: pointer;
-  width: 320px;
+  width: 350px;
   height: 460px;
   border-radius: 30px;
   background: var(--white);
@@ -384,6 +387,9 @@ export const ProductCard = styled.div`
   align-items: center;
   flex-direction: column;
 
+  ${[sizes.down('lg')]} {
+    width: 230px;
+  }
   :hover {
     cursor: pointer;
   }
@@ -408,7 +414,7 @@ export const ProductCard = styled.div`
 
     span {
       font-size: 1.75rem;
-      color: var(--color-primary);
+      color: var(--color-secondary);
       font-weight: 600;
       margin-right: 0.5rem;
     }
@@ -491,10 +497,10 @@ export const DescriptionCard = styled.div`
 
   a {
     display: inline;
-    color: var(--blue-primary);
+    color: var(--color-secondary);
 
     :hover {
-      color: var(--blue-dark);
+      color: var(--color-secondary-darker);
     }
   }
 `
@@ -520,12 +526,12 @@ export const StatusCard = styled.div`
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: var(--color-primary-dark);
+      background: var(--color-secondary-darker);
       margin-right: 0.5rem;
     }
 
     span {
-      color: var(--color-primary-dark);
+      color: var(--color-secondary-darker);
       font-weight: bold;
       font-size: 1.125rem;
     }
@@ -576,7 +582,7 @@ export const StatusCard = styled.div`
       }
       span {
         padding: 0px 2px;
-        background: #3c8efc;
+        background: var(--color-secondary);
         border-radius: 4px;
 
         font-family: Poppins;
@@ -686,7 +692,7 @@ export const FilterCard = styled.div`
     color: var(--gray-600);
 
     &.active {
-      color: var(--blue-primary);
+      color: var(--color-secondary);
     }
   }
 `
@@ -784,7 +790,7 @@ export const HorizonCard = styled.div`
 
     span {
       font-size: 1.75rem;
-      color: var(--color-primary);
+      color: var(--color-secondary);
       font-weight: 600;
       margin-right: 0.5rem;
     }

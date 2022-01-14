@@ -57,6 +57,7 @@ import CupomItem from 'components/molecules/CupomItem'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 
 type CategoryType = {
   name: string
@@ -138,10 +139,10 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
-  const [priceProduct, setPriceProduct] = useState('')
+  const [priceProduct, setPriceProduct] = useState(0)
   const [descriptionProduct, setDescriptionProduct] = useState('')
   const [inventoryProduct, setInventoryProduct] = useState('')
-  const [discountProduct, setDiscountProduct] = useState('')
+  const [discountProduct, setDiscountProduct] = useState(0)
   const [installments, setInstallments] = useState({
     value: '1',
     label: '1x'
@@ -371,30 +372,44 @@ const catalog = ({ storeId }: CatalogType) => {
     values,
     event
   ) => {
-    const body = {
-      title: values.title,
-      price: Number(
-        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
-      ),
-      description: descriptionProduct,
-      inventory: Number(values.inventory || '0'),
-      discount: Number(values.discount),
-      categoriesIds: selectedCategories.map((cat) => cat.value),
-      files: [imageSrc, imageSrc1, imageSrc2],
-      parcelAmount: Number(installments.value)
-    }
+    const formData = new FormData()
+    formData.append('title', values.title)
+    formData.append(
+      'price',
+      values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
+    )
+    formData.append('description', descriptionProduct)
+    formData.append('inventory', values.inventory)
+    formData.append('discount', values.discount || '0')
+    formData.append(
+      'categoriesIds',
+      JSON.stringify(selectedCategories.map((cat) => cat.value))
+    )
+    formData.append('parcelAmount', installments.value)
+    formData.append(
+      'files',
+      imageSrc ? dataURLtoFile(imageSrc, getFileName()) : null
+    )
+    formData.append(
+      'files',
+      imageSrc1 ? dataURLtoFile(imageSrc1, getFileName()) : null
+    )
+    formData.append(
+      'files',
+      imageSrc2 ? dataURLtoFile(imageSrc2, getFileName()) : null
+    )
 
     try {
-      await createProduct({ data: body })
+      await createProduct(formData)
 
       toast.success('Produto criado com sucesso')
 
       setAddModal(false)
       setTitleProduct('')
-      setPriceProduct('')
+      setPriceProduct(0)
       setDescriptionProduct('')
       setInventoryProduct('')
-      setDiscountProduct('')
+      setDiscountProduct(0)
       setSelectedCategories([])
     } catch (e) {
       console.error(e)
@@ -460,11 +475,11 @@ const catalog = ({ storeId }: CatalogType) => {
     }
 
     setTitleProduct('')
-    setPriceProduct('')
+    setPriceProduct(0)
     setDescriptionProduct('')
     setInventoryProduct('')
     setEditProductId('')
-    setDiscountProduct('')
+    setDiscountProduct(0)
     setSelectedCategories([])
     loadData()
     setEditProduct(false)
@@ -499,6 +514,13 @@ const catalog = ({ storeId }: CatalogType) => {
     loadData()
   }, [])
 
+  const [radioSelected, setRadioSelected] = useState(1)
+  const [ilimitedCupom, setIlimitedCupom] = useState(false)
+  const [typeCategory, setTypeCategory] = useState(false)
+
+  function handleChangeTypeCategory() {
+    setTypeCategory(!typeCategory)
+  }
   return (
     <>
       <Head>
@@ -719,16 +741,6 @@ const catalog = ({ storeId }: CatalogType) => {
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
-                  value={(
-                    (Number(
-                      getValues?.('discount')
-                        ?.replace('R$ ', '')
-                        ?.replaceAll('.', '')
-                        ?.replaceAll(',', '.') || '0'
-                    ) *
-                      Number(discountProduct)) /
-                    100
-                  ).toFixed(2)}
                   disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
@@ -947,7 +959,7 @@ const catalog = ({ storeId }: CatalogType) => {
             </div>
 
             <div className="right-area">
-              <div className="input-container">
+              {/* <div className="input-container">
                 <Input
                   label="Quantidade atual"
                   icon={<FaCoins />}
@@ -955,7 +967,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="number"
                   {...register('inventory')}
                 />
-              </div>
+              </div> */}
 
               <MultiSelect
                 loading={false}
@@ -1075,7 +1087,7 @@ const catalog = ({ storeId }: CatalogType) => {
         </AddProductModalContainer>
       </CustomModal>
 
-      {/* Add product */}
+      {/* Add Cupom */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleAddCupomModal}
@@ -1088,12 +1100,26 @@ const catalog = ({ storeId }: CatalogType) => {
               <div className="radio-area">
                 <span>Valor do desconto</span>
                 <div className="radio-container">
-                  <input type="radio" name="type" value="1" id="real" />
+                  <input
+                    type="radio"
+                    name="type"
+                    value="1"
+                    id="real"
+                    checked={radioSelected === 1}
+                    onClick={() => setRadioSelected(1)}
+                  />
                   <label htmlFor="all">Real</label>
                 </div>
 
                 <div className="radio-container">
-                  <input type="radio" name="type" value="2" id="perc" />
+                  <input
+                    type="radio"
+                    name="type"
+                    value="2"
+                    id="perc"
+                    checked={radioSelected === 2}
+                    onClick={() => setRadioSelected(2)}
+                  />
                   <label htmlFor="cat">Porcentagem</label>
                 </div>
               </div>
@@ -1101,18 +1127,30 @@ const catalog = ({ storeId }: CatalogType) => {
               <Input
                 label="Valor do desconto"
                 icon={<FaMoneyBill />}
-                placeholder="R$ 0"
+                placeholder={radioSelected === 1 ? 'R$ 0' : '% 0'}
                 mask="monetary"
               />
 
               <div className="row">
                 <Input label="Validade" placeholder="02/12/2021" mask="date" />
 
-                <Input label="N° de cupons" placeholder="0" mask="number" />
+                <Input
+                  label="N° de cupons"
+                  placeholder="0"
+                  mask="number"
+                  disabled={ilimitedCupom}
+                  style={ilimitedCupom ? { cursor: 'default' } : undefined}
+                />
               </div>
 
               <div className="radio-area">
-                <input type="checkbox" name="type" value="1" id="ilim" />
+                <input
+                  type="checkbox"
+                  name="type"
+                  value="1"
+                  id="ilim"
+                  onClick={() => setIlimitedCupom(true)}
+                />
                 <label htmlFor="ilim">Cupons ilimitados</label>
               </div>
 
@@ -1129,14 +1167,15 @@ const catalog = ({ storeId }: CatalogType) => {
             <div className="right-area">
               <div className="radio-area">
                 <span>Tipo de desconto</span>
-                <div className="radio-container">
-                  <input type="radio" name="type" value="1" id="all" />
-                  <label htmlFor="all">Toda a loja</label>
-                </div>
 
                 <div className="radio-container">
                   <input type="radio" name="type" value="2" id="cat" />
-                  <label htmlFor="cat">Categorias selecionadas</label>
+                  <label htmlFor="cat">Categoria</label>
+                </div>
+
+                <div className="radio-container">
+                  <input type="radio" name="type" value="1" id="all" />
+                  <label htmlFor="all">Toda a loja</label>
                 </div>
 
                 <div className="radio-container">
@@ -1145,18 +1184,10 @@ const catalog = ({ storeId }: CatalogType) => {
                 </div>
               </div>
 
-              <div className="input-container">
-                <Input
-                  label="Quantidade atual"
-                  icon={<FaCoins />}
-                  placeholder="0"
-                  mask="number"
-                />
-              </div>
-
               <MultiSelect
                 loading={false}
                 name="Categorias"
+                disabled={!typeCategory}
                 options={categories.map((cat) => ({
                   value: String(cat.id),
                   label: cat.name

@@ -1,12 +1,12 @@
 import { toast } from 'react-toastify'
 
-type ToastProps = {
-  newMessage?: string
+interface ToastProps {
+  newMessage?: any
 }
 
 export const ErrorToast = ({ newMessage }: ToastProps) => {
   const message = newMessage
-  if (message)
+  if (message) {
     toast.error(message, {
       position: 'top-right',
       autoClose: 5000,
@@ -16,11 +16,12 @@ export const ErrorToast = ({ newMessage }: ToastProps) => {
       draggable: true,
       progress: undefined
     })
+  } else null
 }
 
 export const SucessToast = ({ newMessage }: ToastProps) => {
   const message = newMessage
-  if (message)
+  if (message) {
     toast.success(message, {
       position: 'top-right',
       autoClose: 5000,
@@ -30,4 +31,5 @@ export const SucessToast = ({ newMessage }: ToastProps) => {
       draggable: true,
       progress: undefined
     })
+  } else null
 }

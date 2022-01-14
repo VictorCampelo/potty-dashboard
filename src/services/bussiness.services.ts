@@ -58,7 +58,15 @@ export async function getCategories(id: string) {
   return res
 }
 
-export async function editTimeTable(id: string, data) {
+export async function editTimeTable(data) {
   const res = await api.patch(`/stores/`, data)
+  return res
+}
+
+export async function editBussinesInfo(data) {
+  const config = {
+    headers: { 'content-type': 'multipart/form-data' }
+  }
+  const res = await api.patch(`/stores`, data, config)
   return res
 }

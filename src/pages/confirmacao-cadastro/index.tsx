@@ -14,7 +14,10 @@ const BusinessRegisterConfirm = () => {
 
       <Header />
       <Container>
-        <form onSubmit={() => router.push('/login')}>
+        <form
+          onSubmit={() => router.push('/login')}
+          className="confirmationAuth"
+        >
           <img src="/images/usercard.png" className="confirmImg" />
 
           <h2>Cadastro efetuado com sucesso!</h2>

@@ -6,9 +6,15 @@ interface CheckboxProps {
   confirm: boolean
   toggleConfirm: () => void
   label: string
+  recovery?: boolean
 }
 
-export const Checkbox = ({ confirm, toggleConfirm, label }: CheckboxProps) => {
+export const Checkbox = ({
+  confirm,
+  toggleConfirm,
+  label,
+  recovery = false
+}: CheckboxProps) => {
   return (
     <Container confirm={confirm}>
       <div className="check">
@@ -23,9 +29,11 @@ export const Checkbox = ({ confirm, toggleConfirm, label }: CheckboxProps) => {
         <label htmlFor="btn">{label}</label>
       </div>
 
-      <Link href="/recover">
-        <a>Esqueceu sua senha</a>
-      </Link>
+      {recovery && (
+        <Link href="/recover">
+          <a>Esqueceu sua senha</a>
+        </Link>
+      )}
     </Container>
   )
 }

@@ -1,36 +1,48 @@
-import { Container } from './styles';
+import { forwardRef, ForwardRefRenderFunction } from 'react'
+import { Container } from './styles'
 
-interface DescriptionInput extends React.InputHTMLAttributes<HTMLTextAreaElement>{
-  label: string;
-  placeholder: string;
-  error?: boolean;
-  textError?: string;
-  flex?: number;
+interface DescriptionInput
+  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+  label: string
+  placeholder: string
+  error?: boolean
+  textError?: string
+  flex?: number
 }
 
-export const DescriptionInput = ({ 
-  label, 
-  placeholder,
-  error,
-  textError = '',
-  flex = 1,
-  ...rest 
-}: DescriptionInput) => {
+const DescriptionInputBase: ForwardRefRenderFunction<
+  HTMLTextAreaElement,
+  DescriptionInput
+> = (
+  {
+    label,
+    placeholder,
+    error,
+    textError = '',
+    flex = 1,
+    ...rest
+  }: DescriptionInput,
+  ref
+) => {
   return (
-    <Container flex={flex} error={error} >
+    <Container flex={flex} error={error}>
       <section className="labelContent">
-        <label> 
-          {label} 
-        </label>
+        <label>{label}</label>
 
-        {error && textError && <span>{textError}</span> }
+        {error && textError && <span>{textError}</span>}
       </section>
-      
+
       <label className="inputContainter">
-        <textarea className="textArea" maxLength={500} placeholder={placeholder}
-        {...rest}
+        <textarea
+          ref={ref}
+          className="textArea"
+          maxLength={500}
+          placeholder={placeholder}
+          {...rest}
         ></textarea>
       </label>
     </Container>
   )
 }
+
+export const DescriptionInput = forwardRef(DescriptionInputBase)

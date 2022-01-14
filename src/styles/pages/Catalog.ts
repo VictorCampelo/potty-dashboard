@@ -207,6 +207,8 @@ export const AddProductModalContainer = styled.form`
           display: flex;
           flex-direction: column;
 
+          margin: 0 10px;
+
           .left-arrow {
             margin-top: -5px;
           }
@@ -220,6 +222,10 @@ export const AddProductModalContainer = styled.form`
 
       .input-container {
         margin-bottom: 1rem;
+      }
+
+      h3 {
+        margin-bottom: var(--spacing-xxxs);
       }
     }
 
@@ -646,8 +652,8 @@ export const CropModalContainer = styled.div`
           width: 25px;
           height: 25px;
           border-radius: 25%;
-          background: var(--green-confirmation);
-          color: var(--green-confirmation);
+          background: var(--color-primary);
+          color: var(--color-primary);
           position: relative;
           box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
         }

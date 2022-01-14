@@ -24,7 +24,6 @@ export const Container = styled.section`
       #banner {
         width: 100%;
         height: 100%;
-        object-fit: cover;
         border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
       }
 

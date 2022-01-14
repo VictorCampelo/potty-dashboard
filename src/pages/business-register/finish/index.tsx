@@ -4,28 +4,57 @@ import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { DescriptionInput } from '../../../components/molecules/DescriptionInput'
 import { ShopImage } from '../../../components/molecules/ShopImage'
-import { useContext, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { Button } from '../../../components/atoms/Button'
 import { AiFillShop, AiFillCamera } from 'react-icons/ai'
 import Router from 'next/router'
 
 import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 import { api } from '../../../services/apiClient'
-
-type ImageProps = {
-  lastModified: number
-  lastModifiedDate: Date
-  name: string
-  size: number
-  type: string
-  webkitRelativePath: string
-}
+import { toast } from 'react-toastify'
+import { Point } from 'react-easy-crop/types'
+import getCroppedImg from 'functions/cropImage'
+import Cropper from 'react-easy-crop'
+import { CropModalContainer } from 'styles/pages/Catalog'
+import CustomModal from 'components/molecules/CustomModal'
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState(null)
+  const [previewImage, setPreviewImage] = useState(null)
+
+  const [zoom, setZoom] = useState(1)
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const rotation = 0
 
   const { userDto, storeDto } = useContext(ShopkeeperContext)
+
+  // Toasts
+
+  function notifySuccess(message: string) {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
+
+  function notify(message: string) {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+  }
 
   async function handleFinishRegister() {
     const body = {
@@ -65,20 +94,58 @@ const BusinessRegister = () => {
     }
   }
 
+  // Image Crop Modal
+
+  function toggleImageModal() {
+    setPreviewImage(!previewImage)
+  }
+
+  function onZoomChange(newValue) {
+    setZoom(newValue)
+  }
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
   function readFile(file: File) {
-    return new Promise((resolve) => {
+    const result = new Promise((resolve) => {
       const reader = new FileReader()
       reader.addEventListener('load', () => resolve(reader.result), false)
       reader.readAsDataURL(file)
     })
+    return result
   }
 
   const onFileChange = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0]
-      const imageDataUrl = await readFile(file)
-      console.log(file)
-      setImage(String(imageDataUrl))
+    if (e.target.files && e.target.files.length === 1) {
+      const file = await readFile(e.target.files[0])
+      setPreviewImage(file)
+    } else {
+      toast.success('Selecione apenas 1 imagem pro vez', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+    }
+  }
+
+  async function cropImage() {
+    // Get cropped image file
+
+    const Image = await getCroppedImg(previewImage, croppedAreaPixels, rotation)
+
+    try {
+      setImage(Image)
+      notifySuccess('Foto recortada com sucesso!')
+      setPreviewImage(null)
+      toggleImageModal()
+    } catch (e) {
+      notify('Erro interno favor tentar novamente mais tarde!')
     }
   }
 
@@ -90,6 +157,57 @@ const BusinessRegister = () => {
 
       <Header />
       <Container>
+        {/* Crop Image Modal */}
+        <CustomModal
+          buttons={false}
+          setModalOpen={toggleImageModal}
+          modalVisible={previewImage}
+        >
+          <CropModalContainer>
+            <section className="crops">
+              <div className="cropper-container">
+                <div className="crop">
+                  <Cropper
+                    style={{
+                      containerStyle: {
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        width: 400,
+                        height: 400,
+                        top: '20%',
+                        left: '50%',
+                        transform: 'translate(-50%, -20%)'
+                      },
+                      cropAreaStyle: {},
+                      mediaStyle: {}
+                    }}
+                    image={previewImage}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={1 / 1}
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                  />
+                </div>
+                <div className="controls-container">
+                  <input
+                    type="range"
+                    step="0.1"
+                    min="1"
+                    max="2"
+                    value={zoom}
+                    onChange={(e) => onZoomChange(e.target.value)}
+                  />
+                </div>
+              </div>
+            </section>
+            <section className="btns">
+              <Button title="Cancelar" onClick={toggleImageModal} />
+              <Button title="Recortar" onClick={() => cropImage()} />
+            </section>
+          </CropModalContainer>
+        </CustomModal>
+
         <form onSubmit={() => {}}>
           <div className="title">
             <h1> Registro de Negócio </h1>
@@ -98,7 +216,6 @@ const BusinessRegister = () => {
           <div className="imageContainer">
             <ShopImage
               imageSrc={image} // Imagem para o perfil do Shop
-              icon={<AiFillShop size={70} color="var(--white)" />}
               btnIcon={<AiFillCamera size={23} color="var(--white)" />}
               btn={
                 <input

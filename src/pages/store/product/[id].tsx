@@ -122,38 +122,13 @@ const fakeProducts = [
   }
 ]
 
-const images = [
-  {
-    title: 'Foto 1',
-    original:
-      'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg',
-    thumbnail:
-      'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg'
-  },
-  {
-    title: 'Foto 2',
-    original:
-      'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg',
-    thumbnail:
-      'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg'
-  },
-  {
-    title: 'Foto 3',
-    original:
-      'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg',
-    thumbnail:
-      'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg'
-  }
-]
-
 const ProductShow = () => {
   const router = useRouter()
   const { id } = router.query
   const { items, setItems } = useContext(CartContext)
+  const [name, setName] = useState('')
 
-  let name = ''
   useEffect(() => {
-    // if (window.location.hostName) {
     const hostName = window.location.hostname
 
     let previousName = ''
@@ -164,9 +139,7 @@ const ProductShow = () => {
       previousName += hostName[i]
     }
 
-    name = previousName
-    console.log(previousName)
-    // }
+    setName(previousName)
   }, [])
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
@@ -204,12 +177,38 @@ const ProductShow = () => {
     router.push(`/product/${id}`)
   }
 
-  async function loadData() {
-    try {
-      setStoreId(await getStoreId(String(name)))
-    } catch (e) {
-      console.error(e)
+  const images = [
+    {
+      title: 'Foto 1',
+      original:
+        'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg',
+      thumbnail:
+        'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg'
+    },
+    {
+      title: 'Foto 2',
+      original:
+        'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg',
+      thumbnail:
+        'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg'
+    },
+    {
+      title: 'Foto 3',
+      original:
+        'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg',
+      thumbnail:
+        'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg'
     }
+  ]
+
+  async function loadData() {
+    // try {
+    //   setStoreId(await getStoreId(name))
+    //   console.log(storeId)
+    //   console.log(name)
+    // } catch (e) {
+    //   console.error(e)
+    // }
 
     try {
       const { data } = await getProduct(`${id}`)
@@ -222,6 +221,7 @@ const ProductShow = () => {
       setPrice(data?.price)
       setDiscount(data?.discount)
       setProductId(data?.id)
+      setStoreId(data?.storeId)
 
       setPriceWithDiscount(
         parseFloat(
@@ -565,6 +565,7 @@ const ProductShow = () => {
                       paddingRight: '0.5rem',
                       fontWeight: 600
                     }}
+                    onClick={handleAddToCart}
                   />
                 </>
               )}
