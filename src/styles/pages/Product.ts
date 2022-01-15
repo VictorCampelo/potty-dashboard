@@ -146,7 +146,7 @@ export const CardProduct = styled.div`
   ${[sizes.down('lgMob')]} {
     background: var(--gray-100);
   }
-  box-shadow: rgba(99, 99, 99, 0  .2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: var(--border-radius-gg);
 
   ${[sizes.down('lgMob')]} {
@@ -352,7 +352,6 @@ export const CardProduct = styled.div`
         align-items: center;
 
         h4 {
-          text-decoration: line-through;
           font-family: var(--font-family-primary);
           font-style: var(--font-style-normal);
           font-weight: var(--font-weight-medium);
