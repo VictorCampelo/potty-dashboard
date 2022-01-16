@@ -29,6 +29,7 @@ interface Landing {
 }
 
 const Landing = ({ stores }: Landing) => {
+  console.log(stores)
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
   return (

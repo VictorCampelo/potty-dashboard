@@ -63,6 +63,9 @@ const Products = () => {
   const [buttonOn, setButtonOn] = useState(true)
   const [drawerActive, setDrawerActive] = useState(false)
 
+  const [imageIcon, setImageIcon] = useState(null)
+  const [imageBanner, setImageBanner] = useState(null)
+
   const [businessName, setBusinessName] = useState('')
   const [desc, setDesc] = useState('')
 
@@ -102,6 +105,9 @@ const Products = () => {
       const id = await getStoreId(`${name}`)
       const { data } = await getStore(`${id}`)
       const products = await getProducts(`${id}`)
+
+      setImageIcon(data?.avatar)
+      setImageBanner(data?.background)
 
       setBusinessName(data?.name)
       setDesc(data?.description)
@@ -172,7 +178,11 @@ const Products = () => {
         </Head>
 
         <TopoPage>
-          <img className="capa" src="/images/capa.png" alt="capa" />
+          <img
+            className="capa"
+            src={imageBanner?.url || '/images/capa.png'}
+            alt="capa"
+          />
 
           <HeaderShop isMain={false} />
 
@@ -218,7 +228,10 @@ const Products = () => {
             <div className="body">
               <DescriptionShop>
                 <div className="top">
-                  <img src="/images/logoLoja.svg" alt="perfil" />
+                  <img
+                    src={imageIcon?.url || '/images/icon.png'}
+                    alt="perfil"
+                  />
                   <div className="title">
                     <h1>{businessName}</h1>
                     <div className="stars">
@@ -244,7 +257,7 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-                <p>{desc}</p>
+                <p>{ellipsis(desc, 208)}</p>
               </DescriptionShop>
 
               <StatusCard>
@@ -354,10 +367,6 @@ const Products = () => {
                     <CheckboxFilter confirm={false} toggleConfirm={() => {}}>
                       <AiFillStar size={24} color="var(--gold)" />
                       <label>4.0 ou mais</label>
-                    </CheckboxFilter>
-
-                    <CheckboxFilter confirm={true} toggleConfirm={() => {}}>
-                      <label>Frete grátis</label>
                     </CheckboxFilter>
                   </FilterCardSecondary>
 

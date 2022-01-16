@@ -207,6 +207,8 @@ export const AddProductModalContainer = styled.form`
           display: flex;
           flex-direction: column;
 
+          margin: 0 10px;
+
           .left-arrow {
             margin-top: -5px;
           }
@@ -220,6 +222,10 @@ export const AddProductModalContainer = styled.form`
 
       .input-container {
         margin-bottom: 1rem;
+      }
+
+      h3 {
+        margin-bottom: var(--spacing-xxxs);
       }
     }
 

@@ -11,7 +11,11 @@ export const Container = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 2rem;
+  padding-top: var(--spacing-xxxs);
+
+  .confirmationAuth {
+    text-align: center;
+  }
 
   form {
     width: 530px;
@@ -21,7 +25,7 @@ export const Container = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2.5rem 3rem 2rem 3rem;
+    padding: 1rem 3rem 2rem 3rem;
     overflow-x: hidden;
 
     .confirmImg {
@@ -32,6 +36,7 @@ export const Container = styled.main`
 
     .title {
       width: 100%;
+      height: 80px;
       margin-bottom: 1rem;
       display: flex;
       flex-direction: row;

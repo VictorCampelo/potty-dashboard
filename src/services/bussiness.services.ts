@@ -81,12 +81,12 @@ export async function getCupom() {
   return res
 }
 
-export async function editCupom(data) {
-  const res = await api.patch(`/coupons/coupom-nao-vencido4`, data)
+export async function editCupom(data: string) {
+  const res = await api.patch(`/coupons/${data}`)
   return res
 }
 
-export async function deleteCupom(data) {
-  const res = await api.delete(`/coupons/coupom-nao-vencido4`, data)
+export async function deleteCupom(data: string) {
+  const res = await api.delete(`/coupons/${data}`)
   return res
 }

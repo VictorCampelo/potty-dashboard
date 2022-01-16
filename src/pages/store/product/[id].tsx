@@ -78,7 +78,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   },
   {
     id: '2',
@@ -86,7 +92,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   },
   {
     id: '404d2460-d787-47dd-8636-5364d77718b7',
@@ -94,7 +106,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   },
   {
     id: '2',
@@ -102,7 +120,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   },
   {
     id: '2',
@@ -110,7 +134,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   },
   {
     id: '2',
@@ -118,31 +148,13 @@ const fakeProducts = [
     formatedName: 'Geladeira Bras Temp',
     avgStars: 0,
     sumStars: 0,
-    city: 'Teresina'
-  }
-]
-
-const images = [
-  {
-    title: 'Foto 1',
-    original:
-      'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg',
-    thumbnail:
-      'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg'
-  },
-  {
-    title: 'Foto 2',
-    original:
-      'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg',
-    thumbnail:
-      'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg'
-  },
-  {
-    title: 'Foto 3',
-    original:
-      'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg',
-    thumbnail:
-      'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg'
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
   }
 ]
 
@@ -150,10 +162,9 @@ const ProductShow = () => {
   const router = useRouter()
   const { id } = router.query
   const { items, setItems } = useContext(CartContext)
+  const [name, setName] = useState('')
 
-  let name = ''
   useEffect(() => {
-    // if (window.location.hostName) {
     const hostName = window.location.hostname
 
     let previousName = ''
@@ -164,10 +175,32 @@ const ProductShow = () => {
       previousName += hostName[i]
     }
 
-    name = previousName
-    console.log(previousName)
-    // }
+    setName(previousName)
   }, [])
+
+  const images = [
+    {
+      title: 'Foto 1',
+      original:
+        'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg',
+      thumbnail:
+        'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg'
+    },
+    {
+      title: 'Foto 2',
+      original:
+        'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg',
+      thumbnail:
+        'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/16cfcfb8ab328d6ce5e19bd1deb5e651.jpg'
+    },
+    {
+      title: 'Foto 3',
+      original:
+        'https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg',
+      thumbnail:
+        'https://a-static.mlcdn.com.br/200x200/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/e82ef77fcefc0aff7ce228350d02e838.jpg'
+    }
+  ]
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
   const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
@@ -205,11 +238,13 @@ const ProductShow = () => {
   }
 
   async function loadData() {
-    try {
-      setStoreId(await getStoreId(String(name)))
-    } catch (e) {
-      console.error(e)
-    }
+    // try {
+    //   setStoreId(await getStoreId(name))
+    //   console.log(storeId)
+    //   console.log(name)
+    // } catch (e) {
+    //   console.error(e)
+    // }
 
     try {
       const { data } = await getProduct(`${id}`)
@@ -222,6 +257,7 @@ const ProductShow = () => {
       setPrice(data?.price)
       setDiscount(data?.discount)
       setProductId(data?.id)
+      setStoreId(data?.storeId)
 
       setPriceWithDiscount(
         parseFloat(
@@ -565,6 +601,7 @@ const ProductShow = () => {
                       paddingRight: '0.5rem',
                       fontWeight: 600
                     }}
+                    onClick={handleAddToCart}
                   />
                 </>
               )}

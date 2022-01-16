@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { api } from 'services/apiClient'
 import router from 'next/router'
 import { useMedia } from 'use-media'
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { FaCheck } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 
@@ -77,6 +77,17 @@ const Cart = () => {
     }
   }, [items])
 
+  async function handleMakeCheckout() {
+    try {
+      await api.get('users/me')
+
+      router.push('cart/continue')
+    } catch (e) {
+      if (e.response.status === 401) {
+        router.push('/login')
+      }
+    }
+  }
   return (
     <>
       <Head>
@@ -305,12 +316,7 @@ const Cart = () => {
                   ESVAZIAR CARRINHO
                 </button>
 
-                <button
-                  className="finish"
-                  onClick={() => {
-                    router.push('/cart/continue')
-                  }}
-                >
+                <button className="finish" onClick={handleMakeCheckout}>
                   CONTINUAR
                 </button>
               </div>
@@ -318,15 +324,10 @@ const Cart = () => {
                 className="buttonContainerMob"
                 style={widthScreen ? { display: 'none' } : undefined}
               >
-                <button
-                  className="finish"
-                  onClick={() => {
-                    router.push('/cart/continue')
-                  }}
-                >
+                <button className="finish" onClick={handleMakeCheckout}>
                   {' '}
-                  <BsWhatsapp size={24} color="white" />
-                  <p>FINALIZAR</p>
+                  <FiArrowRight size={24} color="white" />
+                  <p>CONTINUAR</p>
                 </button>
               </div>
             </CartContainerFooter>

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
 import { BsWhatsapp } from 'react-icons/bs'
-import { FiChevronLeft, FiPlus } from 'react-icons/fi'
+import { FiChevronLeft, FiPlus, FiArrowLeft } from 'react-icons/fi'
 import { MultiSelect as Select } from 'components/molecules/Select'
 import { useContext, useState, useEffect } from 'react'
 import router from 'next/router'
@@ -21,6 +21,13 @@ import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { FaHome } from 'react-icons/fa'
 import { Button } from 'components/atoms/Button'
+import {
+  Container,
+  Content,
+  CartContainerFooter as ContainerFooterMobile
+} from 'styles/pages/Cart'
+import sizes from 'utils/sizes'
+import { Checkbox } from 'components/atoms/Checkbox'
 
 type PaymentForm = {
   value: string
@@ -45,12 +52,38 @@ const adressRegisterFormSchema = yup.object().shape({
   cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
 })
 
+type AddressProps = {
+  uf: string
+  city: string
+  zipcode: string
+  addressNumber: string
+  complement: string
+  neighborhood: string
+  street: string
+}
+
 const CartContinue = () => {
-  const { items } = useContext(CartContext)
+  const { items, setItems } = useContext(CartContext)
   const [addAdressModal, setAddAdressModal] = useState(false)
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
+  const [user, setUser] = useState({})
+  const [addressUser, setAddressUser] = useState<AddressProps | undefined>(
+    {} as AddressProps
+  )
+
+  // Estado Modal Clear Items
+  const [itemsClear, setItemsClear] = useState(false)
+  const [parcel, setParcel] = useState(false)
+
+  function toggleParcel() {
+    setParcel(!parcel)
+  }
+
+  function handleClear() {
+    setItemsClear(!itemsClear)
+  }
 
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
@@ -198,8 +231,18 @@ const CartContinue = () => {
       // Consumindo os dados da /me para popular a tela de checkout
       const response = await getUser()
       if (response.status == 200) {
-        const name = `${response?.data?.firstName} ${response?.data?.lastName}`
+        const data = response?.data
+        const name = `${data?.firstName} ${data?.lastName}`
         setName(name)
+        setAddressUser({
+          uf: data?.uf,
+          city: data?.city,
+          zipcode: data?.zipcode,
+          addressNumber: data?.addressNumber,
+          complement: data?.complement,
+          neighborhood: data?.neighborhood,
+          street: data?.street
+        })
       }
     } catch (error) {
       // router.push('/login')
@@ -220,19 +263,57 @@ const CartContinue = () => {
 
       <CustomModal
         buttons={false}
+        modalVisible={itemsClear}
+        setModalOpen={handleClear}
+      >
+        <ModalContainer>
+          {/* <div className="clearContainer"> */}
+          <div className="title" style={{ textAlign: 'center' }}>
+            <span>
+              Realmente deseja <strong>esvaziar</strong> o carrinho?
+            </span>
+          </div>
+          <div
+            className="buttonsContainer"
+            style={{ textAlign: 'center', marginTop: 'var(--spacing-xs)' }}
+          >
+            <Button
+              title="ESVAZIAR"
+              onClick={() => {
+                setItems([])
+                handleClear()
+              }}
+              style={{ marginBottom: 'var(--spacing-xxs)' }}
+            />
+            <span onClick={handleClear}>CANCELAR</span>
+          </div>
+          {/* </div> */}
+        </ModalContainer>
+      </CustomModal>
+
+      <CustomModal
+        buttons={false}
         setModalOpen={() => {
           setAddAdressModal(!addAdressModal)
         }}
         modalVisible={addAdressModal}
+        under={!widthScreen}
       >
         <ModalContainer>
           <div className="exit-container">
+            <FiArrowLeft
+              size={25}
+              color="black"
+              onClick={() => setAddAdressModal(false)}
+              style={widthScreen ? { display: 'none' } : undefined}
+            />
             <h1>Adicionar novo endereço</h1>
 
             <IoIosClose
               onClick={() => setAddAdressModal(false)}
               size={36}
               color={'black'}
+              style={widthScreen ? undefined : { display: 'none' }}
             />
           </div>
 
@@ -260,7 +341,7 @@ const CartContinue = () => {
               />
             </div>
 
-            <div className="row">
+            <div className="row mid">
               <Input
                 label="Logradouro"
                 placeholder="Logradouro"
@@ -312,8 +393,12 @@ const CartContinue = () => {
             </div>
 
             <div className="buttons-container">
-              <Button title="Voltar" border />
-              <Button title="Adicionar" />
+              <Button
+                title="Voltar"
+                border
+                style={widthScreen ? undefined : { display: 'none' }}
+              />
+              <Button title="Adicionar" style={{ marginBottom: 80 }} />
             </div>
           </form>
         </ModalContainer>
@@ -321,7 +406,15 @@ const CartContinue = () => {
 
       <Container>
         <Content>
-          <h1>Finalizar compra</h1>
+          {!widthScreen && (
+            <div className="header" onClick={() => router.push('/')}>
+              <FiArrowLeft size={25} color="var(--black-800)" />
+              <h1>Meu carrinho</h1>
+            </div>
+          )}
+          <h1 style={widthScreen ? undefined : { display: 'none' }}>
+            Finalizar compra
+          </h1>
 
           <CardsContainer>
             <div className="top-container">
@@ -335,8 +428,9 @@ const CartContinue = () => {
 
                   <span>
                     <strong>Endereço: </strong>
-                    Avenida José Honório de Sousa 66, Centro, Dom Expedito
-                    Lopes, PI, 64620000, Brasil
+                    {addressUser?.street} {addressUser?.addressNumber},{' '}
+                    {addressUser?.neighborhood},{addressUser?.city},{' '}
+                    {addressUser?.uf}, {addressUser?.zipcode}, Brasil
                   </span>
 
                   <span>
@@ -351,7 +445,10 @@ const CartContinue = () => {
 
                 <h1>Forma de pagamento</h1>
 
-                <div style={{ display: 'flex', gap: 16 }}>
+                <div
+                  style={{ display: 'flex', gap: 16 }}
+                  className="paymentContainer"
+                >
                   <Select
                     name="Forma de pagamento"
                     options={paymentForms}
@@ -361,7 +458,7 @@ const CartContinue = () => {
                     placeholder="Selecione sua forma de pagamento"
                   />
 
-                  {paymentForm?.value === '0' && (
+                  {paymentForm?.value === '0' && widthScreen && (
                     <Select
                       name="Parcelamento"
                       options={Installments}
@@ -370,6 +467,25 @@ const CartContinue = () => {
                       loading={false}
                       placeholder="Selecione o número de parcelas"
                     />
+                  )}
+
+                  {!widthScreen && (
+                    <>
+                      <Checkbox
+                        confirm={parcel}
+                        toggleConfirm={toggleParcel}
+                        label="Parcelar Compra"
+                      />
+                      <Select
+                        name="Parcelamento"
+                        options={Installments}
+                        selectedValue={installments}
+                        setSelectedValue={setInstallments}
+                        loading={false}
+                        placeholder="Selecione o número de parcelas"
+                        style={parcel ? undefined : { display: 'none' }}
+                      />
+                    </>
                   )}
                 </div>
               </AdressCard>
@@ -395,39 +511,86 @@ const CartContinue = () => {
               </ProductsContainer>
             </div>
 
-            <CartContainerFooter>
-              <div className="buttonContainer">
-                <button
-                  className="finish goback"
-                  onClick={() => {
-                    router.push('/cart')
-                  }}
-                >
-                  <FiChevronLeft size={24} color="var(--color-primary)" />
-                  Voltar para o carrinho
-                </button>
-              </div>
-
-              <div className="info">
-                <div>
-                  <span>Total: </span>
-                  <strong>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    }).format(total)}
-                  </strong>
+            {widthScreen ? (
+              <CartContainerFooter>
+                <div className="buttonContainer">
+                  <button
+                    className="finish goback"
+                    onClick={() => {
+                      router.push('/cart')
+                    }}
+                  >
+                    <FiChevronLeft size={24} color="var(--color-primary)" />
+                    Voltar para o carrinho
+                  </button>
                 </div>
-                <span className="spanBottom"></span>
-              </div>
 
-              <div className="buttonContainer">
-                <button className="finish" onClick={handleFinishPurcharse}>
-                  <BsWhatsapp size={24} color="white" />
-                  FINALIZAR COMPRA
-                </button>
-              </div>
-            </CartContainerFooter>
+                <div className="info">
+                  <div>
+                    <span>Total: </span>
+                    <strong>
+                      {new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      }).format(total)}
+                    </strong>
+                  </div>
+                  <span className="spanBottom"></span>
+                </div>
+
+                <div className="buttonContainer">
+                  <button className="finish" onClick={handleFinishPurcharse}>
+                    <BsWhatsapp size={24} color="white" />
+                    FINALIZAR COMPRA
+                  </button>
+                </div>
+              </CartContainerFooter>
+            ) : (
+              <ContainerFooterMobile
+                disabled={items.filter((it) => it.enabled).length === 0}
+              >
+                <div className="info">
+                  <div>
+                    <span>Total: </span>
+                    <strong>
+                      {!widthScreen
+                        ? new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(
+                            items
+                              .filter((it) => it.enabled)
+                              .reduce((prev, curr) => {
+                                return (
+                                  prev +
+                                  Number(curr.price) * Number(curr.amount)
+                                )
+                              }, 0)
+                          )
+                        : new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(total)}
+                    </strong>
+                  </div>
+                  <span className="spanBottom">
+                    {items.filter((it) => it.enabled).length <= 1
+                      ? items.length + ' item'
+                      : items.length + ' itens'}
+                    {!widthScreen && (
+                      <a onClick={handleClear}>Esvaziar Carrinho</a>
+                    )}
+                  </span>
+                </div>
+                <div className="buttonContainerMob">
+                  <button className="finish" onClick={handleFinishPurcharse}>
+                    {' '}
+                    <BsWhatsapp size={24} color="white" />
+                    <p>FINALIZAR</p>
+                  </button>
+                </div>
+              </ContainerFooterMobile>
+            )}
           </CardsContainer>
         </Content>
       </Container>
@@ -436,26 +599,6 @@ const CartContinue = () => {
 }
 
 export default CartContinue
-
-const Container = styled.main`
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  padding: 0 4rem;
-`
-
-const Content = styled.section`
-  max-width: 1420px;
-  flex: 1;
-  height: 100%;
-  width: 100%;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-`
 
 const CardsContainer = styled.section`
   width: 100%;
@@ -481,6 +624,20 @@ const AdressCard = styled.section`
   padding: 1.5rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
+  ${[sizes.down('lgMob')]} {
+    box-shadow: none;
+    max-width: 100vw;
+
+    .paymentContainer {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      display: none;
+    }
+  }
+
   h1 {
     font-size: 1.5rem;
     font-weight: 500;
@@ -494,7 +651,14 @@ const AdressInfo = styled.div`
   padding: 0.9rem 0.75rem;
   border-radius: 11px;
   margin-top: 0.5rem;
-
+  ${[sizes.down('lgMob')]} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xxxs);
+    strong {
+      display: none;
+    }
+  }
   span {
     display: block;
   }
@@ -511,6 +675,9 @@ const NewAdressButton = styled.button`
   margin-bottom: 1rem;
   transition: color 0.2s;
 
+  ${[sizes.down('lgMob')]} {
+    margin-bottom: var(--spacing-md);
+  }
   svg {
     color: var(--color-primary);
     margin-right: 0.5rem;
@@ -536,6 +703,9 @@ const ProductsContainer = styled.section`
   display: flex;
   flex-direction: column;
 
+  ${[sizes.down('lgMob')]} {
+    display: none;
+  }
   h1 {
     font-size: 1.5rem;
     font-weight: 500;
@@ -655,11 +825,15 @@ export const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  span {
+    font-size: var(--font-size-md);
+  }
   .exit-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
+    align-items: center;
 
     h1 {
       font-family: 'Poppins';
@@ -678,11 +852,22 @@ export const ModalContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
 
-  .row {
-    display: flex;
-    gap: 1rem;
+    ${[sizes.down('lgMob')]} {
+      width: 100%;
+
+      .row {
+        flex-direction: column;
+      }
+
+      .mid {
+        flex-direction: row;
+      }
+    }
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
   }
 
   .buttons-container {
