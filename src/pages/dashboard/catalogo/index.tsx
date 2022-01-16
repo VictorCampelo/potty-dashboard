@@ -4,7 +4,9 @@ import Head from 'next/head'
 import { MultiSelect as Select } from 'components/molecules/Select'
 
 import {
+  deleteCupom,
   getCategories,
+  getCupom,
   getProducts
 } from '../../../services/bussiness.services'
 
@@ -57,6 +59,17 @@ import CupomItem from 'components/molecules/CupomItem'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { string } from 'yup/lib/locale'
+
+type CupomType = {
+  code: string
+  discountPorcent: number
+  maxUsage: number
+  type: string
+  range: string
+  categoriesIds: string[]
+  validate: string
+}
 
 type CategoryType = {
   name: string
@@ -432,6 +445,18 @@ const catalog = ({ storeId }: CatalogType) => {
     }
   }
 
+  const handleDeleteCupom = async (code: string) => {
+    try {
+      await deleteCupom(code)
+
+      notifySuccess('Cupom deletado com sucesso!')
+      // setExcludeCupomModal(false)
+      loadData()
+    } catch (e) {
+      notify('Erro ao excluir cupom, tente novamente!')
+    }
+  }
+
   const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
     values,
     event
@@ -492,6 +517,14 @@ const catalog = ({ storeId }: CatalogType) => {
       setCategories(data)
     } catch (e) {
       notify('Erro ao buscar categorias')
+    }
+
+    try {
+      const { data } = await getCupom()
+
+      setCupons(data)
+    } catch (e) {
+      notify('Erro ao buscar cupons')
     }
   }
 
@@ -1075,7 +1108,7 @@ const catalog = ({ storeId }: CatalogType) => {
         </AddProductModalContainer>
       </CustomModal>
 
-      {/* Add product */}
+      {/* Add cupom */}
       <CustomModal
         buttons={false}
         setModalOpen={toggleAddCupomModal}
