@@ -17,6 +17,7 @@ import getCroppedImg from 'functions/cropImage'
 import Cropper from 'react-easy-crop'
 import { CropModalContainer } from 'styles/pages/Catalog'
 import CustomModal from 'components/molecules/CustomModal'
+import useMedia from 'use-media'
 
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
@@ -149,6 +150,8 @@ const BusinessRegister = () => {
     }
   }
 
+  const widthScreen = useMedia({ minWidth: '426px' })
+
   return (
     <Wrapper>
       <Head>
@@ -242,19 +245,23 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <div style={{ marginRight: '1rem' }}>
+            <div
+              style={
+                widthScreen ? { marginRight: '1rem' } : { marginBottom: '1rem' }
+              }
+            >
               <Button
                 type="button"
-                onClick={() => Router.back()}
-                title="VOLTAR"
-                border
+                onClick={handleFinishRegister}
+                title="FINALIZAR"
               />
             </div>
             <div>
               <Button
                 type="button"
-                onClick={handleFinishRegister}
-                title="FINALIZAR"
+                onClick={() => Router.back()}
+                title="VOLTAR"
+                border
               />
             </div>
           </div>

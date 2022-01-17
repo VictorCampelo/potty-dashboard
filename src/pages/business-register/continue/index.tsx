@@ -1,6 +1,10 @@
 import Header from '../../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../styles/pages/preLogin'
+import {
+  Container,
+  ContainerLojist,
+  Wrapper
+} from '../../../styles/pages/preLogin'
 
 import { Input } from '../../../components/molecules/Input'
 import { useContext, useState, useEffect } from 'react'
@@ -16,6 +20,7 @@ import { ShopkeeperContext } from '../../../contexts/ShopkeeperContext'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import useMedia from 'use-media'
 
 type bussinesRegisterFormData = {
   number: string
@@ -72,6 +77,7 @@ const BusinessRegister = () => {
     Router.push('/business-register/finish')
   }
 
+  const widthScreen = useMedia({ minWidth: '426px' })
   return (
     <Wrapper>
       <Head>
@@ -129,7 +135,14 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <div style={{ marginRight: '1rem' }}>
+            <div
+              style={
+                widthScreen ? { marginRight: '1rem' } : { marginBottom: '1rem' }
+              }
+            >
+              <Button type="submit" title="CONTINUAR" />
+            </div>
+            <div>
               <Button
                 onClick={() => {
                   Router.back()
@@ -138,9 +151,6 @@ const BusinessRegister = () => {
                 type="button"
                 border
               />
-            </div>
-            <div>
-              <Button type="submit" title="CONTINUAR" />
             </div>
           </div>
         </form>

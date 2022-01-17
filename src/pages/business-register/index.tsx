@@ -22,6 +22,7 @@ import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
+import router from 'next/router'
 
 type bussinesRegisterFormData = {
   firstName: string
@@ -125,6 +126,9 @@ const BusinessRegister = () => {
       Router.push('/business-register/continue')
     }
 
+  useEffect(() => {
+    console.log(show)
+  }, [show])
   return (
     <Wrapper>
       <Head>
@@ -408,28 +412,23 @@ const BusinessRegister = () => {
                 widthScreen ? { marginRight: '1rem' } : { marginBottom: '1rem' }
               }
             >
-              {!widthScreen && show > 0 ? (
-                <Button
-                  onClick={showPrevious}
-                  title="Voltar"
-                  type="button"
-                  border
-                />
-              ) : (
-                <Button
-                  onClick={() => Router.push('/cadastro')}
-                  title="Voltar"
-                  type="button"
-                  border
-                />
+              {widthScreen ||
+                (show >= 1 && <Button type="submit" title="Continuar" />)}
+              {!widthScreen && show < 1 && (
+                <Button type="button" onClick={showNext} title="Continuar" />
               )}
             </div>
             <div>
-              {!widthScreen && show < 3 ? (
-                <Button onClick={showNext} title="Continuar" type="button" />
-              ) : (
-                <Button type="submit" title="Continuar" />
-              )}
+              <Button
+                onClick={
+                  !widthScreen && show != 0
+                    ? showPrevious
+                    : () => router.push('/cadastro')
+                }
+                title="Voltar"
+                type="button"
+                border
+              />
             </div>
           </div>
 
