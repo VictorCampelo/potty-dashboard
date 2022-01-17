@@ -242,7 +242,14 @@ const CartContinue = () => {
       street: values.street
     }
 
-    console.log(article)
+    try {
+      const res = await api.patch('/users', article)
+      if (res.status == 200) {
+        console.log('deu certo')
+      }
+    } catch (e) {
+      console.log('Erro ao adicionar endereço')
+    }
   }
 
   async function loadData() {
@@ -369,7 +376,7 @@ const CartContinue = () => {
                 placeholder="Logradouro"
                 flex={3}
                 icon={<FaHome size={20} color="var(--black-800)" />}
-                {...register('complement')}
+                {...register('street')}
                 textError={errors.complement?.message}
                 error={errors.complement}
               />
@@ -411,6 +418,15 @@ const CartContinue = () => {
                 textError={errors.uf?.message}
                 error={errors.uf}
                 maxLength={45}
+              />
+            </div>
+            <div className="row">
+              <Complement
+                label="Complemento"
+                placeholder="Complemento"
+                {...register('complement')}
+                textError={errors.complement?.message}
+                maxLength={30}
               />
             </div>
 
@@ -689,7 +705,9 @@ const AdressInfo = styled.div`
     display: block;
   }
 `
-
+const Complement = styled(Input)`
+  width: 400px;
+`
 const NewAdressButton = styled.button`
   display: flex;
   align-items: center;
@@ -845,12 +863,15 @@ export const ProductItem = styled.div`
 
 export const ModalContainer = styled.div`
   width: auto;
-  max-width: 800px;
+  width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+  }
   span {
     font-size: var(--font-size-md);
   }
@@ -878,10 +899,8 @@ export const ModalContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
+    width: 100%;
     ${[sizes.down('lgMob')]} {
-      width: 100%;
-
       .row {
         flex-direction: column;
       }
