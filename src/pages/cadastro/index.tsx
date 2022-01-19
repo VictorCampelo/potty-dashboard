@@ -147,7 +147,7 @@ const Register = () => {
           )}
 
           <div className="buttonContainer">
-            {widthWindow && <Button title="CONTINUAR" type="submit" />}
+            <Button title="CONTINUAR" type="submit" />
           </div>
 
           <div className="divisorContainer">
