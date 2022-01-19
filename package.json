@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.2",
+    "@lottiefiles/react-lottie-player": "^3.4.1",
     "@types/react-image-gallery": "^1.0.5",
     "axios": "^0.21.1",
     "cep-promise": "^4.1.1",
