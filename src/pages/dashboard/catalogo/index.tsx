@@ -4,7 +4,10 @@ import Head from 'next/head'
 import { MultiSelect as Select } from 'components/molecules/Select'
 
 import {
+  createCupom,
+  deleteCupom,
   getCategories,
+  getCupom,
   getProducts
 } from '../../../services/bussiness.services'
 
@@ -57,7 +60,18 @@ import CupomItem from 'components/molecules/CupomItem'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { string } from 'yup/lib/locale'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
+
+type CupomType = {
+  code: string
+  discountPorcent: number
+  maxUsage: number
+  type: string
+  range: string
+  categoriesIds: string[]
+  validate: string
+}
 
 type CategoryType = {
   name: string
@@ -148,12 +162,12 @@ const catalog = ({ storeId }: CatalogType) => {
     label: '1x'
   })
 
-  const [cupons, setCupons] = useState<Cupom[]>([
-    { code: 'ENFIMNATAL', discountPorcent: 10, maxUsage: 1000 },
-    { code: 'DESCONTO10', discountPorcent: 15, maxUsage: 3123 },
-    { code: 'DICONTIN', discountPorcent: 3, maxUsage: 10 },
-    { code: 'DESCONTAI', discountPorcent: 4, maxUsage: 5 }
-  ])
+  const [cupons, setCupons] = useState<Cupom[]>([])
+
+  const [cupomCode, setCupomCode] = useState('')
+  const [discountPorcent, setDiscountPorcent] = useState('')
+  const [maxUsage, setMaxUsage] = useState('')
+  const [validate, setValidate] = useState('')
 
   const [previewImage, setPreviewImage] = useState(null)
   const [imageSrc, setImageSrc] = useState(null)
@@ -232,27 +246,11 @@ const catalog = ({ storeId }: CatalogType) => {
   // Toasts
 
   function notifySuccess(message: string) {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
+    toast.success(message)
   }
 
   function notify(message: string) {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
+    toast.error(message)
   }
 
   // Image Crop Modal
@@ -325,6 +323,29 @@ const catalog = ({ storeId }: CatalogType) => {
       console.error(e)
 
       notify('Erro ao criar categoria')
+    }
+  }
+
+  async function handleCreateCupom() {
+    try {
+      await createCupom({
+        code: cupomCode,
+        discountPorcent: Number(discountPorcent),
+        maxUsage: Number(maxUsage),
+        validate: new Date(validate + '-3:00'),
+        type: 'percentage',
+        range: 'store',
+        categoriesIds: selectedCategories.map((it) => it.value)
+      })
+
+      notifySuccess('Cupom criado com sucesso!')
+
+      loadData()
+      toggleAddCategoryModal()
+    } catch (e) {
+      console.error(e)
+
+      notify('Erro ao criar cupom')
     }
   }
 
@@ -447,6 +468,19 @@ const catalog = ({ storeId }: CatalogType) => {
     }
   }
 
+  const handleDeleteCupom = async (code: string) => {
+    try {
+      await deleteCupom(code)
+
+      notifySuccess('Cupom deletado com sucesso!')
+      // setExcludeCupomModal(false)
+      loadData()
+    } catch (e) {
+      notify('Erro ao excluir cupom, tente novamente!')
+      console.log(e)
+    }
+  }
+
   const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
     values,
     event
@@ -508,6 +542,16 @@ const catalog = ({ storeId }: CatalogType) => {
     } catch (e) {
       notify('Erro ao buscar categorias')
     }
+
+    try {
+      const { data } = await getCupom()
+
+      setCupons(data)
+
+      console.log(data)
+    } catch (e) {
+      notify('Erro ao buscar cupons')
+    }
   }
 
   useEffect(() => {
@@ -521,6 +565,7 @@ const catalog = ({ storeId }: CatalogType) => {
   function handleChangeTypeCategory() {
     setTypeCategory(!typeCategory)
   }
+
   return (
     <>
       <Head>
@@ -1128,11 +1173,19 @@ const catalog = ({ storeId }: CatalogType) => {
                 label="Valor do desconto"
                 icon={<FaMoneyBill />}
                 placeholder={radioSelected === 1 ? 'R$ 0' : '% 0'}
-                mask="monetary"
+                mask={radioSelected === 1 ? 'monetary' : 'number'}
+                value={discountPorcent}
+                onChange={(e) => setDiscountPorcent(e.target.value)}
               />
 
               <div className="row">
-                <Input label="Validade" placeholder="02/12/2021" mask="date" />
+                <Input
+                  label="Validade"
+                  placeholder="02/12/2021"
+                  mask="date"
+                  value={validate}
+                  onChange={(e) => setValidate(e.target.value)}
+                />
 
                 <Input
                   label="N° de cupons"
@@ -1140,6 +1193,8 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="number"
                   disabled={ilimitedCupom}
                   style={ilimitedCupom ? { cursor: 'default' } : undefined}
+                  value={maxUsage}
+                  onChange={(e) => setMaxUsage(e.target.value)}
                 />
               </div>
 
@@ -1155,7 +1210,12 @@ const catalog = ({ storeId }: CatalogType) => {
               </div>
 
               <div className="row">
-                <Input label="Nome do cupom" placeholder="CUPOM10" />
+                <Input
+                  label="Nome do cupom"
+                  placeholder="CUPOM10"
+                  value={cupomCode}
+                  onChange={(e) => setCupomCode(e.target.value)}
+                />
               </div>
 
               <small>
@@ -1169,17 +1229,22 @@ const catalog = ({ storeId }: CatalogType) => {
                 <span>Tipo de desconto</span>
 
                 <div className="radio-container">
-                  <input type="radio" name="type" value="2" id="cat" />
+                  <input type="radio" name="type_discount" value="1" id="cat" />
                   <label htmlFor="cat">Categoria</label>
                 </div>
 
                 <div className="radio-container">
-                  <input type="radio" name="type" value="1" id="all" />
+                  <input type="radio" name="type_discount" value="2" id="all" />
                   <label htmlFor="all">Toda a loja</label>
                 </div>
 
                 <div className="radio-container">
-                  <input type="radio" name="type" value="3" id="first" />
+                  <input
+                    type="radio"
+                    name="type_discount"
+                    value="3"
+                    id="first"
+                  />
                   <label htmlFor="first">Primeira compra</label>
                 </div>
               </div>
@@ -1215,11 +1280,13 @@ const catalog = ({ storeId }: CatalogType) => {
               title="Voltar"
               border
               style={{ marginRight: 16 }}
-              onClick={toggleAddCupomModal}
-              type="button"
+              onClick={() => {
+                toggleAddCupomModal()
+              }}
+              type="submit"
             />
 
-            <Button title="Salvar" />
+            <Button title="Salvar" type="button" onClick={handleCreateCupom} />
           </div>
         </AddProductModalContainer>
       </CustomModal>
@@ -1404,6 +1471,9 @@ const catalog = ({ storeId }: CatalogType) => {
                           code={it.code}
                           info={`Desconto de ${it.discountPorcent} com o máximo de usos: ${it.maxUsage}`}
                           key={it.code}
+                          excludeBtn={() => {
+                            handleDeleteCupom(it.code)
+                          }}
                         />
                       ))
                     ) : (

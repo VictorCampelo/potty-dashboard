@@ -3,22 +3,17 @@ import sizes from '../../utils/sizes'
 import { Button } from 'components/atoms/Button'
 
 export const SeeProductsButton = styled(Button)`
-  width: 70%;
+  width: 20%;
   padding: 0 2rem;
 `
 
 export const EmptyCartContainer = styled.section`
   width: 100%;
-  height: 100%;
+  height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
-  img {
-    width: 250px;
-    margin-bottom: 40px;
-  }
 
   h1,
   p {

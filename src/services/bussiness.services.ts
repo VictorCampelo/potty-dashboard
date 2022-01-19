@@ -70,3 +70,23 @@ export async function editBussinesInfo(data) {
   const res = await api.patch(`/stores`, data, config)
   return res
 }
+
+export async function createCupom(data) {
+  const res = await api.post(`/coupons/`, data)
+  return res
+}
+
+export async function getCupom() {
+  const res = await api.get(`/coupons/`)
+  return res
+}
+
+export async function editCupom(data: string) {
+  const res = await api.patch(`/coupons/${data}`)
+  return res
+}
+
+export async function deleteCupom(data: string) {
+  const res = await api.delete(`/coupons/${data}`)
+  return res
+}

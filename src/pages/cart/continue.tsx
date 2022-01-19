@@ -225,9 +225,6 @@ const CartContinue = () => {
     }
   }
 
-  async function loadCEP(data) {
-    console.log(data.value)
-  }
   const handleUpdateAddress: SubmitHandler<AddressProps> = async (
     values,
     event
@@ -246,6 +243,16 @@ const CartContinue = () => {
       const res = await api.patch('/users', article)
       if (res.status == 200) {
         console.log('deu certo')
+        setAddressUser({
+          uf: article.uf,
+          city: article.city,
+          zipcode: article.zipcode,
+          addressNumber: article.addressNumber,
+          complement: article.complement,
+          neighborhood: article.neighborhood,
+          street: article.street
+        })
+        setAddAdressModal(!addAdressModal)
       }
     } catch (e) {
       console.log('Erro ao adicionar endereço')
@@ -258,7 +265,6 @@ const CartContinue = () => {
       const response = await getUser()
       if (response.status == 200) {
         const data = response?.data
-        console.log(data)
         const name = `${data?.firstName} ${data?.lastName}`
         setName(name)
         setAddressUser({
@@ -272,8 +278,8 @@ const CartContinue = () => {
         })
       }
     } catch (error) {
-      // router.push('/login')
       console.log(error)
+      router.push('/login')
     }
   }
   useEffect(() => {

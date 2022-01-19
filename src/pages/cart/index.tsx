@@ -24,6 +24,7 @@ import {
   CartProduct,
   SeeProductsButton
 } from '../../styles/pages/Cart'
+import { Player } from '@lottiefiles/react-lottie-player'
 
 const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
@@ -136,8 +137,12 @@ const Cart = () => {
 
           {items.length == 0 ? (
             <EmptyCartContainer>
-              <img src="/images/emptyCart.svg" alt="Carrinho vazio" />
-
+              <Player
+                autoplay
+                loop
+                src="/animations/cart-animation.json"
+                style={{ width: '250px', marginBottom: '40px' }}
+              />
               <h1>Carrinho vazio!</h1>
 
               <p>Você ainda não possui itens no seu {'\n'} carrinho</p>
