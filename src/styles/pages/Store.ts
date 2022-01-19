@@ -32,17 +32,38 @@ export const TopoPage = styled.div`
   ${sizes.down('lgMob')} {
     .capa {
       margin-top: 0;
+      height: 220px;
     }
   }
 `
 
 export const HeaderMob = styled.header`
-  height: 70px;
+  height: 130px;
   display: flex;
   align-items: center;
   background: white;
-  padding: 0 1.25rem;
+  padding: var(--spacing-xxxs) 1.25rem;
+  flex-direction: column;
 
+  .menu {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-bottom: var(--spacing-xxs);
+    .title {
+      display: flex;
+      align-items: center;
+      h1 {
+        font-weight: 600;
+      }
+
+      span {
+        margin-left: var(--spacing-nano);
+        font-size: var(--font-size-xs);
+      }
+    }
+  }
   svg {
     margin-right: 1rem;
     flex: none;
@@ -249,7 +270,7 @@ export const DescriptionShop = styled.div`
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-
+    max-width: 100vw;
     .top {
       img {
         width: 90px;
@@ -263,6 +284,7 @@ export const DescriptionShop = styled.div`
 
       p {
         font-size: 1rem;
+        max-width: 100% !important;
       }
     }
 

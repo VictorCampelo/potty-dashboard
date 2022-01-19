@@ -8,9 +8,11 @@ import {
   AiFillStar,
   AiOutlineWhatsApp,
   AiOutlineSearch,
-  AiOutlineStar
+  AiOutlineStar,
+  AiOutlineLeft
 } from 'react-icons/ai'
 import {
+  Wrapper,
   CategoriesCard,
   Container,
   DescriptionShop,
@@ -38,6 +40,7 @@ import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoIosClose } from 'react-icons/io'
+import { Input } from 'components/molecules/Input'
 
 const Products = () => {
   const router = useRouter()
@@ -168,7 +171,7 @@ const Products = () => {
   }, [name])
 
   return (
-    <>
+    <Wrapper>
       <Page>
         <Head>
           <title>Loja | Último</title>
@@ -185,13 +188,21 @@ const Products = () => {
 
           {!widthScreen && (
             <HeaderMob>
-              <GiHamburgerMenu
-                onClick={() => setDrawerActive(true)}
-                size={24}
-                color="black"
-              />
-              <input placeholder="Pesquisar na loja" />
+              <div className="menu">
+                <div className="title">
+                  <AiOutlineLeft size={25} color="#000" />
+                  <h1>Loja</h1>
+                  <span>({businessName})</span>
+                </div>
 
+                <GiHamburgerMenu
+                  onClick={() => setDrawerActive(true)}
+                  size={24}
+                  color="black"
+                />
+              </div>
+              {/* <input placeholder="Pesquisar na loja" /> */}
+              <Input placeholder="Pesquisar na loja" search />
               <Drawer className={drawerActive && 'active'}>
                 <ul className="content">
                   <div
@@ -311,7 +322,7 @@ const Products = () => {
         ) : (
           <DescriptionShop>
             <div className="top">
-              <img src="/images/logoLoja.svg" alt="perfil" />
+              <img src={imageIcon?.url || '/images/icon.png'} alt="perfil" />
               <div className="title">
                 <h1>{businessName}</h1>
                 <div className="stars">
@@ -331,7 +342,7 @@ const Products = () => {
                 </div>
               </div>
             </div>
-            <p>{desc}</p>
+            <p>{ellipsis(desc, 100)}</p>
           </DescriptionShop>
         )}
 
@@ -541,7 +552,7 @@ const Products = () => {
       </Page>
 
       <CartButton />
-    </>
+    </Wrapper>
   )
 }
 
