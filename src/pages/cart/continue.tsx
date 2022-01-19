@@ -44,12 +44,15 @@ type adressRegisterFormData = {
 }
 
 const adressRegisterFormSchema = yup.object().shape({
-  state: yup.string().required('Estado obrigatório'),
+  uf: yup.string().required('Estado obrigatório'),
   city: yup.string().required('Cidade obrigatória'),
-  publicPlace: yup.string().required('Logradouro obrigatório'),
-  number: yup.string().required('obrigatório'),
-  district: yup.string().required('Bairro obrigatório'),
-  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
+  street: yup.string().required('Logradouro obrigatório'),
+  addressNumber: yup.string().required('obrigatório'),
+  neighborhood: yup.string().required('Bairro obrigatório'),
+  zipcode: yup
+    .string()
+    .required('CEP obrigatório')
+    .min(9, 'Mínimo 8 caracteres')
 })
 
 type AddressProps = {
@@ -225,6 +228,29 @@ const CartContinue = () => {
   async function loadCEP(data) {
     console.log(data.value)
   }
+  const handleUpdateAddress: SubmitHandler<AddressProps> = async (
+    values,
+    event
+  ) => {
+    const article = {
+      uf: values.uf,
+      city: values.city,
+      zipcode: values.zipcode,
+      addressNumber: values.addressNumber,
+      complement: values.complement,
+      neighborhood: values.neighborhood,
+      street: values.street
+    }
+
+    try {
+      const res = await api.patch('/users', article)
+      if (res.status == 200) {
+        console.log('deu certo')
+      }
+    } catch (e) {
+      console.log('Erro ao adicionar endereço')
+    }
+  }
 
   async function loadData() {
     try {
@@ -232,6 +258,7 @@ const CartContinue = () => {
       const response = await getUser()
       if (response.status == 200) {
         const data = response?.data
+        console.log(data)
         const name = `${data?.firstName} ${data?.lastName}`
         setName(name)
         setAddressUser({
@@ -317,27 +344,29 @@ const CartContinue = () => {
             />
           </div>
 
-          <form className="input-container">
+          <form
+            className="input-container"
+            onSubmit={handleSubmit(handleUpdateAddress)}
+          >
             <div className="row">
               <Input
                 label="CEP"
                 placeholder="00000-000"
                 mask="cep"
                 icon={<BiMapAlt size={20} color="var(--black-800)" />}
-                {...register('cep')}
-                textError={errors.cep?.message}
-                error={errors.cep}
+                {...register('zipcode')}
+                textError={errors.zipcode?.message}
+                error={errors.zipcode}
                 maxLength={9}
-                onChange={(e) => loadCEP(e)}
               />
 
               <Input
                 label="Bairro"
                 placeholder="Bairro"
                 icon={<BiMapAlt size={20} color="var(--black-800)" />}
-                {...register('district')}
-                textError={errors.district?.message}
-                error={errors.district}
+                {...register('neighborhood')}
+                textError={errors.neighborhood?.message}
+                error={errors.neighborhood}
               />
             </div>
 
@@ -347,9 +376,9 @@ const CartContinue = () => {
                 placeholder="Logradouro"
                 flex={3}
                 icon={<FaHome size={20} color="var(--black-800)" />}
-                {...register('publicPlace')}
-                textError={errors.publicPlace?.message}
-                error={errors.publicPlace}
+                {...register('street')}
+                textError={errors.complement?.message}
+                error={errors.complement}
               />
 
               <Input
@@ -360,9 +389,9 @@ const CartContinue = () => {
                 type="numeric"
                 maxLength={6}
                 icon={<BiBuildings size={20} color="var(--black-800)" />}
-                {...register('number')}
-                textError={errors.number?.message}
-                error={errors.number}
+                {...register('addressNumber')}
+                textError={errors.addressNumber?.message}
+                error={errors.addressNumber}
               />
             </div>
 
@@ -385,10 +414,19 @@ const CartContinue = () => {
                 icon={
                   <HiOutlineLocationMarker size={20} color="var(--black-800)" />
                 }
-                {...register('state')}
-                textError={errors.state?.message}
-                error={errors.state}
+                {...register('uf')}
+                textError={errors.uf?.message}
+                error={errors.uf}
                 maxLength={45}
+              />
+            </div>
+            <div className="row">
+              <Complement
+                label="Complemento"
+                placeholder="Complemento"
+                {...register('complement')}
+                textError={errors.complement?.message}
+                maxLength={30}
               />
             </div>
 
@@ -398,7 +436,11 @@ const CartContinue = () => {
                 border
                 style={widthScreen ? undefined : { display: 'none' }}
               />
-              <Button title="Adicionar" style={{ marginBottom: 80 }} />
+              <Button
+                title="Adicionar"
+                style={{ marginBottom: 80 }}
+                type="submit"
+              />
             </div>
           </form>
         </ModalContainer>
@@ -663,7 +705,9 @@ const AdressInfo = styled.div`
     display: block;
   }
 `
-
+const Complement = styled(Input)`
+  width: 400px;
+`
 const NewAdressButton = styled.button`
   display: flex;
   align-items: center;
@@ -819,12 +863,15 @@ export const ProductItem = styled.div`
 
 export const ModalContainer = styled.div`
   width: auto;
-  max-width: 800px;
+  width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+  }
   span {
     font-size: var(--font-size-md);
   }
@@ -852,10 +899,8 @@ export const ModalContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
+    width: 100%;
     ${[sizes.down('lgMob')]} {
-      width: 100%;
-
       .row {
         flex-direction: column;
       }

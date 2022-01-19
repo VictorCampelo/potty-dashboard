@@ -450,7 +450,7 @@ const ProductShow = () => {
               {discount ? (
                 <>
                   <div className="discount">
-                    <h4>R$ {price}</h4>
+                    <h4>De: R$ {price}</h4>
                     <div>-{discount}%</div>
                   </div>
                   <div className="price">

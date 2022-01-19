@@ -44,7 +44,6 @@ const Products = () => {
   // const { name } = router.query
   let name = ''
   useEffect(() => {
-    // if (window.location.hostName) {
     const hostName = window.location.hostname
 
     let previousName = ''
@@ -56,8 +55,6 @@ const Products = () => {
     }
 
     name = previousName
-    console.log(previousName)
-    // }
   }, [])
 
   const [buttonOn, setButtonOn] = useState(true)
