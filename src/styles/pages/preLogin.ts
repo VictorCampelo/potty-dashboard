@@ -5,6 +5,12 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
+
+  ${[sizes.down('lgMob')]} {
+    img {
+      display: none;
+    }
+  }
 `
 
 export const Container = styled.main`
@@ -101,7 +107,7 @@ export const Container = styled.main`
       margin-top: 2rem;
       display: flex;
 
-      ${[sizes.down('ssm')]} {
+      ${[sizes.down('lgMob')]} {
         flex-direction: column;
       }
     }
