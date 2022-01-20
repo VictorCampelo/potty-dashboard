@@ -305,47 +305,17 @@ export const DescriptionShop = styled.div`
   }
 `
 
-// export const ProductWrapper = styled.div`
-//   max-width: 425px;
-//   min-height: 450px;
-//   height: auto;
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-//   justify-content: flex-start;
-//   align-content: flex-start;
-
-//   .carousel-container {
-//     max-width: 100% !important;
-//     /* max-width: 400px !important; */
-//     border: 1px solid blue;
-//     padding: 0 var(--spacing-lg);
-//     ${[sizes.down('mdMob')]} {
-//       max-width: 300px !important;
-//     }
-//     .carousel-item {
-//       border: 1px solid red;
-//       max-width: 100%;
-//     }
-//   }
-//   h1 {
-//     font-weight: 400;
-//     font-size: var(--font-size-lg);
-//     /* margin-left: var(--spacing-xs); */
-//   }
-// `
-
 export const ProductWrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 1rem;
+  width: 100%;
   h3 {
     margin-left: 1rem;
   }
   .carousel-container {
     max-width: 100vw;
     .carousel-item {
-      max-width: 100%;
       overflow: hidden;
     }
   }
@@ -406,6 +376,33 @@ export const Container = styled.main`
           height: fit-content;
           display: flex;
           margin-right: 20px;
+        }
+
+        .emptyProducts {
+          width: 100%;
+          height: 450px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: var(--spacing-xxxs) 0;
+          gap: var(--spacing-xxxs);
+
+          .img {
+            ${[sizes.down('mdMob')]} {
+              img {
+                width: 300px;
+              }
+            }
+          }
+          .title {
+            padding: 0 var(--spacing-xs);
+            text-align: center;
+            width: 80%;
+            h1 {
+              font-weight: 600;
+              font-size: var(--font-size-lg);
+            }
+          }
         }
       }
     }

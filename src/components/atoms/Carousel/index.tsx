@@ -255,6 +255,9 @@ const Container = styled.div`
   gap: 1rem;
   scrollbar-width: none;
   padding: var(--spacing-nano) 0;
+  ${[sizes.down('lgMob')]} {
+    padding: var(--spacing-nano);
+  }
   &::-webkit-scrollbar {
     display: none;
   }
