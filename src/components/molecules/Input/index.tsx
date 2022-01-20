@@ -31,6 +31,7 @@ interface Input extends React.InputHTMLAttributes<HTMLInputElement> {
   mask?: MasksTypes
   search?: boolean
   inverse?: boolean
+  hasShadow?: boolean
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
@@ -44,6 +45,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
     mask = 'def',
     search,
     inverse,
+    hasShadow,
     ...rest
   }: Input,
   ref

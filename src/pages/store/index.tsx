@@ -27,7 +27,8 @@ import {
   FilterCardTertiary,
   HorizonCard,
   HeaderMob,
-  Drawer
+  Drawer,
+  ProductWrapper
 } from '../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -41,6 +42,94 @@ import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/Input'
+import Carousel from 'components/atoms/Carousel'
+
+const fakeProducts = [
+  {
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
+  },
+  {
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
+  },
+  {
+    id: '404d2460-d787-47dd-8636-5364d77718b7',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
+  },
+  {
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
+  },
+  {
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
+  },
+  {
+    id: '2',
+    name: 'Geladeira Bras Temp 111IX',
+    formatedName: 'Geladeira Bras Temp',
+    avgStars: 0,
+    sumStars: 0,
+    city: 'Teresina',
+    avatar: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
+    },
+    background: {
+      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
+    }
+  }
+]
 
 const Products = () => {
   const router = useRouter()
@@ -202,7 +291,14 @@ const Products = () => {
                 />
               </div>
               {/* <input placeholder="Pesquisar na loja" /> */}
-              <Input placeholder="Pesquisar na loja" search />
+              <div className="searchBar">
+                <Input
+                  placeholder="Pesquisar na loja"
+                  search
+                  inverse
+                  icon={<AiOutlineSearch size={15} />}
+                />
+              </div>
               <Drawer className={drawerActive && 'active'}>
                 <ul className="content">
                   <div
@@ -436,63 +532,32 @@ const Products = () => {
                   </div>
                 )}
 
-                <div className="productWrapper">
-                  {buttonOn ? (
-                    <>
-                      {products.map((e) => {
-                        return (
-                          <ProductCard
-                            key={e.id}
-                            onClick={() => handleOpenProduct(e.id)}
-                          >
-                            <img
-                              src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                              alt="geladeira frost free"
-                            />
-                            <span className="title">
-                              {ellipsis(e.title, 30)}
-                            </span>
-                            <div className="price">
-                              <span>R$ {e.price.toFixed(2)}</span>
-                              <small>
-                                {e.discount
-                                  ? 'R$ ' +
-                                    ((1 - e.discount) * e.price).toFixed(2)
-                                  : null}
-                              </small>
-                            </div>
-                            <div className="score">
-                              <AiFillStar
-                                key={e.id}
-                                size={18}
-                                color="var(--gold)"
-                              />
-                              <span>
-                                {e.avgStars} | {e.sumOrders} Pedidos
-                              </span>
-                            </div>
-                            <p>{ellipsis(e.description, 120)}</p>
-                          </ProductCard>
-                        )
-                      })}
-                    </>
-                  ) : (
-                    <div className="horizon">
-                      {products.map((e) => {
-                        return (
-                          <HorizonCard
-                            key={e.id}
-                            onClick={() => handleOpenProduct(e.id)}
-                          >
-                            <img
+                {widthScreen ? (
+                  <div className="productWrapper">
+                    {buttonOn ? (
+                      <>
+                        {products.map((e) => {
+                          return (
+                            <ProductCard
                               key={e.id}
-                              src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
-                              alt="geladeira frost free"
-                            />
-                            <div className="infos">
+                              onClick={() => handleOpenProduct(e.id)}
+                            >
+                              <img
+                                src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                                alt="geladeira frost free"
+                              />
                               <span className="title">
-                                {ellipsis(e.title, 70)}
+                                {ellipsis(e.title, 30)}
                               </span>
+                              <div className="price">
+                                <span>R$ {e.price.toFixed(2)}</span>
+                                <small>
+                                  {e.discount
+                                    ? 'R$ ' +
+                                      ((1 - e.discount) * e.price).toFixed(2)
+                                    : null}
+                                </small>
+                              </div>
                               <div className="score">
                                 <AiFillStar
                                   key={e.id}
@@ -503,21 +568,93 @@ const Products = () => {
                                   {e.avgStars} | {e.sumOrders} Pedidos
                                 </span>
                               </div>
-                              <div className="price">
-                                <span>R$ {e.price.toFixed(2)}</span>
-                                <small>
-                                  {e.descont ? 'R$ ' + e.descont : null}
-                                </small>
-                              </div>
-
                               <p>{ellipsis(e.description, 120)}</p>
-                            </div>
-                          </HorizonCard>
-                        )
-                      })}
+                            </ProductCard>
+                          )
+                        })}
+                      </>
+                    ) : (
+                      <div className="horizon">
+                        {products.map((e) => {
+                          return (
+                            <HorizonCard
+                              key={e.id}
+                              onClick={() => handleOpenProduct(e.id)}
+                            >
+                              <img
+                                key={e.id}
+                                src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
+                                alt="geladeira frost free"
+                              />
+                              <div className="infos">
+                                <span className="title">
+                                  {ellipsis(e.title, 70)}
+                                </span>
+                                <div className="score">
+                                  <AiFillStar
+                                    key={e.id}
+                                    size={18}
+                                    color="var(--gold)"
+                                  />
+                                  <span>
+                                    {e.avgStars} | {e.sumOrders} Pedidos
+                                  </span>
+                                </div>
+                                <div className="price">
+                                  <span>R$ {e.price.toFixed(2)}</span>
+                                  <small>
+                                    {e.descont ? 'R$ ' + e.descont : null}
+                                  </small>
+                                </div>
+
+                                <p>{ellipsis(e.description, 120)}</p>
+                              </div>
+                            </HorizonCard>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <ProductWrapper>
+                    <div>
+                      <h3>Eletrônicos e eletrodomésticos</h3>
+                      <div className="carousel-container">
+                        <div className="carousel-item">
+                          <Carousel
+                            data={fakeProducts}
+                            isProduct
+                            buttons={false}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
+                    <div>
+                      <h3>Cozinha</h3>
+                      <div className="carousel-container">
+                        <div className="carousel-item">
+                          <Carousel
+                            data={fakeProducts}
+                            isProduct
+                            buttons={false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h3>Móveis</h3>
+                      <div className="carousel-container">
+                        <div className="carousel-item">
+                          <Carousel
+                            data={fakeProducts}
+                            isProduct
+                            buttons={false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </ProductWrapper>
+                )}
               </div>
             </div>
           </section>

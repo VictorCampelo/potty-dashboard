@@ -69,6 +69,9 @@ export const HeaderMob = styled.header`
     flex: none;
   }
 
+  .searchBar {
+    width: 100%;
+  }
   input {
     flex: 1;
     height: 36px;
@@ -140,7 +143,6 @@ export const InfoSerch = styled.div`
   width: 92%;
   //margin-left: 4%;
   background: #ffffff;
-
   box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
   border-radius: 30px;
 
@@ -270,6 +272,7 @@ export const DescriptionShop = styled.div`
     border-radius: 0;
     background: transparent;
     box-shadow: none;
+    width: 100%;
     max-width: 100vw;
     .top {
       img {
@@ -302,38 +305,76 @@ export const DescriptionShop = styled.div`
   }
 `
 
+// export const ProductWrapper = styled.div`
+//   max-width: 425px;
+//   min-height: 450px;
+//   height: auto;
+//   display: flex;
+//   flex-direction: row;
+//   flex-wrap: wrap;
+//   justify-content: flex-start;
+//   align-content: flex-start;
+
+//   .carousel-container {
+//     max-width: 100% !important;
+//     /* max-width: 400px !important; */
+//     border: 1px solid blue;
+//     padding: 0 var(--spacing-lg);
+//     ${[sizes.down('mdMob')]} {
+//       max-width: 300px !important;
+//     }
+//     .carousel-item {
+//       border: 1px solid red;
+//       max-width: 100%;
+//     }
+//   }
+//   h1 {
+//     font-weight: 400;
+//     font-size: var(--font-size-lg);
+//     /* margin-left: var(--spacing-xs); */
+//   }
+// `
+
+export const ProductWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  h3 {
+    margin-left: 1rem;
+  }
+  .carousel-container {
+    max-width: 100vw;
+    .carousel-item {
+      max-width: 100%;
+      overflow: hidden;
+    }
+  }
+`
+
 export const Container = styled.main`
   margin-top: 30px;
   display: flex;
-
   width: 92%;
-  //margin-left: 2%;
-  //justify-content: center;
-  //align-items: center;
   flex-direction: column;
 
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+  }
   .descriptionContainer {
     width: 100%;
-    //padding: 0 2rem;
     display: flex;
     justify-content: space-between;
-
-    //margin-top: 10rem;
   }
 
   .productsContainer {
     width: 100%;
-    //padding: 0 2rem;
     display: flex;
-
-    //margin-top: 1.5rem;
 
     .products {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-content: space-between;
-      //padding-left: 1.5rem;
 
       .filterWrapper {
         display: flex;
@@ -347,7 +388,8 @@ export const Container = styled.main`
         flex-wrap: wrap;
         gap: 1rem;
         padding-bottom: 32px;
-        justify-content: flex-end;
+        justify-content: flex-start;
+
         .horizon {
           width: 100%;
           display: flex;
