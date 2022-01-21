@@ -23,6 +23,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
 import router from 'next/router'
+import cep from 'cep-promise'
 
 type bussinesRegisterFormData = {
   firstName: string
@@ -35,6 +36,15 @@ type bussinesRegisterFormData = {
   number: string
   district: string
   cep: string
+}
+
+type CepProps = {
+  cep: string
+  city: string
+  neighborhood: string
+  service: string
+  state: string
+  street: string
 }
 
 const bussinesRegisterFormSchema = yup.object().shape({
@@ -129,6 +139,35 @@ const BusinessRegister = () => {
   useEffect(() => {
     console.log(show)
   }, [show])
+
+  function formatCep(cep: string) {
+    let formattedCep = ''
+    let temporaryCep = ''
+
+    if (cep.length > 8 && cep.length < 10) {
+      for (let i = 0; i < cep.length; i++) {
+        if (cep[i] != '-') {
+          temporaryCep += cep[i]
+        }
+      }
+      formattedCep = temporaryCep
+      loadCep(formattedCep)
+    }
+  }
+
+  async function loadCep(cepFind: string) {
+    try {
+      const res: CepProps = await cep(cepFind)
+
+      setValue('businessCity', res?.city)
+      setValue('businessState', res?.state)
+      setValue('publicPlace', res?.street)
+      setValue('district', res?.neighborhood)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Wrapper>
       <Head>
@@ -157,7 +196,7 @@ const BusinessRegister = () => {
                 </div>
                 <div className="inputRow">
                   <Input
-                    label="Nome"
+                    label="Nome do lojista"
                     placeholder="Nome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('firstName')}
@@ -167,7 +206,7 @@ const BusinessRegister = () => {
                   />
 
                   <Input
-                    label="Sobrenome"
+                    label="Sobrenome do lojista"
                     placeholder="Sobrenome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('lastName')}
@@ -201,6 +240,7 @@ const BusinessRegister = () => {
                     textError={errors.cep?.message}
                     error={errors.cep}
                     maxLength={45}
+                    onChange={(e) => formatCep(e.target.value)}
                   />
 
                   <Input
@@ -333,6 +373,7 @@ const BusinessRegister = () => {
                     textError={errors.cep?.message}
                     error={errors.cep}
                     maxLength={45}
+                    onChange={(e) => formatCep(e.target.value)}
                   />
 
                   <Input

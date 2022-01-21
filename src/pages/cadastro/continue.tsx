@@ -31,6 +31,7 @@ type registerFormData = {
   number: string
   district: string
   cep: string
+  complement: string
 }
 
 type UserInfo = {
@@ -110,7 +111,7 @@ const BusinessRegister = () => {
       adressNumber: Number(values.number),
       neighborhood: values.district,
       zipcode: values.cep,
-      complement: '',
+      complement: values.complement,
       email: userInfo?.email,
       password: userInfo?.password,
       passwordConfirmation: userInfo?.passwordConfirmation
@@ -145,8 +146,7 @@ const BusinessRegister = () => {
 
   async function loadCep(cepFind: string) {
     try {
-      const res = await cep(cepFind)
-      console.log(res)
+      const res: CepProps = await cep(cepFind)
       setValue('clientCity', res?.city)
       setValue('clientState', res?.state)
       setValue('publicPlace', res?.street)
