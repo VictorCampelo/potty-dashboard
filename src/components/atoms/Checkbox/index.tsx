@@ -5,7 +5,8 @@ import Link from 'next/link'
 interface CheckboxProps {
   confirm: boolean
   toggleConfirm: () => void
-  label: string
+  label?: string
+  termsUse?: boolean
   recovery?: boolean
 }
 
@@ -13,7 +14,8 @@ export const Checkbox = ({
   confirm,
   toggleConfirm,
   label,
-  recovery = false
+  recovery = false,
+  termsUse
 }: CheckboxProps) => {
   return (
     <Container confirm={confirm}>
@@ -26,13 +28,20 @@ export const Checkbox = ({
         >
           {confirm && <FaCheck color="var(--gray-800)" />}
         </button>
-        <label htmlFor="btn">{label}</label>
+        {label && <label htmlFor="btn">{label}</label>}
       </div>
 
       {recovery && (
         <Link href="/recover">
           <a>Esqueceu sua senha</a>
         </Link>
+      )}
+
+      {termsUse && (
+        <label htmlFor="rules" className="rules">
+          Li e concordo com os{' '}
+          <span>Termos de uso e Política de privacidade. </span>{' '}
+        </label>
       )}
     </Container>
   )

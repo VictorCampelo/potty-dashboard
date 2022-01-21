@@ -46,7 +46,8 @@ const RegisterFormSchema = yup.object().shape({
   publicPlace: yup.string().required('Logradouro obrigatório'),
   number: yup.string().required('obrigatório'),
   district: yup.string().required('Bairro obrigatório'),
-  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
+  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres'),
+  complement: yup.string().required('Complemento obrigarório')
 })
 
 const BusinessRegister = () => {
@@ -165,20 +166,6 @@ const BusinessRegister = () => {
                     maxLength={45}
                   />
                 </div>
-
-                <div className="inputRow">
-                  <CheckboxFilter
-                    confirm={terms}
-                    toggleConfirm={() => setTerms(!terms)}
-                  >
-                    <span>
-                      Li e concordo com os <a href="#">termos de uso</a> e{' '}
-                      <a href="#">política de privacidade</a>
-                    </span>
-                  </CheckboxFilter>
-                </div>
-              </div>
-              <div>
                 <div className="inputRow">
                   <Input
                     label="CEP"
@@ -201,33 +188,19 @@ const BusinessRegister = () => {
                     maxLength={45}
                   />
                 </div>
-
                 <div className="inputRow">
-                  <Input
-                    label="Logradouro"
-                    placeholder="Logradouro"
-                    flex={3}
-                    icon={<FaHome size={20} color="var(--black-800)" />}
-                    {...register('publicPlace')}
-                    textError={errors.publicPlace?.message}
-                    error={errors.publicPlace}
-                    maxLength={45}
-                  />
-
-                  <Input
-                    label="Número"
-                    placeholder="0000"
-                    mask="number"
-                    flex={1}
-                    type="numeric"
-                    maxLength={6}
-                    icon={<BiBuildings size={20} color="var(--black-800)" />}
-                    {...register('number')}
-                    textError={errors.number?.message}
-                    error={errors.number}
-                  />
+                  <CheckboxFilter
+                    confirm={terms}
+                    toggleConfirm={() => setTerms(!terms)}
+                  >
+                    <span>
+                      Li e concordo com os <a href="#">termos de uso</a> e{' '}
+                      <a href="#">política de privacidade</a>
+                    </span>
+                  </CheckboxFilter>
                 </div>
-
+              </div>
+              <div>
                 <div className="inputRow">
                   <Input
                     label="Estado"
@@ -257,6 +230,41 @@ const BusinessRegister = () => {
                     textError={errors.clientCity?.message}
                     error={errors.clientCity}
                     maxLength={45}
+                  />
+                </div>
+                <div className="inputRow">
+                  <Input
+                    label="Logradouro"
+                    placeholder="Logradouro"
+                    flex={3}
+                    icon={<FaHome size={20} color="var(--black-800)" />}
+                    {...register('publicPlace')}
+                    textError={errors.publicPlace?.message}
+                    error={errors.publicPlace}
+                    maxLength={45}
+                  />
+
+                  <Input
+                    label="Número"
+                    placeholder="0000"
+                    mask="number"
+                    flex={1}
+                    type="numeric"
+                    maxLength={6}
+                    icon={<BiBuildings size={20} color="var(--black-800)" />}
+                    {...register('number')}
+                    textError={errors.number?.message}
+                    error={errors.number}
+                  />
+                </div>
+
+                <div className="inputRow">
+                  <Input
+                    label="Complemento"
+                    placeholder="Complemento"
+                    {...register('complement')}
+                    textError={errors.complement}
+                    maxLength={40}
                   />
                 </div>
               </div>

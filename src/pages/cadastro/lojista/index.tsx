@@ -16,6 +16,7 @@ import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
+import { Checkbox } from 'components/atoms/Checkbox'
 
 type SignUpFormData = {
   firstName: string
@@ -44,7 +45,11 @@ const RegisterShopkeeper = () => {
   const router = useRouter()
 
   const { setUser } = useContext(ShopkeeperContext)
+  const [confirm, setConfirm] = useState(false)
 
+  function toggleConfirm() {
+    setConfirm(!confirm)
+  }
   const {
     register,
     handleSubmit,
@@ -79,10 +84,16 @@ const RegisterShopkeeper = () => {
       <Container>
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
-            <h1>Cadastro lojista</h1>
-            <Link href="/cadastro">
+            <h1>Cadastro</h1>
+            {/* <Link href="/cadastro">
               <a>Voltar ao cadastro</a>
-            </Link>
+            </Link> */}
+            <Button
+              title="Cadastre-se como cliente"
+              type="button"
+              border
+              onClick={() => router.push('/cadastro')}
+            />
           </div>
           <div className="inputContainer">
             <Input
@@ -117,6 +128,7 @@ const RegisterShopkeeper = () => {
               error={errors.passwordConfirmation}
             />
           </div>
+          <Checkbox confirm={confirm} toggleConfirm={toggleConfirm} termsUse />
 
           <div className="buttonContainer">
             <Button type="submit" title="CONTINUAR" />
@@ -141,6 +153,55 @@ const RegisterShopkeeper = () => {
           </div>
         </form>
       </Container>
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          height: '85%',
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          width: '100%'
+        }}
+        src="/images/wave1.svg"
+        alt="wave 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          height: '65%',
+          left: 0,
+          right: 0,
+          zIndex: -1,
+          width: '100%'
+        }}
+        src="/images/wave2.svg"
+        alt="wave 2"
+      />
+
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          height: '55%',
+          zIndex: -1
+        }}
+        src="/images/illustration1.svg"
+        alt="illustration 1"
+      />
+      <img
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: '50%',
+          zIndex: -1
+        }}
+        src="/images/illustration2.svg"
+        alt="illustration 2"
+      />
     </Wrapper>
   )
 }

@@ -33,7 +33,7 @@ const Header = ({ isMain }: HeaderProps) => {
           <a>Quem somos</a>
         </Link>
         <div className="authContainer">
-          <Link href="/cadastro">
+          <Link href="/cadastro/lojista">
             <a className="register">Criar conta</a>
           </Link>
           <Link href="/login">
