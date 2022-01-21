@@ -78,9 +78,6 @@ const Register = () => {
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro</h1>
-            {/* <Link href="/cadastro/lojista">
-              <a>Se cadastrar como lojista</a>
-            </Link> */}
             <Button
               title="Cadastre seu negócio"
               type="button"

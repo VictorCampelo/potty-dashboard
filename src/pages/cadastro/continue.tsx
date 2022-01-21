@@ -20,6 +20,7 @@ import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import router from 'next/router'
 import { signUp } from 'services/auth.services'
 import { toast } from 'react-toastify'
+import cep from 'cep-promise'
 
 type registerFormData = {
   firstName: string
@@ -36,6 +37,15 @@ type UserInfo = {
   email: string
   password: string
   passwordConfirmation: string
+}
+
+type CepProps = {
+  cep: string
+  city: string
+  neighborhood: string
+  service: string
+  state: string
+  street: string
 }
 
 const RegisterFormSchema = yup.object().shape({
@@ -73,8 +83,8 @@ const BusinessRegister = () => {
       setValue('cep', data.cep)
       setValue('district', data.district)
       setValue('number', data.number)
-      setValue('city', data.city)
-      setValue('state', data.state)
+      setValue('clientCity', data.city)
+      setValue('clientState', data.state)
     }
   }, [])
   const {
@@ -115,6 +125,34 @@ const BusinessRegister = () => {
       }
     } catch (e) {
       toast.error('Erro ao criar conta')
+    }
+  }
+
+  function formatCep(cep: string) {
+    let formattedCep = ''
+    let temporaryCep = ''
+
+    if (cep.length > 8 && cep.length < 10) {
+      for (let i = 0; i < cep.length; i++) {
+        if (cep[i] != '-') {
+          temporaryCep += cep[i]
+        }
+      }
+      formattedCep = temporaryCep
+      loadCep(formattedCep)
+    }
+  }
+
+  async function loadCep(cepFind: string) {
+    try {
+      const res = await cep(cepFind)
+      console.log(res)
+      setValue('clientCity', res?.city)
+      setValue('clientState', res?.state)
+      setValue('publicPlace', res?.street)
+      setValue('district', res?.neighborhood)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -176,6 +214,7 @@ const BusinessRegister = () => {
                     textError={errors.cep?.message}
                     error={errors.cep}
                     maxLength={45}
+                    onChange={(e) => formatCep(e.target.value)}
                   />
 
                   <Input
@@ -265,6 +304,7 @@ const BusinessRegister = () => {
                     {...register('complement')}
                     textError={errors.complement}
                     maxLength={40}
+                    icon={<BiBuildings size={20} color="var(--black-800)" />}
                   />
                 </div>
               </div>
@@ -307,6 +347,7 @@ const BusinessRegister = () => {
                     textError={errors.cep?.message}
                     error={errors.cep}
                     maxLength={45}
+                    onChange={(e) => formatCep(e.target.value)}
                   />
 
                   <Input
