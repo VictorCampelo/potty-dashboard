@@ -1,11 +1,7 @@
 import Header from '../../components/molecules/Header'
 import Head from 'next/head'
 import Link from 'next/link'
-import {
-  Container,
-  Wrapper,
-  ContainerLojist
-} from '../../styles/pages/preLogin'
+import { Wrapper, ContainerLojist } from '../../styles/pages/preLogin'
 
 import { FiMail, FiUser } from 'react-icons/fi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
@@ -137,7 +133,7 @@ const BusinessRegister = () => {
     }
 
   useEffect(() => {
-    console.log(show)
+    console.log(show >= 1)
   }, [show])
 
   function formatCep(cep: string) {
@@ -447,7 +443,42 @@ const BusinessRegister = () => {
             </div>
           )}
 
-          <div className="buttonContainer">
+          {widthScreen ? (
+            <div className="buttonContainer">
+              <div style={{ marginRight: '1rem' }}>
+                <Button type="submit" title="continuar" />
+              </div>
+              <div>
+                <Button
+                  onClick={() => router.push('/cadastro')}
+                  title="Voltar"
+                  type="button"
+                  border
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="buttonContainer">
+              <div style={{ marginBottom: '1rem' }}>
+                {show >= 2 ? (
+                  <Button type="submit" title="Continuar" />
+                ) : (
+                  <Button type="button" onClick={showNext} title="Continuar" />
+                )}
+              </div>
+              <div>
+                <Button
+                  onClick={
+                    show != 0 ? showPrevious : () => router.push('/cadastro')
+                  }
+                  title="Voltar"
+                  type="button"
+                  border
+                />
+              </div>
+            </div>
+          )}
+          {/* <div className="buttonContainer">
             <div
               style={
                 widthScreen ? { marginRight: '1rem' } : { marginBottom: '1rem' }
@@ -471,7 +502,7 @@ const BusinessRegister = () => {
                 border
               />
             </div>
-          </div>
+          </div> */}
 
           <Link href="/login">
             <a style={{ marginTop: '1rem' }}>
