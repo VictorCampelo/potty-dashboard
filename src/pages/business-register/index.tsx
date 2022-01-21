@@ -289,7 +289,7 @@ const BusinessRegister = () => {
                 </div>
                 <div className="inputRow">
                   <Input
-                    label="Nome"
+                    label="Nome do Lojista"
                     placeholder="Nome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('firstName')}
@@ -299,7 +299,7 @@ const BusinessRegister = () => {
                   />
 
                   <Input
-                    label="Sobrenome"
+                    label="Sobrenome do Lojista"
                     placeholder="Sobrenome"
                     icon={<FiUser size={20} color="var(--black-800)" />}
                     {...register('lastName')}
