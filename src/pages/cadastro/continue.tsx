@@ -20,6 +20,7 @@ import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import router from 'next/router'
 import { signUp } from 'services/auth.services'
 import { toast } from 'react-toastify'
+import cep from 'cep-promise'
 
 type registerFormData = {
   firstName: string
@@ -30,12 +31,22 @@ type registerFormData = {
   number: string
   district: string
   cep: string
+  complement: string
 }
 
 type UserInfo = {
   email: string
   password: string
   passwordConfirmation: string
+}
+
+type CepProps = {
+  cep: string
+  city: string
+  neighborhood: string
+  service: string
+  state: string
+  street: string
 }
 
 const RegisterFormSchema = yup.object().shape({
@@ -46,7 +57,8 @@ const RegisterFormSchema = yup.object().shape({
   publicPlace: yup.string().required('Logradouro obrigatório'),
   number: yup.string().required('obrigatório'),
   district: yup.string().required('Bairro obrigatório'),
-  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres')
+  cep: yup.string().required('CEP obrigatório').min(9, 'Mínimo 8 caracteres'),
+  complement: yup.string().required('Complemento obrigarório')
 })
 
 const BusinessRegister = () => {
@@ -72,8 +84,8 @@ const BusinessRegister = () => {
       setValue('cep', data.cep)
       setValue('district', data.district)
       setValue('number', data.number)
-      setValue('city', data.city)
-      setValue('state', data.state)
+      setValue('clientCity', data.city)
+      setValue('clientState', data.state)
     }
   }, [])
   const {
@@ -99,7 +111,7 @@ const BusinessRegister = () => {
       adressNumber: Number(values.number),
       neighborhood: values.district,
       zipcode: values.cep,
-      complement: '',
+      complement: values.complement,
       email: userInfo?.email,
       password: userInfo?.password,
       passwordConfirmation: userInfo?.passwordConfirmation
@@ -114,6 +126,33 @@ const BusinessRegister = () => {
       }
     } catch (e) {
       toast.error('Erro ao criar conta')
+    }
+  }
+
+  function formatCep(cep: string) {
+    let formattedCep = ''
+    let temporaryCep = ''
+
+    if (cep.length > 8 && cep.length < 10) {
+      for (let i = 0; i < cep.length; i++) {
+        if (cep[i] != '-') {
+          temporaryCep += cep[i]
+        }
+      }
+      formattedCep = temporaryCep
+      loadCep(formattedCep)
+    }
+  }
+
+  async function loadCep(cepFind: string) {
+    try {
+      const res: CepProps = await cep(cepFind)
+      setValue('clientCity', res?.city)
+      setValue('clientState', res?.state)
+      setValue('publicPlace', res?.street)
+      setValue('district', res?.neighborhood)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -165,7 +204,29 @@ const BusinessRegister = () => {
                     maxLength={45}
                   />
                 </div>
+                <div className="inputRow">
+                  <Input
+                    label="CEP"
+                    placeholder="00000-000"
+                    mask="cep"
+                    icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                    {...register('cep')}
+                    textError={errors.cep?.message}
+                    error={errors.cep}
+                    maxLength={45}
+                    onChange={(e) => formatCep(e.target.value)}
+                  />
 
+                  <Input
+                    label="Bairro"
+                    placeholder="Bairro"
+                    icon={<BiMapAlt size={20} color="var(--black-800)" />}
+                    {...register('district')}
+                    textError={errors.district?.message}
+                    error={errors.district}
+                    maxLength={45}
+                  />
+                </div>
                 <div className="inputRow">
                   <CheckboxFilter
                     confirm={terms}
@@ -179,55 +240,6 @@ const BusinessRegister = () => {
                 </div>
               </div>
               <div>
-                <div className="inputRow">
-                  <Input
-                    label="CEP"
-                    placeholder="00000-000"
-                    mask="cep"
-                    icon={<BiMapAlt size={20} color="var(--black-800)" />}
-                    {...register('cep')}
-                    textError={errors.cep?.message}
-                    error={errors.cep}
-                    maxLength={45}
-                  />
-
-                  <Input
-                    label="Bairro"
-                    placeholder="Bairro"
-                    icon={<BiMapAlt size={20} color="var(--black-800)" />}
-                    {...register('district')}
-                    textError={errors.district?.message}
-                    error={errors.district}
-                    maxLength={45}
-                  />
-                </div>
-
-                <div className="inputRow">
-                  <Input
-                    label="Logradouro"
-                    placeholder="Logradouro"
-                    flex={3}
-                    icon={<FaHome size={20} color="var(--black-800)" />}
-                    {...register('publicPlace')}
-                    textError={errors.publicPlace?.message}
-                    error={errors.publicPlace}
-                    maxLength={45}
-                  />
-
-                  <Input
-                    label="Número"
-                    placeholder="0000"
-                    mask="number"
-                    flex={1}
-                    type="numeric"
-                    maxLength={6}
-                    icon={<BiBuildings size={20} color="var(--black-800)" />}
-                    {...register('number')}
-                    textError={errors.number?.message}
-                    error={errors.number}
-                  />
-                </div>
-
                 <div className="inputRow">
                   <Input
                     label="Estado"
@@ -257,6 +269,42 @@ const BusinessRegister = () => {
                     textError={errors.clientCity?.message}
                     error={errors.clientCity}
                     maxLength={45}
+                  />
+                </div>
+                <div className="inputRow">
+                  <Input
+                    label="Logradouro"
+                    placeholder="Logradouro"
+                    flex={3}
+                    icon={<FaHome size={20} color="var(--black-800)" />}
+                    {...register('publicPlace')}
+                    textError={errors.publicPlace?.message}
+                    error={errors.publicPlace}
+                    maxLength={45}
+                  />
+
+                  <Input
+                    label="Número"
+                    placeholder="0000"
+                    mask="number"
+                    flex={1}
+                    type="numeric"
+                    maxLength={6}
+                    icon={<BiBuildings size={20} color="var(--black-800)" />}
+                    {...register('number')}
+                    textError={errors.number?.message}
+                    error={errors.number}
+                  />
+                </div>
+
+                <div className="inputRow">
+                  <Input
+                    label="Complemento"
+                    placeholder="Complemento"
+                    {...register('complement')}
+                    textError={errors.complement}
+                    maxLength={40}
+                    icon={<BiBuildings size={20} color="var(--black-800)" />}
                   />
                 </div>
               </div>
@@ -299,6 +347,7 @@ const BusinessRegister = () => {
                     textError={errors.cep?.message}
                     error={errors.cep}
                     maxLength={45}
+                    onChange={(e) => formatCep(e.target.value)}
                   />
 
                   <Input

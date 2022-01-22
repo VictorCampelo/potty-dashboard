@@ -1,6 +1,5 @@
-import { Input } from '../../../components/molecules/Input'
+import { Input } from '../../../components/molecules/SearchInput'
 import Head from 'next/head'
-import { FaSearch } from 'react-icons/fa'
 import { VscSearch } from 'react-icons/vsc'
 import {
   Wrapper,

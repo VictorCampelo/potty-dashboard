@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 interface ContainerProps {
-  confirm: boolean;
+  confirm: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -10,6 +10,13 @@ export const Container = styled.div<ContainerProps>`
   justify-content: space-between;
   align-items: center;
   margin: 1rem 0;
+
+  .rules {
+    span {
+      text-decoration: underline;
+      color: var(--color-secondary);
+    }
+  }
 
   .btn {
     width: 20px;
@@ -22,7 +29,7 @@ export const Container = styled.div<ContainerProps>`
     border-radius: 5px;
     border: 1px solid black;
     background: var(--white);
-    
+
     margin-right: 10px;
     padding: 4px;
   }
@@ -41,4 +48,4 @@ export const Container = styled.div<ContainerProps>`
     font-weight: 500;
     text-decoration: underline;
   }
-`;
+`

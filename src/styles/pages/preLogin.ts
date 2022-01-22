@@ -52,6 +52,7 @@ export const Container = styled.main`
       h1 {
         font-size: 1.875rem;
         font-weight: 500;
+        margin-right: var(--spacing-xs);
       }
 
       p {
