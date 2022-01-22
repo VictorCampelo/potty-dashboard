@@ -134,6 +134,7 @@ const Login = () => {
             label="Lembrar usuário"
             confirm={rememberUser}
             toggleConfirm={toggleRememberUser}
+            recovery
           />
 
           <div className="buttonContainer">

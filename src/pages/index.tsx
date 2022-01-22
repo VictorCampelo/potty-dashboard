@@ -13,7 +13,7 @@ import {
 } from 'react-icons/ai'
 
 import { api } from 'services/apiClient'
-import { Input } from 'components/molecules/Input'
+import { Input } from 'components/molecules/SearchInput'
 import { CardServices } from 'components/molecules/CardServices'
 import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'

@@ -14,6 +14,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
+import { Checkbox } from 'components/atoms/Checkbox'
 
 type SignUpFormData = {
   email: string
@@ -37,6 +38,11 @@ const Register = () => {
   const router = useRouter()
   // Estado para fazer a responsividade
   const widthWindow = useMedia({ minWidth: '426px' })
+  const [confirm, setConfirm] = useState(false)
+
+  function toggleConfirm() {
+    setConfirm(!confirm)
+  }
 
   const {
     register,
@@ -72,9 +78,12 @@ const Register = () => {
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro</h1>
-            <Link href="/cadastro/lojista">
-              <a>Se cadastrar como lojista</a>
-            </Link>
+            <Button
+              title="Cadastre seu negócio"
+              type="button"
+              border
+              onClick={() => router.push('/cadastro/lojista')}
+            />
           </div>
           {widthWindow ? (
             <div className="inputContainer">
@@ -145,7 +154,7 @@ const Register = () => {
               </div>
             </>
           )}
-
+          <Checkbox confirm={confirm} toggleConfirm={toggleConfirm} termsUse />
           <div className="buttonContainer">
             <Button title="CONTINUAR" type="submit" />
           </div>

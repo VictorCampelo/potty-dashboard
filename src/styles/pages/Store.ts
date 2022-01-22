@@ -32,22 +32,46 @@ export const TopoPage = styled.div`
   ${sizes.down('lgMob')} {
     .capa {
       margin-top: 0;
+      height: 220px;
     }
   }
 `
 
 export const HeaderMob = styled.header`
-  height: 70px;
+  height: 130px;
   display: flex;
   align-items: center;
   background: white;
-  padding: 0 1.25rem;
+  padding: var(--spacing-xxxs) 1.25rem;
+  flex-direction: column;
 
+  .menu {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-bottom: var(--spacing-xxs);
+    .title {
+      display: flex;
+      align-items: center;
+      h1 {
+        font-weight: 600;
+      }
+
+      span {
+        margin-left: var(--spacing-nano);
+        font-size: var(--font-size-xs);
+      }
+    }
+  }
   svg {
     margin-right: 1rem;
     flex: none;
   }
 
+  .searchBar {
+    width: 100%;
+  }
   input {
     flex: 1;
     height: 36px;
@@ -119,7 +143,6 @@ export const InfoSerch = styled.div`
   width: 92%;
   //margin-left: 4%;
   background: #ffffff;
-
   box-shadow: 0px 0px 20px rgba(54, 63, 78, 0.2);
   border-radius: 30px;
 
@@ -249,7 +272,8 @@ export const DescriptionShop = styled.div`
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-
+    width: 100%;
+    max-width: 100vw;
     .top {
       img {
         width: 90px;
@@ -263,6 +287,7 @@ export const DescriptionShop = styled.div`
 
       p {
         font-size: 1rem;
+        max-width: 100% !important;
       }
     }
 
@@ -280,38 +305,46 @@ export const DescriptionShop = styled.div`
   }
 `
 
+export const ProductWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  h3 {
+    margin-left: 1rem;
+  }
+  .carousel-container {
+    max-width: 100vw;
+    .carousel-item {
+      overflow: hidden;
+    }
+  }
+`
+
 export const Container = styled.main`
   margin-top: 30px;
   display: flex;
-
   width: 92%;
-  //margin-left: 2%;
-  //justify-content: center;
-  //align-items: center;
   flex-direction: column;
 
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+  }
   .descriptionContainer {
     width: 100%;
-    //padding: 0 2rem;
     display: flex;
     justify-content: space-between;
-
-    //margin-top: 10rem;
   }
 
   .productsContainer {
     width: 100%;
-    //padding: 0 2rem;
     display: flex;
-
-    //margin-top: 1.5rem;
 
     .products {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-content: space-between;
-      //padding-left: 1.5rem;
 
       .filterWrapper {
         display: flex;
@@ -325,7 +358,8 @@ export const Container = styled.main`
         flex-wrap: wrap;
         gap: 1rem;
         padding-bottom: 32px;
-        justify-content: flex-end;
+        justify-content: flex-start;
+
         .horizon {
           width: 100%;
           display: flex;
@@ -342,6 +376,33 @@ export const Container = styled.main`
           height: fit-content;
           display: flex;
           margin-right: 20px;
+        }
+
+        .emptyProducts {
+          width: 100%;
+          height: 450px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: var(--spacing-xxxs) 0;
+          gap: var(--spacing-xxxs);
+
+          .img {
+            ${[sizes.down('mdMob')]} {
+              img {
+                width: 300px;
+              }
+            }
+          }
+          .title {
+            padding: 0 var(--spacing-xs);
+            text-align: center;
+            width: 80%;
+            h1 {
+              font-weight: 600;
+              font-size: var(--font-size-lg);
+            }
+          }
         }
       }
     }

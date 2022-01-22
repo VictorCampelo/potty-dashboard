@@ -875,7 +875,7 @@ export const ProductWrapper = styled.div`
     gap: 0;
 
     .carousel-container {
-      margin-left: 1rem;
+      /* margin-left: 1rem; */
       max-width: 100% !important;
     }
 

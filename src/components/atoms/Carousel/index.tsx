@@ -25,9 +25,15 @@ interface Carousel {
   }[]
   isProduct?: boolean
   promo?: boolean
+  buttons?: boolean
 }
 
-const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
+const Carousel = ({
+  data = [],
+  isProduct = false,
+  promo,
+  buttons = true
+}: Carousel) => {
   const carousel = useRef(null)
 
   function handleScrollLeft(
@@ -165,7 +171,7 @@ const Carousel = ({ data = [], isProduct = false, promo }: Carousel) => {
           <BiChevronRight size={26} color="black" />
         </Button>
       )}
-      {!widthScreen && (
+      {!widthScreen && buttons && (
         <div className="buttonsContainer">
           <ButtonMobile onClick={handleScrollLeft}>
             <BiChevronLeft size={26} color="black" />
@@ -249,6 +255,9 @@ const Container = styled.div`
   gap: 1rem;
   scrollbar-width: none;
   padding: var(--spacing-nano) 0;
+  ${[sizes.down('lgMob')]} {
+    padding: var(--spacing-nano);
+  }
   &::-webkit-scrollbar {
     display: none;
   }

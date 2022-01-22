@@ -4,6 +4,8 @@ import sizes from 'utils/sizes'
 interface ContainerProps {
   error: boolean
   flex: number
+  search: boolean
+  inverse: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -12,6 +14,11 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   ${(props) => 'flex: ' + props.flex + ';'}
+  ${(props) => props.search && 'max-width: 90%;'}
+  ${(props) => props.inverse && 'max-width: 30%;'}
+  ${[sizes.down('lgMob')]} {
+    ${(props) => props.inverse && 'max-width: 100%;'}
+  }
 
   .bar {
     width: 2px;
@@ -52,6 +59,11 @@ export const Container = styled.div<ContainerProps>`
     background: white;
     overflow: hidden;
     border: 1px solid var(--black-800);
+
+    ${(props) => props.search && 'border: 1px solid white;'}
+    ${(props) => props.search && 'border-radius: 50px;'}
+    ${(props) => props.inverse && 'box-shadow: 0 0 1rem rgba(0,0,0,0.1);'}
+    ${(props) => props.inverse && 'border-radius: 15px;'}
 
     input {
       width: 100%;
