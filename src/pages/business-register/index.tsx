@@ -94,6 +94,12 @@ const BusinessRegister = () => {
       if (user) {
         setValue('firstName', user.firstName)
         setValue('lastName', user.lastName)
+
+        setUser({
+          ...userDto,
+          firstName: user.firstName,
+          lastName: user.lastName
+        })
       }
     }
   }, [])
@@ -123,18 +129,16 @@ const BusinessRegister = () => {
 
       sessionStorage.setItem('data', JSON.stringify(store))
       setStore(store)
+      console.log(userDto)
       setUser({
         ...userDto,
         firstName: values.firstName,
         lastName: values.lastName
       })
+      console.log(userDto)
       sessionStorage.setItem('user', JSON.stringify(userDto))
       Router.push('/business-register/continue')
     }
-
-  useEffect(() => {
-    console.log(show >= 1)
-  }, [show])
 
   function formatCep(cep: string) {
     let formattedCep = ''
@@ -450,7 +454,7 @@ const BusinessRegister = () => {
               </div>
               <div>
                 <Button
-                  onClick={() => router.push('/cadastro')}
+                  onClick={() => router.push('/cadastro/lojista')}
                   title="Voltar"
                   type="button"
                   border
@@ -469,7 +473,9 @@ const BusinessRegister = () => {
               <div>
                 <Button
                   onClick={
-                    show != 0 ? showPrevious : () => router.push('/cadastro')
+                    show != 0
+                      ? showPrevious
+                      : () => router.push('/cadastro/lojista')
                   }
                   title="Voltar"
                   type="button"

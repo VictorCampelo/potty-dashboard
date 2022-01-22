@@ -68,6 +68,7 @@ const RegisterShopkeeper = () => {
       }
 
       setUser(user)
+
       router.push('/business-register')
     } catch (e) {
       console.log(e)
