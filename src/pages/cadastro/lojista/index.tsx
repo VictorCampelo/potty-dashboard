@@ -42,6 +42,7 @@ const registerFormSchema = yup.object().shape({
 })
 
 const RegisterShopkeeper = () => {
+  const widthScreen = useMedia({ minWidth: '426px' })
   const router = useRouter()
 
   const { setUser } = useContext(ShopkeeperContext)
@@ -87,12 +88,22 @@ const RegisterShopkeeper = () => {
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro</h1>
-            <Button
-              title="Cadastre-se como cliente"
-              type="button"
-              border
-              onClick={() => router.push('/cadastro')}
-            />
+            {widthScreen ? (
+              <Button
+                title="Cadastre-se como cliente"
+                type="button"
+                border
+                onClick={() => router.push('/cadastro')}
+                noPadding
+              />
+            ) : (
+              <img
+                src="/images/logo.svg"
+                alt="logo"
+                className="logo"
+                width={140}
+              />
+            )}
           </div>
           <div className="inputContainer">
             <Input

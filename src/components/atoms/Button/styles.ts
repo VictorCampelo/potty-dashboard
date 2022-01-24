@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 interface ContainerProp {
   border: boolean
+  noPadding: boolean
 }
 
 export const Container = styled.button<ContainerProp>`
@@ -10,7 +11,7 @@ export const Container = styled.button<ContainerProp>`
   border: none;
   border-radius: 30px;
   padding: 0 4rem;
-
+  ${(props) => props.noPadding && 'padding: 0;'}
   color: var(--white);
   font-weight: 700;
   font-size: 1.125rem;
