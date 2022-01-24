@@ -67,6 +67,7 @@ const RegisterShopkeeper = () => {
         passwordConfirmation: values.passwordConfirmation
       }
 
+      sessionStorage.setItem('user', JSON.stringify(user))
       setUser(user)
 
       router.push('/business-register')
@@ -86,9 +87,6 @@ const RegisterShopkeeper = () => {
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro</h1>
-            {/* <Link href="/cadastro">
-              <a>Voltar ao cadastro</a>
-            </Link> */}
             <Button
               title="Cadastre-se como cliente"
               type="button"
