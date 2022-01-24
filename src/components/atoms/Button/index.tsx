@@ -1,16 +1,23 @@
-import { Container } from "./styles";
-import PuffLoader from "react-spinners/PuffLoader";
+import { Container } from './styles'
+import PuffLoader from 'react-spinners/PuffLoader'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  title: string;
-  border?: boolean;
-  isLoading?: boolean;
+  title: string
+  border?: boolean
+  isLoading?: boolean
+  noPadding?: boolean
 }
 
-export function Button({ title, border, isLoading = false, ...rest }: ButtonProps) {
+export function Button({
+  title,
+  border,
+  isLoading = false,
+  noPadding,
+  ...rest
+}: ButtonProps) {
   return (
-    <Container border={border} {...rest}>
+    <Container border={border} noPadding={noPadding} {...rest}>
       {isLoading ? <PuffLoader size={28} color="#fff" /> : title}
     </Container>
-  );
+  )
 }

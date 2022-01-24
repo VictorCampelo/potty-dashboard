@@ -78,12 +78,22 @@ const Register = () => {
         <form onSubmit={handleSubmit(handleSignUp)}>
           <div className="title">
             <h1>Cadastro</h1>
-            <Button
-              title="Cadastre seu negócio"
-              type="button"
-              border
-              onClick={() => router.push('/cadastro/lojista')}
-            />
+            {widthWindow ? (
+              <Button
+                title="Cadastre seu negócio"
+                type="button"
+                border
+                onClick={() => router.push('/cadastro/lojista')}
+                noPadding
+              />
+            ) : (
+              <img
+                src="/images/logo.svg"
+                className="logo"
+                alt="logo"
+                width={140}
+              />
+            )}
           </div>
           {widthWindow ? (
             <div className="inputContainer">
