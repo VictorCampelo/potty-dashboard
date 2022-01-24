@@ -181,17 +181,23 @@ const Login = () => {
                     textAlign: 'left',
                     display: 'flex',
                     gap: '2rem',
-                    marginBottom: '1rem'
+                    marginBottom: '1rem',
+                    marginRight: '2rem'
                   }}
                 >
                   <h1 style={{ color: '#363F4E', fontSize: '1.5rem' }}>
                     Formas de cadastro
                   </h1>
                   <FiX
-                    size={20}
+                    size={25}
                     color="var(--black-800)"
                     onClick={toggleModalVisible}
-                    style={{ cursor: 'pointer' }}
+                    style={{
+                      cursor: 'pointer',
+                      position: 'absolute',
+                      right: 20,
+                      top: 30
+                    }}
                   />
                 </div>
                 <div className="buttonsContainer">
@@ -199,7 +205,7 @@ const Login = () => {
                     title="LOJISTA"
                     style={{ marginBottom: 'var(--spacing-xxs)' }}
                     onClick={() => {
-                      router.push('/business-register')
+                      router.push('/cadastro/lojista')
                     }}
                   />
 
