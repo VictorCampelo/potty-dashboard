@@ -42,10 +42,12 @@ const BusinessRegister = () => {
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem('data'))
     if (data) {
-      setValue('number', data.phone)
-      setValue('facebookUrl', data.facebook_link)
-      setValue('instagramUrl', data.instagram_link)
-      setValue('whatsappUrl', data.whatsapp_link)
+      if (data['number']) {
+        setValue('number', data.phone)
+        setValue('facebookUrl', data.facebook_link)
+        setValue('instagramUrl', data.instagram_link)
+        setValue('whatsappUrl', data.whatsapp_link)
+      }
     }
   }, [])
 
@@ -64,15 +66,17 @@ const BusinessRegister = () => {
     values,
     event
   ) => {
+    const storeData = JSON.parse(sessionStorage.getItem('data'))
+
     const store = {
-      ...storeDto,
+      ...storeData,
       phone: values.number,
       facebook_link: values.facebookUrl,
       instagram_link: values.instagramUrl,
       whatsapp_link: values.whatsappUrl
     }
-    sessionStorage.setItem('data', JSON.stringify(store))
     setStore(store)
+    sessionStorage.setItem('data', JSON.stringify(store))
 
     Router.push('/business-register/finish')
   }

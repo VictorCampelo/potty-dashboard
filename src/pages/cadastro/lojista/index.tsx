@@ -67,6 +67,7 @@ const RegisterShopkeeper = () => {
         passwordConfirmation: values.passwordConfirmation
       }
 
+      sessionStorage.setItem('user', JSON.stringify(user))
       setUser(user)
 
       router.push('/business-register')

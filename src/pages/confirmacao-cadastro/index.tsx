@@ -14,17 +14,21 @@ const BusinessRegisterConfirm = () => {
 
       <Header />
       <Container>
-        <form
-          onSubmit={() => router.push('/login')}
-          className="confirmationAuth"
-        >
+        <form className="confirmationAuth">
           <img src="/images/usercard.png" className="confirmImg" />
 
           <h2>Cadastro efetuado com sucesso!</h2>
 
           <div className="buttonContainer">
             <div>
-              <Button type="submit" title="CONTINUAR" />
+              <Button
+                type="button"
+                title="CONTINUAR"
+                onClick={() => {
+                  sessionStorage.clear()
+                  router.push('/login')
+                }}
+              />
             </div>
           </div>
         </form>

@@ -4,7 +4,7 @@ import { Container, Wrapper } from '../../../styles/pages/preLogin'
 
 import { DescriptionInput } from '../../../components/molecules/DescriptionInput'
 import { ShopImage } from '../../../components/molecules/ShopImage'
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { Button } from '../../../components/atoms/Button'
 import { AiFillShop, AiFillCamera } from 'react-icons/ai'
 import Router from 'next/router'
@@ -19,6 +19,14 @@ import { CropModalContainer } from 'styles/pages/Catalog'
 import CustomModal from 'components/molecules/CustomModal'
 import useMedia from 'use-media'
 
+type ShopkeeperUser = {
+  email?: string
+  firstName?: string
+  lastName?: string
+  password?: string
+  passwordConfirmation?: string
+}
+
 const BusinessRegister = () => {
   const [desc, setDesc] = useState('')
   const [image, setImage] = useState(null)
@@ -29,8 +37,32 @@ const BusinessRegister = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const rotation = 0
 
-  const { userDto, storeDto } = useContext(ShopkeeperContext)
+  const { userDto, storeDto, setStore } = useContext(ShopkeeperContext)
 
+  useEffect(() => {
+    const storeData = JSON.parse(sessionStorage.getItem('data'))
+    console.log(storeData)
+
+    if (storeData) {
+      setStore({
+        name: storeData.businessName,
+        CNPJ: storeData.cpfCnpj,
+        city: storeData.businessCity,
+        state: storeData.businessState,
+        publicPlace: storeData.publicPlace,
+        number: storeData.number,
+        district: storeData.district,
+        cep: storeData.cep,
+        phone: storeData.number,
+        facebook_link: storeData.facebookUrl,
+        instagram_link: storeData.instagramUrl,
+        whatsapp_link: storeData.whatsappUrl
+      })
+    }
+    // else {
+    //   Router.push('/cadastro/lojista')
+    // }
+  }, [])
   // Toasts
 
   function notifySuccess(message: string) {
@@ -58,23 +90,29 @@ const BusinessRegister = () => {
   }
 
   async function handleFinishRegister() {
+    const userData = JSON.parse(sessionStorage.getItem('user'))
+    const storeData = JSON.parse(sessionStorage.getItem('data'))
     const body = {
       avatar: image,
       userDto: {
-        ...userDto
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        password: userData.password,
+        passwordConfirmation: userData.passwordConfirmation
       },
       storeDto: {
-        name: storeDto.name,
-        CNPJ: storeDto.CNPJ,
-        phone: storeDto.phone,
-        city: storeDto.city,
-        state: storeDto.state,
-        facebook_link: storeDto.facebook_link,
-        instagram_link: storeDto.instagram_link,
-        whatsapp_link: storeDto.whatsapp_link,
+        name: storeData.name,
+        CNPJ: storeData.cpfCnpj,
+        phone: storeData.phone,
+        city: storeData.city,
+        state: storeData.state,
+        facebook_link: storeData.facebook_link,
+        instagram_link: storeData.instagram_link,
+        whatsapp_link: storeData.whatsapp_link,
         image: image,
         description: desc,
-        address: `${storeDto.publicPlace}, n° ${storeDto.number}, ${storeDto.district}, CEP: ${storeDto.cep}`
+        address: `${storeData.publicPlace}, n° ${storeData.number}, ${storeData.district}, CEP: ${storeData.cep}`
       }
     }
 

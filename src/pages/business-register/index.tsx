@@ -61,7 +61,7 @@ const bussinesRegisterFormSchema = yup.object().shape({
 })
 
 const BusinessRegister = () => {
-  const { setStore, setUser, userDto } = useContext(ShopkeeperContext)
+  const { setStore, setUser, userDto, storeDto } = useContext(ShopkeeperContext)
   const [cpfCnpj, setCpfCnpj] = useState('')
 
   // Estados, funções e variáveis referentes a responsividade da tela
@@ -80,9 +80,10 @@ const BusinessRegister = () => {
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem('data'))
     const user = JSON.parse(sessionStorage.getItem('user'))
+
     if (data) {
       setValue('businessName', data.name)
-      setValue('cpfCnpj', data.cpfCnpj)
+      setValue('cpfCnpj', data.CNPJ)
       // setValue('address', data.address)
       setValue('publicPlace', data.publicPlace)
       setValue('cep', data.cep)
@@ -90,19 +91,22 @@ const BusinessRegister = () => {
       setValue('number', data.number)
       setValue('businessCity', data.city)
       setValue('businessState', data.state)
+    }
 
-      if (user) {
+    if (user) {
+      if (user['firstName'] && user['lastName']) {
         setValue('firstName', user.firstName)
         setValue('lastName', user.lastName)
 
         setUser({
-          ...userDto,
+          ...user,
           firstName: user.firstName,
           lastName: user.lastName
         })
       }
     }
   }, [])
+
   const {
     register,
     handleSubmit,
@@ -116,9 +120,11 @@ const BusinessRegister = () => {
 
   const handleContinueRegister: SubmitHandler<bussinesRegisterFormData> =
     async (values, event) => {
+      const userData = JSON.parse(sessionStorage.getItem('user'))
+
       const store = {
         name: values.businessName,
-        cpfCnpj: values.cpfCnpj,
+        CNPJ: values.cpfCnpj,
         city: values.businessCity,
         state: values.businessState,
         publicPlace: values.publicPlace,
@@ -129,14 +135,15 @@ const BusinessRegister = () => {
 
       sessionStorage.setItem('data', JSON.stringify(store))
       setStore(store)
-      console.log(userDto)
-      setUser({
-        ...userDto,
+
+      const user = {
+        ...userData,
         firstName: values.firstName,
         lastName: values.lastName
-      })
-      console.log(userDto)
-      sessionStorage.setItem('user', JSON.stringify(userDto))
+      }
+      setUser(user)
+
+      sessionStorage.setItem('user', JSON.stringify(user))
       Router.push('/business-register/continue')
     }
 
