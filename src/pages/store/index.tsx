@@ -41,7 +41,7 @@ import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoIosClose } from 'react-icons/io'
-import { Input } from 'components/molecules/Input'
+import { Input } from 'components/molecules/SearchInput'
 import Carousel from 'components/atoms/Carousel'
 
 const fakeProducts = [
