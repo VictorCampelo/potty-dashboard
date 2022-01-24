@@ -59,9 +59,6 @@ const BusinessRegister = () => {
         whatsapp_link: storeData.whatsappUrl
       })
     }
-    // else {
-    //   Router.push('/cadastro/lojista')
-    // }
   }, [])
   // Toasts
 

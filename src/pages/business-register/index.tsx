@@ -75,7 +75,6 @@ const BusinessRegister = () => {
   function showPrevious() {
     setShow(show - 1)
   }
-  //
 
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem('data'))
