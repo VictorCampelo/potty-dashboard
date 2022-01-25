@@ -42,7 +42,7 @@ export async function getProducts(id: string) {
 }
 
 export async function getProduct(id: string) {
-  const res = await api.get(`/products/${id}`)
+  const res = await api.get(`/products/${id}?files=true`)
   return res
 }
 
