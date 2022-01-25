@@ -43,6 +43,7 @@ import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/SearchInput'
 import Carousel from 'components/atoms/Carousel'
+import CarouselProducts from 'components/atoms/CarouselProducts'
 
 const fakeProducts = [
   {
@@ -134,7 +135,7 @@ const fakeProducts = [
 const Products = () => {
   const router = useRouter()
   // const { name } = router.query
-  let name = ''
+  const [name, setName] = useState('')
   useEffect(() => {
     const hostName = window.location.hostname
 
@@ -146,7 +147,7 @@ const Products = () => {
       previousName += hostName[i]
     }
 
-    name = previousName
+    setName(previousName)
   }, [])
 
   const [buttonOn, setButtonOn] = useState(true)
@@ -258,7 +259,7 @@ const Products = () => {
     if (name) {
       loadData()
 
-      console.log(products.length)
+      console.log(products)
     }
   }, [name])
 
@@ -629,10 +630,10 @@ const Products = () => {
                         <h3>Eletrônicos e eletrodomésticos</h3>
                         <div className="carousel-container">
                           <div className="carousel-item">
-                            <Carousel
+                            <CarouselProducts
                               data={products}
-                              isProduct
                               buttons={false}
+                              storeName={name}
                               promo
                             />
                           </div>
@@ -642,10 +643,10 @@ const Products = () => {
                         <h3>Cozinha</h3>
                         <div className="carousel-container">
                           <div className="carousel-item">
-                            <Carousel
+                            <CarouselProducts
                               data={products}
-                              isProduct
                               buttons={false}
+                              storeName={name}
                             />
                           </div>
                         </div>
@@ -654,10 +655,10 @@ const Products = () => {
                         <h3>Móveis</h3>
                         <div className="carousel-container">
                           <div className="carousel-item">
-                            <Carousel
+                            <CarouselProducts
                               data={products}
-                              isProduct
                               buttons={false}
+                              storeName={name}
                             />
                           </div>
                         </div>
