@@ -417,13 +417,13 @@ const ProductShow = () => {
                 {' '}
                 <AiOutlineUp size={20} color="var(--gray-600)" />
               </Button>
-              {images.map((data) => {
+              {files.map((data) => {
                 return (
                   <img
-                    key={data.title}
-                    onClick={(e) => setImagePreview(data.original)}
-                    src={data.thumbnail}
-                    alt={data.title}
+                    key={data?.id}
+                    // onClick={(e) => setImagePreview(data.original)}
+                    src={data?.url}
+                    alt={data?.filename}
                   />
                 )
               })}
@@ -433,7 +433,7 @@ const ProductShow = () => {
               </Button>
             </div>
             <img
-              src={imagePreview}
+              src={files[0]?.url}
               alt="Foto do produto"
               className="product-image"
             />

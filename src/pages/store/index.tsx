@@ -551,10 +551,11 @@ const Products = () => {
                                 key={e.id}
                                 onClick={() => handleOpenProduct(e.id)}
                               >
-                                <img
+                                {/* <img
                                   src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
                                   alt="geladeira frost free"
-                                />
+                                /> */}
+                                <img src={e.files[0].url} alt={e.title} />
                                 <span className="title">
                                   {ellipsis(e.title, 30)}
                                 </span>

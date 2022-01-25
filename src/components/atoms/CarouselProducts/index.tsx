@@ -120,18 +120,35 @@ const CarouselProducts = ({
                 <p>{product.title}</p>
                 <div className="stars">
                   <AiFillStar size={20} color="var(--gold)" />
-                  <small>{product.avgStars} (110 pedidos)</small>
+                  <small>
+                    {product.avgStars} ({product.sumOrders} pedidos)
+                  </small>
                 </div>
-                <span>
-                  De:{' '}
-                  <span style={{ textDecoration: 'line-through' }}>
-                    R$ 3.099,99
-                  </span>
-                </span>
-                <h3>R$ 289,99</h3>
-                <span>
-                  Em até 12x sem juros ou <strong>R$ 2.899,99</strong> à vista
-                </span>
+                {product.discount > 0 && (
+                  <>
+                    <span>
+                      De:{' '}
+                      <span style={{ textDecoration: 'line-through' }}>
+                        R$ {product.price.toFixed(2)}
+                      </span>
+                    </span>
+                  </>
+                )}
+                {product.discount > 0 ? (
+                  <h3>R$ {(product.price - product.discount).toFixed(2)}</h3>
+                ) : product.parcelAmount > 0 ? (
+                  <h3>{(product.price / product.parcelAmount).toFixed(2)}</h3>
+                ) : (
+                  <h3>{product.price}</h3>
+                )}
+                {product.parcelAmount > 1 && (
+                  <>
+                    <span>
+                      Em até {product.parcelAmount}x sem juros ou{' '}
+                      <strong>R$ {product.price.toFixed(2)}</strong> à vista
+                    </span>
+                  </>
+                )}
               </div>
               {widthScreen && (
                 <>
