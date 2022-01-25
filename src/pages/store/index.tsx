@@ -28,7 +28,8 @@ import {
   HorizonCard,
   HeaderMob,
   Drawer,
-  ProductWrapper
+  ProductWrapper,
+  Button
 } from '../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -44,6 +45,7 @@ import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/SearchInput'
 import Carousel from 'components/atoms/Carousel'
 import CarouselProducts from 'components/atoms/CarouselProducts'
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 
 const fakeProducts = [
   {
@@ -556,17 +558,8 @@ const Products = () => {
                                   alt="geladeira frost free"
                                 /> */}
                                 <img src={e.files[0].url} alt={e.title} />
-                                <span className="title">
-                                  {ellipsis(e.title, 30)}
-                                </span>
-                                <div className="price">
-                                  <span>R$ {e.price.toFixed(2)}</span>
-                                  <small>
-                                    {e.discount
-                                      ? 'R$ ' +
-                                        ((1 - e.discount) * e.price).toFixed(2)
-                                      : null}
-                                  </small>
+                                <div className="title">
+                                  <span>{ellipsis(e.title, 30)}</span>
                                 </div>
                                 <div className="score">
                                   <AiFillStar
@@ -578,7 +571,30 @@ const Products = () => {
                                     {e.avgStars} | {e.sumOrders} Pedidos
                                   </span>
                                 </div>
-                                <p>{ellipsis(e.description, 120)}</p>
+                                <div className="price">
+                                  <small>
+                                    {e.discount
+                                      ? 'De: R$ ' +
+                                        ((1 - e.discount) * e.price).toFixed(2)
+                                      : null}
+                                  </small>
+                                  <span>R$ {e.price.toFixed(2)}</span>
+                                </div>
+
+                                {/* <p>{ellipsis(e.description, 120)}</p> */}
+                                {e.parcelAmount > 1 && (
+                                  <p>
+                                    Em até {e.parcelAmount}x sem juros ou{' '}
+                                    <strong>R$ {e.price.toFixed(2)}</strong> à
+                                    vista
+                                  </p>
+                                )}
+                                <Button position="left">
+                                  <BiChevronLeft size={25} color="black" />
+                                </Button>
+                                <Button position="right">
+                                  <BiChevronRight size={25} color="black" />
+                                </Button>
                               </ProductCard>
                             )
                           })}

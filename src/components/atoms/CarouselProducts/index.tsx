@@ -137,9 +137,11 @@ const CarouselProducts = ({
                 {product.discount > 0 ? (
                   <h3>R$ {(product.price - product.discount).toFixed(2)}</h3>
                 ) : product.parcelAmount > 0 ? (
-                  <h3>{(product.price / product.parcelAmount).toFixed(2)}</h3>
+                  <h3>
+                    R$ {(product.price / product.parcelAmount).toFixed(2)}
+                  </h3>
                 ) : (
-                  <h3>{product.price}</h3>
+                  <h3>R$ {product.price}</h3>
                 )}
                 {product.parcelAmount > 1 && (
                   <>
@@ -318,7 +320,9 @@ const Item = styled.div`
     overflow: hidden;
     padding: 1.2rem 1.2rem 0 1.2rem;
     height: 300px;
-
+    ${[sizes.down('lgMob')]} {
+      height: 150px;
+    }
     img {
       border-radius: 10px;
     }
