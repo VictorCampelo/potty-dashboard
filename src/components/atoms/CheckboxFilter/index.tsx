@@ -1,5 +1,4 @@
 import { Container } from './styles'
-import { FaCheck } from 'react-icons/fa'
 import { BsFillCheckSquareFill } from 'react-icons/bs'
 import { ReactNode } from 'react'
 
