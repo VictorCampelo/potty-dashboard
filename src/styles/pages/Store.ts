@@ -436,6 +436,24 @@ export const Footer = styled.footer`
   }
 `
 
+type ButtonProps = {
+  position: string
+}
+export const Button = styled.div<ButtonProps>`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  box-shadow: 0 0 1rem var(--gray-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background: var(--white);
+  top: 28%;
+  ${(props) => props.position === 'left' && 'left: 10px;'}
+  ${(props) => props.position === 'right' && 'right: 10px;'}
+`
+
 export const ProductCard = styled.div`
   cursor: pointer;
   width: 350px;
@@ -447,7 +465,7 @@ export const ProductCard = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-
+  position: relative;
   ${[sizes.down('lg')]} {
     width: 230px;
   }
@@ -457,34 +475,41 @@ export const ProductCard = styled.div`
 
   img {
     width: 80%;
-    height: 180px;
+    height: 250px;
+    width: 100%;
     resize: cover;
+    border-radius: 15px;
+    background-size: cover;
   }
 
   .title {
-    font-size: 1.125rem;
+    text-align: left;
+    width: 100%;
     margin: 0.5rem 0;
-    font-weight: 600;
+    span {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
   }
 
   .price {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    justify-content: flex-start;
-    align-items: flex-end;
 
     span {
       font-size: 1.75rem;
-      color: var(--color-secondary);
+      color: var(--color-primary);
       font-weight: 600;
       margin-right: 0.5rem;
     }
 
     small {
+      margin-top: 0.5rem;
       font-weight: 600;
       text-decoration: line-through;
       color: var(--gray-200);
-      padding-bottom: 0.25rem;
+      font-size: 1rem;
     }
   }
 
@@ -494,7 +519,6 @@ export const ProductCard = styled.div`
     align-items: center;
     font-size: 1rem;
     color: var(--gray-600);
-    margin-top: 0.5rem;
 
     svg {
       margin-right: 0.5rem;
