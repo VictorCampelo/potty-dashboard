@@ -126,7 +126,8 @@ const Shop = ({ storeId, id }: Shop) => {
 
   const [businessState, setBusinessState] = useState('')
   const [businessCity, setBusinessCity] = useState('')
-  const [publicPlace, setPublicPlace] = useState('')
+  const [publicPlace, setPublicPlace] = useState('' | null)
+  const [neighborhood, setNeighborhood] = useState('' | null)
   const [number, setNumber] = useState('')
   const [district, setDistrict] = useState('')
   const [cep, setCep] = useState('')
@@ -532,14 +533,13 @@ const Shop = ({ storeId, id }: Shop) => {
   async function loadData() {
     try {
       const { data } = await getStore(`${storeId}`)
-
+      console.log(data)
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
 
       setBusinessName(data?.name)
       setStars(data?.avgStars)
       setDesc(data?.description)
-
       if (data?.schedules) {
         setTimeTable(true)
         setDom(data?.schedules?.dom)
@@ -558,11 +558,13 @@ const Shop = ({ storeId, id }: Shop) => {
       setInstagram(data?.instagramLink || '')
       setWhatsApp(data?.whatsappLink || '')
 
-      setBusinessAddress(data?.address)
+      // setBusinessAddress(data?.address)
       setBusinessCity(data?.city)
       setBusinessState(data?.state)
-      setPublicPlace(data?.address.substring(0, data?.address.indexOf(',')))
+      setPublicPlace(data?.street)
+      setNeighborhood(data?.neighborhood)
     } catch (e) {
+      console.log(e)
       setVazio(true)
       toast.error('Erro ao buscar dados, tente novamente mais tarde', {
         position: 'top-right',
