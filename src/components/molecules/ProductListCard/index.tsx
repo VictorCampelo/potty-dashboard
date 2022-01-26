@@ -34,7 +34,11 @@ export const ProductListCard = ({
         <div className="color">
           <div className="icon">
             {icon ? (
-              <img src={icon} alt="Preview" />
+              <img
+                src={icon}
+                alt="Preview"
+                style={{ width: '100%', borderRadius: '10px' }}
+              />
             ) : (
               <RiCamera2Fill size={26} color="var(--gray-600)" />
             )}

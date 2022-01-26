@@ -28,7 +28,8 @@ import {
   HorizonCard,
   HeaderMob,
   Drawer,
-  ProductWrapper
+  ProductWrapper,
+  Button
 } from '../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -43,6 +44,8 @@ import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/SearchInput'
 import Carousel from 'components/atoms/Carousel'
+import CarouselProducts from 'components/atoms/CarouselProducts'
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 
 const fakeProducts = [
   {
@@ -134,7 +137,7 @@ const fakeProducts = [
 const Products = () => {
   const router = useRouter()
   // const { name } = router.query
-  let name = ''
+  const [name, setName] = useState('')
   useEffect(() => {
     const hostName = window.location.hostname
 
@@ -146,7 +149,7 @@ const Products = () => {
       previousName += hostName[i]
     }
 
-    name = previousName
+    setName(previousName)
   }, [])
 
   const [buttonOn, setButtonOn] = useState(true)
@@ -258,7 +261,7 @@ const Products = () => {
     if (name) {
       loadData()
 
-      console.log(products.length)
+      console.log(products)
     }
   }, [name])
 
@@ -550,21 +553,13 @@ const Products = () => {
                                 key={e.id}
                                 onClick={() => handleOpenProduct(e.id)}
                               >
-                                <img
+                                {/* <img
                                   src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
                                   alt="geladeira frost free"
-                                />
-                                <span className="title">
-                                  {ellipsis(e.title, 30)}
-                                </span>
-                                <div className="price">
-                                  <span>R$ {e.price.toFixed(2)}</span>
-                                  <small>
-                                    {e.discount
-                                      ? 'R$ ' +
-                                        ((1 - e.discount) * e.price).toFixed(2)
-                                      : null}
-                                  </small>
+                                /> */}
+                                <img src={e.files[0].url} alt={e.title} />
+                                <div className="title">
+                                  <span>{ellipsis(e.title, 30)}</span>
                                 </div>
                                 <div className="score">
                                   <AiFillStar
@@ -576,7 +571,30 @@ const Products = () => {
                                     {e.avgStars} | {e.sumOrders} Pedidos
                                   </span>
                                 </div>
-                                <p>{ellipsis(e.description, 120)}</p>
+                                <div className="price">
+                                  <small>
+                                    {e.discount
+                                      ? 'De: R$ ' +
+                                        ((1 - e.discount) * e.price).toFixed(2)
+                                      : null}
+                                  </small>
+                                  <span>R$ {e.price.toFixed(2)}</span>
+                                </div>
+
+                                {/* <p>{ellipsis(e.description, 120)}</p> */}
+                                {e.parcelAmount > 1 && (
+                                  <p>
+                                    Em até {e.parcelAmount}x sem juros ou{' '}
+                                    <strong>R$ {e.price.toFixed(2)}</strong> à
+                                    vista
+                                  </p>
+                                )}
+                                <Button position="left">
+                                  <BiChevronLeft size={25} color="black" />
+                                </Button>
+                                <Button position="right">
+                                  <BiChevronRight size={25} color="black" />
+                                </Button>
                               </ProductCard>
                             )
                           })}
@@ -629,10 +647,10 @@ const Products = () => {
                         <h3>Eletrônicos e eletrodomésticos</h3>
                         <div className="carousel-container">
                           <div className="carousel-item">
-                            <Carousel
+                            <CarouselProducts
                               data={products}
-                              isProduct
                               buttons={false}
+                              storeName={name}
                               promo
                             />
                           </div>
@@ -642,10 +660,10 @@ const Products = () => {
                         <h3>Cozinha</h3>
                         <div className="carousel-container">
                           <div className="carousel-item">
-                            <Carousel
+                            <CarouselProducts
                               data={products}
-                              isProduct
                               buttons={false}
+                              storeName={name}
                             />
                           </div>
                         </div>
@@ -654,10 +672,10 @@ const Products = () => {
                         <h3>Móveis</h3>
                         <div className="carousel-container">
                           <div className="carousel-item">
-                            <Carousel
+                            <CarouselProducts
                               data={products}
-                              isProduct
                               buttons={false}
+                              storeName={name}
                             />
                           </div>
                         </div>

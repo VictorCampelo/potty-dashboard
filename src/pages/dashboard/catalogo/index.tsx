@@ -1385,7 +1385,7 @@ const catalog = ({ storeId }: CatalogType) => {
                         return (
                           <ProductListCard
                             key={product?.id + '-' + index}
-                            icon=""
+                            icon={product?.files[0].url}
                             name={product?.title}
                             code={product?.id}
                             category={product?.categories}

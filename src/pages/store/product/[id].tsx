@@ -157,6 +157,30 @@ const fakeProducts = [
   }
 ]
 
+interface File {
+  alternativeText: null | string
+  caption: null
+  createdAt: string
+  createdBy: string | null
+  deletedAt: string | null
+  ext: null
+  filename: string
+  formats: string | null
+  hash: string | null
+  height: string | null
+  id: string
+  mime: null
+  name: string
+  previewUrl: null
+  provider: null
+  providerMetadata: null
+  tags: null
+  updatedAt: string
+  updatedBy: null
+  url: string
+  width: string | null
+}
+
 const ProductShow = () => {
   const router = useRouter()
   const { id } = router.query
@@ -215,6 +239,7 @@ const ProductShow = () => {
   const [price, setPrice] = useState(0)
   const [priceWithDiscount, setPriceWithDiscount] = useState(0)
   const [discount, setDiscount] = useState(0)
+  const [files, setFiles] = useState<File[]>([])
 
   const [isLoading, setIsLoading] = useState(true)
   const [showInstallment, setShowInstallment] = useState(false)
@@ -247,7 +272,7 @@ const ProductShow = () => {
 
     try {
       const { data } = await getProduct(`${id}`)
-
+      console.log(data)
       setTitle(data?.title)
       setDesc(data?.description)
       setAvgStars(data?.avgStars)
@@ -257,6 +282,7 @@ const ProductShow = () => {
       setDiscount(data?.discount)
       setProductId(data?.id)
       setStoreId(data?.storeId)
+      setFiles(data?.files)
 
       setPriceWithDiscount(
         parseFloat(
@@ -391,13 +417,13 @@ const ProductShow = () => {
                 {' '}
                 <AiOutlineUp size={20} color="var(--gray-600)" />
               </Button>
-              {images.map((data) => {
+              {files.map((data) => {
                 return (
                   <img
-                    key={data.title}
-                    onClick={(e) => setImagePreview(data.original)}
-                    src={data.thumbnail}
-                    alt={data.title}
+                    key={data?.id}
+                    // onClick={(e) => setImagePreview(data.original)}
+                    src={data?.url}
+                    alt={data?.filename}
                   />
                 )
               })}
@@ -407,7 +433,7 @@ const ProductShow = () => {
               </Button>
             </div>
             <img
-              src={imagePreview}
+              src={files[0]?.url}
               alt="Foto do produto"
               className="product-image"
             />
