@@ -108,7 +108,12 @@ const BusinessRegister = () => {
         instagram_link: storeData.instagram_link,
         whatsapp_link: storeData.whatsapp_link,
         image: image,
+        // zipcode: storeData.cep,
         description: desc,
+        // addressNumber: storeData.addressNumber,
+        // neighborhood: storeData.district,
+        // street: storeData.publicPlace,
+
         address: `${storeData.publicPlace}, n° ${storeData.number}, ${storeData.district}, CEP: ${storeData.cep}`
       }
     }

@@ -131,6 +131,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const [number, setNumber] = useState('')
   const [district, setDistrict] = useState('')
   const [cep, setCep] = useState('')
+  const [addressNumber, setAddressNumber] = useState('')
 
   const [timeTable, setTimeTable] = useState(false)
   const [dom, setDom] = useState([])
@@ -563,6 +564,8 @@ const Shop = ({ storeId, id }: Shop) => {
       setBusinessState(data?.state)
       setPublicPlace(data?.street)
       setNeighborhood(data?.neighborhood)
+
+      // setBusinessAddress()
     } catch (e) {
       console.log(e)
       setVazio(true)
