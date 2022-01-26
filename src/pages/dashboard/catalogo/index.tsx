@@ -81,14 +81,16 @@ type CategoryType = {
   createdAt: string
   updatedAt: string
 }
-
+type FileProduct = {
+  url: string
+}
 type ProductType = {
   avgStars: number
   createdAt: string
   deletedAt: string
   description: string
   discount: any
-  files: [string]
+  files: FileProduct[]
   id: string
   inventory: number
   lastSold: any
