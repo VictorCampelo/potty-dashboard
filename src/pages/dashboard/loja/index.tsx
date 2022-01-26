@@ -564,7 +564,7 @@ const Shop = ({ storeId, id }: Shop) => {
       setBusinessState(data?.state)
       setPublicPlace(data?.street)
       setNeighborhood(data?.neighborhood)
-
+      setAddressNumber(data?.addressNumber)
       // setBusinessAddress()
     } catch (e) {
       console.log(e)
@@ -1181,7 +1181,7 @@ const Shop = ({ storeId, id }: Shop) => {
               title="Localização"
               type="local"
               button={() => handleOpenLocationModal()}
-              local={businessAddress}
+              local={`${publicPlace}, ${addressNumber}, ${businessCity} - ${businessState}, ${cep}`}
               isLoading={isLoading}
               vazio={vazio}
               voidText="Nenhuma localização foi encontrada..."
