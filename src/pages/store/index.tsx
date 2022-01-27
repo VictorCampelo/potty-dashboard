@@ -698,28 +698,33 @@ const Products = () => {
 
           {widthScreen && (
             <Footer>
-              <h1>Contato</h1>
+              <div>
+                <h1>Contato</h1>
 
-              {telefone && (
-                <span>
-                  <AiFillPhone size={24} color="var(--gray-700)" />
-                  {telefone}
-                </span>
-              )}
+                {telefone && (
+                  <span>
+                    <AiFillPhone size={24} color="var(--gray-700)" />
+                    {telefone}
+                  </span>
+                )}
 
-              {whatsApp && (
-                <span>
-                  <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-                  {whatsApp}
-                </span>
-              )}
+                {whatsApp && (
+                  <span>
+                    <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                    {whatsApp}
+                  </span>
+                )}
 
-              {whatsApp && (
-                <a href="facebook.com">
-                  <AiFillFacebook size={24} color="var(--gray-700)" />
-                  {facebook}
-                </a>
-              )}
+                {whatsApp && (
+                  <a href="facebook.com">
+                    <AiFillFacebook size={24} color="var(--gray-700)" />
+                    {facebook}
+                  </a>
+                )}
+              </div>
+              <div className="mapContainer">
+                <img src="/images/map.svg" />
+              </div>
             </Footer>
           )}
         </Container>

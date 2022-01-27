@@ -410,28 +410,49 @@ export const Container = styled.main`
 `
 
 export const Footer = styled.footer`
-  width: 100%;
-  height: 260px;
-  border-radius: 30px;
-  background: var(--white);
-  box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
-  padding: 2rem 3rem;
-  margin-top: 1.5rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
 
+  width: 100%;
+  border-radius: var(--border-radius-gg);
+  background: var(--white);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin: var(--spacing-xxs) 0;
+
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: var(--border-radius-gg) var(--border-radius-gg) 0 0;
+    flex-direction: column;
+
+    img {
+      margin-top: var(--spacing-xxxs);
+      width: 100%;
+    }
+  }
   h1 {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-xxxs);
   }
 
   span,
   a {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-nano);
 
     svg {
-      margin-right: 0.5rem;
+      margin-right: var(--spacing-nano);
+    }
+  }
+
+  .mapContainer {
+    text-align: center;
+
+    img {
+      height: 100%;
+      width: 100%;
     }
   }
 `
