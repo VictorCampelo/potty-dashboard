@@ -8,8 +8,11 @@ import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { Pagination } from 'components/molecules/Pagination'
 import { AiFillEye, AiOutlineSearch } from 'react-icons/ai'
-import { BsChevronDown } from 'react-icons/bs'
+import { FiX } from 'react-icons/fi'
 import { api } from 'services/apiClient'
+import CustomModal from 'components/molecules/CustomModal'
+import { ModalContainer, Product } from 'styles/components/Modal'
+import { Button } from 'components/atoms/Button'
 
 type OrderProps = {
   id: string
@@ -23,6 +26,11 @@ type Orders = {
 }
 const Pedidos = () => {
   const [orders, setOrders] = useState<OrderProps[]>([])
+  const [modalVisible, setModalVisible] = useState(false)
+
+  function toggleModalVisible() {
+    setModalVisible(!modalVisible)
+  }
 
   function cutStrDate(date: string, limit: string) {
     let newDate = ''
@@ -47,8 +55,16 @@ const Pedidos = () => {
   }
   async function loadData() {
     const { data } = await api.get('/orders/store?confirmed=false')
+    // const { data: dataConfirmed } = await api.get('/orders/store')
+    // api.get('/orders/store?confirmed=true').then(res => console.log(res))
+
     console.log(data)
+    // console.log(dataConfirmed)
     setOrders(data)
+
+    // if(dataConfirmed.length > 0) {
+    //   setOrders(arr => [...arr, dataConfirmed])
+    // }
   }
 
   useEffect(() => {
@@ -99,7 +115,7 @@ const Pedidos = () => {
               const newDate = convertDate(oldDate)
 
               const recived = order?.situation === 'Recebido' ? 'recived' : ''
-              const confirm = order?.situation === 'Confirmado' ? 'confirm' : ''
+              const confirm = order?.situation === 'Concluído' ? 'confirm' : ''
               const refused = order?.situation === 'Cancelado' ? 'refused' : ''
               const buttonClasses = `statusButton ${recived} ${confirm} ${refused}`
               return (
@@ -114,7 +130,7 @@ const Pedidos = () => {
                     <span>R$ {order.amount.toFixed(2)}</span>
                   </section>
                   <section className="center" style={{ flex: 0.75 }}>
-                    <AiFillEye size={24} />
+                    <AiFillEye size={24} onClick={toggleModalVisible} />
                   </section>
                   <button className={buttonClasses} style={{ flex: 0.75 }}>
                     {order.situation}
@@ -122,137 +138,6 @@ const Pedidos = () => {
                 </OrderBody>
               )
             })}
-            {/* <OrderBody>
-              <section style={{ flex: 0.5 }}>
-                <span>21/12/21</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>54141af-456qwa</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>R$2,999,00</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <AiFillEye size={24} />
-              </section>
-
-              <button className="statusButton" style={{ flex: 0.75 }}>
-                Processando
-              </button>
-            </OrderBody> */}
-
-            {/* <OrderBody>
-              <section style={{ flex: 0.5 }}>
-                <span>21/12/21</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>54141af-456qwa</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>R$2,999,00</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <AiFillEye size={24} />
-              </section>
-
-              <button className="statusButton recived" style={{ flex: 0.75 }}>
-                Recebido
-              </button>
-            </OrderBody>
-
-            <OrderBody>
-              <section style={{ flex: 0.5 }}>
-                <span>21/12/21</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>54141af-456qwa</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>R$2,999,00</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <AiFillEye size={24} />
-              </section>
-
-              <button className="statusButton" style={{ flex: 0.75 }}>
-                Processando
-              </button>
-            </OrderBody>
-
-            <OrderBody>
-              <section style={{ flex: 0.5 }}>
-                <span>21/12/21</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>54141af-456qwa</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>R$2,999,00</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <AiFillEye size={24} />
-              </section>
-
-              <button className="statusButton confirm" style={{ flex: 0.75 }}>
-                Confirmado
-              </button>
-            </OrderBody>
-
-            <OrderBody>
-              <section style={{ flex: 0.5 }}>
-                <span>21/12/21</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>54141af-456qwa</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>R$2,999,00</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <AiFillEye size={24} />
-              </section>
-
-              <button className="statusButton refused" style={{ flex: 0.75 }}>
-                Cancelado
-              </button>
-            </OrderBody>
-
-            <OrderBody>
-              <section style={{ flex: 0.5 }}>
-                <span>21/12/21</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>54141af-456qwa</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>R$2,999,00</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <AiFillEye size={24} />
-              </section>
-
-              <button className="statusButton confirm" style={{ flex: 0.75 }}>
-                Confirmado
-              </button>
-            </OrderBody> */}
 
             <footer>
               <Pagination
@@ -264,6 +149,167 @@ const Pedidos = () => {
             </footer>
           </MainArea>
         </Content>
+        <CustomModal
+          modalVisible={modalVisible}
+          setModalOpen={toggleModalVisible}
+          buttons={false}
+        >
+          <ModalContainer>
+            <div className="title">
+              <div className="information">
+                <h2>Dados do pedido</h2>
+                <span>Nº do pedido: 555-555-555</span>
+              </div>
+              <div className="close">
+                <FiX size={30} />
+              </div>
+            </div>
+            <div className="content">
+              <div className="leftContainer">
+                <Product>
+                  <div className="productInformation">
+                    <div className="imageArea">
+                      <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" />
+                    </div>
+                    <div className="description">
+                      <div>
+                        <span>
+                          Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
+                          Compartimento Extrafrio Fresh Z...{' '}
+                        </span>
+                      </div>
+                      <div className="price">
+                        <span>1X</span>
+                        <span>R$ 2.999,00</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="totalPrice">
+                    <span>Subtotal: R$ 2.999,00</span>
+                  </div>
+                </Product>
+                <Product>
+                  <div className="productInformation">
+                    <div className="imageArea">
+                      <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" />
+                    </div>
+                    <div className="description">
+                      <div>
+                        <span>
+                          Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
+                          Compartimento Extrafrio Fresh Z...{' '}
+                        </span>
+                      </div>
+                      <div className="price">
+                        <span>1X</span>
+                        <span>R$ 2.999,00</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="totalPrice">
+                    <span>Subtotal: R$ 2.999,00</span>
+                  </div>
+                </Product>
+                <Product>
+                  <div className="productInformation">
+                    <div className="imageArea">
+                      <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" />
+                    </div>
+                    <div className="description">
+                      <div>
+                        <span>
+                          Geladeira Brastemp Brm44hk Frost Free Duplex 375l Com
+                          Compartimento Extrafrio Fresh Z...{' '}
+                        </span>
+                      </div>
+                      <div className="price">
+                        <span>1X</span>
+                        <span>R$ 2.999,00</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="totalPrice">
+                    <span>Subtotal: R$ 2.999,00</span>
+                  </div>
+                </Product>
+              </div>
+              <div className="rightContainer">
+                <div className="status">
+                  <span>Status:</span>
+                  <button className="statusButton" style={{ flex: 0.75 }}>
+                    Recebido
+                  </button>
+                </div>
+                <div className="informationOrder">
+                  <div className="resume">
+                    <span className="title">
+                      <strong>Resumo do pedido</strong>
+                    </span>
+                    <div>
+                      <span>Data:</span>
+                      <span>20/12/21</span>
+                    </div>
+                    <div>
+                      <span>Quantidade:</span>
+                      <span>4</span>
+                    </div>
+                    <div>
+                      <span>Cupons:</span>
+                      <span>- R$ 0,00</span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>Total geral:</strong>
+                      </span>
+                      <span>
+                        <strong>R$ 6.594,00</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="payment">
+                    <span className="title">
+                      <strong>Informações de pagamento</strong>
+                    </span>
+                    <div>
+                      <span>Método:</span>
+                      <span>Cartão de débito</span>
+                    </div>
+                    <div>
+                      <span>Parcelamento:</span>
+                      <span>Não</span>
+                    </div>
+                    <div>
+                      <span>
+                        <strong>Total geral:</strong>
+                      </span>
+                      <span>
+                        <strong>R$ 6.594,00</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="localization">
+                    <span className="title">
+                      <strong>Local e contato:</strong>
+                    </span>
+                    <span>
+                      Avenida josé silva 66, Centro, Dom expedito Lopes, PI,
+                      64620000, Brasil
+                    </span>
+                    <span className="phone">(89) 9 8100-0000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="buttonsContainer">
+              <div>
+                <Button title="VOLTAR" border />
+                <Button title="SALVAR" />
+              </div>
+            </div>
+          </ModalContainer>
+        </CustomModal>
       </Container>
     </>
   )
