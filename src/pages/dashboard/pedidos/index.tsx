@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import { Container } from '../../../styles/pages/shopkeeper'
 import Head from 'next/head'
@@ -9,8 +9,52 @@ import { setupApiClient } from 'services/api'
 import { Pagination } from 'components/molecules/Pagination'
 import { AiFillEye, AiOutlineSearch } from 'react-icons/ai'
 import { BsChevronDown } from 'react-icons/bs'
+import { api } from 'services/apiClient'
 
+type OrderProps = {
+  id: string
+  amount: number
+  situation: string
+  createdAt: string
+}
+
+type Orders = {
+  data: OrderProps[]
+}
 const Pedidos = () => {
+  const [orders, setOrders] = useState<OrderProps[]>([])
+
+  function cutStrDate(date: string, limit: string) {
+    let newDate = ''
+
+    for (let x = 0; x < date.length; x++) {
+      if (date[x] === limit) {
+        break
+      }
+      newDate += date[x]
+    }
+
+    return newDate
+  }
+
+  function convertDate(date: string) {
+    const day = `${date[8]}${date[9]}`
+    const month = `${date[5]}${date[6]}`
+    const year = `${date[0]}${date[1]}${date[2]}${date[3]}`
+    const newDate = `${day}-${month}-${year}`
+
+    return newDate
+  }
+  async function loadData() {
+    const { data } = await api.get('/orders/store?confirmed=false')
+    console.log(data)
+    setOrders(data)
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
   return (
     <>
       <Head>
@@ -50,8 +94,35 @@ const Pedidos = () => {
                 <span>Status</span>
               </section>
             </OrderHead>
+            {orders?.map((order: OrderProps) => {
+              const oldDate = cutStrDate(order.createdAt, 'T')
+              const newDate = convertDate(oldDate)
 
-            <OrderBody>
+              const recived = order?.situation === 'Recebido' ? 'recived' : ''
+              const confirm = order?.situation === 'Confirmado' ? 'confirm' : ''
+              const refused = order?.situation === 'Cancelado' ? 'refused' : ''
+              const buttonClasses = `statusButton ${recived} ${confirm} ${refused}`
+              return (
+                <OrderBody key={order.id}>
+                  <section style={{ flex: 0.5 }}>
+                    <span>{newDate}</span>
+                  </section>
+                  <section style={{ flex: 0.75 }}>
+                    <span>54141af-456qwa</span>
+                  </section>
+                  <section style={{ flex: 0.35 }}>
+                    <span>R$ {order.amount.toFixed(2)}</span>
+                  </section>
+                  <section className="center" style={{ flex: 0.75 }}>
+                    <AiFillEye size={24} />
+                  </section>
+                  <button className={buttonClasses} style={{ flex: 0.75 }}>
+                    {order.situation}
+                  </button>
+                </OrderBody>
+              )
+            })}
+            {/* <OrderBody>
               <section style={{ flex: 0.5 }}>
                 <span>21/12/21</span>
               </section>
@@ -71,9 +142,9 @@ const Pedidos = () => {
               <button className="statusButton" style={{ flex: 0.75 }}>
                 Processando
               </button>
-            </OrderBody>
+            </OrderBody> */}
 
-            <OrderBody>
+            {/* <OrderBody>
               <section style={{ flex: 0.5 }}>
                 <span>21/12/21</span>
               </section>
@@ -181,7 +252,7 @@ const Pedidos = () => {
               <button className="statusButton confirm" style={{ flex: 0.75 }}>
                 Confirmado
               </button>
-            </OrderBody>
+            </OrderBody> */}
 
             <footer>
               <Pagination
