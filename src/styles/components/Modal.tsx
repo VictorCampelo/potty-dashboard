@@ -7,20 +7,21 @@ export const Product = styled.div`
   width: 400px;
   .productInformation {
     /* height: 130px; */
-    width: 100%;
     display: flex;
     .description {
+      width: 300px;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       .price {
         display: flex;
         gap: var(--spacing-md);
       }
     }
     .imageArea {
-      width: 60%;
       margin: var(--spacing-quarck);
-      height: 100%;
+      height: 136px;
+      width: 136px;
+
       img {
         width: 100%;
         height: 100%;
@@ -76,10 +77,20 @@ export const ModalContainer = styled.div`
     .rightContainer {
       margin: 0 1rem 0 1rem;
       width: 310px;
+      .gradient {
+        /* background: linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0) 47%,
+          rgba(253, 45, 45, 1) 100%
+        ); */
+        height: 30px;
+      }
       .status {
         display: flex;
         flex-direction: column;
         width: 50%;
+        /* margin-bottom: var(--spacing-xxxs); */
+        /* height: 100px; */
         .statusButton {
           width: 100%;
           flex: 1;
