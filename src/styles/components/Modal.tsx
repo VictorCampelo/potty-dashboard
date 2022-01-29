@@ -78,12 +78,17 @@ export const ModalContainer = styled.div`
       margin: 0 1rem 0 1rem;
       width: 310px;
       .gradient {
-        /* background: linear-gradient(
+        background: rgb(255, 255, 255);
+        background: linear-gradient(
           0deg,
-          rgba(255, 255, 255, 0) 47%,
-          rgba(253, 45, 45, 1) 100%
-        ); */
+          rgba(255, 255, 255, 0) 8%,
+          rgba(255, 255, 255, 0.22202384371717432) 24%,
+          rgba(255, 255, 255, 0.5329482134650736) 41%,
+          rgba(255, 255, 255, 0.7486344879748774) 60%,
+          rgba(255, 255, 255, 1) 100%
+        );
         height: 30px;
+        transform: translateY(25px);
       }
       .status {
         display: flex;
