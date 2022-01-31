@@ -126,8 +126,8 @@ const Shop = ({ storeId, id }: Shop) => {
 
   const [businessState, setBusinessState] = useState('')
   const [businessCity, setBusinessCity] = useState('')
-  const [publicPlace, setPublicPlace] = useState('' | null)
-  const [neighborhood, setNeighborhood] = useState('' | null)
+  const [publicPlace, setPublicPlace] = useState('')
+  const [neighborhood, setNeighborhood] = useState('')
   const [number, setNumber] = useState('')
   const [district, setDistrict] = useState('')
   const [cep, setCep] = useState('')
