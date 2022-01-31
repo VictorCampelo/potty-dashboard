@@ -25,9 +25,9 @@ export const Container = styled.div<ContainerProps>`
     border-radius: 4px;
     border: 1px solid var(--black-800);
     background: var(--white);
-
+    ${(props) => props.confirm && 'border: none;'}
     margin-right: 10px;
-    padding: 4px;
+    /* padding: 4px; */
   }
 
   .check {

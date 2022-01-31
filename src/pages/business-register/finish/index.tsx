@@ -100,16 +100,21 @@ const BusinessRegister = () => {
       },
       storeDto: {
         name: storeData.name,
-        CNPJ: storeData.cpfCnpj,
+        CNPJ: storeData.CNPJ,
         phone: storeData.phone,
         city: storeData.city,
         state: storeData.state,
-        facebook_link: storeData.facebook_link,
-        instagram_link: storeData.instagram_link,
-        whatsapp_link: storeData.whatsapp_link,
+        facebookLink: storeData.facebook_link,
+        instagramLink: storeData.instagram_link,
+        whatsappLink: storeData.whatsapp_link,
         image: image,
+        zipcode: storeData.cep,
         description: desc,
-        address: `${storeData.publicPlace}, n° ${storeData.number}, ${storeData.district}, CEP: ${storeData.cep}`
+        addressNumber: storeData.number,
+        neighborhood: storeData.district,
+        street: storeData.publicPlace
+
+        // address: `${storeData.publicPlace}, n° ${storeData.number}, ${storeData.district}, CEP: ${storeData.cep}`
       }
     }
 
