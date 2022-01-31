@@ -62,6 +62,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { string } from 'yup/lib/locale'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
+import { format, parseISO } from 'date-fns'
 
 type CupomType = {
   code: string
@@ -190,6 +191,10 @@ const catalog = ({ storeId }: CatalogType) => {
     label: idx + 1 + 'x'
   }))
 
+  const date = new Date()
+  date.setDate(date.getDate() + 30)
+
+  const futureDate = format(date, "dd'/'MM'/'Y")
   // Functions Open Modals
 
   function toggleAddCategoryModal() {
@@ -1174,7 +1179,7 @@ const catalog = ({ storeId }: CatalogType) => {
               <Input
                 label="Valor do desconto"
                 icon={<FaMoneyBill />}
-                placeholder={radioSelected === 1 ? 'R$ 0' : '% 0'}
+                placeholder={radioSelected === 1 ? 'R$ 0' : '0 %'}
                 mask={radioSelected === 1 ? 'monetary' : 'number'}
                 value={discountPorcent}
                 onChange={(e) => setDiscountPorcent(e.target.value)}
@@ -1183,7 +1188,7 @@ const catalog = ({ storeId }: CatalogType) => {
               <div className="row">
                 <Input
                   label="Validade"
-                  placeholder="02/12/2021"
+                  placeholder={String(futureDate)}
                   mask="date"
                   value={validate}
                   onChange={(e) => setValidate(e.target.value)}
@@ -1214,7 +1219,7 @@ const catalog = ({ storeId }: CatalogType) => {
               <div className="row">
                 <Input
                   label="Nome do cupom"
-                  placeholder="CUPOM10"
+                  placeholder="Nome do cupom  "
                   value={cupomCode}
                   onChange={(e) => setCupomCode(e.target.value)}
                 />
@@ -1387,7 +1392,7 @@ const catalog = ({ storeId }: CatalogType) => {
                         return (
                           <ProductListCard
                             key={product?.id + '-' + index}
-                            icon={product?.files[0].url}
+                            icon={product?.files[0]?.url}
                             name={product?.title}
                             code={product?.id}
                             category={product?.categories}
@@ -1482,8 +1487,11 @@ const catalog = ({ storeId }: CatalogType) => {
                       <EmptyContainer>
                         <div>
                           <img src="/images/emptyCategories.svg" />
-                          <p>Nenhuma cupom cadastrado</p>
-                          <Button title="Cadastrar" onClick={() => {}} />
+                          <p>Nenhum cupom cadastrado</p>
+                          <Button
+                            title="Cadastrar"
+                            onClick={toggleAddCupomModal}
+                          />
                         </div>
                       </EmptyContainer>
                     )}

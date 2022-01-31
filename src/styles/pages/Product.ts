@@ -936,6 +936,12 @@ export const Footer = styled.footer`
   }
 
   .mapContainer {
-    text-align: center;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+    span {
+      margin: auto;
+    }
   }
 `

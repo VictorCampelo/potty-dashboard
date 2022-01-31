@@ -11,6 +11,8 @@ type SignInCredentials = {
 
 type User = {
   email: string
+  firstName?: string
+  lastName?: string
 }
 
 type AuthContextData = {
@@ -37,19 +39,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>(null)
   const isAuthenticaded = !!user
 
-  // useEffect(() => {
-  //   const { 'ultimo.auth.token': token } = parseCookies();
-
-  //   if(token) {
-  //     api.get('/me').then(res => {
-  //       const { email } = res.data;
-
-  //       setUser({ email })
-  //     }).catch(() => {
-  //       signOut();
-  //     })
-  //   }
-  // }, [])
+  useEffect(() => {
+    const { 'ultimo.auth.token': token } = parseCookies()
+    if (token) {
+      api
+        .get('/users/me')
+        .then((res) => {
+          const { email, firstName, lastName } = res.data
+          setUser({ email, firstName, lastName })
+        })
+        .catch(() => {
+          signOut()
+        })
+    }
+  }, [])
 
   async function signIn({ email, password }: SignInCredentials) {
     const res = await api.post('/auth/signin', {

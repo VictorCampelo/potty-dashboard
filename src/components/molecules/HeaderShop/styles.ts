@@ -36,6 +36,23 @@ export const Container = styled.header<ContainerProps>`
     ${(props) => props.isMain === false && 'width: 100%;'}
     list-style-type: none;
 
+    .userContainer {
+      display: flex;
+      gap: var(--spacing-xxxs);
+      align-items: center;
+
+      div {
+        display: flex;
+        align-items: center;
+        span {
+          margin-left: var(--spacing-xxxs);
+          color: var(--color-secondary-darker);
+          font-size: var(--font-size-md);
+          font-weight: var(--font-weight-medium);
+        }
+      }
+    }
+
     .authContainer {
       display: flex;
       align-items: center;

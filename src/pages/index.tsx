@@ -141,6 +141,9 @@ const Landing = ({ stores }: Landing) => {
               <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
             </ContainerTerms>
           </div>
+          <div className="mapContainer">
+            <img src="/images/map.svg" />
+          </div>
         </Footer>
       </Container>
 
