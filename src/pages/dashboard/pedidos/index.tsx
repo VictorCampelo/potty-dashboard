@@ -43,6 +43,13 @@ const Pedidos = () => {
   const [order, setOrder] = useState<OrderProps>({} as OrderProps)
   const [classButton, setClassButton] = useState('')
   const [date, setDate] = useState('')
+  const [page, setPage] = useState(1)
+
+  function changePage() {
+    setPage(page + 1)
+    loadData(orders.length * page)
+  }
+
   function toggleModalOrder(order: OrderProps) {
     setOrder(order)
     setModalVisible(!modalVisible)
@@ -60,6 +67,17 @@ const Pedidos = () => {
 
     return buttonClasses
   }
+
+  function percurArray(arr: OrderHistorics[]) {
+    let value = 0
+
+    for (let x = 0; x < arr.length; x++) {
+      value += arr[0].productQtd
+    }
+
+    return value
+  }
+
   function cutStrDate(date: string, limit: string) {
     let newDate = ''
 
@@ -82,8 +100,10 @@ const Pedidos = () => {
     return newDate
   }
 
-  async function loadData() {
-    const { data } = await api.get('/orders/store?confirmed=false')
+  async function loadData(off: number) {
+    const { data } = await api.get(
+      `/orders/store?confirmed=false&offset=${off}&limit=3`
+    )
     // const { data: dataConfirmed } = await api.get('/orders/store')
     // api.get('/orders/store?confirmed=true').then(res => console.log(res))
 
@@ -97,7 +117,7 @@ const Pedidos = () => {
   }
 
   useEffect(() => {
-    loadData()
+    loadData(0)
   }, [])
 
   return (
@@ -175,10 +195,10 @@ const Pedidos = () => {
 
             <footer>
               <Pagination
-                onPageChange={() => {}}
-                totalCountOfRegisters={500}
-                currentPage={1}
-                registersPerPage={40}
+                onPageChange={changePage}
+                totalCountOfRegisters={orders.length * 3}
+                currentPage={page}
+                registersPerPage={3}
               />
             </footer>
           </MainArea>
@@ -249,7 +269,8 @@ const Pedidos = () => {
                       </div>
                       <div>
                         <span>Quantidade:</span>
-                        <span>{order?.orderHistorics[0]?.productQtd}</span>
+                        {/* <span>{order?.orderHistorics[0]?.productQtd}</span> */}
+                        <span>{percurArray(order?.orderHistorics)}</span>
                       </div>
                       <div>
                         <span>Cupons:</span>
