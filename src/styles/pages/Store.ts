@@ -407,6 +407,11 @@ export const Container = styled.main`
       }
     }
   }
+
+  footer {
+    margin: auto;
+    margin-bottom: var(--spacing-xs);
+  }
 `
 
 export const Footer = styled.footer`
