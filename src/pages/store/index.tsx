@@ -11,6 +11,7 @@ import {
   AiOutlineStar,
   AiOutlineLeft
 } from 'react-icons/ai'
+import { BsFillShareFill } from 'react-icons/bs'
 import {
   Wrapper,
   CategoriesCard,
@@ -192,7 +193,18 @@ const Products = () => {
             src={imageBanner?.url || '/images/capa.png'}
             alt="capa"
           />
-
+          <div className="iconShare">
+            <BsFillShareFill
+              size={25}
+              color={widthScreen ? 'var(--black-800)' : 'var(--color-primary)'}
+            />
+          </div>
+          {!widthScreen && (
+            <div className="openContainer">
+              <div className="circle" />
+              <span>Aberto agora</span>
+            </div>
+          )}
           <HeaderShop />
 
           {!widthScreen && (
