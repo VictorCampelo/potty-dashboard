@@ -9,7 +9,9 @@ import {
   AiOutlineWhatsApp,
   AiOutlineSearch,
   AiOutlineStar,
-  AiOutlineLeft
+  AiOutlineLeft,
+  AiFillHeart,
+  AiOutlineHeart
 } from 'react-icons/ai'
 import { BsFillShareFill } from 'react-icons/bs'
 import {
@@ -99,8 +101,12 @@ const Products = () => {
   const [sex, setSex] = useState([])
   const [sab, setSab] = useState([])
 
+  const [favorite, setFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  function handleFavorite() {
+    setFavorite(!favorite)
+  }
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
@@ -275,21 +281,21 @@ const Products = () => {
                     alt="perfil"
                   />
                   <div className="title">
-                    <h1>{businessName}</h1>
+                    <h1>{ellipsis(businessName, 20)}</h1>
                     <div className="stars">
-                      {[...new Array(avgstars)].map((e) => {
+                      {[...new Array(avgstars)].map((e, index) => {
                         return (
                           <AiFillStar
-                            key={e + '123'}
+                            key={`${e}123${index}`}
                             size={24}
                             color="var(--gold)"
                           />
                         )
                       })}
-                      {[...new Array(5 - avgstars)].map((e) => {
+                      {[...new Array(5 - avgstars)].map((e, index) => {
                         return (
                           <AiOutlineStar
-                            key={e + '124'}
+                            key={`${e}124${index}`}
                             size={24}
                             color="var(--gold)"
                           />
@@ -298,6 +304,21 @@ const Products = () => {
                       <h2>({sumStars})</h2>
                     </div>
                   </div>
+                  {favorite ? (
+                    <AiFillHeart
+                      size={50}
+                      color="var(--color-primary)"
+                      onClick={handleFavorite}
+                      className="favorite"
+                    />
+                  ) : (
+                    <AiOutlineHeart
+                      size={50}
+                      color="var(--color-primary)"
+                      onClick={handleFavorite}
+                      className="favorite"
+                    />
+                  )}
                 </div>
                 <p>{ellipsis(desc, 208)}</p>
               </DescriptionShop>

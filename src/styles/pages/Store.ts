@@ -291,6 +291,12 @@ export const DescriptionShop = styled.div`
         margin-left: 15px;
       }
     }
+
+    .favorite {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
   }
 
   p {
