@@ -250,7 +250,7 @@ const Products = () => {
           draggable: true,
           progress: undefined
         })
-        return router.push('/landing')
+        return router.push(`/`)
       }
     } finally {
       setIsLoading(false)
