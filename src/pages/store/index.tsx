@@ -9,8 +9,11 @@ import {
   AiOutlineWhatsApp,
   AiOutlineSearch,
   AiOutlineStar,
-  AiOutlineLeft
+  AiOutlineLeft,
+  AiFillHeart,
+  AiOutlineHeart
 } from 'react-icons/ai'
+import { BsFillShareFill } from 'react-icons/bs'
 import {
   Wrapper,
   CategoriesCard,
@@ -46,93 +49,7 @@ import { Input } from 'components/molecules/SearchInput'
 import Carousel from 'components/atoms/Carousel'
 import CarouselProducts from 'components/atoms/CarouselProducts'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
-
-const fakeProducts = [
-  {
-    id: '404d2460-d787-47dd-8636-5364d77718b7',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '404d2460-d787-47dd-8636-5364d77718b7',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  }
-]
+import { Pagination } from 'components/molecules/Pagination'
 
 const Products = () => {
   const router = useRouter()
@@ -184,8 +101,12 @@ const Products = () => {
   const [sex, setSex] = useState([])
   const [sab, setSab] = useState([])
 
+  const [favorite, setFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  function handleFavorite() {
+    setFavorite(!favorite)
+  }
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
@@ -278,8 +199,19 @@ const Products = () => {
             src={imageBanner?.url || '/images/capa.png'}
             alt="capa"
           />
-
-          <HeaderShop isMain={false} />
+          <div className="iconShare">
+            <BsFillShareFill
+              size={25}
+              color={widthScreen ? 'var(--black-800)' : 'var(--color-primary)'}
+            />
+          </div>
+          {!widthScreen && (
+            <div className="openContainer">
+              <div className="circle" />
+              <span>Aberto agora</span>
+            </div>
+          )}
+          <HeaderShop />
 
           {!widthScreen && (
             <HeaderMob>
@@ -349,21 +281,21 @@ const Products = () => {
                     alt="perfil"
                   />
                   <div className="title">
-                    <h1>{businessName}</h1>
+                    <h1>{ellipsis(businessName, 20)}</h1>
                     <div className="stars">
-                      {[...new Array(avgstars)].map((e) => {
+                      {[...new Array(avgstars)].map((e, index) => {
                         return (
                           <AiFillStar
-                            key={e + '123'}
+                            key={`${e}123${index}`}
                             size={24}
                             color="var(--gold)"
                           />
                         )
                       })}
-                      {[...new Array(5 - avgstars)].map((e) => {
+                      {[...new Array(5 - avgstars)].map((e, index) => {
                         return (
                           <AiOutlineStar
-                            key={e + '124'}
+                            key={`${e}124${index}`}
                             size={24}
                             color="var(--gold)"
                           />
@@ -372,6 +304,21 @@ const Products = () => {
                       <h2>({sumStars})</h2>
                     </div>
                   </div>
+                  {favorite ? (
+                    <AiFillHeart
+                      size={50}
+                      color="var(--color-primary)"
+                      onClick={handleFavorite}
+                      className="favorite"
+                    />
+                  ) : (
+                    <AiOutlineHeart
+                      size={50}
+                      color="var(--color-primary)"
+                      onClick={handleFavorite}
+                      className="favorite"
+                    />
+                  )}
                 </div>
                 <p>{ellipsis(desc, 208)}</p>
               </DescriptionShop>
@@ -695,7 +642,16 @@ const Products = () => {
               </div>
             </div>
           </section>
-
+          {widthScreen && (
+            <footer>
+              <Pagination
+                onPageChange={() => {}}
+                currentPage={1}
+                totalCountOfRegisters={100}
+                registersPerPage={10}
+              />
+            </footer>
+          )}
           {widthScreen && (
             <Footer>
               <div>

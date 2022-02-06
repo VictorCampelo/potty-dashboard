@@ -23,6 +23,7 @@ export const TopoPage = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
+  position: relative;
   .capa {
     /* z-index: 2; */
     /* margin-top: -105px; */
@@ -33,6 +34,45 @@ export const TopoPage = styled.div`
     .capa {
       margin-top: 0;
       height: 220px;
+    }
+  }
+
+  .openContainer,
+  .iconShare {
+    position: absolute;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+  }
+
+  .openContainer {
+    border-radius: 0.75rem 0 0 0.75rem;
+    top: 75%;
+    right: 0;
+    flex-direction: column;
+    .circle {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--color-secondary-darker);
+    }
+    span {
+      font-weight: 600;
+      color: var(--color-secondary-darker);
+      font-size: 1.25rem;
+    }
+  }
+  .iconShare {
+    border-radius: 50%;
+    justify-content: center;
+    right: 50px;
+    top: 85%;
+
+    ${[sizes.down('lgMob')]} {
+      top: 45%;
+      right: 0;
+      border-radius: 50% 0 0 50%;
     }
   }
 `
@@ -251,6 +291,12 @@ export const DescriptionShop = styled.div`
         margin-left: 15px;
       }
     }
+
+    .favorite {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
   }
 
   p {
@@ -406,6 +452,11 @@ export const Container = styled.main`
         }
       }
     }
+  }
+
+  footer {
+    margin: auto;
+    margin-bottom: var(--spacing-xs);
   }
 `
 
