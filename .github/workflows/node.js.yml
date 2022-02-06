@@ -34,7 +34,7 @@ jobs:
       - run: |
           ssh -i private_key ${USER_NAME}@${HOSTNAME} '
           . ~/.nvm/nvm.sh &&
-          cd /var/www/ultimo-front &&
+          cd /var/www/ultimo-app &&
           git pull origin staging &&
           npm i &&
           pm2 delete bdv-app &&
