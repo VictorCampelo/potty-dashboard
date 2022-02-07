@@ -1,6 +1,10 @@
 import Header from '../../../components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../../styles/pages/preLogin'
+import {
+  Container,
+  TermsModalContainer,
+  Wrapper
+} from '../../../styles/pages/preLogin'
 
 import { DescriptionInput } from '../../../components/molecules/DescriptionInput'
 import { ShopImage } from '../../../components/molecules/ShopImage'
@@ -18,6 +22,8 @@ import Cropper from 'react-easy-crop'
 import { CropModalContainer } from 'styles/pages/Catalog'
 import CustomModal from 'components/molecules/CustomModal'
 import useMedia from 'use-media'
+import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
+import { FiX } from 'react-icons/fi'
 
 type ShopkeeperUser = {
   email?: string
@@ -36,6 +42,16 @@ const BusinessRegister = () => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const rotation = 0
+
+  const [terms, setTerms] = useState(false)
+  const [termsModal, setTermsModal] = useState(false)
+  function handleTerms() {
+    setTerms(!terms)
+  }
+
+  function handleTermsModal() {
+    setTermsModal(!termsModal)
+  }
 
   const { userDto, storeDto, setStore } = useContext(ShopkeeperContext)
 
@@ -195,7 +211,7 @@ const BusinessRegister = () => {
   return (
     <Wrapper>
       <Head>
-        <title> Registro de Negócio | Último</title>
+        <title> Registro de Negócio | Último </title>
       </Head>
 
       <Header />
@@ -251,6 +267,28 @@ const BusinessRegister = () => {
           </CropModalContainer>
         </CustomModal>
 
+        <CustomModal
+          buttons={false}
+          modalVisible={termsModal}
+          setModalOpen={handleTermsModal}
+        >
+          <TermsModalContainer>
+            <div className="title">
+              <h2>Termos e condições</h2>
+              <FiX
+                size={25}
+                onClick={handleTermsModal}
+                style={{ cursor: 'pointer' }}
+              />
+            </div>
+            <div className="termsContainer">
+              <span>Teste</span>
+            </div>
+            <div className="buttonContainer">
+              <Button title="CONTINUAR" onClick={handleTermsModal} />
+            </div>
+          </TermsModalContainer>
+        </CustomModal>
         <form onSubmit={() => {}}>
           <div className="title">
             <h1> Registro de Negócio </h1>
@@ -283,7 +321,13 @@ const BusinessRegister = () => {
               maxLength={45}
             />
           </div>
-
+          <CheckboxFilter confirm={terms} toggleConfirm={handleTerms}>
+            <span>
+              Li e concordo com os{' '}
+              <a onClick={handleTermsModal}>termos de uso</a> e{' '}
+              <a href="#">política de privacidade</a>
+            </span>
+          </CheckboxFilter>
           <div className="buttonContainer">
             <div
               style={
