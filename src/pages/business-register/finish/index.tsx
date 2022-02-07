@@ -282,7 +282,52 @@ const BusinessRegister = () => {
               />
             </div>
             <div className="termsContainer">
-              <span>Teste</span>
+              <span>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+                sodales lacus non justo blandit, at ultrices libero volutpat.
+                Etiam aliquam tincidunt imperdiet. Curabitur elementum consequat
+                lorem, in scelerisque mi mollis in. Etiam at eleifend felis, in
+                ornare neque. Ut quis varius leo, sed sollicitudin dui. Praesent
+                sem arcu, tristique non lacus et, scelerisque maximus magna.
+                Donec ligula quam, accumsan ut erat venenatis, faucibus
+                ullamcorper augue. Mauris nec ligula felis. Suspendisse sagittis
+                diam vel iaculis consectetur. Vivamus eleifend molestie nisi
+                eget blandit. Aliquam non lacinia mauris. In at nibh neque.
+                Phasellus sit amet libero facilisis, dignissim ligula vel,
+                tempus ante. Integer in volutpat turpis. Phasellus rutrum
+                suscipit mi, quis luctus risus rhoncus non. Aenean ex felis,
+                tempor nec nibh quis, pharetra ullamcorper libero. Sed facilisis
+                placerat varius. Duis lobortis odio ut elit porta consequat vel
+                vitae libero. Quisque sit amet purus tristique, fermentum lectus
+                vitae, accumsan diam. Vestibulum dictum elit ac est blandit, non
+                fermentum mi tempor. Vestibulum et laoreet nisi. Praesent
+                vestibulum ultricies ligula, condimentum laoreet lectus
+                tincidunt placerat. In nec blandit enim. Phasellus rutrum dolor
+                sit amet ligula scelerisque feugiat. Nulla nec nibh at felis
+                sodales finibus. Sed eu lectus efficitur, laoreet tellus sit
+                amet, hendrerit mi. In at urna non lacus egestas pretium.
+                Vestibulum tincidunt ipsum lectus, varius molestie nunc
+                consequat at. Sed pharetra, augue in aliquam lacinia, enim est
+                tincidunt diam, nec pretium erat dolor sit amet mi. Donec
+                vulputate eros sapien, finibus finibus odio finibus at. Praesent
+                eu tortor a sem mattis luctus. Maecenas tempus ante eu lectus
+                iaculis pharetra. Nam euismod gravida est, in tempus enim
+                maximus at. Fusce vitae imperdiet ante, nec tempor erat. Sed
+                ultricies commodo facilisis. Sed congue mi eros, eu laoreet
+                lacus semper nec. Morbi pharetra cursus augue. Proin orci massa,
+                suscipit ac nibh non, scelerisque luctus orci. In eget dui
+                commodo, dictum mauris at, congue eros. Maecenas sed dapibus
+                sapien. Vivamus odio sem, aliquam eu lacus a, lobortis lacinia
+                nibh. Aenean blandit ut ligula id dapibus. Nulla id pretium
+                nisl. Proin efficitur, sem in commodo pretium, justo erat mattis
+                dui, vel scelerisque libero est quis lacus. Sed tincidunt, ante
+                quis dignissim malesuada, nisi neque sagittis nulla, id tempus
+                nisl eros vel dolor. Duis eget nisi arcu. Phasellus placerat
+                posuere turpis at consectetur. Aenean arcu mi, sollicitudin quis
+                auctor et, luctus in sapien. Donec pulvinar sagittis dolor. Nunc
+                eget diam sit amet metus tempus condimentum. Donec et sodales
+                sapien.
+              </span>
             </div>
             <div className="buttonContainer">
               <Button title="CONTINUAR" onClick={handleTermsModal} />
