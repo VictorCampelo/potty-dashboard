@@ -232,8 +232,21 @@ export const TermsModalContainer = styled.div`
     max-height: 400px;
     overflow-y: scroll;
     margin-bottom: var(--spacing-xxxs);
+    p {
+      color: black;
+    }
+
+    ul {
+      padding: 0 var(--spacing-lg);
+    }
     ::-webkit-scrollbar {
       width: 0;
+    }
+
+    .title {
+      font-weight: 600;
+      color: black;
+      margin: var(--spacing-xxxs) 0 var(--spacing-xxxs) 0;
     }
   }
 
