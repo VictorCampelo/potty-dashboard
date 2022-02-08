@@ -105,6 +105,7 @@ export const Container = styled.main`
       width: 100%;
       flex-direction: column;
       gap: 1rem;
+      margin-bottom: var(--spacing-xxxs);
       /* border: 1px solid red; */
     }
 
@@ -209,5 +210,48 @@ export const ContainerLojist = styled(Container)`
     .inputContainer > div {
       width: 100%;
     }
+  }
+`
+
+export const TermsModalContainer = styled.div`
+  max-width: 800px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xxxs);
+    h2 {
+      font-weight: 400;
+    }
+  }
+
+  .termsContainer {
+    border-radius: 15px;
+    border: 2px solid var(--gray-200);
+    padding: var(--spacing-nano) var(--spacing-xxs);
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: var(--spacing-xxxs);
+    p {
+      color: black;
+    }
+
+    ul {
+      padding: 0 var(--spacing-lg);
+    }
+    ::-webkit-scrollbar {
+      width: 0;
+    }
+
+    .title {
+      font-weight: 600;
+      color: black;
+      margin: var(--spacing-xxxs) 0 var(--spacing-xxxs) 0;
+    }
+  }
+
+  .buttonContainer {
+    width: 25%;
+    margin: auto;
   }
 `
