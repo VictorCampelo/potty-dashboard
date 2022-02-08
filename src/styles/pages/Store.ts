@@ -312,6 +312,7 @@ export const DescriptionShop = styled.div`
     text-align: justify;
 
     color: #363f4e;
+    overflow: hidden;
   }
 
   ${sizes.down('lgMob')} {
