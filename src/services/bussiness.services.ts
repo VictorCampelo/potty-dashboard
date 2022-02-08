@@ -29,7 +29,7 @@ export async function getStore(id: string) {
 }
 
 export async function getStoreId(name: string) {
-  const res = await api.get(`/stores/${name}`)
+  const res = await api.get(`/stores/find/${name}`)
 
   return res.data.id
 }
