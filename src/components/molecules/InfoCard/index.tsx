@@ -131,25 +131,52 @@ const InfoCard = ({
                 {!vazio ? (
                   <>
                     <div className="horario">
-                      <h2>{'Segunda     ' + seg[0] + ' - ' + seg[1]} </h2>{' '}
-                    </div>
-                    <div className="horario">
-                      <h2>{'Terça       ' + ter[0] + ' - ' + ter[1]} </h2>{' '}
-                    </div>
-                    <div className="horario">
-                      <h2>{'Quarta      ' + qua[0] + ' - ' + qua[1]} </h2>{' '}
-                    </div>
-                    <div className="horario">
-                      <h2>{'Quinta      ' + qui[0] + ' - ' + qui[1]} </h2>{' '}
-                    </div>
-                    <div className="horario">
-                      <h2>{'Sexta       ' + sex[0] + ' - ' + sex[1]} </h2>{' '}
-                    </div>
-                    <div className="horario">
-                      <h2>{'Sábado      ' + sab[0] + ' - ' + sab[1]} </h2>{' '}
-                    </div>
-                    <div className="horario">
-                      <h2>{'Domingo     ' + dom[0] + ' - ' + dom[1]} </h2>{' '}
+                      <div className="days">
+                        <h2>Segunda</h2>
+                        <h2>Terça</h2>
+                        <h2>Quarta</h2>
+                        <h2>Quinta</h2>
+                        <h2>Sexta</h2>
+                        <h2>Sábado</h2>
+                        <h2>Domingo</h2>
+                      </div>
+                      <div className="hours">
+                        <div className="hour">
+                          <p>{seg[0]}</p>
+                          <p>-</p>
+                          <p>{seg[1]}</p>
+                        </div>
+                        <div className="hour">
+                          <p>{ter[0]}</p>
+                          <p>-</p>
+                          <p>{ter[1]}</p>
+                        </div>
+                        <div className="hour">
+                          <p>{qua[0]}</p>
+                          <p>-</p>
+                          <p>{qua[1]}</p>
+                        </div>
+                        <div className="hour">
+                          <p>{qui[0]}</p>
+                          <p>-</p>
+                          <p>{qui[1]}</p>
+                        </div>
+                        <div className="hour">
+                          <p>{sex[0]}</p>
+                          <p>-</p>
+                          <p>{sex[1]}</p>
+                        </div>
+                        <div className="hour">
+                          <p>{sab[0]}</p>
+                          <p>-</p>
+                          <p>{sab[1]}</p>
+                        </div>
+                        <div className="hour">
+                          <p>{dom[0]}</p>
+                          <p>-</p>
+                          <p>{dom[1]}</p>
+                        </div>
+                      </div>
                     </div>
                   </>
                 ) : (

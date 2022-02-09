@@ -1130,11 +1130,13 @@ const Shop = ({ storeId, id }: Shop) => {
               vazio={vazio}
               voidText="Nenhum contato foi encontrada..."
             />
-
-            <ConfigButton
-              title="CONFIGURAÇÕES ADCIONAIS"
-              onClick={() => setConfigModal(true)}
-            />
+            <div className="buttonContainer">
+              <ConfigButton border title="Pré-visualização" />
+              <ConfigButton
+                title="CONFIGURAÇÕES ADCIONAIS"
+                onClick={() => setConfigModal(true)}
+              />
+            </div>
           </div>
 
           <div className="right-area">

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.section`
-  width: 35vw;
+  width: 100%;
   margin-bottom: var(--spacing-xxs);
 
   background: var(--white);
@@ -37,6 +37,11 @@ export const Container = styled.section`
         left: 50%;
         bottom: var(--spacing-xhuge);
         transform: translate(-50%);
+        .stars {
+          display: flex;
+          align-content: center;
+          gap: var(--spacing-xxxs);
+        }
 
         img {
           width: 150px;
