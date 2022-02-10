@@ -227,6 +227,7 @@ const ProductShow = () => {
   const [discount, setDiscount] = useState(0)
   const [files, setFiles] = useState<File[]>([])
   const [actualFile, setActualFile] = useState<File>({} as File)
+  const [actualFileDesc, setActualFileDesc] = useState<File>({} as File)
 
   const getPosition = (id: string) => {
     const item = files.findIndex((file) => file.id === id)
@@ -249,22 +250,18 @@ const ProductShow = () => {
     }
   }
 
-  const getPositionDesc = (title: string) => {
-    const item = images.findIndex((image) => image.title === title)
-    return item
-  }
   const handleUpFileDesc = () => {
-    const index = getPositionDesc(imagePreviewDesc.title)
+    const index = getPosition(actualFileDesc?.id)
     if (index > 0) {
-      setImagePreviewDesc(images[index - 1])
+      setActualFileDesc(files[index - 1])
     }
   }
 
   const handleDownFileDesc = () => {
-    const length = images.length
-    const index = getPositionDesc(imagePreviewDesc.title)
+    const length = files.length
+    const index = getPosition(actualFileDesc?.id)
     if (index < length - 1) {
-      setImagePreviewDesc(images[index + 1])
+      setActualFileDesc(files[index + 1])
     }
   }
   const [isLoading, setIsLoading] = useState(true)
@@ -302,6 +299,7 @@ const ProductShow = () => {
       setStoreId(data?.storeId)
       setFiles(data?.files)
       setActualFile(data?.files[0])
+      setActualFileDesc(data?.files[0])
 
       setPriceWithDiscount(
         parseFloat(
@@ -374,7 +372,7 @@ const ProductShow = () => {
         ...items,
         {
           amount: 1,
-          price,
+          price: discount ? getDiscount(price, discount) : price,
           productId,
           storeId,
           title,
@@ -641,7 +639,6 @@ const ProductShow = () => {
               <div className="button-container">
                 {!isLoading && (
                   <>
-                    {/* <button>COMPRAR AGORA</button> */}
                     <BigButton
                       border
                       title="COMPRAR AGORA"
@@ -651,9 +648,6 @@ const ProductShow = () => {
                         fontWeight: 600
                       }}
                     />
-                    {/* <button onClick={handleAddToCart}>
-                    ADICIONE AO CARRINHO
-                  </button> */}
                     <BigButton
                       title="ADICIONE AO CARRINHO"
                       style={{
@@ -689,13 +683,13 @@ const ProductShow = () => {
                               {' '}
                               <AiOutlineUp size={20} color="var(--gray-600)" />
                             </Button>
-                            {images.map((data) => {
+                            {files.map((file, index) => {
                               return (
                                 <img
-                                  key={data.title}
-                                  onClick={(e) => setImagePreviewDesc(data)}
-                                  src={data.thumbnail}
-                                  alt={data.title}
+                                  key={`${file}${index}`}
+                                  onClick={(e) => setActualFileDesc(file)}
+                                  src={file.url}
+                                  alt={file.filename}
                                 />
                               )
                             })}
@@ -710,10 +704,7 @@ const ProductShow = () => {
                               />
                             </Button>
                           </div>
-                          <img
-                            src={imagePreviewDesc.original}
-                            alt="Foto do produto"
-                          />
+                          <img src={actualFileDesc.url} alt="Foto do produto" />
                         </div>
                       </div>
                       <div className="right-container">
@@ -979,10 +970,6 @@ const ProductShow = () => {
                   Whatsapp
                 </span>
 
-                {/* <a href="facebook.com">
-              <AiFillFacebook size={24} color="var(--gray-700)" />
-              Facebook
-            </a> */}
                 <span>
                   <AiOutlineMail size={24} color="var(--gray-700)" />
                   emailexample@gmail.com

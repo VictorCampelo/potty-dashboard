@@ -500,7 +500,12 @@ export const Button = styled.button`
   &:hover {
     background: rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: ease all 0.5s;
+    transition: ease all 0.2s;
+  }
+
+  &:active {
+    transform: scale(105%);
+    background: rgba(0, 0, 0, 0.1);
   }
 `
 
@@ -914,6 +919,9 @@ export const Footer = styled.footer`
   }
 
   .mapContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxxs);
     img {
       height: 100%;
       width: 100%;
