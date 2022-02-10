@@ -231,7 +231,6 @@ export const CardProduct = styled.div`
       justify-content: space-between;
       gap: .5rem;
       width: 180px;
-      /* height: 500px; */
       ${[sizes.down('lgMob')]} {
         display: none;
       }
@@ -251,7 +250,7 @@ export const CardProduct = styled.div`
       }
     }
 
-    img {
+    .product-image {
       width: 460px;
       height: 460px;
       object-fit: cover;
@@ -482,33 +481,6 @@ export const CardProduct = styled.div`
         padding: 0 var(--spacing-md) var(--spacing-xxs) var(--spacing-md);
         gap: 0;
       }
-      /* button {
-        max-width: 270px;
-        height: 54px;
-        background: var(--white);
-        border: var(--border-width-thin) solid var(--color-primary);
-        box-sizing: border-box;
-        border-radius: var(--border-radius-gg);
-
-        padding: 0 var(--spacing-xxs);
-
-        font-family: var(--font-family-primary);
-        font-style: var(--font-style-normal);
-        font-weight: var(--font-weight-medium);
-        font-size: var(--font-size-xs);
-
-        color: var(--color-primary);
-
-        :first-child {
-          margin-right: var(--spacing-xxs);
-        }
-
-        :last-child {
-          max-width: 290px;
-          color: #ffffff;
-          background: var(--color-primary);
-        }
-      } */
     }
   }
 
@@ -524,6 +496,17 @@ export const Button = styled.button`
   border: 1px solid var(--white);
   border-radius: 50%;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: ease all 0.2s;
+  }
+
+  &:active {
+    transform: scale(105%);
+    background: rgba(0, 0, 0, 0.1);
+  }
 `
 
 export const CardDesc = styled.div`
@@ -936,6 +919,9 @@ export const Footer = styled.footer`
   }
 
   .mapContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxxs);
     img {
       height: 100%;
       width: 100%;
