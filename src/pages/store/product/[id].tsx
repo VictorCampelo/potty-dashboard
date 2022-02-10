@@ -212,7 +212,7 @@ const ProductShow = () => {
   ]
 
   const [imagePreview, setImagePreview] = useState(images[0].original)
-  const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0].original)
+  const [imagePreviewDesc, setImagePreviewDesc] = useState(images[0])
   const [toggleState, setToggleState] = useState(1)
 
   const [storeId, setStoreId] = useState('')
@@ -246,6 +246,26 @@ const ProductShow = () => {
     const index = getPosition(actualFile?.id)
     if (index < length - 1) {
       setActualFile(files[index + 1])
+    }
+  }
+
+  const getPositionDesc = (title: string) => {
+    const item = images.findIndex((image) => image.title === title)
+    return item
+  }
+  const handleUpFileDesc = () => {
+    const length = images.length
+    const index = getPositionDesc(imagePreviewDesc.title)
+    if (index > 0) {
+      setImagePreviewDesc(images[index - 1])
+    }
+  }
+
+  const handleDownFileDesc = () => {
+    const length = images.length
+    const index = getPositionDesc(imagePreviewDesc.title)
+    if (index < length - 1) {
+      setImagePreviewDesc(images[index + 1])
     }
   }
   const [isLoading, setIsLoading] = useState(true)
@@ -647,28 +667,35 @@ const ProductShow = () => {
                     <div className="left-container">
                       <div className="image-container">
                         <div className="list-images">
-                          <Button style={{ marginBottom: '1rem' }}>
+                          <Button
+                            style={{ marginBottom: '1rem' }}
+                            onClick={handleUpFileDesc}
+                          >
                             {' '}
-                            <AiOutlineUp size={20} color="var(--gray-600" />
+                            <AiOutlineUp size={20} color="var(--gray-600)" />
                           </Button>
                           {images.map((data) => {
                             return (
                               <img
                                 key={data.title}
-                                onClick={(e) =>
-                                  setImagePreviewDesc(data.original)
-                                }
+                                onClick={(e) => setImagePreviewDesc(data)}
                                 src={data.thumbnail}
                                 alt={data.title}
                               />
                             )
                           })}
-                          <Button style={{ marginTop: '1rem' }}>
+                          <Button
+                            style={{ marginTop: '1rem' }}
+                            onClick={handleDownFileDesc}
+                          >
                             {' '}
-                            <AiOutlineDown size={20} color="var(--gray-600" />
+                            <AiOutlineDown size={20} color="var(--gray-600)" />
                           </Button>
                         </div>
-                        <img src={imagePreviewDesc} alt="Foto do produto" />
+                        <img
+                          src={imagePreviewDesc.original}
+                          alt="Foto do produto"
+                        />
                       </div>
                     </div>
                     <div className="right-container">
