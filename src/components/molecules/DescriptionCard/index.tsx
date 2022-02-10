@@ -2,9 +2,7 @@ import { Container } from './styles'
 import React from 'react'
 
 import { RiPencilFill } from 'react-icons/ri'
-import { AiFillStar } from 'react-icons/ai'
-import { AiOutlineStar } from 'react-icons/ai'
-
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { PulseLoader } from 'react-spinners'
 
 interface DescriptionCard extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -36,10 +34,10 @@ const DescriptionCard = ({
   quantStar > 5 ? (quantStar = 5) : null //Tratativas para manter o máximo de estrelas como 5
 
   for (let i = 0; i < quantStar; i++) {
-    stars.push(<AiFillStar size={18} color="var(--yellow)" />)
+    stars.push(<AiFillStar size={20} color="var(--yellow)" />)
   }
   for (let i = quantStar; i < 5; i++) {
-    stars.push(<AiOutlineStar size={18} color="var(--yellow)" />)
+    stars.push(<AiOutlineStar size={20} color="var(--yellow)" />)
   }
 
   return (
@@ -74,7 +72,10 @@ const DescriptionCard = ({
               <div id="icon">
                 <img src={imgSrc || '/images/icon.png'} alt="Ícone" />
                 <h1>{title}</h1>
-                <div>{stars}</div>
+                <div className="stars">
+                  <div>{stars}</div>
+                  <p>({quantStar})</p>
+                </div>
               </div>
             </section>
           </div>
