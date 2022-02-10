@@ -2,37 +2,42 @@ import { Button } from 'components/atoms/Button'
 import styled from 'styled-components'
 
 export const ConfigButton = styled(Button)`
-  margin-top: var(--spacing-xxs);
-  padding-top: var(--spacing-xxxs);
-  padding-bottom: var(--spacing-xxxs);
+  /* margin-top: var(--spacing-xxs); */
+  /* padding-top: var(--spacing-xxxs);
+  padding-bottom: var(--spacing-xxxs); */
+  padding: var(--spacing-xxxs) var(--spacing-xxxs);
 `
 
 export const Container = styled.div`
   display: flex;
 
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background: #fffdf9;
-
   div.cards-area {
     display: flex;
-
-    max-width: 100%;
-    width: auto;
+    margin: auto;
+    /* max-width: 100%; */
+    width: 100%;
 
     padding: var(--spacing-xxs) var(--spacing-xxs);
-    padding-left: var(--spacing-huge);
+    /* padding-left: var(--spacing-huge); */
 
     .left-area {
       display: flex;
       flex-direction: column;
       align-items: center;
-
+      width: 50%;
       height: 95vh;
-
       margin-right: var(--spacing-xxs);
 
-      .config-button {
+      .buttonContainer {
+        width: 100%;
+        display: flex;
+        gap: var(--spacing-xxxs);
+        margin-top: var(--spacing-xxxs);
+      }
+      /* .config-button {
         width: 23vw;
         height: 6vh;
         margin-top: var(--spacing-xxs);
@@ -46,13 +51,14 @@ export const Container = styled.div`
         font-size: var(--font-size-xxs);
 
         color: var(--white);
-      }
+      } */
     }
 
     .right-area {
       display: flex;
       flex-direction: column;
       height: 95vh;
+      width: 50%;
 
       section + section {
         margin-top: var(--spacing-xxs);

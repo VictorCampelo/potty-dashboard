@@ -972,7 +972,7 @@ const BusinessRegister = () => {
               placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
               value={desc}
               onChange={(text) => setDesc(text.target.value)}
-              maxLength={45}
+              maxLength={255}
             />
           </div>
           <CheckboxFilter confirm={terms} toggleConfirm={handleTerms}>

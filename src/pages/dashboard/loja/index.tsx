@@ -114,6 +114,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const rotation = 0
 
   const [businessName, setBusinessName] = useState('')
+  const [formatedName, setFormatedName] = useState('')
   const [stars, setStars] = useState()
   const [desc, setDesc] = useState('')
 
@@ -539,6 +540,7 @@ const Shop = ({ storeId, id }: Shop) => {
       setImageBanner(data?.background)
 
       setBusinessName(data?.name)
+      setFormatedName(data?.formatedName)
       setStars(data?.avgStars)
       setDesc(data?.description)
       if (data?.schedules) {
@@ -1130,11 +1132,21 @@ const Shop = ({ storeId, id }: Shop) => {
               vazio={vazio}
               voidText="Nenhum contato foi encontrada..."
             />
-
-            <ConfigButton
-              title="CONFIGURAÇÕES ADCIONAIS"
-              onClick={() => setConfigModal(true)}
-            />
+            <div className="buttonContainer">
+              <ConfigButton
+                border
+                title="Pré-visualização"
+                onClick={() =>
+                  router.push(
+                    `http://${formatedName}.${process.env.hostName}/store`
+                  )
+                }
+              />
+              <ConfigButton
+                title="CONFIGURAÇÕES ADCIONAIS"
+                onClick={() => setConfigModal(true)}
+              />
+            </div>
           </div>
 
           <div className="right-area">
