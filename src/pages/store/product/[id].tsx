@@ -158,27 +158,13 @@ const fakeProducts = [
 ]
 
 interface File {
-  alternativeText: null | string
-  caption: null
   createdAt: string
   createdBy: string | null
-  deletedAt: string | null
-  ext: null
   filename: string
-  formats: string | null
-  hash: string | null
-  height: string | null
   id: string
-  mime: null
   name: string
-  previewUrl: null
-  provider: null
-  providerMetadata: null
-  tags: null
   updatedAt: string
-  updatedBy: null
   url: string
-  width: string | null
 }
 
 const ProductShow = () => {
@@ -240,7 +226,28 @@ const ProductShow = () => {
   const [priceWithDiscount, setPriceWithDiscount] = useState(0)
   const [discount, setDiscount] = useState(0)
   const [files, setFiles] = useState<File[]>([])
+  const [actualFile, setActualFile] = useState<File>({})
 
+  const getPosition = (id: string) => {
+    const item = files.findIndex((file) => file.id === id)
+
+    return item
+  }
+  const handleUpFile = () => {
+    const length = files.length
+    const index = getPosition(actualFile?.id)
+    if (index > 0) {
+      setActualFile(files[index - 1])
+    }
+  }
+
+  const handleDownFile = () => {
+    const length = files.length
+    const index = getPosition(actualFile?.id)
+    if (index < length - 1) {
+      setActualFile(files[index + 1])
+    }
+  }
   const [isLoading, setIsLoading] = useState(true)
   const [showInstallment, setShowInstallment] = useState(false)
 
@@ -262,14 +269,6 @@ const ProductShow = () => {
   }
 
   async function loadData() {
-    // try {
-    //   setStoreId(await getStoreId(name))
-    //   console.log(storeId)
-    //   console.log(name)
-    // } catch (e) {
-    //   console.error(e)
-    // }
-
     try {
       const { data } = await getProduct(`${id}`)
       console.log(data)
@@ -283,6 +282,7 @@ const ProductShow = () => {
       setProductId(data?.id)
       setStoreId(data?.storeId)
       setFiles(data?.files)
+      setActualFile(data?.files[0])
 
       setPriceWithDiscount(
         parseFloat(
@@ -385,7 +385,7 @@ const ProductShow = () => {
   return (
     <Wrapper>
       <Head>
-        <title>Produto | Último</title>
+        <title>Produto | Boa de Venda</title>
       </Head>
 
       <HeaderShop isMain={false} />
@@ -413,27 +413,27 @@ const ProductShow = () => {
               </div>
             )}
             <div className="list-images">
-              <Button style={{ marginBottom: '1rem' }}>
+              <Button style={{ marginBottom: '1rem' }} onClick={handleUpFile}>
                 {' '}
                 <AiOutlineUp size={20} color="var(--gray-600)" />
               </Button>
-              {files.map((data) => {
+              {files.map((data, index) => {
                 return (
                   <img
-                    key={data?.id}
-                    // onClick={(e) => setImagePreview(data.original)}
+                    key={`${data}${index}`}
+                    onClick={() => setActualFile(data)}
                     src={data?.url}
                     alt={data?.filename}
                   />
                 )
               })}
-              <Button style={{ marginTop: '1rem' }}>
+              <Button style={{ marginTop: '1rem' }} onClick={handleDownFile}>
                 {' '}
                 <AiOutlineDown size={20} color="var(--gray-600)" />
               </Button>
             </div>
             <img
-              src={files[0]?.url}
+              src={actualFile?.url}
               alt="Foto do produto"
               className="product-image"
             />
