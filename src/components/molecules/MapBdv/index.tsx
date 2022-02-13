@@ -7,7 +7,7 @@ const MapBdv = () => {
     <Map
       style={{ width: '70%', height: '400px', borderRadius: '42px' }}
       center={DEFAULT_CENTER}
-      minZoom={14}
+      minZoom={8}
       zoom={22}
       zoomControl={false}
       attributionControl={false}
