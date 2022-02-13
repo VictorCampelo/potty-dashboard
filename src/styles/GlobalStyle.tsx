@@ -1,4 +1,5 @@
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
+
 export default createGlobalStyle`
   * {
     margin: 0;
@@ -170,4 +171,22 @@ export default createGlobalStyle`
       cursor: pointer;
     }
   }
+`
+
+export const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  background: var(--gray-100);
+  margin: 0 auto;
+`
+
+export const Container = styled.main`
+  max-width: 1280px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 `
