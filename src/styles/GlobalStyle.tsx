@@ -39,7 +39,7 @@ export default createGlobalStyle`
 
     --blue-primary: #3C8EFC;
     --blue-dark: #2A78E1;
-    
+
     --confirmation: #01AC8A;
 
     --wave-1: #F9EFDC;
@@ -137,6 +137,19 @@ export default createGlobalStyle`
   body, input, textarea, select, button {
     font: 400 1rem "Poppins", sans-serif;
     color: var(--black-800);
+  }
+
+  *::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--gray-200);
   }
 
   p {
