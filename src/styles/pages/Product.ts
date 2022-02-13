@@ -141,7 +141,7 @@ export const CardProduct = styled.div`
   width: 100%;
   height: 548px;
 
-  background: var(--white); 
+  background: var(--white);
 
   ${[sizes.down('lgMob')]} {
     background: var(--gray-100);
@@ -178,7 +178,7 @@ export const CardProduct = styled.div`
       width: 20%;
       display: flex;
       flex-direction: column;
-      
+
       .top {
         width: 100%;
         height: 125px;
@@ -188,7 +188,7 @@ export const CardProduct = styled.div`
           /* display: flex; */
           /* align-items: center; */
           /* box-shadow: 0 0 1rem var(--gray-200); */
-          top: 0; 
+          top: 0;
           /* padding: 0.5rem 0; */
           /* padding-left: 1rem; */
           /* border-radius: 20px 0 0 20px; */
@@ -275,7 +275,7 @@ export const CardProduct = styled.div`
     /* padding-top: var(--spacing-xxl); */
 
     ${[sizes.down('lgMob')]} {
-      padding: var(--spacing-lg) 0; 
+      padding: var(--spacing-lg) 0;
       margin-bottom: 2rem;
 
       .title, .desc, .discount, a {
@@ -283,16 +283,16 @@ export const CardProduct = styled.div`
       }
 
     }
- 
+
     .desc {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      
+
       max-width: 315px;
       height: 24px;
-      
+
       .separate {
         display: none;
       }
@@ -397,7 +397,7 @@ export const CardProduct = styled.div`
           /* background: var(--white); */
           padding: var(--spacing-xxs);
           /* box-shadow: inset 0px 3px 14px -7px var(--gray-200); */
-          
+
           .values {
             width: 100%;
           }
@@ -469,7 +469,7 @@ export const CardProduct = styled.div`
         flex-wrap: wrap;
         justify-content: center;
         gap: var(--spacing-xxxs);
-        padding: var(--spacing-xxs) var(--spacing-xxxl); 
+        padding: var(--spacing-xxs) var(--spacing-xxxl);
         height: 150px;
       }
       ${[sizes.down('mdMob')]} {
@@ -907,8 +907,7 @@ export const Footer = styled.footer`
     margin-bottom: var(--spacing-xxxs);
   }
 
-  span,
-  a {
+  span {
     display: flex;
     align-items: center;
     margin-bottom: var(--spacing-nano);
