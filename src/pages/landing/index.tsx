@@ -5,7 +5,8 @@ import { Wrapper, Container } from 'styles/GlobalStyle'
 import Header from 'components/molecules/HeaderShop'
 import FooterLanding from 'components/organisms/FooterLanding'
 import BannerLanding from 'components/organisms/BannerLanding'
-import BenefitsLanding from 'components/molecules/BenefitsLanding'
+import BenefitsLanding from 'components/organisms/BenefitsLanding'
+import PlansLanding from 'components/organisms/PlansLanding'
 
 const Landing = () => {
   return (
@@ -20,6 +21,8 @@ const Landing = () => {
         <BannerLanding />
 
         <BenefitsLanding />
+
+        <PlansLanding />
 
         <FooterLanding />
       </Container>
