@@ -7,7 +7,7 @@ interface PropsContainer {
 export const Container = styled.div<PropsContainer>`
   width: 100%;
 
-  margin: var(--spacing-xl) 0;
+  margin: var(--spacing-lg) 0;
 
   h1 {
     text-align: center;
