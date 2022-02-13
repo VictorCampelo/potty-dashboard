@@ -1,13 +1,17 @@
 import styled from 'styled-components'
 
-export const Container = styled.div`
+interface PropsContainer {
+  color: string
+}
+
+export const Container = styled.div<PropsContainer>`
   width: 100%;
 
   margin: var(--spacing-xl) 0;
 
   h1 {
     text-align: center;
-    color: var(--color-secondary-darker);
+    color: ${(props) => props.color};
     margin-bottom: var(--spacing-xxxl);
   }
 
