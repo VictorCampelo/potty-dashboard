@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Banner = styled.main`
   display: flex;
@@ -9,6 +10,12 @@ export const Banner = styled.main`
     width: 60%;
     filter: drop-shadow(0px 0px 20px rgba(54, 63, 78, 0.2));
     border-radius: 0px 0px 57px 0px;
+  }
+
+  ${[sizes.down('md')]} {
+    img {
+      display: none;
+    }
   }
 
   .texts {

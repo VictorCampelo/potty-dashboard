@@ -1,7 +1,6 @@
 import MapBdv from 'components/molecules/MapBdv'
 
-import { Footer } from 'styles/pages/Product'
-import { ContainerTerms } from './styles'
+import { Footer, ContainerTerms } from './styles'
 
 import { AiFillPhone, AiOutlineWhatsApp } from 'react-icons/ai'
 

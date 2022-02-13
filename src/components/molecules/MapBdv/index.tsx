@@ -5,7 +5,7 @@ const MapBdv = () => {
 
   return (
     <Map
-      style={{ width: '70%', height: '400px', borderRadius: '42px' }}
+      className="map-bdv"
       center={DEFAULT_CENTER}
       minZoom={8}
       zoom={22}
