@@ -1,4 +1,3 @@
-import { filterProps } from 'recharts/types/util/types'
 import styled from 'styled-components'
 import sizes from '../../../utils/sizes'
 
@@ -7,9 +6,11 @@ interface ContainerProps {
 }
 
 export const Container = styled.header<ContainerProps>`
+  max-width: 1280px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
   padding: var(--spacing-nano) var(--spacing-xxxs);
 
   ${(props) => props.isMain === false && 'background: rgba(0,0,0,0.4);'}
@@ -56,7 +57,8 @@ export const Container = styled.header<ContainerProps>`
     .authContainer {
       display: flex;
       align-items: center;
-      margin-left: var(--spacing-lg);
+      gap: var(--spacing-xxxs);
+      margin-left: auto;
 
       .register {
         color: var(--color-primary);
@@ -69,8 +71,6 @@ export const Container = styled.header<ContainerProps>`
 
         background: var(--color-primary);
 
-        margin-right: var(--spacing-lg);
-        margin-left: var(--spacing-xxxs);
         padding: var(--spacing-nano) var(--spacing-xs);
 
         border-radius: var(--border-radius-gg);
@@ -80,7 +80,7 @@ export const Container = styled.header<ContainerProps>`
         font-family: var(--font-family-primary);
         font-style: var(--font-style-normal);
         font-weight: var(--font-style-normal);
-        font-size: var(--spacing-xxs);
+        font-size: var(--font-size-xs);
         transition: 0.2s background;
 
         color: var(--white);
@@ -93,15 +93,15 @@ export const Container = styled.header<ContainerProps>`
     a {
       text-decoration: none;
       cursor: pointer;
-      margin-left: var(--spacing-xs);
-      font-size: var(--font-size-sm);
+      padding: var(--spacing-nano);
+      margin: var(--spacing-nano);
+      font-size: var(--font-size-xxs);
       transition: 0.2s background;
-      padding: var(--spacing-quarck);
-      border-radius: var(--border-radius-sm);
+      padding: var(--spacing-nano);
+      border-radius: var(--border-radius-lg);
       border: none;
 
       :hover {
-        padding: var(--spacing-quarck);
         background: var(--gray-200);
       }
     }
