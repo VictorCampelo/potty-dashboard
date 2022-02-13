@@ -20,5 +20,6 @@ export const Container = styled.div<PropsContainer>`
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--spacing-xxl);
+    padding: 0 var(--spacing-sm);
   }
 `
