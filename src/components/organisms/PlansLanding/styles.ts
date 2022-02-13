@@ -7,7 +7,7 @@ interface PropsContainer {
 export const Container = styled.div<PropsContainer>`
   width: 100%;
 
-  margin: var(--spacing-lg) 0;
+  margin-top: var(--spacing-lg);
   padding: var(--spacing-md) 0;
 
   background: linear-gradient(
