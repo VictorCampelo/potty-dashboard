@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import sizes from 'utils/sizes'
 
 export const Banner = styled.main`
+  max-width: 1280px;
+
   display: flex;
 
   background-color: white;

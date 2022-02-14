@@ -5,7 +5,7 @@ export const Register = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--spacing-md);
   width: 100%;
 
@@ -23,22 +23,22 @@ export const Register = styled.div`
   }
 
   button {
-    width: 250px;
-    height: 50px;
+    width: 245px;
+    height: 45px;
 
-    margin: auto;
+    padding: 0;
 
     text-transform: uppercase;
 
     font-weight: normal;
-    font-size: var(--font-size-xxs);
+    font-size: var(--font-size-xxxs);
   }
 `
 
 export const Footer = styled.footer`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 
   width: 100%;
   background: var(--white);
@@ -60,9 +60,10 @@ export const Footer = styled.footer`
   }
 
   .map-bdv {
-    width: 60%;
-    height: 400px;
+    width: 500px;
+    height: 250px;
     border-radius: 36px;
+    margin: auto 0;
   }
 
   ${[sizes.down('md')]} {
