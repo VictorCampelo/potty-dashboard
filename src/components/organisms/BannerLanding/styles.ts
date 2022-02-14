@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import sizes from 'utils/sizes'
 
 export const Banner = styled.main`
-  max-width: 1280px;
-
+  width: 100%;
   display: flex;
+  justify-content: center;
 
   background-color: white;
 
   img {
-    width: 60%;
+    max-width: 600px;
     filter: drop-shadow(0px 0px 20px rgba(54, 63, 78, 0.2));
     border-radius: 0px 0px 57px 0px;
   }
@@ -21,6 +21,7 @@ export const Banner = styled.main`
   }
 
   .texts {
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;

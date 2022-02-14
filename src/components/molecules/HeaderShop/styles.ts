@@ -6,9 +6,8 @@ interface ContainerProps {
 }
 
 export const Container = styled.header<ContainerProps>`
-  max-width: 1280px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: 0 auto;
   padding: var(--spacing-nano) var(--spacing-xxxs);
@@ -28,11 +27,12 @@ export const Container = styled.header<ContainerProps>`
   }
 
   nav {
+    max-width: 1000px;
+    width: 100%;
+
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
-    width: 80%;
 
     ${(props) => props.isMain === false && 'width: 100%;'}
     list-style-type: none;
