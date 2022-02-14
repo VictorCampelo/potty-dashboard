@@ -12,7 +12,7 @@ const { MapContainer, MapConsumer } = ReactLeaflet
 const Map = ({ children, ...rest }) => {
   useEffect(() => {
     ;(async function init() {
-      delete L.Icon.Default.prototype._getIconUrl
+      delete (L.Icon.Default.prototype as any)._getIconUrl
 
       L.Icon.Default.mergeOptions({
         iconRetinaUrl: iconRetinaUrl.src,
