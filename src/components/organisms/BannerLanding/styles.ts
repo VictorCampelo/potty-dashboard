@@ -9,7 +9,7 @@ export const Banner = styled.main`
   background-color: white;
 
   img {
-    max-width: 600px;
+    max-width: 546px;
     filter: drop-shadow(0px 0px 20px rgba(54, 63, 78, 0.2));
     border-radius: 0px 0px 57px 0px;
   }
@@ -29,8 +29,6 @@ export const Banner = styled.main`
     gap: var(--spacing-sm);
 
     padding: var(--spacing-xs);
-
-    text-align: center;
 
     button {
       width: 65%;

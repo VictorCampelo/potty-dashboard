@@ -8,7 +8,7 @@ const BannerLanding = () => {
       <img
         src="images/landing_girl.jpg"
         alt="Foto de garota"
-        width={700}
+        width={546}
         height={500}
       />
 

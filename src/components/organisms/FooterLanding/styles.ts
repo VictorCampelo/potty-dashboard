@@ -2,12 +2,17 @@ import styled from 'styled-components'
 import sizes from 'utils/sizes'
 
 export const Register = styled.div`
+  width: 100%;
+
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-md);
-  width: 100%;
+  gap: 11rem;
+
+  ${[sizes.down('md')]} {
+    gap: 3rem;
+  }
 
   padding: var(--spacing-lg);
 
