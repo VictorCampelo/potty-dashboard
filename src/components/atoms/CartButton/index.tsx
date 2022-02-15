@@ -53,6 +53,7 @@ export const ContainerCart = styled.button<ContainerCartProps>`
   border-radius: var(--border-radius-gg);
   padding: 0 var(--spacing-xxs);
   box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
   ${(props) => props.isFromProduct && 'position: static;'}
   ${(props) => props.isFromProduct && 'border-radius:50%;'}
   ${(props) => props.isFromProduct && 'padding: 0 var(--spacing-xxxs);'}
