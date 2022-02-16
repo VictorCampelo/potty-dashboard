@@ -8,11 +8,33 @@ import Link from 'next/link'
 import { Input } from 'components/molecules/Input'
 import { useEffect, useState } from 'react'
 import { PulseLoader } from 'react-spinners'
-
+import { HiOutlineKey } from 'react-icons/hi'
+import { api } from 'services/apiClient'
+import { toast } from 'react-toastify'
 const BusinessRegisterConfirm = () => {
   const [tokenDigits, setTokenDigits] = useState('')
   const [token, setToken] = useState('')
   const [loading, setLoading] = useState(true)
+  async function sendConfirmation() {
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    setLoading(true)
+    console.log(user?.email)
+    try {
+      await api.post('/auth/send-confirmation-email', user?.email)
+    } catch (e) {
+      toast.error(`${e}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
   function getToken() {
     const data = JSON.parse(sessionStorage.getItem('AuthTokens'))
 
@@ -40,19 +62,28 @@ const BusinessRegisterConfirm = () => {
       ) : (
         <Container>
           <form className="confirmationAuth">
-            <img src="/images/usercard.png" className="confirmImg" />
-
-            <h2>Confirme seu email!</h2>
+            <h2>Confirmação de cadastro</h2>
+            <p className="subtitle">
+              Insira o token de segurança que foi enviado para o seu email e
+              verifique sua conta
+            </p>
             <div className="inputContainer">
               <Input
                 label="Token"
-                placeholder="Digite o Token de confirmação"
+                placeholder="______"
                 value={tokenDigits}
                 onChange={(e) => {
                   setTokenDigits(e.target.value)
                 }}
+                icon={<HiOutlineKey size={20} />}
+                maxLength={6}
               />
             </div>
+            <p>Não recebeu o código?</p>
+
+            <span onClick={sendConfirmation}>
+              <strong>Reenviar o código</strong>{' '}
+            </span>
             <div className="buttonContainer" style={{ marginBottom: '1rem' }}>
               <div>
                 <Button
@@ -70,7 +101,7 @@ const BusinessRegisterConfirm = () => {
                 />
               </div>
             </div>
-            <Link
+            {/* <Link
               href={{
                 pathname: '/email-confirmation',
                 query: {
@@ -79,7 +110,7 @@ const BusinessRegisterConfirm = () => {
               }}
             >
               <a>Ou clique aqui para confirmar o email</a>
-            </Link>
+            </Link> */}
           </form>
         </Container>
       )}

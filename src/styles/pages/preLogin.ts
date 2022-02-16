@@ -20,7 +20,23 @@ export const Container = styled.main`
   padding-top: var(--spacing-xxxs);
 
   .confirmationAuth {
-    text-align: center;
+    text-align: left;
+
+    input {
+      letter-spacing: 1rem;
+    }
+    .inputContainer {
+      margin-bottom: var(--spacing-xs);
+    }
+    span {
+      text-decoration: underline;
+      margin-bottom: var(--spacing-lg);
+      cursor: pointer;
+    }
+
+    .subtitle {
+      margin-bottom: var(--spacing-md);
+    }
   }
 
   form {

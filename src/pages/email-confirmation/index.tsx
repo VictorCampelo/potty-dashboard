@@ -17,10 +17,10 @@ export default function confirmation() {
   console.log(token)
   async function confirmEmail() {
     if (tokenDigits) {
-      api
+      await api
         .patch(`/auth/token?tokenDigits=${tokenDigits}`)
         .then(() => {
-          setTitle('Cadastro Confirmado')
+          setTitle('Cadastro confirmado com sucesso')
         })
         .catch((error) => {
           toast.warn(`${error}`, {
@@ -39,9 +39,12 @@ export default function confirmation() {
         })
     } else {
       if (token) {
-        api
-          .patch(`auth/token?token=${token}`)
-          .then(() => setTitle('Cadastro Confirmado'))
+        await api
+          .patch(`/auth/token?tokenUrl=${token}`)
+          .then(() => {
+            console.log('oi')
+            setTitle('Cadastro Confirmado')
+          })
           .catch((error) => {
             toast.error(`${error}`, {
               position: 'top-right',
@@ -60,7 +63,7 @@ export default function confirmation() {
       }
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    // await new Promise((resolve) => setTimeout(resolve, 2000))
   }
 
   useEffect(() => {
@@ -85,8 +88,8 @@ export default function confirmation() {
         </div>
       ) : (
         <Container>
-          <form className="confirmationAuth">
-            <img src="/images/usercard.png" className="confirmImg" />
+          <form className="confirmationAuth" style={{ textAlign: 'center' }}>
+            <img src="/images/right.svg" className="confirmImg" />
 
             <h2>{title}</h2>
             <div className="buttonContainer">
