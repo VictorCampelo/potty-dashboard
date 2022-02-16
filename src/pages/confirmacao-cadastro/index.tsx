@@ -4,35 +4,85 @@ import { Container, Wrapper } from '../../styles/pages/preLogin'
 
 import { Button } from '../../components/atoms/Button'
 import router from 'next/router'
+import Link from 'next/link'
+import { Input } from 'components/molecules/Input'
+import { useEffect, useState } from 'react'
+import { PulseLoader } from 'react-spinners'
 
 const BusinessRegisterConfirm = () => {
+  const [tokenDigits, setTokenDigits] = useState('')
+  const [token, setToken] = useState('')
+  const [loading, setLoading] = useState(true)
+  function getToken() {
+    const data = JSON.parse(sessionStorage.getItem('AuthTokens'))
+
+    if (data) {
+      setToken(data.token)
+    }
+
+    setLoading(false)
+  }
+  useEffect(() => {
+    getToken()
+  }, [])
+
   return (
     <Wrapper>
       <Head>
-        <title> Registro de Negócio | Último</title>
+        <title> Confirmação de cadastro | Boa de venda</title>
       </Head>
 
       <Header />
-      <Container>
-        <form className="confirmationAuth">
-          <img src="/images/usercard.png" className="confirmImg" />
+      {loading ? (
+        <div style={{ top: '50%', left: '50%', position: 'absolute' }}>
+          <PulseLoader />
+        </div>
+      ) : (
+        <Container>
+          <form className="confirmationAuth">
+            <img src="/images/usercard.png" className="confirmImg" />
 
-          <h2>Cadastro efetuado com sucesso!</h2>
-
-          <div className="buttonContainer">
-            <div>
-              <Button
-                type="button"
-                title="CONTINUAR"
-                onClick={() => {
-                  sessionStorage.clear()
-                  router.push('/login')
+            <h2>Confirme seu email!</h2>
+            <div className="inputContainer">
+              <Input
+                label="Token"
+                placeholder="Digite o Token de confirmação"
+                value={tokenDigits}
+                onChange={(e) => {
+                  setTokenDigits(e.target.value)
                 }}
               />
             </div>
-          </div>
-        </form>
-      </Container>
+            <div className="buttonContainer" style={{ marginBottom: '1rem' }}>
+              <div>
+                <Button
+                  type="button"
+                  title="CONFIRMAR"
+                  onClick={() => {
+                    // sessionStorage.clear()
+                    router.push({
+                      pathname: '/email-confirmation',
+                      query: {
+                        tokenDigits: tokenDigits
+                      }
+                    })
+                  }}
+                />
+              </div>
+            </div>
+            <Link
+              href={{
+                pathname: '/email-confirmation',
+                query: {
+                  token: token
+                }
+              }}
+            >
+              <a>Ou clique aqui para confirmar o email</a>
+            </Link>
+          </form>
+        </Container>
+      )}
 
       <img
         style={{
