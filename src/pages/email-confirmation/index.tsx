@@ -8,22 +8,20 @@ import { toast } from 'react-toastify'
 import { Container, Wrapper } from '../../styles/pages/preLogin'
 import { Button } from 'components/atoms/Button'
 import router, { useRouter } from 'next/router'
+import { copyFileSync } from 'fs'
 
 export default function confirmation() {
   const [isLoading, setIsLoading] = useState(true)
   const [title, setTitle] = useState('')
 
   const { token, tokenDigits } = useRouter().query
-  console.log(token)
+
   async function confirmEmail() {
-    if (tokenDigits) {
+    if (token) {
       await api
-        .patch(`/auth/token?tokenDigits=${tokenDigits}`)
-        .then(() => {
-          setTitle('Cadastro confirmado com sucesso')
-        })
+        .patch(`/auth/token?tokenUrl=${token}`)
         .catch((error) => {
-          toast.warn(`${error}`, {
+          toast.error(`${error}`, {
             position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
@@ -32,43 +30,23 @@ export default function confirmation() {
             draggable: true,
             progress: undefined
           })
-          setTitle('Não foi possível confirmar o cadastro')
         })
         .finally(() => {
           setIsLoading(false)
         })
+    } else if (tokenDigits) {
+      setIsLoading(false)
     } else {
-      if (token) {
-        await api
-          .patch(`/auth/token?tokenUrl=${token}`)
-          .then(() => {
-            console.log('oi')
-            setTitle('Cadastro Confirmado')
-          })
-          .catch((error) => {
-            toast.error(`${error}`, {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined
-            })
-            setTitle('Não foi possível confirmar o cadastro')
-          })
-          .finally(() => {
-            setIsLoading(false)
-          })
-      }
+      router.push('/')
     }
-
-    // await new Promise((resolve) => setTimeout(resolve, 2000))
   }
 
   useEffect(() => {
-    confirmEmail()
-  }, [])
+    if (token || tokenDigits) {
+      confirmEmail()
+    }
+  }, [token, tokenDigits])
+
   return (
     <Wrapper>
       <Head>
@@ -91,7 +69,7 @@ export default function confirmation() {
           <form className="confirmationAuth" style={{ textAlign: 'center' }}>
             <img src="/images/right.svg" className="confirmImg" />
 
-            <h2>{title}</h2>
+            <h2>Cadastro confirmado com sucesso</h2>
             <div className="buttonContainer">
               <div>
                 <Button
