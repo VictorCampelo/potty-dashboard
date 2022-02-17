@@ -1,10 +1,15 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Container = styled.header`
   position: flex;
   height: 100%;
   padding: var(--font-size-sm);
   z-index: 1;
+
+  ${[sizes.down('sm')]} {
+    display: none;
+  }
 
   .showNames {
     display: flex;
@@ -45,7 +50,7 @@ export const Container = styled.header`
           font-family: var(--font-family-primary);
           font-style: var(--font-style-normal);
           font-weight: var(--font-weight-regular);
-          font-size: var(--font-size-xxs);
+          font-size: var(--font-size-xs);
 
           margin-left: var(--spacing-nano);
           color: var(--black-800);

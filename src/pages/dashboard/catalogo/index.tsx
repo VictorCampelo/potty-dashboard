@@ -38,6 +38,7 @@ import CatalogTabs from '../../../components/molecules/CatalogTabs'
 import { CategoryListCard } from '../../../components/molecules/CategoryListCard'
 import CustomModal from '../../../components/molecules/CustomModal'
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
+import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { Input } from '../../../components/molecules/Input'
 import { ProductListCard } from '../../../components/molecules/ProductListCard'
 import { TextArea } from '../../../components/molecules/TextArea'
@@ -152,7 +153,27 @@ const catalog = ({ storeId }: CatalogType) => {
   const [deleteCategoryId, setDeleteCategoryId] = useState('')
 
   const [category, setCategory] = useState('')
-  const [products, setProducts] = useState<ProductType[]>([])
+  const [products, setProducts] = useState<ProductType[]>([
+    {
+      avgStars: 0,
+      createdAt: '',
+      deletedAt: '',
+      description: '',
+      discount: {},
+      files: [],
+      id: '',
+      inventory: 0,
+      lastSold: '',
+      price: 0,
+      sumFeedbacks: 0,
+      sumOrders: 0,
+      sumStars: 0,
+      tags: [],
+      title: '',
+      updatedAt: '',
+      categories: []
+    }
+  ])
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
@@ -1501,6 +1522,8 @@ const catalog = ({ storeId }: CatalogType) => {
             </main>
           </div>
         </div>
+
+        <DrawerBottom greenOption={4} />
       </Container>
     </>
   )

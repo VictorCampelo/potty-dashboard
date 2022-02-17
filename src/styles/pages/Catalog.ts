@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Container = styled.div`
   width: 100%;
@@ -9,11 +10,22 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
+  ${[sizes.down('sm')]} {
+    display: flex;
+    flex-direction: column;
+  }
+
   div.area {
     max-width: 100%;
     width: 100%;
 
     padding: 20px 20px;
+
+    ${[sizes.down('sm')]} {
+      height: 100%;
+      padding: 0;
+      margin-bottom: -50px;
+    }
 
     display: flex;
 
@@ -29,6 +41,10 @@ export const Container = styled.div`
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
       border-radius: 30px;
       overflow-y: hidden;
+
+      ${[sizes.down('sm')]} {
+        border-radius: 0;
+      }
 
       .header {
         width: 100%;
