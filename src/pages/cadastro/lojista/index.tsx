@@ -138,7 +138,6 @@ const RegisterShopkeeper = () => {
               error={errors.passwordConfirmation}
             />
           </div>
-          <Checkbox confirm={confirm} toggleConfirm={toggleConfirm} termsUse />
 
           <div className="buttonContainer">
             <Button type="submit" title="CONTINUAR" />

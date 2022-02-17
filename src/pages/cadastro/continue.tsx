@@ -430,14 +430,14 @@ const BusinessRegister = () => {
               {!widthScreen && show > 0 ? (
                 <Button
                   onClick={showPrevious}
-                  title="Voltar"
+                  title="VOLTAR"
                   type="button"
                   border
                 />
               ) : (
                 <Button
                   onClick={() => Router.push('/cadastro')}
-                  title="Voltar"
+                  title="VOLTAR"
                   type="button"
                   border
                 />

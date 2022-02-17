@@ -483,7 +483,7 @@ const BusinessRegister = () => {
                       ? showPrevious
                       : () => router.push('/cadastro/lojista')
                   }
-                  title="Voltar"
+                  title="VOLTAR"
                   type="button"
                   border
                 />
