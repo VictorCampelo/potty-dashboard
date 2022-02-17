@@ -445,7 +445,7 @@ const BusinessRegister = () => {
             </div>
             <div>
               {!widthScreen && show < 1 ? (
-                <Button onClick={showNext} title="Continuar" type="button" />
+                <Button onClick={showNext} title="CONTINUAR" type="button" />
               ) : (
                 <Button type="submit" title="Finalizar" />
               )}
