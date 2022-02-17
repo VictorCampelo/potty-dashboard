@@ -45,6 +45,8 @@ const BusinessRegister = () => {
 
   const [terms, setTerms] = useState(false)
   const [termsModal, setTermsModal] = useState(false)
+  const [confirmationToken, setConfirmationToken] = useState('')
+  const [confirmationTokenDigits, setConfirmationTokenDigits] = useState('')
   function handleTerms() {
     setTerms(!terms)
   }
@@ -57,7 +59,6 @@ const BusinessRegister = () => {
 
   useEffect(() => {
     const storeData = JSON.parse(sessionStorage.getItem('data'))
-    console.log(storeData)
 
     if (storeData) {
       setStore({
@@ -140,11 +141,20 @@ const BusinessRegister = () => {
       formData.append('userDto', JSON.stringify(body.userDto))
       formData.append('storeDto', JSON.stringify(body.storeDto))
 
-      await api.post('/auth/signup-store', formData, {
+      const { data } = await api.post('/auth/signup-store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
+
+      sessionStorage.setItem(
+        'AuthTokens',
+        JSON.stringify({
+          token: data.user.confirmationToken,
+          tokenDigits: data.user.confirmationTokenDigits
+        })
+      )
+      // })
       Router.push(`/confirmacao-cadastro`)
     } catch (e) {
       console.error(e)
@@ -211,7 +221,7 @@ const BusinessRegister = () => {
   return (
     <Wrapper>
       <Head>
-        <title> Registro de Negócio | Último </title>
+        <title> Registro de Negócio | Boa de venda </title>
       </Head>
 
       <Header />
