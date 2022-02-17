@@ -110,10 +110,6 @@ const BusinessRegisterConfirm = () => {
             <Input
               label="Token"
               placeholder="______"
-              // value={tokenDigits}
-              // onChange={(e) => {
-              //   setTokenDigits(e.target.value)
-              // }}
               icon={<HiOutlineKey size={20} />}
               maxLength={6}
               {...register('tokenDigits')}
@@ -128,31 +124,9 @@ const BusinessRegisterConfirm = () => {
           </span>
           <div className="buttonContainer" style={{ marginBottom: '1rem' }}>
             <div>
-              <Button
-                type="submit"
-                title="CONFIRMAR"
-                // onClick={() => {
-                //   // sessionStorage.clear()
-                //   router.push({
-                //     pathname: '/email-confirmation',
-                //     query: {
-                //       tokenDigits: tokenDigits
-                //     }
-                //   })
-                // }}
-              />
+              <Button type="submit" title="CONFIRMAR" />
             </div>
           </div>
-          {/* <Link
-            href={{
-              pathname: '/email-confirmation',
-              query: {
-                token: token
-              }
-            }}
-          >
-            <a>Ou clique aqui para confirmar o email</a>
-          </Link> */}
         </form>
       </Container>
 

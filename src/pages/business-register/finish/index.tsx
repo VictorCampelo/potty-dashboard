@@ -146,10 +146,7 @@ const BusinessRegister = () => {
           'Content-Type': 'multipart/form-data'
         }
       })
-      console.log(data)
-      // .then((res) => {
-      // setConfirmationTokenDigits(res.data.confirmationTokenDigits)
-      // setConfirmationToken(res.data.confirmationToken)
+
       sessionStorage.setItem(
         'AuthTokens',
         JSON.stringify({
