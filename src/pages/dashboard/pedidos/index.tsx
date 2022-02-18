@@ -57,6 +57,13 @@ const Pedidos = () => {
   const [date, setDate] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [totalOrders, setTotalOrders] = useState(0)
+  const [page, setPage] = useState(1)
+
+  function changePage() {
+    setPage(page + 1)
+    loadData(ordersList.length * page)
+  }
+
   function toggleModalOrder(order: OrderProps) {
     setIsLoading(true)
     getOrder(order.id)
@@ -106,6 +113,16 @@ const Pedidos = () => {
     return buttonClasses
   }
 
+  function percurArray(arr: OrderHistorics[]) {
+    let value = 0
+
+    for (let x = 0; x < arr.length; x++) {
+      value += arr[0].productQtd
+    }
+
+    return value
+  }
+
   function cutStrDate(date: string, limit: string) {
     let newDate = ''
 
@@ -128,14 +145,13 @@ const Pedidos = () => {
     return newDate
   }
 
-  async function loadData() {
+  async function loadData(off: number) {
     try {
-      const { data } = await api.get('/orders/store?confirmed=false')
-      // const { data: dataConfirmed } = await api.get('/orders/store')
-      // api.get('/orders/store?confirmed=true').then(res => console.log(res))
+      const { data } = await api.get(
+        `/orders/store?confirmed=false&offset=${off}&limit=3`
+      )
 
       console.log(data)
-      // console.log(dataConfirmed)
       setOrdersList(data.results)
       setTotalOrders(data.totalOrders)
     } catch (e) {
@@ -146,7 +162,7 @@ const Pedidos = () => {
   }
 
   useEffect(() => {
-    loadData()
+    loadData(0)
   }, [])
 
   return (
@@ -233,17 +249,16 @@ const Pedidos = () => {
                     </OrderBody>
                   )
                 })}
-
-                <footer>
-                  <Pagination
-                    onPageChange={() => {}}
-                    totalCountOfRegisters={totalOrders}
-                    currentPage={1}
-                    registersPerPage={8}
-                  />
-                </footer>
               </>
             )}
+            <footer>
+              <Pagination
+                onPageChange={changePage}
+                totalCountOfRegisters={totalOrders}
+                currentPage={page}
+                registersPerPage={3}
+              />
+            </footer>
           </MainArea>
         </Content>
 
@@ -319,7 +334,8 @@ const Pedidos = () => {
                       </div>
                       <div>
                         <span>Quantidade:</span>
-                        <span>{order?.orderHistorics[0]?.productQtd}</span>
+                        {/* <span>{order?.orderHistorics[0]?.productQtd}</span> */}
+                        <span>{percurArray(order?.orderHistorics)}</span>
                       </div>
                       <div>
                         <span>Cupons:</span>
