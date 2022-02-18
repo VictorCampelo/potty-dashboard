@@ -17,6 +17,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMedia } from 'use-media'
 import { Checkbox } from 'components/atoms/Checkbox'
+import { api } from 'services/apiClient'
 
 type SignUpFormData = {
   firstName: string
@@ -47,6 +48,7 @@ const RegisterShopkeeper = () => {
 
   const { setUser } = useContext(ShopkeeperContext)
   const [confirm, setConfirm] = useState(false)
+  const [errorEmail, setErrorEmail] = useState(false)
 
   function toggleConfirm() {
     setConfirm(!confirm)
@@ -62,18 +64,24 @@ const RegisterShopkeeper = () => {
 
   const handleSignUp: SubmitHandler<SignUpFormData> = async (values, event) => {
     try {
-      const user = {
-        email: values.email,
-        password: values.password,
-        passwordConfirmation: values.passwordConfirmation
+      await api.post('/auth/checkEmail', { email: values.email })
+
+      try {
+        const user = {
+          email: values.email,
+          password: values.password,
+          passwordConfirmation: values.passwordConfirmation
+        }
+
+        sessionStorage.setItem('user', JSON.stringify(user))
+        setUser(user)
+
+        router.push('/business-register')
+      } catch (e) {
+        console.log(e)
       }
-
-      sessionStorage.setItem('user', JSON.stringify(user))
-      setUser(user)
-
-      router.push('/business-register')
     } catch (e) {
-      console.log(e)
+      setErrorEmail(true)
     }
   }
 
@@ -112,8 +120,8 @@ const RegisterShopkeeper = () => {
               className="input"
               icon={<FiMail size={20} color="var(--black-800)" />}
               {...register('email')}
-              textError={errors.email?.message}
-              error={errors.email}
+              textError={errors.email?.message || 'Email já cadastrado'}
+              error={errors.email || errorEmail}
             />
 
             <Input
