@@ -12,6 +12,9 @@ interface CustomModal extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const customStyles = {
   content: {
+    width: '90%',
+    height: '90vh',
+    maxHeight: '1024px',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -22,7 +25,8 @@ const customStyles = {
     color: '#000000',
     borderRadius: '30px',
     border: 'none',
-    boxShadow: '0px 0px 20px rgba(54, 63, 78, 0.2)'
+    boxShadow: '0px 0px 20px rgba(54, 63, 78, 0.2)',
+    overflow: 'hidden'
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

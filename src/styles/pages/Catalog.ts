@@ -157,6 +157,10 @@ export const AddProductModalContainer = styled.form`
   .buttonContainer {
     display: flex;
     margin-top: 24px;
+    ${[sizes.down('sm')]} {
+      flex-direction: column;
+      gap: 1rem;
+    }
   }
 
   .exit-container {
@@ -206,10 +210,17 @@ export const AddProductModalContainer = styled.form`
   h1.titulo-cadastro {
     width: 100%;
     text-align: left;
+    font-weight: 600;
   }
 
   .input-infos {
     display: flex;
+
+    ${[sizes.down('md')]} {
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
     .left-area {
       margin-top: -30px;
       display: flex;
@@ -239,6 +250,11 @@ export const AddProductModalContainer = styled.form`
     .right-area {
       margin-left: 30px;
       margin-top: -30px;
+
+      ${[sizes.down('md')]} {
+        margin-left: 0;
+        margin-top: -22px;
+      }
 
       .input-container {
         margin-bottom: 1rem;
@@ -324,8 +340,10 @@ export const AddProductModalContainer = styled.form`
     .array-fotos {
       margin-top: 30px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
+      gap: 4px;
 
       .card-image {
         width: 100px;
@@ -531,6 +549,10 @@ export const AddCategoryModalContainer = styled.div`
   .buttonContainer {
     display: flex;
     margin-top: 24px;
+    ${[sizes.down('sm')]} {
+      flex-direction: column;
+      gap: 1rem;
+    }
   }
 `
 

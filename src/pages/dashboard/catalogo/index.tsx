@@ -938,12 +938,7 @@ const catalog = ({ storeId }: CatalogType) => {
           </div>
 
           <div className="buttonContainer">
-            <Button
-              title="Voltar"
-              border
-              style={{ marginRight: 16 }}
-              onClick={toggleAddModal}
-            />
+            <Button title="Voltar" border onClick={toggleAddModal} />
 
             <Button title="Salvar" type="submit" />
           </div>
