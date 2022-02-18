@@ -8,7 +8,7 @@ export const Container = styled.header`
   padding: var(--spacing-nano) var(--spacing-xxxs);
   background: var(--background);
 
-  border-bottom: var(--border-width-thin) solid var(--yellow-600);
+  /* border-bottom: var(--border-width-thin) solid var(--yellow-600); */
 
   .logo {
     display: flex;
