@@ -141,7 +141,7 @@ export const CardProduct = styled.div`
   width: 100%;
   height: 548px;
 
-  background: var(--white); 
+  background: var(--white);
 
   ${[sizes.down('lgMob')]} {
     background: var(--gray-100);
@@ -178,7 +178,7 @@ export const CardProduct = styled.div`
       width: 20%;
       display: flex;
       flex-direction: column;
-      
+
       .top {
         width: 100%;
         height: 125px;
@@ -188,7 +188,7 @@ export const CardProduct = styled.div`
           /* display: flex; */
           /* align-items: center; */
           /* box-shadow: 0 0 1rem var(--gray-200); */
-          top: 0; 
+          top: 0;
           /* padding: 0.5rem 0; */
           /* padding-left: 1rem; */
           /* border-radius: 20px 0 0 20px; */
@@ -231,7 +231,6 @@ export const CardProduct = styled.div`
       justify-content: space-between;
       gap: .5rem;
       width: 180px;
-      /* height: 500px; */
       ${[sizes.down('lgMob')]} {
         display: none;
       }
@@ -251,7 +250,7 @@ export const CardProduct = styled.div`
       }
     }
 
-    img {
+    .product-image {
       width: 460px;
       height: 460px;
       object-fit: cover;
@@ -276,7 +275,7 @@ export const CardProduct = styled.div`
     /* padding-top: var(--spacing-xxl); */
 
     ${[sizes.down('lgMob')]} {
-      padding: var(--spacing-lg) 0; 
+      padding: var(--spacing-lg) 0;
       margin-bottom: 2rem;
 
       .title, .desc, .discount, a {
@@ -284,16 +283,16 @@ export const CardProduct = styled.div`
       }
 
     }
- 
+
     .desc {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      
+
       max-width: 315px;
       height: 24px;
-      
+
       .separate {
         display: none;
       }
@@ -398,7 +397,7 @@ export const CardProduct = styled.div`
           /* background: var(--white); */
           padding: var(--spacing-xxs);
           /* box-shadow: inset 0px 3px 14px -7px var(--gray-200); */
-          
+
           .values {
             width: 100%;
           }
@@ -470,7 +469,7 @@ export const CardProduct = styled.div`
         flex-wrap: wrap;
         justify-content: center;
         gap: var(--spacing-xxxs);
-        padding: var(--spacing-xxs) var(--spacing-xxxl); 
+        padding: var(--spacing-xxs) var(--spacing-xxxl);
         height: 150px;
       }
       ${[sizes.down('mdMob')]} {
@@ -482,33 +481,6 @@ export const CardProduct = styled.div`
         padding: 0 var(--spacing-md) var(--spacing-xxs) var(--spacing-md);
         gap: 0;
       }
-      /* button {
-        max-width: 270px;
-        height: 54px;
-        background: var(--white);
-        border: var(--border-width-thin) solid var(--color-primary);
-        box-sizing: border-box;
-        border-radius: var(--border-radius-gg);
-
-        padding: 0 var(--spacing-xxs);
-
-        font-family: var(--font-family-primary);
-        font-style: var(--font-style-normal);
-        font-weight: var(--font-weight-medium);
-        font-size: var(--font-size-xs);
-
-        color: var(--color-primary);
-
-        :first-child {
-          margin-right: var(--spacing-xxs);
-        }
-
-        :last-child {
-          max-width: 290px;
-          color: #ffffff;
-          background: var(--color-primary);
-        }
-      } */
     }
   }
 
@@ -524,6 +496,17 @@ export const Button = styled.button`
   border: 1px solid var(--white);
   border-radius: 50%;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: ease all 0.2s;
+  }
+
+  &:active {
+    transform: scale(105%);
+    background: rgba(0, 0, 0, 0.1);
+  }
 `
 
 export const CardDesc = styled.div`
@@ -924,8 +907,7 @@ export const Footer = styled.footer`
     margin-bottom: var(--spacing-xxxs);
   }
 
-  span,
-  a {
+  span {
     display: flex;
     align-items: center;
     margin-bottom: var(--spacing-nano);
@@ -936,6 +918,15 @@ export const Footer = styled.footer`
   }
 
   .mapContainer {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxxs);
+    img {
+      height: 100%;
+      width: 100%;
+    }
+    span {
+      margin: auto;
+    }
   }
 `

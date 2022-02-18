@@ -23,6 +23,7 @@ export const TopoPage = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
+  position: relative;
   .capa {
     /* z-index: 2; */
     /* margin-top: -105px; */
@@ -33,6 +34,45 @@ export const TopoPage = styled.div`
     .capa {
       margin-top: 0;
       height: 220px;
+    }
+  }
+
+  .openContainer,
+  .iconShare {
+    position: absolute;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+  }
+
+  .openContainer {
+    border-radius: 0.75rem 0 0 0.75rem;
+    top: 75%;
+    right: 0;
+    flex-direction: column;
+    .circle {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--color-secondary-darker);
+    }
+    span {
+      font-weight: 600;
+      color: var(--color-secondary-darker);
+      font-size: 1.25rem;
+    }
+  }
+  .iconShare {
+    border-radius: 50%;
+    justify-content: center;
+    right: 50px;
+    top: 85%;
+
+    ${[sizes.down('lgMob')]} {
+      top: 45%;
+      right: 0;
+      border-radius: 50% 0 0 50%;
     }
   }
 `
@@ -251,6 +291,12 @@ export const DescriptionShop = styled.div`
         margin-left: 15px;
       }
     }
+
+    .favorite {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
   }
 
   p {
@@ -266,6 +312,7 @@ export const DescriptionShop = styled.div`
     text-align: justify;
 
     color: #363f4e;
+    overflow: hidden;
   }
 
   ${sizes.down('lgMob')} {
@@ -407,33 +454,77 @@ export const Container = styled.main`
       }
     }
   }
+
+  footer {
+    margin: auto;
+    margin-bottom: var(--spacing-xs);
+  }
 `
 
 export const Footer = styled.footer`
-  width: 100%;
-  height: 260px;
-  border-radius: 30px;
-  background: var(--white);
-  box-shadow: 0px 0px 8px rgba(54, 63, 78, 0.2);
-  padding: 2rem 3rem;
-  margin-top: 1.5rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
 
+  width: 100%;
+  border-radius: var(--border-radius-gg);
+  background: var(--white);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin: var(--spacing-xxs) 0;
+
+  ${[sizes.down('lgMob')]} {
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: var(--border-radius-gg) var(--border-radius-gg) 0 0;
+    flex-direction: column;
+
+    img {
+      margin-top: var(--spacing-xxxs);
+      width: 100%;
+    }
+  }
   h1 {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-xxxs);
   }
 
   span,
   a {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-nano);
 
     svg {
-      margin-right: 0.5rem;
+      margin-right: var(--spacing-nano);
     }
   }
+
+  .mapContainer {
+    text-align: center;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+`
+
+type ButtonProps = {
+  position: string
+}
+export const Button = styled.div<ButtonProps>`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  box-shadow: 0 0 1rem var(--gray-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background: var(--white);
+  top: 28%;
+  ${(props) => props.position === 'left' && 'left: 10px;'}
+  ${(props) => props.position === 'right' && 'right: 10px;'}
 `
 
 export const ProductCard = styled.div`
@@ -447,7 +538,7 @@ export const ProductCard = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-
+  position: relative;
   ${[sizes.down('lg')]} {
     width: 230px;
   }
@@ -457,34 +548,41 @@ export const ProductCard = styled.div`
 
   img {
     width: 80%;
-    height: 180px;
+    height: 250px;
+    width: 100%;
     resize: cover;
+    border-radius: 15px;
+    background-size: cover;
   }
 
   .title {
-    font-size: 1.125rem;
+    text-align: left;
+    width: 100%;
     margin: 0.5rem 0;
-    font-weight: 600;
+    span {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
   }
 
   .price {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    justify-content: flex-start;
-    align-items: flex-end;
 
     span {
       font-size: 1.75rem;
-      color: var(--color-secondary);
+      color: var(--color-primary);
       font-weight: 600;
       margin-right: 0.5rem;
     }
 
     small {
+      margin-top: 0.5rem;
       font-weight: 600;
       text-decoration: line-through;
       color: var(--gray-200);
-      padding-bottom: 0.25rem;
+      font-size: 1rem;
     }
   }
 
@@ -494,7 +592,6 @@ export const ProductCard = styled.div`
     align-items: center;
     font-size: 1rem;
     color: var(--gray-600);
-    margin-top: 0.5rem;
 
     svg {
       margin-right: 0.5rem;

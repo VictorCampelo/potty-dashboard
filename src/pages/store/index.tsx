@@ -9,8 +9,11 @@ import {
   AiOutlineWhatsApp,
   AiOutlineSearch,
   AiOutlineStar,
-  AiOutlineLeft
+  AiOutlineLeft,
+  AiFillHeart,
+  AiOutlineHeart
 } from 'react-icons/ai'
+import { BsFillShareFill } from 'react-icons/bs'
 import {
   Wrapper,
   CategoriesCard,
@@ -28,7 +31,8 @@ import {
   HorizonCard,
   HeaderMob,
   Drawer,
-  ProductWrapper
+  ProductWrapper,
+  Button
 } from '../../styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -44,93 +48,8 @@ import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/SearchInput'
 import Carousel from 'components/atoms/Carousel'
 import CarouselProducts from 'components/atoms/CarouselProducts'
-
-const fakeProducts = [
-  {
-    id: '404d2460-d787-47dd-8636-5364d77718b7',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '404d2460-d787-47dd-8636-5364d77718b7',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  },
-  {
-    id: '2',
-    name: 'Geladeira Bras Temp 111IX',
-    formatedName: 'Geladeira Bras Temp',
-    avgStars: 0,
-    sumStars: 0,
-    city: 'Teresina',
-    avatar: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/ldOjAMuIdtODoId2dA/1641945700673.jpg'
-    },
-    background: {
-      url: 'https://bdv-dev.s3.us-east-2.amazonaws.com/FelipeBalinhas/1642018034723'
-    }
-  }
-]
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
+import { Pagination } from 'components/molecules/Pagination'
 
 const Products = () => {
   const router = useRouter()
@@ -182,8 +101,12 @@ const Products = () => {
   const [sex, setSex] = useState([])
   const [sab, setSab] = useState([])
 
+  const [favorite, setFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  function handleFavorite() {
+    setFavorite(!favorite)
+  }
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
@@ -248,7 +171,7 @@ const Products = () => {
           draggable: true,
           progress: undefined
         })
-        return router.push('/landing')
+        return router.push(`/`)
       }
     } finally {
       setIsLoading(false)
@@ -276,8 +199,19 @@ const Products = () => {
             src={imageBanner?.url || '/images/capa.png'}
             alt="capa"
           />
-
-          <HeaderShop isMain={false} />
+          <div className="iconShare">
+            <BsFillShareFill
+              size={25}
+              color={widthScreen ? 'var(--black-800)' : 'var(--color-primary)'}
+            />
+          </div>
+          {!widthScreen && (
+            <div className="openContainer">
+              <div className="circle" />
+              <span>Aberto agora</span>
+            </div>
+          )}
+          <HeaderShop />
 
           {!widthScreen && (
             <HeaderMob>
@@ -347,21 +281,21 @@ const Products = () => {
                     alt="perfil"
                   />
                   <div className="title">
-                    <h1>{businessName}</h1>
+                    <h1>{ellipsis(businessName, 20)}</h1>
                     <div className="stars">
-                      {[...new Array(avgstars)].map((e) => {
+                      {[...new Array(avgstars)].map((e, index) => {
                         return (
                           <AiFillStar
-                            key={e + '123'}
+                            key={`${e}123${index}`}
                             size={24}
                             color="var(--gold)"
                           />
                         )
                       })}
-                      {[...new Array(5 - avgstars)].map((e) => {
+                      {[...new Array(5 - avgstars)].map((e, index) => {
                         return (
                           <AiOutlineStar
-                            key={e + '124'}
+                            key={`${e}124${index}`}
                             size={24}
                             color="var(--gold)"
                           />
@@ -370,6 +304,21 @@ const Products = () => {
                       <h2>({sumStars})</h2>
                     </div>
                   </div>
+                  {favorite ? (
+                    <AiFillHeart
+                      size={50}
+                      color="var(--color-primary)"
+                      onClick={handleFavorite}
+                      className="favorite"
+                    />
+                  ) : (
+                    <AiOutlineHeart
+                      size={50}
+                      color="var(--color-primary)"
+                      onClick={handleFavorite}
+                      className="favorite"
+                    />
+                  )}
                 </div>
                 <p>{ellipsis(desc, 208)}</p>
               </DescriptionShop>
@@ -556,17 +505,8 @@ const Products = () => {
                                   alt="geladeira frost free"
                                 /> */}
                                 <img src={e.files[0].url} alt={e.title} />
-                                <span className="title">
-                                  {ellipsis(e.title, 30)}
-                                </span>
-                                <div className="price">
-                                  <span>R$ {e.price.toFixed(2)}</span>
-                                  <small>
-                                    {e.discount
-                                      ? 'R$ ' +
-                                        ((1 - e.discount) * e.price).toFixed(2)
-                                      : null}
-                                  </small>
+                                <div className="title">
+                                  <span>{ellipsis(e.title, 30)}</span>
                                 </div>
                                 <div className="score">
                                   <AiFillStar
@@ -578,7 +518,30 @@ const Products = () => {
                                     {e.avgStars} | {e.sumOrders} Pedidos
                                   </span>
                                 </div>
-                                <p>{ellipsis(e.description, 120)}</p>
+                                <div className="price">
+                                  <small>
+                                    {e.discount
+                                      ? 'De: R$ ' +
+                                        ((1 - e.discount) * e.price).toFixed(2)
+                                      : null}
+                                  </small>
+                                  <span>R$ {e.price.toFixed(2)}</span>
+                                </div>
+
+                                {/* <p>{ellipsis(e.description, 120)}</p> */}
+                                {e.parcelAmount > 1 && (
+                                  <p>
+                                    Em até {e.parcelAmount}x sem juros ou{' '}
+                                    <strong>R$ {e.price.toFixed(2)}</strong> à
+                                    vista
+                                  </p>
+                                )}
+                                <Button position="left">
+                                  <BiChevronLeft size={25} color="black" />
+                                </Button>
+                                <Button position="right">
+                                  <BiChevronRight size={25} color="black" />
+                                </Button>
                               </ProductCard>
                             )
                           })}
@@ -679,31 +642,45 @@ const Products = () => {
               </div>
             </div>
           </section>
-
+          {widthScreen && (
+            <footer>
+              <Pagination
+                onPageChange={() => {}}
+                currentPage={1}
+                totalCountOfRegisters={100}
+                registersPerPage={10}
+              />
+            </footer>
+          )}
           {widthScreen && (
             <Footer>
-              <h1>Contato</h1>
+              <div>
+                <h1>Contato</h1>
 
-              {telefone && (
-                <span>
-                  <AiFillPhone size={24} color="var(--gray-700)" />
-                  {telefone}
-                </span>
-              )}
+                {telefone && (
+                  <span>
+                    <AiFillPhone size={24} color="var(--gray-700)" />
+                    {telefone}
+                  </span>
+                )}
 
-              {whatsApp && (
-                <span>
-                  <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-                  {whatsApp}
-                </span>
-              )}
+                {whatsApp && (
+                  <span>
+                    <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
+                    {whatsApp}
+                  </span>
+                )}
 
-              {whatsApp && (
-                <a href="facebook.com">
-                  <AiFillFacebook size={24} color="var(--gray-700)" />
-                  {facebook}
-                </a>
-              )}
+                {whatsApp && (
+                  <a href="facebook.com">
+                    <AiFillFacebook size={24} color="var(--gray-700)" />
+                    {facebook}
+                  </a>
+                )}
+              </div>
+              <div className="mapContainer">
+                <img src="/images/map.svg" />
+              </div>
             </Footer>
           )}
         </Container>

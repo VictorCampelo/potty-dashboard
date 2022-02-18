@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.section`
-  width: 35vw;
+  width: 100%;
 
   background: #ffffff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -95,14 +95,23 @@ export const Container = styled.section`
 
       .horario {
         display: flex;
+        width: auto;
+        max-width: 40%;
+        gap: var(--spacing-xxs);
+        div {
+          h2,
+          p {
+            font-size: var(--font-size-xxs);
+            color: var(--black-800);
+            margin-bottom: var(--spacing-xxxs);
+          }
+        }
 
-        h2 {
-          font-style: normal;
-          font-weight: normal;
-          font-size: 15px;
-          line-height: 28px;
-
-          color: #363f4e;
+        .hours {
+          .hour {
+            display: flex;
+            gap: var(--spacing-xxs);
+          }
         }
       }
     }

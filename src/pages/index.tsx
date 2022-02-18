@@ -15,6 +15,7 @@ import {
 import { api } from 'services/apiClient'
 import { Input } from 'components/molecules/SearchInput'
 import { CardServices } from 'components/molecules/CardServices'
+import MapBdv from 'components/molecules/MapBdv'
 import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
@@ -141,6 +142,7 @@ const Landing = ({ stores }: Landing) => {
               <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
             </ContainerTerms>
           </div>
+          <MapBdv />
         </Footer>
       </Container>
 
