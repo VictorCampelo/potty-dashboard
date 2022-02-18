@@ -241,31 +241,6 @@ export const TermsModalContainer = styled.div`
     }
   }
 
-  .termsContainer {
-    border-radius: 15px;
-    border: 2px solid var(--gray-200);
-    padding: var(--spacing-nano) var(--spacing-xxs);
-    max-height: 400px;
-    overflow-y: scroll;
-    margin-bottom: var(--spacing-xxxs);
-    p {
-      color: black;
-    }
-
-    ul {
-      padding: 0 var(--spacing-lg);
-    }
-    ::-webkit-scrollbar {
-      width: 0;
-    }
-
-    .title {
-      font-weight: 600;
-      color: black;
-      margin: var(--spacing-xxxs) 0 var(--spacing-xxxs) 0;
-    }
-  }
-
   .buttonContainer {
     width: 25%;
     margin: auto;
