@@ -1394,7 +1394,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   className="searchInput"
                   label=""
                   placeholder="Pesquisar"
-                  icon={<FiSearch size={18} color="var(--black-800)" />}
+                  icon={<FiSearch size={22} color="var(--black-800)" />}
                 />
               </div>
             </header>

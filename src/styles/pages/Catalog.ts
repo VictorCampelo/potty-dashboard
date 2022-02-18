@@ -57,6 +57,10 @@ export const Container = styled.div`
         border-radius: 30px 30px 0 0;
         padding: 20px;
 
+        ${[sizes.down('sm')]} {
+          flex-direction: row-reverse;
+        }
+
         .addBtn {
           width: 123px;
           height: 2.5rem;

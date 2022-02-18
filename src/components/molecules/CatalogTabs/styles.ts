@@ -1,16 +1,19 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Container = styled.div`
-  .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    background: white;
-    border-radius: 0 0 30px 30px;
-    overflow-y: auto;
+  background: white;
+  border-radius: 0 0 30px 30px;
+  overflow-y: auto;
+
+  ${[sizes.down('sm')]} {
+    display: none;
   }
 
   .bloc-tabs {
