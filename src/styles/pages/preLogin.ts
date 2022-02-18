@@ -39,17 +39,64 @@ export const Container = styled.main`
     }
   }
 
-  form {
-    width: 530px;
+  .container {
+    width: 90%;
+    padding: 2rem 2rem 0 2rem;
+
+    .title {
+      width: 50%;
+      margin-bottom: var(--spacing-xxxs);
+      h2 {
+        color: var(--color-secondary-darker);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        font-size: var(--font-size-lg);
+      }
+
+      p {
+        color: var(--black);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        span {
+          color: var(--color-secondary-darker);
+        }
+      }
+      .information {
+        margin-top: var(--spacing-nano);
+      }
+    }
+
+    .buttonImage {
+      display: flex;
+      /* border: 1px solid red; */
+      overflow: hidden;
+      justify-content: space-between;
+      .buttonContainer {
+        align-self: center;
+      }
+
+      .imgContainer {
+        /* border: 1px solid red; */
+        margin-bottom: -30px;
+        margin-right: var(--spacing-xxxs);
+      }
+    }
+  }
+
+  form,
+  .container {
     background: var(--white);
     border-radius: 30px;
     box-shadow: 0px 0px 18px -4px #cccccc;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 1rem 3rem 2rem 3rem;
-    overflow-x: hidden;
 
+    overflow-x: hidden;
+  }
+  form {
+    align-items: center;
+    width: 530px;
+    padding: 1rem 3rem 2rem 3rem;
     .confirmImg {
       width: 180px;
       height: 180px;
@@ -238,31 +285,6 @@ export const TermsModalContainer = styled.div`
     margin-bottom: var(--spacing-xxxs);
     h2 {
       font-weight: 400;
-    }
-  }
-
-  .termsContainer {
-    border-radius: 15px;
-    border: 2px solid var(--gray-200);
-    padding: var(--spacing-nano) var(--spacing-xxs);
-    max-height: 400px;
-    overflow-y: scroll;
-    margin-bottom: var(--spacing-xxxs);
-    p {
-      color: black;
-    }
-
-    ul {
-      padding: 0 var(--spacing-lg);
-    }
-    ::-webkit-scrollbar {
-      width: 0;
-    }
-
-    .title {
-      font-weight: 600;
-      color: black;
-      margin: var(--spacing-xxxs) 0 var(--spacing-xxxs) 0;
     }
   }
 

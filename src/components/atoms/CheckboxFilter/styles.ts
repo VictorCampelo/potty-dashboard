@@ -16,7 +16,7 @@ export const Container = styled.div<ContainerProps>`
 
   .btn {
     width: 20px;
-    height: 20px;
+    height: 18px;
 
     display: flex;
     justify-content: center;
