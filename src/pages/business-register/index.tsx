@@ -456,7 +456,7 @@ const BusinessRegister = () => {
           {widthScreen ? (
             <div className="buttonContainer">
               <div style={{ marginRight: '1rem' }}>
-                <Button type="submit" title="continuar" />
+                <Button type="submit" title="CONTINUAR" />
               </div>
               <div>
                 <Button
@@ -471,9 +471,9 @@ const BusinessRegister = () => {
             <div className="buttonContainer">
               <div style={{ marginBottom: '1rem' }}>
                 {show >= 2 ? (
-                  <Button type="submit" title="Continuar" />
+                  <Button type="submit" title="CONTINUAR" />
                 ) : (
-                  <Button type="button" onClick={showNext} title="Continuar" />
+                  <Button type="button" onClick={showNext} title="CONTINUAR" />
                 )}
               </div>
               <div>
@@ -483,38 +483,13 @@ const BusinessRegister = () => {
                       ? showPrevious
                       : () => router.push('/cadastro/lojista')
                   }
-                  title="Voltar"
+                  title="VOLTAR"
                   type="button"
                   border
                 />
               </div>
             </div>
           )}
-          {/* <div className="buttonContainer">
-            <div
-              style={
-                widthScreen ? { marginRight: '1rem' } : { marginBottom: '1rem' }
-              }
-            >
-              {widthScreen ||
-                (show >= 1 && <Button type="submit" title="Continuar" />)}
-              {!widthScreen && show < 1 && (
-                <Button type="button" onClick={showNext} title="Continuar" />
-              )}
-            </div>
-            <div>
-              <Button
-                onClick={
-                  !widthScreen && show != 0
-                    ? showPrevious
-                    : () => router.push('/cadastro')
-                }
-                title="Voltar"
-                type="button"
-                border
-              />
-            </div>
-          </div> */}
 
           <Link href="/login">
             <a style={{ marginTop: '1rem' }}>

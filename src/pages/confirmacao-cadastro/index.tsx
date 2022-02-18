@@ -124,7 +124,14 @@ const BusinessRegisterConfirm = () => {
           </span>
           <div className="buttonContainer" style={{ marginBottom: '1rem' }}>
             <div>
-              <Button type="submit" title="CONFIRMAR" />
+              <Button
+                type="button"
+                title="CONTINUAR"
+                onClick={() => {
+                  sessionStorage.clear()
+                  router.push('/landing')
+                }}
+              />
             </div>
           </div>
         </form>
