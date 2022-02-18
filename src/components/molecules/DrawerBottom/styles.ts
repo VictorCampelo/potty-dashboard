@@ -37,13 +37,15 @@ export const Container = styled.nav`
     }
 
     .text {
+      font-weight: 500;
       font-size: var(--font-size-xxxs);
 
       color: var(--black-800);
     }
   }
 
-  .link.active {
+  .link.active,
+  .link.active .text {
     color: var(--color-primary);
   }
 `
