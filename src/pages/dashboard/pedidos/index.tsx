@@ -59,10 +59,9 @@ const Pedidos = () => {
   const [totalOrders, setTotalOrders] = useState(0)
   const [page, setPage] = useState(1)
 
-  function changePage() {
-    setPage(page + 1)
-    loadData(ordersList.length * page)
-  }
+  useEffect(() => {
+    loadData(ordersList.length * (page - 1))
+  }, [page])
 
   function toggleModalOrder(order: OrderProps) {
     setIsLoading(true)
@@ -114,13 +113,14 @@ const Pedidos = () => {
   }
 
   function percurArray(arr: OrderHistorics[]) {
-    let value = 0
-
+    let qtd = 0
+    let price = 0
     for (let x = 0; x < arr.length; x++) {
-      value += arr[0].productQtd
+      qtd += arr[x].productQtd
+      price += arr[x].product.price * arr[x].productQtd
     }
 
-    return value
+    return { productQtd: qtd, price }
   }
 
   function cutStrDate(date: string, limit: string) {
@@ -148,7 +148,7 @@ const Pedidos = () => {
   async function loadData(off: number) {
     try {
       const { data } = await api.get(
-        `/orders/store?confirmed=false&offset=${off}&limit=3`
+        `/orders/store?confirmed=false&offset=${off}&limit=8`
       )
 
       console.log(data)
@@ -253,10 +253,10 @@ const Pedidos = () => {
             )}
             <footer>
               <Pagination
-                onPageChange={changePage}
+                onPageChange={setPage}
                 totalCountOfRegisters={totalOrders}
                 currentPage={page}
-                registersPerPage={3}
+                registersPerPage={8}
               />
             </footer>
           </MainArea>
@@ -335,7 +335,9 @@ const Pedidos = () => {
                       <div>
                         <span>Quantidade:</span>
                         {/* <span>{order?.orderHistorics[0]?.productQtd}</span> */}
-                        <span>{percurArray(order?.orderHistorics)}</span>
+                        <span>
+                          {percurArray(order?.orderHistorics).productQtd}
+                        </span>
                       </div>
                       <div>
                         <span>Cupons:</span>
@@ -346,7 +348,12 @@ const Pedidos = () => {
                           <strong>Total geral:</strong>
                         </span>
                         <span>
-                          <strong>R$ 6.594,00</strong>
+                          <strong>
+                            R${' '}
+                            {percurArray(order?.orderHistorics).price.toFixed(
+                              2
+                            )}
+                          </strong>
                         </span>
                       </div>
                     </div>
@@ -368,7 +375,12 @@ const Pedidos = () => {
                           <strong>Total geral:</strong>
                         </span>
                         <span>
-                          <strong>R$ 6.594,00</strong>
+                          <strong>
+                            R${' '}
+                            {percurArray(order?.orderHistorics).price.toFixed(
+                              2
+                            )}
+                          </strong>
                         </span>
                       </div>
                     </div>
