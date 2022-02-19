@@ -684,6 +684,7 @@ const catalog = ({ storeId }: CatalogType) => {
       {/* Add category */}
       <CustomModal
         buttons={false}
+        showCloseButton={false}
         setModalOpen={toggleAddCategoryModal}
         modalVisible={addCategoryModal}
       >

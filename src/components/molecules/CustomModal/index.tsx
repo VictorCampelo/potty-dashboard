@@ -1,10 +1,12 @@
 import { Container } from './styles'
 import React, { useEffect, useState } from 'react'
 import ReactModal from 'react-modal'
+import { IoIosClose } from 'react-icons/io'
 
 interface CustomModal extends React.InputHTMLAttributes<HTMLInputElement> {
   title?: string
   buttons: boolean
+  showCloseButton?: boolean
   modalVisible: boolean
   setModalOpen: () => void
   under?: boolean
@@ -50,6 +52,7 @@ const customStylesUnder = {
 const CustomModal = ({
   title,
   buttons = false,
+  showCloseButton = true,
   modalVisible,
   setModalOpen,
   under = false,
@@ -72,6 +75,15 @@ const CustomModal = ({
       <Container under={under}>
         <div className="modal">
           <h1>{title}</h1>
+          {showCloseButton && (
+            <IoIosClose
+              onClick={setModalOpen}
+              size={36}
+              className="close"
+              color={'black'}
+            />
+          )}
+
           {rest.children}
         </div>
       </Container>

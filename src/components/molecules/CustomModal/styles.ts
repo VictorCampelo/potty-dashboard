@@ -19,6 +19,16 @@ export const Container = styled.header<ContainerProps>`
 
     overflow: auto;
 
+    .close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+    }
+
+    .close:hover {
+      cursor: pointer;
+    }
+
     ${(props) =>
       props.under && 'padding: var(--spacing-nano) var(--spacing-xxxs);'}
     .modalDescription, .modalAvaliations {

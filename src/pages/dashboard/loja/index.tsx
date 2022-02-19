@@ -598,6 +598,7 @@ const Shop = ({ storeId, id }: Shop) => {
       <Container>
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleTimeModal}
           modalVisible={timeTableModal}
         >
@@ -741,6 +742,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleCategoryModal}
           modalVisible={categoryModal}
         >
@@ -788,6 +790,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleLocationModal}
           modalVisible={locationModal}
         >
@@ -876,6 +879,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleContactModal}
           modalVisible={contactModal}
         >
@@ -945,6 +949,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleDescModal}
           modalVisible={descModal}
         >
@@ -1025,6 +1030,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           modalVisible={configModal}
           setModalOpen={() => setConfigModal(!configModal)}
         >
