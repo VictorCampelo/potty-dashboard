@@ -343,19 +343,6 @@ const Pedidos = () => {
                         <span>Cupons:</span>
                         <span>- R$ 0,00</span>
                       </div>
-                      <div>
-                        <span>
-                          <strong>Total geral:</strong>
-                        </span>
-                        <span>
-                          <strong>
-                            R${' '}
-                            {percurArray(order?.orderHistorics).price.toFixed(
-                              2
-                            )}
-                          </strong>
-                        </span>
-                      </div>
                     </div>
 
                     <div className="payment">
