@@ -16,7 +16,7 @@ export const Container = styled.header`
     justify-content: center;
     align-items: center;
 
-    width: 13vw;
+    width: 220px;
     height: 100%;
 
     border-radius: var(--border-radius-gg);
@@ -36,13 +36,14 @@ export const Container = styled.header`
       .option {
         display: flex;
         align-items: center;
+        margin-right: auto;
+        margin-left: 30px;
 
-        width: 70%;
         cursor: pointer;
 
         svg {
-          width: 1.2rem;
-          height: 1.2rem;
+          width: 1.5rem;
+          height: 1.5rem;
           margin-bottom: var(--spacing-quarck);
         }
 
@@ -66,6 +67,11 @@ export const Container = styled.header`
 
           color: var(--red);
         }
+      }
+
+      .option.active,
+      .option.active a {
+        color: var(--color-primary);
       }
     }
   }
@@ -99,8 +105,8 @@ export const Container = styled.header`
         cursor: pointer;
 
         svg {
-          width: 1.2rem;
-          height: 1.2rem;
+          width: 1.5rem;
+          height: 1.5rem;
           margin-bottom: var(--spacing-quarck);
         }
 
