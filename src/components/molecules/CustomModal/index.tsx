@@ -12,9 +12,8 @@ interface CustomModal extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const customStyles = {
   content: {
-    width: '90%',
-    height: '90vh',
-    maxHeight: '1024px',
+    maxWidth: '100%',
+    maxHeight: '90vh',
     top: '50%',
     left: '50%',
     right: 'auto',

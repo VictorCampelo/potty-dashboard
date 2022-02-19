@@ -9,7 +9,7 @@ export const Container = styled.header<ContainerProps>`
   overflow: hidden;
 
   .modal {
-    height: 90vh;
+    max-height: 85vh;
 
     padding: 30px 40px;
 
