@@ -14,52 +14,115 @@ import CustomModal from 'components/molecules/CustomModal'
 import { ModalContainer, Product } from 'styles/components/Modal'
 import { Button } from 'components/atoms/Button'
 import { ellipsis } from 'functions/ellipsis'
+import { PulseLoader } from 'react-spinners'
 
+type File = {
+  id: string
+  name: string
+  filename: string
+  url: string
+}
 type OrderHistorics = {
   product: {
+    title: string
     description: string
     parcelAmount: string
     price: number
+    discount: number
+    files: File[]
   }
   storeId: string
   productId: string
   productQtd: number
+  paymentMethod: string
 }
 
-type OrderProps = {
+type OrdersListProps = {
   id: string
   amount: number
   situation: string
   createdAt: string
-  orderHistorics: OrderHistorics[]
+  orderNumber: string
 }
 
-type Orders = {
-  data: OrderProps[]
+interface OrderProps extends OrdersListProps {
+  customerAddress: string
+  orderHistorics: OrderHistorics[]
 }
 const Pedidos = () => {
-  const [orders, setOrders] = useState<OrderProps[]>([])
+  const [ordersList, setOrdersList] = useState<OrdersListProps[]>([])
   const [modalVisible, setModalVisible] = useState(false)
   const [order, setOrder] = useState<OrderProps>({} as OrderProps)
   const [classButton, setClassButton] = useState('')
   const [date, setDate] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [totalOrders, setTotalOrders] = useState(0)
+  const [page, setPage] = useState(1)
+
+  useEffect(() => {
+    loadData(ordersList.length * (page - 1))
+  }, [page])
+
   function toggleModalOrder(order: OrderProps) {
-    setOrder(order)
+    setIsLoading(true)
+    getOrder(order.id)
     setModalVisible(!modalVisible)
+  }
+
+  async function getOrder(id: string) {
+    try {
+      const { data } = await api.get(`/orders/store/order?id=${id}`)
+      console.log(data)
+      setOrder(data)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   function toggleModalVisible() {
     setModalVisible(!modalVisible)
   }
 
-  function classDefine(order: OrderProps): string {
-    const recived = order?.situation === 'Recebido' ? 'recived' : ''
-    const confirm = order?.situation === 'Concluído' ? 'confirm' : ''
-    const refused = order?.situation === 'Cancelado' ? 'refused' : ''
+  //recebe um texto: string, e inclui um format: string a cada position: number
+  function formatText(text: string, format: string, position = 3) {
+    const len = text.length
+
+    let jump = position
+    let newText = ''
+    for (let x = 0; x < len; x++) {
+      if (x == jump) {
+        newText += format
+        jump += jump
+      }
+
+      newText += text[x]
+    }
+
+    return newText
+  }
+
+  function classDefine(situation: string): string {
+    const recived = situation === 'Recebido' ? 'recived' : ''
+    const confirm = situation === 'Concluído' ? 'confirm' : ''
+    const refused = situation === 'Cancelado' ? 'refused' : ''
     const buttonClasses = `statusButton ${recived} ${confirm} ${refused}`
 
     return buttonClasses
   }
+
+  function percurArray(arr: OrderHistorics[]) {
+    let qtd = 0
+    let price = 0
+    for (let x = 0; x < arr.length; x++) {
+      qtd += arr[x].productQtd
+      price += arr[x].product.price * arr[x].productQtd
+    }
+
+    return { productQtd: qtd, price }
+  }
+
   function cutStrDate(date: string, limit: string) {
     let newDate = ''
 
@@ -82,22 +145,24 @@ const Pedidos = () => {
     return newDate
   }
 
-  async function loadData() {
-    const { data } = await api.get('/orders/store?confirmed=false')
-    // const { data: dataConfirmed } = await api.get('/orders/store')
-    // api.get('/orders/store?confirmed=true').then(res => console.log(res))
+  async function loadData(off: number) {
+    try {
+      const { data } = await api.get(
+        `/orders/store?confirmed=false&offset=${off}&limit=8`
+      )
 
-    console.log(data)
-    // console.log(dataConfirmed)
-    setOrders(data)
-
-    // if(dataConfirmed.length > 0) {
-    //   setOrders(arr => [...arr, dataConfirmed])
-    // }
+      console.log(data)
+      setOrdersList(data.results)
+      setTotalOrders(data.totalOrders)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
-    loadData()
+    loadData(0)
   }, [])
 
   return (
@@ -107,7 +172,6 @@ const Pedidos = () => {
       </Head>
       <Container>
         <DrawerLateral greenOption={0} />
-
         <Content>
           <MainArea>
             <header>
@@ -118,73 +182,88 @@ const Pedidos = () => {
               <AiOutlineSearch size={24} />
             </header>
 
-            <OrderHead>
-              <section style={{ flex: 0.5 }}>
-                <span>Data</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>N° do pedido</span>
-              </section>
-
-              <section style={{ flex: 0.35 }}>
-                <span>Valor</span>
-              </section>
-
-              <section className="center" style={{ flex: 0.75 }}>
-                <span>Detalhes</span>
-              </section>
-
-              <section style={{ flex: 0.75 }}>
-                <span>Status</span>
-              </section>
-            </OrderHead>
-            {orders?.map((order: OrderProps) => {
-              const oldDate = cutStrDate(order.createdAt, 'T')
-              const newDate = convertDate(oldDate)
-
-              const buttonClasses = classDefine(order)
-
-              return (
-                <OrderBody key={order.id}>
+            {isLoading ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  height: '100%',
+                  alignItems: 'center'
+                }}
+              >
+                <PulseLoader />
+              </div>
+            ) : (
+              <>
+                <OrderHead>
                   <section style={{ flex: 0.5 }}>
-                    <span>{newDate}</span>
+                    <span>Data</span>
                   </section>
-                  <section style={{ flex: 0.75 }}>
-                    <span>54141af-456qwa</span>
-                  </section>
-                  <section style={{ flex: 0.35 }}>
-                    <span>R$ {order.amount.toFixed(2)}</span>
-                  </section>
-                  <section className="center" style={{ flex: 0.75 }}>
-                    <AiFillEye
-                      size={24}
-                      onClick={() => {
-                        toggleModalOrder(order)
-                        setClassButton(buttonClasses)
-                        setDate(newDate)
-                      }}
-                    />
-                  </section>
-                  <button className={buttonClasses} style={{ flex: 0.75 }}>
-                    {order.situation}
-                  </button>
-                </OrderBody>
-              )
-            })}
 
+                  <section style={{ flex: 0.75 }}>
+                    <span>N° do pedido</span>
+                  </section>
+
+                  <section style={{ flex: 0.35 }}>
+                    <span>Valor</span>
+                  </section>
+
+                  <section className="center" style={{ flex: 0.75 }}>
+                    <span>Detalhes</span>
+                  </section>
+
+                  <section style={{ flex: 0.75 }}>
+                    <span>Status</span>
+                  </section>
+                </OrderHead>
+                {ordersList?.map((order: OrderProps) => {
+                  const oldDate = cutStrDate(order.createdAt, 'T')
+                  const newDate = convertDate(oldDate)
+
+                  const buttonClasses = classDefine(order?.situation)
+
+                  return (
+                    <OrderBody key={order.id}>
+                      <section style={{ flex: 0.5 }}>
+                        <span>{newDate}</span>
+                      </section>
+                      <section style={{ flex: 0.75 }}>
+                        <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                      </section>
+                      <section style={{ flex: 0.35 }}>
+                        <span>R$ {order.amount.toFixed(2)}</span>
+                      </section>
+                      <section className="center" style={{ flex: 0.75 }}>
+                        <AiFillEye
+                          size={24}
+                          onClick={() => {
+                            toggleModalOrder(order)
+                            setClassButton(buttonClasses)
+                            setDate(newDate)
+                          }}
+                        />
+                      </section>
+                      <button className={buttonClasses} style={{ flex: 0.75 }}>
+                        {order.situation}
+                      </button>
+                    </OrderBody>
+                  )
+                })}
+              </>
+            )}
             <footer>
               <Pagination
-                onPageChange={() => {}}
-                totalCountOfRegisters={500}
-                currentPage={1}
-                registersPerPage={40}
+                onPageChange={setPage}
+                totalCountOfRegisters={totalOrders}
+                currentPage={page}
+                registersPerPage={8}
               />
             </footer>
           </MainArea>
         </Content>
+
         <CustomModal
-          modalVisible={modalVisible}
+          modalVisible={modalVisible && !isLoading}
           setModalOpen={toggleModalVisible}
           buttons={false}
         >
@@ -193,7 +272,9 @@ const Pedidos = () => {
               <div className="title">
                 <div className="information">
                   <h2>Dados do pedido</h2>
-                  <span>Nº do pedido: 555-555-555</span>
+                  <span>
+                    Nº do pedido: {formatText(order.orderNumber, '-')}
+                  </span>
                 </div>
                 <div className="close">
                   <FiX size={30} onClick={toggleModalVisible} />
@@ -206,7 +287,11 @@ const Pedidos = () => {
                       <Product key={item.productId}>
                         <div className="productInformation">
                           <div className="imageArea">
-                            <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" />
+                            {/* <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" /> */}
+                            <img
+                              src={item.product.files[0].url}
+                              alt="Imagem do produto"
+                            />
                           </div>
                           <div className="description">
                             <div>
@@ -249,19 +334,14 @@ const Pedidos = () => {
                       </div>
                       <div>
                         <span>Quantidade:</span>
-                        <span>{order?.orderHistorics[0]?.productQtd}</span>
+                        {/* <span>{order?.orderHistorics[0]?.productQtd}</span> */}
+                        <span>
+                          {percurArray(order?.orderHistorics).productQtd}
+                        </span>
                       </div>
                       <div>
                         <span>Cupons:</span>
                         <span>- R$ 0,00</span>
-                      </div>
-                      <div>
-                        <span>
-                          <strong>Total geral:</strong>
-                        </span>
-                        <span>
-                          <strong>R$ 6.594,00</strong>
-                        </span>
                       </div>
                     </div>
 
@@ -271,7 +351,7 @@ const Pedidos = () => {
                       </span>
                       <div>
                         <span>Método:</span>
-                        <span>Cartão de débito</span>
+                        <span>{order?.orderHistorics[0].paymentMethod}</span>
                       </div>
                       <div>
                         <span>Parcelamento:</span>
@@ -282,7 +362,12 @@ const Pedidos = () => {
                           <strong>Total geral:</strong>
                         </span>
                         <span>
-                          <strong>R$ 6.594,00</strong>
+                          <strong>
+                            R${' '}
+                            {percurArray(order?.orderHistorics).price.toFixed(
+                              2
+                            )}
+                          </strong>
                         </span>
                       </div>
                     </div>
@@ -291,10 +376,7 @@ const Pedidos = () => {
                       <span className="title">
                         <strong>Local e contato:</strong>
                       </span>
-                      <span>
-                        Avenida josé silva 66, Centro, Dom expedito Lopes, PI,
-                        64620000, Brasil
-                      </span>
+                      <span>{order.customerAddress}</span>
                       <span className="phone">(89) 9 8100-0000</span>
                     </div>
                   </div>
