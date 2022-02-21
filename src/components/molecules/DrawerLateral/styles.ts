@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Container = styled.header`
   position: flex;
@@ -6,12 +7,26 @@ export const Container = styled.header`
   padding: var(--font-size-sm);
   z-index: 1;
 
+  ${[sizes.down('sm')]} {
+    display: none;
+  }
+
+  .showNames,
+  .noShowNames {
+    nav .option.active {
+      .icon,
+      a {
+        color: var(--color-primary);
+      }
+    }
+  }
+
   .showNames {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    width: 13vw;
+    width: 220px;
     height: 100%;
 
     border-radius: var(--border-radius-gg);
@@ -31,13 +46,14 @@ export const Container = styled.header`
       .option {
         display: flex;
         align-items: center;
+        margin-right: auto;
+        margin-left: 30px;
 
-        width: 70%;
         cursor: pointer;
 
         svg {
-          width: 1.2rem;
-          height: 1.2rem;
+          width: 1.5rem;
+          height: 1.5rem;
           margin-bottom: var(--spacing-quarck);
         }
 
@@ -45,7 +61,7 @@ export const Container = styled.header`
           font-family: var(--font-family-primary);
           font-style: var(--font-style-normal);
           font-weight: var(--font-weight-regular);
-          font-size: var(--font-size-xxs);
+          font-size: var(--font-size-xs);
 
           margin-left: var(--spacing-nano);
           color: var(--black-800);
@@ -94,8 +110,8 @@ export const Container = styled.header`
         cursor: pointer;
 
         svg {
-          width: 1.2rem;
-          height: 1.2rem;
+          width: 1.5rem;
+          height: 1.5rem;
           margin-bottom: var(--spacing-quarck);
         }
 

@@ -65,71 +65,36 @@ const DrawerLateral = ({ greenOption, activated, ...rest }: DrawerLateral) => {
             )}
 
             <Link href="/dashboard">
-              <div className="option">
-                <IoHomeOutline
-                  className="icon"
-                  color={
-                    greenOption === 0
-                      ? 'var(--color-primary)'
-                      : 'var(--black-800)'
-                  }
-                />
+              <div className={`option ${greenOption === 0 ? 'active' : ''}`}>
+                <IoHomeOutline className="icon" />
                 {active ? <a>Home</a> : null}
               </div>
             </Link>
 
             <Link href="/dashboard/loja">
-              <div className="option">
-                <BiStore
-                  className="icon"
-                  color={
-                    greenOption === 1
-                      ? 'var(--color-primary)'
-                      : 'var(--black-800)'
-                  }
-                />
+              <div className={`option ${greenOption === 1 ? 'active' : ''}`}>
+                <BiStore className="icon" />
                 {active ? <a>Análise da loja</a> : null}
               </div>
             </Link>
 
             <Link href="/dashboard/pedidos">
-              <div className="option">
-                <BiClipboard
-                  className="icon"
-                  color={
-                    greenOption === 3
-                      ? 'var(--color-primary)'
-                      : 'var(--black-800)'
-                  }
-                />
+              <div className={`option ${greenOption === 3 ? 'active' : ''}`}>
+                <BiClipboard className="icon" />
                 {active ? <a>Pedidos</a> : null}
               </div>
             </Link>
 
             <Link href={`/dashboard/catalogo`}>
-              <div className="option">
-                <FiBox
-                  className="icon"
-                  color={
-                    greenOption === 4
-                      ? 'var(--color-primary)'
-                      : 'var(--black-800)'
-                  }
-                />
+              <div className={`option ${greenOption === 4 ? 'active' : ''}`}>
+                <FiBox className="icon" />
                 {active ? <a>Catálogo</a> : null}
               </div>
             </Link>
 
             <Link href="/">
-              <div className="option">
-                <IoPersonOutline
-                  className="icon"
-                  color={
-                    greenOption === 5
-                      ? 'var(--color-primary)'
-                      : 'var(--black-800)'
-                  }
-                />
+              <div className={`option ${greenOption === 5 ? 'active' : ''}`}>
+                <IoPersonOutline className="icon" />
                 {active ? <a>Meus dados</a> : null}
               </div>
             </Link>

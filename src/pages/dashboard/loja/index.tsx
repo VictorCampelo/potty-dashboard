@@ -1,4 +1,5 @@
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
+import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 
 import React, { useCallback, useState } from 'react'
@@ -598,6 +599,7 @@ const Shop = ({ storeId, id }: Shop) => {
       <Container>
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleTimeModal}
           modalVisible={timeTableModal}
         >
@@ -741,6 +743,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleCategoryModal}
           modalVisible={categoryModal}
         >
@@ -788,6 +791,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleLocationModal}
           modalVisible={locationModal}
         >
@@ -876,6 +880,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleContactModal}
           modalVisible={contactModal}
         >
@@ -945,6 +950,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           setModalOpen={toggleDescModal}
           modalVisible={descModal}
         >
@@ -1025,6 +1031,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
         <CustomModal
           buttons={false}
+          showCloseButton={false}
           modalVisible={configModal}
           setModalOpen={() => setConfigModal(!configModal)}
         >
@@ -1200,6 +1207,8 @@ const Shop = ({ storeId, id }: Shop) => {
             />
           </div>
         </div>
+
+        <DrawerBottom greenOption={1} />
       </Container>
     </>
   )

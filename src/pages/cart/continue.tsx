@@ -326,6 +326,7 @@ const CartContinue = () => {
 
       <CustomModal
         buttons={false}
+        showCloseButton={false}
         setModalOpen={() => {
           setAddAdressModal(!addAdressModal)
         }}

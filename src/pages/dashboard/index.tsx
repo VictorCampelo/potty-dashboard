@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import DrawerLateral from '../../components/molecules/DrawerLateral'
+import DrawerBottom from '../../components/molecules/DrawerBottom'
 import CardShop from '../../components/molecules/CardShop'
 import { Container } from '../../styles/pages/shopkeeper'
 import CardProduct from '../../components/molecules/CardProduct'
 import CardFeedback from '../../components/molecules/CardFeedback'
 import Head from 'next/head'
 
-import { Chart } from 'react-google-charts'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 
@@ -22,7 +22,6 @@ import {
   ReferenceLine,
   ResponsiveContainer
 } from 'recharts'
-import { AuthContext } from 'contexts/AuthContext'
 
 const Shopkeeper = () => {
   const [options, setOptions] = useState({})
@@ -354,6 +353,8 @@ const Shopkeeper = () => {
             </CardShop>
           </div>
         </div>
+
+        <DrawerBottom greenOption={0} />
       </Container>
     </>
   )
