@@ -11,6 +11,16 @@ export const Container = styled.header`
     display: none;
   }
 
+  .showNames,
+  .noShowNames {
+    nav .option.active {
+      .icon,
+      a {
+        color: var(--color-primary);
+      }
+    }
+  }
+
   .showNames {
     display: flex;
     justify-content: center;
@@ -67,11 +77,6 @@ export const Container = styled.header`
 
           color: var(--red);
         }
-      }
-
-      .option.active,
-      .option.active a {
-        color: var(--color-primary);
       }
     }
   }

@@ -2,6 +2,9 @@ import styled from 'styled-components'
 import sizes from 'utils/sizes'
 
 export const Container = styled.nav`
+  position: fixed;
+  bottom: 0;
+  left: 0;
   ${[sizes.up('sm')]} {
     display: none;
   }
