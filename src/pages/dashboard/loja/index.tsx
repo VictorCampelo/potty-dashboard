@@ -1,4 +1,5 @@
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
+import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 
 import React, { useCallback, useState } from 'react'
@@ -1206,6 +1207,8 @@ const Shop = ({ storeId, id }: Shop) => {
             />
           </div>
         </div>
+
+        <DrawerBottom greenOption={1} />
       </Container>
     </>
   )
