@@ -10,7 +10,6 @@ export const Container = styled.div<ContainerProp>`
   width: 100%;
   display: flex;
   margin-bottom: var(--spacing-xxxs);
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: var(--border-radius-sm);
 
   .section {
@@ -23,7 +22,8 @@ export const Container = styled.div<ContainerProp>`
       align-items: center;
 
       width: 100%;
-      height: 100%;
+      height: 69px;
+      /* height: 100%; */
 
       background: #f4f5f6;
       border-radius: var(--border-radius-sm);
@@ -32,11 +32,10 @@ export const Container = styled.div<ContainerProp>`
       cursor: pointer;
 
       z-index: 1;
-
       .icon-btn {
         ${(props) => props.isOpen && 'transform: rotate(180deg);'}
         transition: 0.4s;
-        margin: var(--spacing-xxxs) var(--spacing-xxs);
+        margin: var(--spacing-xxs) var(--spacing-xxs);
       }
 
       .title {
@@ -57,12 +56,13 @@ export const Container = styled.div<ContainerProp>`
       display: none;
       align-items: center;
 
-      width: 767px;
-      height: 100%;
+      /* width: 767px; */
+      width: 100%;
       margin-left: var(--spacing-sm);
 
+      overflow-y: scroll;
+      max-height: 300px !important;
       ${(props) => props.isOpen && 'display: block;'}
-
       margin-top: var(--spacing-xxxs);
 
       .items {
@@ -102,7 +102,6 @@ export const Container = styled.div<ContainerProp>`
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 50px;
     height: 80%;
 
@@ -145,7 +144,7 @@ export const Container = styled.div<ContainerProp>`
     border-radius: var(--border-radius-sm);
     z-index: 0;
     margin-top: 2px;
-
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     margin-left: -14px;
     padding-left: var(--spacing-xxs);
   }

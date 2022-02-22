@@ -38,6 +38,7 @@ import CatalogTabs from '../../../components/molecules/CatalogTabs'
 import { CategoryListCard } from '../../../components/molecules/CategoryListCard'
 import CustomModal from '../../../components/molecules/CustomModal'
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
+import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { Input } from '../../../components/molecules/Input'
 import { ProductListCard } from '../../../components/molecules/ProductListCard'
 import { TextArea } from '../../../components/molecules/TextArea'
@@ -152,7 +153,27 @@ const catalog = ({ storeId }: CatalogType) => {
   const [deleteCategoryId, setDeleteCategoryId] = useState('')
 
   const [category, setCategory] = useState('')
-  const [products, setProducts] = useState<ProductType[]>([])
+  const [products, setProducts] = useState<ProductType[]>([
+    {
+      avgStars: 0,
+      createdAt: '',
+      deletedAt: '',
+      description: '',
+      discount: {},
+      files: [],
+      id: '',
+      inventory: 0,
+      lastSold: '',
+      price: 0,
+      sumFeedbacks: 0,
+      sumOrders: 0,
+      sumStars: 0,
+      tags: [],
+      title: '',
+      updatedAt: '',
+      categories: []
+    }
+  ])
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
@@ -663,6 +684,7 @@ const catalog = ({ storeId }: CatalogType) => {
       {/* Add category */}
       <CustomModal
         buttons={false}
+        showCloseButton={false}
         setModalOpen={toggleAddCategoryModal}
         modalVisible={addCategoryModal}
       >
@@ -917,12 +939,7 @@ const catalog = ({ storeId }: CatalogType) => {
           </div>
 
           <div className="buttonContainer">
-            <Button
-              title="Voltar"
-              border
-              style={{ marginRight: 16 }}
-              onClick={toggleAddModal}
-            />
+            <Button title="Voltar" border onClick={toggleAddModal} />
 
             <Button title="Salvar" type="submit" />
           </div>
@@ -1373,7 +1390,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   className="searchInput"
                   label=""
                   placeholder="Pesquisar"
-                  icon={<FiSearch size={18} color="var(--black-800)" />}
+                  icon={<FiSearch size={22} color="var(--black-800)" />}
                 />
               </div>
             </header>
@@ -1501,6 +1518,8 @@ const catalog = ({ storeId }: CatalogType) => {
             </main>
           </div>
         </div>
+
+        <DrawerBottom greenOption={4} />
       </Container>
     </>
   )
