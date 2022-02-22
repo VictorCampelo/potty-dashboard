@@ -154,9 +154,6 @@ const Login = () => {
 
           <div className="register">
             Não possui conta?{' '}
-            {/* <Link href="/cadastro">
-              <a>Cadastre-se!</a>
-            </Link> */}
             <button
               type="button"
               onClick={() => setModalVisible(true)}
@@ -168,7 +165,6 @@ const Login = () => {
             >
               <strong>Cadastre-se!</strong>
             </button>
-            {/* <Modal title="Forma de cadastro" modalVisible={modalVisible} buttons={true} /> */}
             <CustomModal
               buttons={false}
               setModalOpen={toggleModalVisible}

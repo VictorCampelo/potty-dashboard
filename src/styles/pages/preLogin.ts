@@ -106,10 +106,9 @@ export const Container = styled.main`
     .title {
       width: 100%;
       height: 80px;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       display: flex;
-      flex-direction: row;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
 
       h1 {
@@ -169,12 +168,13 @@ export const Container = styled.main`
       flex-direction: column;
       gap: 1rem;
       margin-bottom: var(--spacing-xxxs);
-      /* border: 1px solid red; */
     }
 
     .buttonContainer {
+      width: 10vw;
       margin-top: 2rem;
       display: flex;
+      justify-content: space-between;
 
       ${[sizes.down('lgMob')]} {
         flex-direction: column;
@@ -231,6 +231,7 @@ export const Container = styled.main`
       .title {
         flex-direction: column;
         align-items: flex-start;
+        background-color: #999;
       }
 
       .logo {
