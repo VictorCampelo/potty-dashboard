@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 export const Container = styled.div`
   width: 100%;
@@ -9,11 +10,22 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
+  ${[sizes.down('sm')]} {
+    display: flex;
+    flex-direction: column;
+  }
+
   div.area {
     max-width: 100%;
     width: 100%;
 
     padding: 20px 20px;
+
+    ${[sizes.down('sm')]} {
+      height: 100%;
+      padding: 0;
+      margin-bottom: -50px;
+    }
 
     display: flex;
 
@@ -30,6 +42,10 @@ export const Container = styled.div`
       border-radius: 30px;
       overflow-y: hidden;
 
+      ${[sizes.down('sm')]} {
+        border-radius: 0;
+      }
+
       .header {
         width: 100%;
         height: 110px;
@@ -40,6 +56,10 @@ export const Container = styled.div`
         align-items: center;
         border-radius: 30px 30px 0 0;
         padding: 20px;
+
+        ${[sizes.down('sm')]} {
+          flex-direction: row-reverse;
+        }
 
         .addBtn {
           width: 123px;
@@ -137,6 +157,10 @@ export const AddProductModalContainer = styled.form`
   .buttonContainer {
     display: flex;
     margin-top: 24px;
+    ${[sizes.down('sm')]} {
+      flex-direction: column;
+      gap: 1rem;
+    }
   }
 
   .exit-container {
@@ -186,10 +210,17 @@ export const AddProductModalContainer = styled.form`
   h1.titulo-cadastro {
     width: 100%;
     text-align: left;
+    font-weight: 600;
   }
 
   .input-infos {
     display: flex;
+
+    ${[sizes.down('md')]} {
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
     .left-area {
       margin-top: -30px;
       display: flex;
@@ -219,6 +250,11 @@ export const AddProductModalContainer = styled.form`
     .right-area {
       margin-left: 30px;
       margin-top: -30px;
+
+      ${[sizes.down('md')]} {
+        margin-left: 0;
+        margin-top: -22px;
+      }
 
       .input-container {
         margin-bottom: 1rem;
@@ -304,8 +340,10 @@ export const AddProductModalContainer = styled.form`
     .array-fotos {
       margin-top: 30px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
+      gap: 4px;
 
       .card-image {
         width: 100px;
@@ -511,6 +549,10 @@ export const AddCategoryModalContainer = styled.div`
   .buttonContainer {
     display: flex;
     margin-top: 24px;
+    ${[sizes.down('sm')]} {
+      flex-direction: column;
+      gap: 1rem;
+    }
   }
 `
 

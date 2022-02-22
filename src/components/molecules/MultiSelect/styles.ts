@@ -7,7 +7,8 @@ type MyOptionType = {
 }
 
 export const Container = styled.div`
-  width: 470px;
+  width: 100%;
+  max-width: 470px;
   display: flex;
   flex-direction: column;
   border: none;

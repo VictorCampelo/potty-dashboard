@@ -1,10 +1,34 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
+
 interface ContainerProps {
   under?: boolean
 }
+
 export const Container = styled.header<ContainerProps>`
+  overflow: hidden;
+
   .modal {
+    max-height: 85vh;
+
     padding: 30px 40px;
+
+    ${[sizes.down('sm')]} {
+      padding: 15px 30px;
+    }
+
+    overflow: auto;
+
+    .close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+    }
+
+    .close:hover {
+      cursor: pointer;
+    }
+
     ${(props) =>
       props.under && 'padding: var(--spacing-nano) var(--spacing-xxxs);'}
     .modalDescription, .modalAvaliations {
