@@ -559,7 +559,7 @@ const ProductShow = () => {
                 )}
 
                 <div className="installments">
-                  {parcelAmount && (
+                  {parcelAmount > 1 && (
                     <a onClick={() => setShowInstallment(!showInstallment)}>
                       Ver parcelas
                     </a>
