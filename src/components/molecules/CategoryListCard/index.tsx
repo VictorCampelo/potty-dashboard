@@ -39,8 +39,11 @@ export const CategoryListCard = ({
           <IoIosArrowDown size={20} className="icon-btn" color="#363F4E" />
           <h1 className="title">{category}</h1>
         </div>
-        <Fade top cascade collapse delay={15} duration={400} when={isOpen}>
-          <div className="children-container">
+        <Fade delay={100} duration={600} when={isOpen}>
+          <div
+            className="children-container"
+            style={isOpen ? undefined : { display: 'none' }}
+          >
             {date.map((data) => {
               return (
                 <p key={data.name + '--'} className="items">
