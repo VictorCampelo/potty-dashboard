@@ -1,4 +1,4 @@
-import { Input } from '../../../components/molecules/SearchInput'
+import { Input } from 'components/molecules/SearchInput'
 import Head from 'next/head'
 import { VscSearch } from 'react-icons/vsc'
 import {
@@ -14,12 +14,12 @@ import {
   Button,
   Divisor,
   MenuBottom
-} from '../../../styles/pages/Product'
+} from 'styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
-import CatalogTabs from '../../../components/molecules/CatalogTabs'
-import CardFeedback from '../../../components/molecules/CardFeedback'
+import CatalogTabs from 'components/molecules/CatalogTabs'
+import CardFeedback from 'components/molecules/CardFeedback'
 
 import {
   AiFillFacebook,
@@ -35,7 +35,8 @@ import {
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
-import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
+import formatToBrl from 'utils/formatToBrl'
+import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
@@ -225,6 +226,7 @@ const ProductShow = () => {
   const [price, setPrice] = useState(0)
   const [priceWithDiscount, setPriceWithDiscount] = useState(0)
   const [discount, setDiscount] = useState(0)
+  const [parcelAmount, setParcelAmount] = useState(0)
   const [files, setFiles] = useState<File[]>([])
   const [actualFile, setActualFile] = useState<File>({} as File)
   const [actualFileDesc, setActualFileDesc] = useState<File>({} as File)
@@ -294,6 +296,7 @@ const ProductShow = () => {
       setSumFeedbacks(data?.sumFeedbacks)
       setSumOrders(data?.sumOrders)
       setPrice(data?.price)
+      setParcelAmount(data?.parcelAmount)
       setDiscount(data?.discount)
       setProductId(data?.id)
       setStoreId(data?.storeId)
@@ -301,14 +304,7 @@ const ProductShow = () => {
       setActualFile(data?.files[0])
       setActualFileDesc(data?.files[0])
 
-      setPriceWithDiscount(
-        parseFloat(
-          getDiscount(
-            getDiscount(data?.price, data?.discount).toFixed(2),
-            10
-          ).toFixed(2)
-        )
-      )
+      setPriceWithDiscount(getDiscount(data?.price, data?.discount || 0))
     } catch (e) {
       if (e.response.status === 500) {
         return toast.error('Erro interno, tente novamente', {
@@ -342,11 +338,8 @@ const ProductShow = () => {
     if (id) loadData()
   }, [id])
 
-  function getDiscount(price, discount) {
-    const porcentagem = price / 100
-    const X = porcentagem * discount
-    const resultado = price - X
-    return resultado
+  function getDiscount(price: number, discount: number) {
+    return price - (price * discount) / 100
   }
 
   const notifySuccess = useCallback((message: string) => {
@@ -397,6 +390,19 @@ const ProductShow = () => {
     }
 
     notifySuccess('Item adicionado no carrinho')
+  }
+
+  /**
+   * Example: getNumberArray({ size: 10, startAt: 1 }) => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+   */
+  const getNumberArray = ({
+    size,
+    startAt = 0
+  }: {
+    size: number
+    startAt: number
+  }) => {
+    return Array.from({ length: size }, (_, i) => i + startAt)
   }
 
   return (
@@ -506,17 +512,18 @@ const ProductShow = () => {
                 {discount ? (
                   <>
                     <div className="discount">
-                      <h4>De: R$ {price}</h4>
+                      <h4>De: {formatToBrl(price)}</h4>
                       <div>-{discount}%</div>
                     </div>
                     <div className="price">
-                      <div className="parcel">12x</div>
+                      <div className="parcel">{parcelAmount}x</div>
                       <div className="values">
-                        <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+                        <h1>{formatToBrl(priceWithDiscount)}</h1>
                         <p
                           style={widthScreen ? { display: 'none' } : undefined}
                         >
-                          12x de <strong>R$ {priceWithDiscount}</strong>
+                          {parcelAmount}x de{' '}
+                          <strong>{formatToBrl(priceWithDiscount)}</strong>
                         </p>
                       </div>
                       {!widthScreen && (
@@ -531,8 +538,11 @@ const ProductShow = () => {
                       )}
                     </div>
                     <p style={!widthScreen ? { display: 'none' } : undefined}>
-                      Em até 12x sem juros ou{' '}
-                      <strong>R$ {priceWithDiscount}</strong> a vista
+                      Em até {parcelAmount}x sem juros ou{' '}
+                      <strong>
+                        {formatToBrl(getDiscount(priceWithDiscount, 10))}
+                      </strong>{' '}
+                      à vista
                     </p>
                   </>
                 ) : (
@@ -540,18 +550,20 @@ const ProductShow = () => {
                     <div className="price">
                       <div className="values">
                         <h1>
-                          R$ {price} <small>à prazo</small>
+                          {formatToBrl(price)} <small>à prazo</small>
                         </h1>
-                        <p>Ou R$ {getDiscount(price, 10).toFixed(2)} à vista</p>
+                        <p>Ou {formatToBrl(getDiscount(price, 10))} à vista</p>
                       </div>
                     </div>
                   </>
                 )}
 
                 <div className="installments">
-                  <a onClick={() => setShowInstallment(!showInstallment)}>
-                    Ver parcelas
-                  </a>
+                  {parcelAmount > 1 && (
+                    <a onClick={() => setShowInstallment(!showInstallment)}>
+                      Ver parcelas
+                    </a>
+                  )}
 
                   {showInstallment && (
                     <Installments>
@@ -571,66 +583,42 @@ const ProductShow = () => {
 
                       <div className="list">
                         <p className="list1">
-                          <strong>R$ {priceWithDiscount} à vista</strong> <br />
-                          2x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 2
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          3x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 3
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          4x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 4
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          5x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 5
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          6x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 6
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
+                          <strong>
+                            {formatToBrl(priceWithDiscount)} à vista
+                          </strong>{' '}
+                          <br />
+                          {getNumberArray({
+                            size: parcelAmount > 6 ? 6 : parcelAmount,
+                            startAt: 2
+                          }).map((month) => {
+                            return (
+                              <>
+                                {month}x de{' '}
+                                {formatToBrl(priceWithDiscount / month)} sem
+                                juros.
+                                <br />
+                              </>
+                            )
+                          })}
                         </p>
 
-                        <p className="list2">
-                          7x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 7
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          8x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 8
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          9x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 9
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          10x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 10
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          11x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 11
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                          12x R${' '}
-                          {(
-                            Number(getDiscount(price, discount).toFixed(2)) / 12
-                          ).toFixed(2)}{' '}
-                          sem juros <br />
-                        </p>
+                        {parcelAmount > 6 && (
+                          <p className="list2">
+                            {getNumberArray({
+                              size: parcelAmount - 6,
+                              startAt: 7
+                            }).map((month) => {
+                              return (
+                                <>
+                                  {month}x de{' '}
+                                  {formatToBrl(priceWithDiscount / month)} sem
+                                  juros.
+                                  <br />
+                                </>
+                              )
+                            })}
+                          </p>
+                        )}
                       </div>
                     </Installments>
                   )}
@@ -1095,9 +1083,10 @@ const ProductShow = () => {
         <MenuBottom>
           <div className="price">
             <div className="values">
-              <h1>R$ {getDiscount(price, discount).toFixed(2)}</h1>
+              <h1>{formatToBrl(getDiscount(price, discount))}</h1>
               <p style={widthScreen ? { display: 'none' } : undefined}>
-                12x de <strong>R$ {priceWithDiscount}</strong>
+                {parcelAmount}x de <strong>{formatToBrl(price)}</strong> sem
+                juros.
               </p>
             </div>
             <BigButton
