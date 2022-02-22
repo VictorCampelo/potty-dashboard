@@ -23,6 +23,10 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
+import { AuthContext } from 'contexts/AuthContext'
+import formatToBrl from 'utils/formatToBrl'
+
+
 const Shopkeeper = () => {
   const [options, setOptions] = useState({})
 
@@ -110,12 +114,6 @@ const Shopkeeper = () => {
     }
   ]
 
-  const formatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 2
-  })
-
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
@@ -125,7 +123,7 @@ const Shopkeeper = () => {
             padding: '0px 10px'
           }}
         >
-          <p>{`${formatter.format(payload[0].value)}`}</p>
+          <p>{`${formatToBrl(payload[0].value)}`}</p>
         </div>
       )
     }

@@ -1,5 +1,7 @@
 import { Container } from './styles'
 
+import formatToBrl from 'utils/formatToBrl'
+
 import { Button } from 'components/atoms/Button'
 
 interface Props {
@@ -51,7 +53,7 @@ const CardPlan = ({
         Em até <strong>${quota}x de</strong>
       </p>
       <p className="price">
-        <strong>R$ {quotaPrice.toFixed(2)}</strong>
+        <strong>{formatToBrl(quotaPrice)}</strong>
       </p>
 
       <Button title="Selecionar" />
