@@ -1,4 +1,4 @@
-import { Input } from '../../../components/molecules/SearchInput'
+import { Input } from 'components/molecules/SearchInput'
 import Head from 'next/head'
 import { VscSearch } from 'react-icons/vsc'
 import {
@@ -14,12 +14,12 @@ import {
   Button,
   Divisor,
   MenuBottom
-} from '../../../styles/pages/Product'
+} from 'styles/pages/Product'
 import { Button as BigButton } from 'components/atoms/Button'
 import React, { useCallback, useContext, useState } from 'react'
 import ReactStars from 'react-stars'
-import CatalogTabs from '../../../components/molecules/CatalogTabs'
-import CardFeedback from '../../../components/molecules/CardFeedback'
+import CatalogTabs from 'components/molecules/CatalogTabs'
+import CardFeedback from 'components/molecules/CardFeedback'
 
 import {
   AiFillFacebook,
@@ -35,7 +35,8 @@ import {
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
 import router, { useRouter } from 'next/router'
-import { CheckboxFilter } from '../../../components/atoms/CheckboxFilter'
+import formatToBrl from 'utils/formatToBrl'
+import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'

@@ -1,6 +1,6 @@
 import { Container } from './styles'
 
-import formatToBrl from '../../../utils/formatToBrl'
+import formatToBrl from 'utils/formatToBrl'
 
 import { Button } from 'components/atoms/Button'
 
