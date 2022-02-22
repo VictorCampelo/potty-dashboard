@@ -559,9 +559,11 @@ const ProductShow = () => {
                 )}
 
                 <div className="installments">
-                  <a onClick={() => setShowInstallment(!showInstallment)}>
-                    Ver parcelas
-                  </a>
+                  {parcelAmount && (
+                    <a onClick={() => setShowInstallment(!showInstallment)}>
+                      Ver parcelas
+                    </a>
+                  )}
 
                   {showInstallment && (
                     <Installments>
