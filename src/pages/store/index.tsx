@@ -50,6 +50,7 @@ import Carousel from 'components/atoms/Carousel'
 import CarouselProducts from 'components/atoms/CarouselProducts'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 import { Pagination } from 'components/molecules/Pagination'
+import formatToBrl from 'utils/formatToBrl'
 
 const Products = () => {
   const router = useRouter()
@@ -176,6 +177,15 @@ const Products = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  })
+
+  function getDiscount(price: number, discount: number) {
+    return price - (price * discount) / 100
   }
 
   useEffect(() => {
@@ -521,19 +531,24 @@ const Products = () => {
                                 <div className="price">
                                   <small>
                                     {e.discount
-                                      ? 'De: R$ ' +
-                                        ((1 - e.discount) * e.price).toFixed(2)
+                                      ? `De: ${formatToBrl(
+                                          getDiscount(e.price, e.discount)
+                                        )}`
                                       : null}
                                   </small>
-                                  <span>R$ {e.price.toFixed(2)}</span>
+                                  <span>{formatToBrl(e.price)}</span>
                                 </div>
 
                                 {/* <p>{ellipsis(e.description, 120)}</p> */}
                                 {e.parcelAmount > 1 && (
                                   <p>
                                     Em até {e.parcelAmount}x sem juros ou{' '}
-                                    <strong>R$ {e.price.toFixed(2)}</strong> à
-                                    vista
+                                    <strong>
+                                      {formatToBrl(
+                                        getDiscount(e.price, e.discount)
+                                      )}
+                                    </strong>{' '}
+                                    à vista
                                   </p>
                                 )}
                                 <Button position="left">
@@ -574,9 +589,13 @@ const Products = () => {
                                     </span>
                                   </div>
                                   <div className="price">
-                                    <span>R$ {e.price.toFixed(2)}</span>
+                                    <span>{formatToBrl(e.price)}</span>
                                     <small>
-                                      {e.descont ? 'R$ ' + e.descont : null}
+                                      {e.discount
+                                        ? `De: ${formatToBrl(
+                                            getDiscount(e.price, e.discount)
+                                          )}`
+                                        : null}
                                     </small>
                                   </div>
 

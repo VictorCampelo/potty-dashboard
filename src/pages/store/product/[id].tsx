@@ -516,18 +516,18 @@ const ProductShow = () => {
                 {discount ? (
                   <>
                     <div className="discount">
-                      <h4>De: {formatter.format(price)}</h4>
+                      <h4>De: {formatToBrl(price)}</h4>
                       <div>-{discount}%</div>
                     </div>
                     <div className="price">
                       <div className="parcel">{parcelAmount}x</div>
                       <div className="values">
-                        <h1>{formatter.format(priceWithDiscount)}</h1>
+                        <h1>{formatToBrl(priceWithDiscount)}</h1>
                         <p
                           style={widthScreen ? { display: 'none' } : undefined}
                         >
                           {parcelAmount}x de{' '}
-                          <strong>{formatter.format(priceWithDiscount)}</strong>
+                          <strong>{formatToBrl(priceWithDiscount)}</strong>
                         </p>
                       </div>
                       {!widthScreen && (
@@ -544,7 +544,7 @@ const ProductShow = () => {
                     <p style={!widthScreen ? { display: 'none' } : undefined}>
                       Em até {parcelAmount}x sem juros ou{' '}
                       <strong>
-                        {formatter.format(getDiscount(priceWithDiscount, 10))}
+                        {formatToBrl(getDiscount(priceWithDiscount, 10))}
                       </strong>{' '}
                       à vista
                     </p>
@@ -554,11 +554,9 @@ const ProductShow = () => {
                     <div className="price">
                       <div className="values">
                         <h1>
-                          {formatter.format(price)} <small>à prazo</small>
+                          {formatToBrl(price)} <small>à prazo</small>
                         </h1>
-                        <p>
-                          Ou {formatter.format(getDiscount(price, 10))} à vista
-                        </p>
+                        <p>Ou {formatToBrl(getDiscount(price, 10))} à vista</p>
                       </div>
                     </div>
                   </>
@@ -588,7 +586,7 @@ const ProductShow = () => {
                       <div className="list">
                         <p className="list1">
                           <strong>
-                            {formatter.format(priceWithDiscount)} à vista
+                            {formatToBrl(priceWithDiscount)} à vista
                           </strong>{' '}
                           <br />
                           {getNumberArray({
@@ -598,8 +596,8 @@ const ProductShow = () => {
                             return (
                               <>
                                 {month}x de{' '}
-                                {formatter.format(priceWithDiscount / month)}{' '}
-                                sem juros.
+                                {formatToBrl(priceWithDiscount / month)} sem
+                                juros.
                                 <br />
                               </>
                             )
@@ -615,8 +613,8 @@ const ProductShow = () => {
                               return (
                                 <>
                                   {month}x de{' '}
-                                  {formatter.format(priceWithDiscount / month)}{' '}
-                                  sem juros.
+                                  {formatToBrl(priceWithDiscount / month)} sem
+                                  juros.
                                   <br />
                                 </>
                               )
@@ -1087,10 +1085,10 @@ const ProductShow = () => {
         <MenuBottom>
           <div className="price">
             <div className="values">
-              <h1>{formatter.format(getDiscount(price, discount))}</h1>
+              <h1>{formatToBrl(getDiscount(price, discount))}</h1>
               <p style={widthScreen ? { display: 'none' } : undefined}>
-                {parcelAmount}x de <strong>{formatter.format(price)}</strong>{' '}
-                sem juros.
+                {parcelAmount}x de <strong>{formatToBrl(price)}</strong> sem
+                juros.
               </p>
             </div>
             <BigButton
