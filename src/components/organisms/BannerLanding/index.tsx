@@ -1,8 +1,10 @@
 import { Button } from 'components/atoms/Button'
 
 import { Banner } from './styles'
+import { useRouter } from 'next/router'
 
 const BannerLanding = () => {
+  const router = useRouter()
   return (
     <Banner>
       <img
@@ -16,13 +18,16 @@ const BannerLanding = () => {
         <h1>Divulgue facilmente seus produtos e serviços</h1>
 
         <p>
-          O <strong>Piauí Delivery</strong> é a forma mais rápida do seu negócio
+          A <strong>Boa de venda</strong> é a forma mais rápida do seu negócio
           ser visto no mundo digital. A plataforma funciona como um catálogo
           online de todos os estabelecimentos no Piauí que trabalham com
           entregas.
         </p>
 
-        <Button title="Cadastrar Loja" />
+        <Button
+          title="Cadastrar Loja"
+          onClick={() => router.push('/cadastro/lojista')}
+        />
       </div>
     </Banner>
   )

@@ -5,8 +5,11 @@ import { Button } from 'components/atoms/Button'
 import { Register, Footer, ContainerTerms } from './styles'
 
 import { AiFillPhone, AiOutlineWhatsApp } from 'react-icons/ai'
+import { useRouter } from 'next/router'
 
 const FooterLanding = () => {
+  const router = useRouter()
+
   return (
     <>
       <Register>
@@ -16,7 +19,10 @@ const FooterLanding = () => {
           <p>Realize seu cadastro e teste gratuitamente por 7 dias.</p>
         </div>
 
-        <Button title="Cadastrar Loja" />
+        <Button
+          title="Cadastrar Loja"
+          onClick={() => router.push('/cadastro/lojista')}
+        />
       </Register>
 
       <Footer>

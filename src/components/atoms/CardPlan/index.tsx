@@ -3,7 +3,7 @@ import { Container } from './styles'
 import formatToBrl from 'utils/formatToBrl'
 
 import { Button } from 'components/atoms/Button'
-
+import { useRouter } from 'next/router'
 interface Props {
   crown?: boolean
   colors: {
@@ -27,6 +27,12 @@ const CardPlan = ({
   quotaPrice,
   quota
 }: Props) => {
+  const selectPlan = (label) => {
+    sessionStorage.setItem('plan', label)
+    router.push('/cadastro/lojista')
+  }
+
+  const router = useRouter()
   return (
     <Container crown={crown} colors={colors}>
       {crown && (
@@ -56,7 +62,7 @@ const CardPlan = ({
         <strong>{formatToBrl(quotaPrice)}</strong>
       </p>
 
-      <Button title="Selecionar" />
+      <Button title="Selecionar" onClick={() => selectPlan(title)} />
     </Container>
   )
 }
