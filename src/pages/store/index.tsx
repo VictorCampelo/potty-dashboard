@@ -179,11 +179,6 @@ const Products = () => {
     }
   }
 
-  const formatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  })
-
   function getDiscount(price: number, discount: number) {
     return price - (price * discount) / 100
   }

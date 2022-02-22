@@ -188,11 +188,6 @@ const ProductShow = () => {
     setName(previousName)
   }, [])
 
-  const formatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  })
-
   const images = [
     {
       title: 'Foto 1',
