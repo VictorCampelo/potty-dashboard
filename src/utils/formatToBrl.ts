@@ -1,7 +1,8 @@
 export default function formatToBrl(value: number): string {
   const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'BRL'
+    currency: 'BRL',
+    minimumFractionDigits: 2
   })
 
   return formatter.format(value)
