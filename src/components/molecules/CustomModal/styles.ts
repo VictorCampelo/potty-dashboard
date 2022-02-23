@@ -13,10 +13,6 @@ export const Container = styled.header<ContainerProps>`
 
     padding: 30px 40px;
 
-    ${[sizes.down('sm')]} {
-      padding: 15px 30px;
-    }
-
     overflow: auto;
 
     .close {
@@ -27,6 +23,15 @@ export const Container = styled.header<ContainerProps>`
 
     .close:hover {
       cursor: pointer;
+    }
+
+    ${[sizes.down('sm')]} {
+      padding: 10px;
+
+      .close {
+        top: 10px;
+        right: 10px;
+      }
     }
 
     ${(props) =>
