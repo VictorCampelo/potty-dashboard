@@ -60,7 +60,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
         </section>
       ) : null}
 
-      <div className="inputContainter">
+      <div className={`inputContainer ${rest.disabled && 'disabled'}`}>
         {!!icon && icon}
         {/* {inverse && <div className="bar" />} */}
         <input
