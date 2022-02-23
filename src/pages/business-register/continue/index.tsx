@@ -139,13 +139,6 @@ const BusinessRegister = () => {
           </div>
 
           <div className="buttonContainer">
-            <div
-              style={
-                widthScreen ? { marginRight: '1rem' } : { marginBottom: '1rem' }
-              }
-            >
-              <Button type="submit" title="CONTINUAR" />
-            </div>
             <div>
               <Button
                 onClick={() => {
@@ -155,6 +148,14 @@ const BusinessRegister = () => {
                 type="button"
                 border
               />
+            </div>
+
+            <div
+              style={
+                widthScreen ? { marginLeft: '1rem' } : { marginBottom: '1rem' }
+              }
+            >
+              <Button type="submit" title="CONTINUAR" />
             </div>
           </div>
         </form>

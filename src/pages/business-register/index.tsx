@@ -83,7 +83,6 @@ const BusinessRegister = () => {
     if (data) {
       setValue('businessName', data.name)
       setValue('cpfCnpj', data.CNPJ)
-      // setValue('address', data.address)
       setValue('publicPlace', data.publicPlace)
       setValue('cep', data.cep)
       setValue('district', data.district)
@@ -110,9 +109,7 @@ const BusinessRegister = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues,
-    setValue,
-    watch
+    setValue
   } = useForm({
     resolver: yupResolver(bussinesRegisterFormSchema)
   })
@@ -455,9 +452,6 @@ const BusinessRegister = () => {
 
           {widthScreen ? (
             <div className="buttonContainer">
-              <div style={{ marginRight: '1rem' }}>
-                <Button type="submit" title="CONTINUAR" />
-              </div>
               <div>
                 <Button
                   onClick={() => router.push('/cadastro/lojista')}
@@ -465,6 +459,9 @@ const BusinessRegister = () => {
                   type="button"
                   border
                 />
+              </div>
+              <div style={{ marginRight: '1rem' }}>
+                <Button type="submit" title="CONTINUAR" />
               </div>
             </div>
           ) : (
