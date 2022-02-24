@@ -18,7 +18,6 @@ export const Container = styled.main`
   justify-content: center;
   align-items: center;
 
-  margin
   padding-top: var(--spacing-xxxs);
 
   .confirmationAuth {
@@ -39,7 +38,6 @@ export const Container = styled.main`
     .subtitle {
       margin-bottom: var(--spacing-md);
     }
-
   }
 
   .container {
