@@ -17,6 +17,8 @@ export const Container = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  margin
   padding-top: var(--spacing-xxxs);
 
   .confirmationAuth {
@@ -37,6 +39,7 @@ export const Container = styled.main`
     .subtitle {
       margin-bottom: var(--spacing-md);
     }
+
   }
 
   .container {
@@ -108,7 +111,8 @@ export const Container = styled.main`
       height: 80px;
       margin-bottom: 2rem;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      //flex-direction: column;
       justify-content: space-between;
 
       h1 {
@@ -132,6 +136,14 @@ export const Container = styled.main`
       .logo {
         display: block;
       }
+    }
+
+    .inputContainerLogin {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: var(--spacing-xxxs);
     }
 
     .recoverTitle {

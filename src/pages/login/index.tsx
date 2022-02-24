@@ -103,20 +103,20 @@ const Login = () => {
 
       <Container style={{ marginBottom: 'var(--spacing-xxs)' }}>
         <form onSubmit={handleSubmit(handleSignIn)}>
-          <div className="title logo">
+          <div className="title">
             <h1>Login</h1>
-            <img src="/images/logo.svg" alt="logo" width={150} height={150} />
+            <img src="/images/logo.svg" alt="logo" width={150} height={80} />
           </div>
 
-          <div className="inputContainer">
+          <div className="inputContainerLogin">
             <Input
               label="Email"
               type="email"
               placeholder="exemplo@gmail.com"
-              icon={<FiMail size={20} color="var(--black-800)" />}
               {...register('email')}
               textError={errors.email?.message}
               error={errors.email}
+              className="inputEmailLogin"
             />
 
             <Input
