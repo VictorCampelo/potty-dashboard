@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { MultiSelect as Select } from 'components/molecules/Select'
@@ -59,6 +59,8 @@ import * as yup from 'yup'
 import { format } from 'date-fns'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 import { Checkbox } from 'components/atoms/Checkbox'
+import formatToBrl from 'utils/formatToBrl'
+import formatToNumber from 'utils/formatToNumber'
 
 type CategoryType = {
   name: string
@@ -140,27 +142,7 @@ const catalog = ({ storeId }: CatalogType) => {
   const [deleteCategoryId, setDeleteCategoryId] = useState('')
 
   const [category, setCategory] = useState('')
-  const [products, setProducts] = useState<ProductType[]>([
-    {
-      avgStars: 0,
-      createdAt: '',
-      deletedAt: '',
-      description: '',
-      discount: {},
-      files: [],
-      id: '',
-      inventory: 0,
-      lastSold: '',
-      price: 0,
-      sumFeedbacks: 0,
-      sumOrders: 0,
-      sumStars: 0,
-      tags: [],
-      title: '',
-      updatedAt: '',
-      categories: []
-    }
-  ])
+  const [products, setProducts] = useState<ProductType[]>([])
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [titleProduct, setTitleProduct] = useState('')
@@ -395,7 +377,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const { register, handleSubmit, getValues } = useForm({
+  const { register, handleSubmit, getValues, setValue } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
@@ -404,10 +386,7 @@ const catalog = ({ storeId }: CatalogType) => {
   ) => {
     const formData = new FormData()
     formData.append('title', values.title)
-    formData.append(
-      'price',
-      values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
-    )
+    formData.append('price', String(formatToNumber(String(values.price))))
     formData.append('description', descriptionProduct)
     formData.append('inventory', values.inventory)
     formData.append('discount', values.discount || '0')
@@ -491,14 +470,11 @@ const catalog = ({ storeId }: CatalogType) => {
   }
 
   const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
-    values,
-    event
+    values
   ) => {
     const body = {
       title: values.title,
-      price: Number(
-        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
-      ),
+      price: formatToNumber(values.price),
       description: descriptionProduct,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
@@ -563,13 +539,23 @@ const catalog = ({ storeId }: CatalogType) => {
     }
   }
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
   const [radioSelected, setRadioSelected] = useState(1)
   const [ilimitedCupom, setIlimitedCupom] = useState(false)
   const [typeCategory, setTypeCategory] = useState(false)
+
+  const [priceWithDiscount, setPriceWithDiscount] = useState(formatToBrl(0))
+
+  const updatePriceWithDiscount = () => {
+    const values = Array.from(getValues(['price', 'discount']))
+    const price = formatToNumber(values[0])
+    const discount = Number(values[1])
+    const newPrice = price - price * (discount / 100)
+    setPriceWithDiscount(formatToBrl(newPrice < 0 ? 0 : newPrice))
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   return (
     <>
@@ -787,7 +773,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   {...register('discount')}
                 />
 
-                <div className="arrows">
+                <div className="arrows" onClick={updatePriceWithDiscount}>
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
@@ -797,13 +783,16 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="monetary"
                   disabled
                   icon={<FaMoneyBill />}
+                  value={priceWithDiscount}
                   placeholder="R$ 0"
                 />
               </div>
 
               <Checkbox
                 confirm={enableDiscount}
-                toggleConfirm={() => setEnableDiscount(!enableDiscount)}
+                toggleConfirm={() => {
+                  setEnableDiscount(!enableDiscount)
+                }}
                 label="Desconto"
               />
             </div>
@@ -988,7 +977,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   {...register('discount')}
                 />
 
-                <div className="arrows">
+                <div className="arrows" onClick={updatePriceWithDiscount}>
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
@@ -996,16 +985,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
-                  value={(
-                    (Number(
-                      getValues?.('discount')
-                        ?.replace('R$ ', '')
-                        ?.replaceAll('.', '')
-                        ?.replaceAll(',', '.') || '0'
-                    ) *
-                      Number(discountProduct)) /
-                    100
-                  ).toFixed(2)}
+                  value={priceWithDiscount}
                   disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
@@ -1014,7 +994,9 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <Checkbox
                 confirm={enableDiscount}
-                toggleConfirm={() => setEnableDiscount(!enableDiscount)}
+                toggleConfirm={() => {
+                  setEnableDiscount(!enableDiscount)
+                }}
                 label="Desconto"
               />
             </div>

@@ -239,10 +239,16 @@ export const AddProductModalContainer = styled.form`
           display: flex;
           flex-direction: column;
 
+          cursor: pointer;
+
           margin: 0 10px;
 
           .left-arrow {
             margin-top: -5px;
+          }
+
+          &:hover {
+            opacity: 0.7;
           }
         }
       }
