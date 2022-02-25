@@ -2,6 +2,8 @@ import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 
+import { MultiSelect as MyMultSelect } from 'react-multi-select-component'
+
 import React, { useCallback, useState } from 'react'
 import {
   ConfigButton,
@@ -773,34 +775,28 @@ const Shop = ({ storeId, id }: Shop) => {
               />
             </div>
             <div className="categories-container">
-              <Input
+              {/* <Input
                 label=""
                 placeholder="Categoria"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 icon={<FiSearch size={20} color="var(--black-800)" />}
-              ></Input>
+              ></Input> */}
+              <MyMultSelect
+                options={categoriasFake}
+                value={selected}
+                onChange={setSelected}
+                labelledBy="Categorias"
+                overrideStrings={{
+                  search: 'Procurar',
+                  selectAll: 'Selecionar todos',
+                  selectSomeItems: 'Selecione...',
+                  allItemsAreSelected: 'Todos os itens selecionados'
+                }}
+              />
             </div>
             <div className="category-container">
-              <CategoryCard
-                label="Alimentação"
-                icon={<IoFastFood size={20} color="#3C8EFC" />}
-              />
-              <CategoryCard
-                label="Alimentação"
-                icon={<IoFastFood size={20} color="red" />}
-              />
-              <CategoryCard
-                label="Eletronicos"
-                icon={<IoCellular size={20} color="yellow" />}
-              />
-              <CategoryCard
-                label="Celulares"
-                icon={<IoCellular size={20} color="purple" />}
-              />
-            </div>
-            <div className="buttons-container">
-              <Button title="Confirmar" border={true}></Button>
+              <CategoryCard label="Alimentação" />
             </div>
           </ModalContainer>
         </CustomModal>

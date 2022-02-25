@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   .card-container {
@@ -31,7 +31,7 @@ export const Container = styled.div`
       display: flex;
       align-items: center;
 
-      font-family: "Poppins";
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: normal;
       font-size: 12px;
@@ -43,7 +43,7 @@ export const Container = styled.div`
     .close-btn {
       width: 28px;
       height: 30px;
-      
+
       display: flex;
       align-items: center;
 
@@ -55,8 +55,13 @@ export const Container = styled.div`
         width: 2px;
         height: 100%;
 
-        background: linear-gradient(0deg, rgba(108, 112, 121, 0) 0%, rgba(108, 112, 121, 0.26) 50%, rgba(108, 112, 121, 0) 100%);
+        background: linear-gradient(
+          0deg,
+          rgba(108, 112, 121, 0) 0%,
+          rgba(108, 112, 121, 0.26) 50%,
+          rgba(108, 112, 121, 0) 100%
+        );
       }
     }
   }
-`;
+`
