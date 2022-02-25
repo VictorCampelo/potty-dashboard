@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode
 }
 
-const NonSubscribeContext = createContext({} as Data)
+export const NonSubscribeContext = createContext({} as Data)
 
 export const NonSubscribeProvider = ({ children }: Props) => {
   const [activeModal, setActiveModal] = useState(false)

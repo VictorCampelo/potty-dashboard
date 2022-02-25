@@ -1,9 +1,15 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import {
+  useContext,
+  createContext,
+  ReactNode,
+  useEffect,
+  useState
+} from 'react'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router'
 import { api } from 'services/apiClient'
 import { AxiosResponse } from 'axios'
-import { useNonSubscribe } from 'contexts/NonSubscribeContext'
+import { NonSubscribeContext } from 'contexts/NonSubscribeContext'
 
 type SignInCredentials = {
   email: string
@@ -37,7 +43,8 @@ export function signOut() {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { showModal } = useNonSubscribe()
+  const { showModal } = useContext(NonSubscribeContext)
+
   const [user, setUser] = useState<User>(null)
   const isAuthenticaded = !!user
 
