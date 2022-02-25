@@ -3685,6 +3685,11 @@ react-modal@^3.14.3:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
+react-multi-select-component@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/react-multi-select-component/-/react-multi-select-component-4.2.3.tgz#ee8b5ee1bba6c67c38bb5bb6bbfefd2e8ef19d7d"
+  integrity sha512-NM8ZaSRXFxjWXSld41cg2k3AhEQhakTuPTQXpkkJHCfmgfwAkuKOxP7uAeMmBZcx6k12w8g3YsDVgz5mSXZvpA==
+
 react-redux@^7.2.0:
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.6.tgz#49633a24fe552b5f9caf58feb8a138936ddfe9aa"

@@ -150,6 +150,22 @@ const Shop = ({ storeId, id }: Shop) => {
   const { handleSubmit, register } = useForm()
   const router = useRouter()
 
+  //state of edit categories
+  const [selected, setSelected] = useState([])
+
+  //Fake data of categories
+  const categoriasFake = [
+    { label: 'Calçados', value: 'Calçados' },
+    { label: 'Eletronicos', value: 'Eletronicos' },
+    { label: 'Mesa', value: 'Mesa' },
+    { label: 'Cama', value: 'Cama' },
+    { label: 'Eletro-Domesticos', value: 'Eletro-Domesticos' },
+    { label: 'Informatica', value: 'Informatica' },
+    { label: 'Papelaria', value: 'Papelaria' },
+    { label: 'Alimentos', value: 'Alimentos' },
+    { label: 'Limpeza', value: 'Limpeza' }
+  ]
+
   // Functions
 
   const handleEditTimeTable: SubmitHandler<EditTimeTable> = async (values) => {
