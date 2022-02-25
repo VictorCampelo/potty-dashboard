@@ -2,6 +2,8 @@ import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 
+import { MultiSelect as MyMultSelect } from 'react-multi-select-component'
+
 import React, { useCallback, useState } from 'react'
 import {
   ConfigButton,
@@ -149,6 +151,22 @@ const Shop = ({ storeId, id }: Shop) => {
   const [isLoading, setIsLoading] = useState(true)
   const { handleSubmit, register } = useForm()
   const router = useRouter()
+
+  //state of edit categories
+  const [selected, setSelected] = useState([])
+
+  //Fake data of categories
+  const categoriasFake = [
+    { label: 'Calçados', value: 'Calçados' },
+    { label: 'Eletronicos', value: 'Eletronicos' },
+    { label: 'Mesa', value: 'Mesa' },
+    { label: 'Cama', value: 'Cama' },
+    { label: 'Eletro-Domesticos', value: 'Eletro-Domesticos' },
+    { label: 'Informatica', value: 'Informatica' },
+    { label: 'Papelaria', value: 'Papelaria' },
+    { label: 'Alimentos', value: 'Alimentos' },
+    { label: 'Limpeza', value: 'Limpeza' }
+  ]
 
   // Functions
 
@@ -511,6 +529,12 @@ const Shop = ({ storeId, id }: Shop) => {
     }
   }
 
+  function removeThisItem(item) {
+    setSelected(() =>
+      selected.filter((category) => category.value != item.value)
+    )
+  }
+
   async function cropImage(current) {
     // Get cropped image file
 
@@ -757,31 +781,35 @@ const Shop = ({ storeId, id }: Shop) => {
               />
             </div>
             <div className="categories-container">
-              <Input
+              {/* <Input
                 label=""
                 placeholder="Categoria"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 icon={<FiSearch size={20} color="var(--black-800)" />}
-              ></Input>
-            </div>
-            <div className="category-container">
-              <CategoryCard
-                label="Alimentação"
-                icon={<IoFastFood size={20} color="#3C8EFC" />}
+              ></Input> */}
+              <MyMultSelect
+                options={categoriasFake}
+                value={selected}
+                onChange={setSelected}
+                labelledBy="Categorias"
+                overrideStrings={{
+                  search: 'Procurar',
+                  selectAll: 'Selecionar todos',
+                  selectSomeItems: 'Selecione...',
+                  allItemsAreSelected: 'Todos os itens selecionados'
+                }}
               />
-              <CategoryCard
-                label="Alimentação"
-                icon={<IoFastFood size={20} color="red" />}
-              />
-              <CategoryCard
-                label="Eletronicos"
-                icon={<IoCellular size={20} color="yellow" />}
-              />
-              <CategoryCard
-                label="Celulares"
-                icon={<IoCellular size={20} color="purple" />}
-              />
+
+              <div className="wrapper-categories-selecteds">
+                {selected.map((item, i) => (
+                  <CategoryCard
+                    key={i}
+                    label={item.value}
+                    click={() => removeThisItem(item)}
+                  />
+                ))}
+              </div>
             </div>
             <div className="buttons-container">
               <Button title="Confirmar" border={true}></Button>
