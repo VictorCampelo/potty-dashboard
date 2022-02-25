@@ -794,11 +794,13 @@ const Shop = ({ storeId, id }: Shop) => {
                   allItemsAreSelected: 'Todos os itens selecionados'
                 }}
               />
+
+              <div className="wrapper-categories-selecteds">
+                <CategoryCard label="Alimentação" />
+              </div>
             </div>
-            <div className="category-container">
-              {selected.map((category, i) => (
-                <CategoryCard key={i} label={category.value} />
-              ))}
+            <div className="buttons-container">
+              <Button title="Confirmar" border={true}></Button>
             </div>
           </ModalContainer>
         </CustomModal>
