@@ -2,8 +2,9 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   .card-container {
-    width: 154px;
+    /* width: 154px; */
     height: 32px;
+    padding-left: 10px;
 
     display: flex;
     flex-direction: row;
@@ -28,9 +29,11 @@ export const Container = styled.div`
     }
 
     .label {
-      display: flex;
-      align-items: center;
+      /* display: flex;
+      align-items: center; */
 
+      width: 100%;
+      text-align: center;
       font-family: 'Poppins';
       font-style: normal;
       font-weight: normal;
