@@ -529,6 +529,12 @@ const Shop = ({ storeId, id }: Shop) => {
     }
   }
 
+  function removeThisItem(item) {
+    setSelected(() =>
+      selected.filter((category) => category.value != item.value)
+    )
+  }
+
   async function cropImage(current) {
     // Get cropped image file
 
@@ -797,7 +803,11 @@ const Shop = ({ storeId, id }: Shop) => {
 
               <div className="wrapper-categories-selecteds">
                 {selected.map((item, i) => (
-                  <CategoryCard key={i} label={item.value} />
+                  <CategoryCard
+                    key={i}
+                    label={item.value}
+                    click={() => removeThisItem(item)}
+                  />
                 ))}
               </div>
             </div>
