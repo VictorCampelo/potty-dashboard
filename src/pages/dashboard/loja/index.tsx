@@ -796,7 +796,9 @@ const Shop = ({ storeId, id }: Shop) => {
               />
             </div>
             <div className="category-container">
-              <CategoryCard label="Alimentação" />
+              {selected.map((category, i) => (
+                <CategoryCard key={i} label={category.value} />
+              ))}
             </div>
           </ModalContainer>
         </CustomModal>
