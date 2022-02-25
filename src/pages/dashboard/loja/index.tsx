@@ -796,7 +796,9 @@ const Shop = ({ storeId, id }: Shop) => {
               />
 
               <div className="wrapper-categories-selecteds">
-                <CategoryCard label="Alimentação" />
+                {selected.map((item, i) => (
+                  <CategoryCard key={i} label={item.value} />
+                ))}
               </div>
             </div>
             <div className="buttons-container">
