@@ -8,7 +8,11 @@ import BannerLanding from 'components/organisms/BannerLanding'
 import BenefitsLanding from 'components/organisms/BenefitsLanding'
 import PlansLanding from 'components/organisms/PlansLanding'
 
+import { useNonSubscribe } from 'contexts/NonSubscribeContext'
+
 const Landing = () => {
+  const { showModal } = useNonSubscribe()
+
   return (
     <Wrapper>
       <Head>
@@ -18,6 +22,7 @@ const Landing = () => {
       <Header />
 
       <Container>
+        <button onClick={() => showModal()}>Click me</button>
         <BannerLanding />
 
         <BenefitsLanding />

@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router'
-import { api } from '../services/apiClient'
+import { api } from 'services/apiClient'
 import { AxiosResponse } from 'axios'
+import { useNonSubscribe } from 'contexts/NonSubscribeContext'
 
 type SignInCredentials = {
   email: string
@@ -36,6 +37,7 @@ export function signOut() {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const { showModal } = useNonSubscribe()
   const [user, setUser] = useState<User>(null)
   const isAuthenticaded = !!user
 
@@ -52,6 +54,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
           signOut()
         })
     }
+
+    api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error?.response?.status === 412) {
+          if (process.browser) {
+            showModal()
+          }
+        }
+        return Promise.reject(error)
+      }
+    )
   }, [])
 
   async function signIn({ email, password }: SignInCredentials) {
