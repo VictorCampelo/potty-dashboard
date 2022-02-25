@@ -150,6 +150,15 @@ export const ModalContainer = styled.div`
       width: 100%;
       margin-bottom: 20px;
     }
+
+    .wrapper-categories-selecteds {
+      display: flex;
+      flex-wrap: wrap;
+      width: 500px;
+      margin: 0 auto;
+      justify-content: space-around;
+      margin-top: 50px;
+    }
   }
 
   .category-container {

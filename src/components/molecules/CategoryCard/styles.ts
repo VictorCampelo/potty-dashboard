@@ -4,8 +4,8 @@ export const Container = styled.div`
   .card-container {
     /* width: 154px; */
     height: 32px;
-    padding-left: 10px;
-    width: fit-content;
+    padding: 0 10px;
+    width: 100%;
 
     display: flex;
     flex-direction: row;
@@ -58,6 +58,7 @@ export const Container = styled.div`
       .wrap {
         width: 2px;
         height: 100%;
+        margin: 0 3px;
 
         background: linear-gradient(
           0deg,
