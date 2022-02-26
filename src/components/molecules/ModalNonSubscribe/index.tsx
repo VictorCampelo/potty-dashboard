@@ -10,6 +10,7 @@ export default function ModalNonSubscribe() {
   const router = useRouter()
 
   const redirectToLanding = () => {
+    toggleModal()
     router.push('/landing')
   }
 
