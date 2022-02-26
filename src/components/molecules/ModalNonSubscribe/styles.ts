@@ -46,6 +46,13 @@ export const Container = styled.div`
       line-height: 48px;
       color: var(--color-primary);
       text-align: center;
+      cursor: pointer;
+
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 

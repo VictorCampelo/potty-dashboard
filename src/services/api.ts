@@ -19,6 +19,10 @@ export function setupApiClient(ctx = undefined) {
       return response
     },
     (error: AxiosError) => {
+      if (error?.response?.status === 412) {
+        localStorage.setItem('non-subscribe-modal', 'true')
+      }
+
       if (error?.response?.status === 401) {
         if (error?.response?.data?.code === 'token.expired') {
           if (process.browser) {

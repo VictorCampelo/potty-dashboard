@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import CustomModal from 'components/molecules/CustomModal'
 import { Button } from 'components/atoms/Button'
 import { useNonSubscribe } from 'contexts/NonSubscribeContext'
@@ -5,6 +6,12 @@ import { Container } from './styles'
 
 export default function ModalNonSubscribe() {
   const { activeModal, toggleModal } = useNonSubscribe()
+
+  const router = useRouter()
+
+  const redirectToLanding = () => {
+    router.push('/landing')
+  }
 
   return (
     <CustomModal
@@ -29,9 +36,11 @@ export default function ModalNonSubscribe() {
         </p>
 
         <div className="buttons">
-          <Button title="Ver planos" />
+          <Button title="Ver planos" onClick={redirectToLanding} />
 
-          <p className="decline">Não, obrigado</p>
+          <p onClick={toggleModal} className="decline">
+            Não, obrigado
+          </p>
         </div>
 
         <img src="/images/non-subscribe.svg" alt="imagem" className="image" />

@@ -1,4 +1,12 @@
-import { useContext, createContext, ReactNode, useState } from 'react'
+import {
+  useContext,
+  createContext,
+  ReactNode,
+  useState,
+  useEffect
+} from 'react'
+
+import watchAnyObject from 'utils/watchAnyObject'
 
 interface Data {
   activeModal: boolean
@@ -22,6 +30,18 @@ export const NonSubscribeProvider = ({ children }: Props) => {
   function toggleModal() {
     setActiveModal(!activeModal)
   }
+
+  useEffect(() => {
+    watchAnyObject(
+      window.localStorage,
+      ['setItem', 'getItem', 'removeItem'],
+      (method, key, ...args) => {
+        if (method === 'setItem' && key === 'non-subscribe-modal') {
+          setActiveModal(args[0] === 'true')
+        }
+      }
+    )
+  })
 
   return (
     <NonSubscribeContext.Provider
