@@ -18,6 +18,7 @@ export default function ModalNonSubscribe() {
       buttons={true}
       modalVisible={activeModal}
       setModalOpen={toggleModal}
+      zIndex={2000}
     >
       <Container>
         <h1 className="title">
