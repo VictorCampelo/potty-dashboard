@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { parseCookies } from 'nookies'
-import { signOut } from '../contexts/AuthContext'
-import { AuthTokenError } from './errors/AuthTokenError'
+import { signOut } from 'contexts/AuthContext'
+import { AuthTokenError } from 'services/errors/AuthTokenError'
 
 export function setupApiClient(ctx = undefined) {
   const cookies = parseCookies(ctx)
@@ -19,6 +19,10 @@ export function setupApiClient(ctx = undefined) {
       return response
     },
     (error: AxiosError) => {
+      if (error?.response?.status === 412) {
+        localStorage.setItem('non-subscribe-modal', 'true')
+      }
+
       if (error?.response?.status === 401) {
         if (error?.response?.data?.code === 'token.expired') {
           if (process.browser) {
