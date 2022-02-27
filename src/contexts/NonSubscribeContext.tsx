@@ -33,7 +33,7 @@ export const NonSubscribeProvider = ({ children }: Props) => {
 
   useEffect(() => {
     watchAnyObject(
-      window.localStorage,
+      window?.localStorage,
       ['setItem', 'getItem', 'removeItem'],
       (method, key, ...args) => {
         if (method === 'setItem' && key === 'non-subscribe-modal') {

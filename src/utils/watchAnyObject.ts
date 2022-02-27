@@ -11,7 +11,7 @@ export default function watchAnyObject(
     const newMethod = function (...args) {
       callbackBefore(method, ...args)
       // eslint-disable-next-line prefer-spread
-      const result = original.apply(null, args)
+      const result = original?.apply(null, args)
       callbackAfter(method, ...args)
       return result
     }

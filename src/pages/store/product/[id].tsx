@@ -392,6 +392,44 @@ const ProductShow = () => {
     notifySuccess('Item adicionado no carrinho')
   }
 
+  function handleDirectBuy() {
+    if (items.find((it) => it.productId == productId)) {
+      const copyItems = [...items]
+      copyItems.forEach((it) => {
+        if (it.productId == productId) it.amount = it.amount + 1
+      })
+    } else {
+      setItems([
+        ...items,
+        {
+          amount: 1,
+          price: discount ? getDiscount(price, discount) : price,
+          productId,
+          storeId,
+          title,
+          enabled: true
+        }
+      ])
+
+      localStorage.setItem(
+        'ultimo.cart.items',
+        JSON.stringify([
+          ...items,
+          {
+            amount: 1,
+            price,
+            productId,
+            storeId,
+            title,
+            enabled: true
+          }
+        ])
+      )
+    }
+
+    router.push('/cart/continue')
+  }
+
   /**
    * Example: getNumberArray({ size: 10, startAt: 1 }) => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
    */
@@ -635,6 +673,7 @@ const ProductShow = () => {
                         paddingRight: '0.5rem',
                         fontWeight: 600
                       }}
+                      onClick={handleDirectBuy}
                     />
                     <BigButton
                       title="ADICIONE AO CARRINHO"

@@ -24,7 +24,6 @@ import { useState } from 'react'
 import { Drawer } from 'styles/pages/Store'
 import { IoIosClose } from 'react-icons/io'
 import router from 'next/router'
-
 interface Landing {
   stores: []
 }
@@ -32,6 +31,7 @@ interface Landing {
 const Landing = ({ stores }: Landing) => {
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
+
   return (
     <Wrapper>
       <Head>
