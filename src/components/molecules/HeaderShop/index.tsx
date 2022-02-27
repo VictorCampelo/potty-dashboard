@@ -10,6 +10,7 @@ interface HeaderProps {
 }
 const Header = ({ isMain }: HeaderProps) => {
   const { user } = useContext(AuthContext)
+  const firstName = user?.firstName.split(' ')[0]
 
   return (
     <Container isMain={isMain}>
@@ -25,7 +26,7 @@ const Header = ({ isMain }: HeaderProps) => {
             <div>
               <BiUserCircle size={40} color="var(--color-secondary-darker)" />
               <span>
-                {user?.firstName} {user?.lastName}
+                {firstName} {user?.lastName}
               </span>
               <MdKeyboardArrowDown
                 size={30}
