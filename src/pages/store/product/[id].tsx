@@ -369,7 +369,8 @@ const ProductShow = () => {
           productId,
           storeId,
           title,
-          enabled: true
+          enabled: true,
+          image: actualFile?.url
         }
       ])
 
@@ -383,7 +384,8 @@ const ProductShow = () => {
             productId,
             storeId,
             title,
-            enabled: true
+            enabled: true,
+            image: actualFile?.url
           }
         ])
       )
@@ -407,7 +409,8 @@ const ProductShow = () => {
           productId,
           storeId,
           title,
-          enabled: true
+          enabled: true,
+          image: actualFile?.url
         }
       ])
 
@@ -421,7 +424,8 @@ const ProductShow = () => {
             productId,
             storeId,
             title,
-            enabled: true
+            enabled: true,
+            image: actualFile?.url
           }
         ])
       )
