@@ -80,14 +80,6 @@ const CustomModal = ({
       <Container under={under}>
         <div className="modal">
           <h1>{title}</h1>
-          {showCloseButton && (
-            <IoIosClose
-              onClick={setModalOpen}
-              size={36}
-              className="close"
-              color={'black'}
-            />
-          )}
 
           {rest.children}
         </div>

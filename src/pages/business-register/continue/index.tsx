@@ -100,7 +100,6 @@ const BusinessRegister = () => {
               label="Telefone"
               placeholder="(00) 0000-0000"
               mask="phone"
-              icon={<AiFillPhone size={20} color="var(--black-800)" />}
               {...register('number')}
               textError={errors.number?.message}
               error={errors.number}
@@ -110,7 +109,6 @@ const BusinessRegister = () => {
             <Input
               label="Facebook"
               placeholder="facebook.com/exemplo"
-              icon={<AiFillFacebook size={20} color="var(--black-800)" />}
               {...register('facebookUrl')}
               textError={errors.facebookUrl?.message}
               error={errors.facebookUrl}
@@ -120,7 +118,6 @@ const BusinessRegister = () => {
             <Input
               label="Instagram"
               placeholder="instagram.com/exemplo"
-              icon={<AiFillInstagram size={20} color="var(--black-800)" />}
               {...register('instagramUrl')}
               textError={errors.instagramUrl?.message}
               error={errors.instagramUrl}
@@ -130,7 +127,6 @@ const BusinessRegister = () => {
             <Input
               label="Whatsapp"
               placeholder="wa.me/550000000000"
-              icon={<AiOutlineWhatsApp size={20} color="var(--black-800)" />}
               {...register('whatsappUrl')}
               textError={errors.whatsappUrl?.message}
               error={errors.whatsappUrl}

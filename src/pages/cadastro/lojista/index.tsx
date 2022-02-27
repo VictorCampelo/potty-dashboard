@@ -111,7 +111,6 @@ const RegisterShopkeeper = () => {
               label="Email"
               placeholder="exemplo@gmail.com"
               className="input"
-              icon={<FiMail size={20} color="var(--black-800)" />}
               {...register('email')}
               textError={errors.email?.message || 'Email já cadastrado'}
               error={errors.email || errorEmail}

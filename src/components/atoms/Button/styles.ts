@@ -10,7 +10,7 @@ export const Container = styled.button<ContainerProp>`
   width: 100%;
   border: none;
   border-radius: 30px;
-  padding: 0 4rem;
+  padding: 1rem 2rem;
   ${(props) => props.noPadding && 'padding: 0;'}
   color: var(--white);
   font-weight: 700;
@@ -21,6 +21,7 @@ export const Container = styled.button<ContainerProp>`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 
   ${(props) => props.border && 'border: 2px solid var(--color-primary);'}
   ${(props) => props.border && 'color: var(--color-primary);'}
