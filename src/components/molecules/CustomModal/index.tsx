@@ -10,6 +10,7 @@ interface CustomModal extends React.InputHTMLAttributes<HTMLInputElement> {
   modalVisible: boolean
   setModalOpen: () => void
   under?: boolean
+  zIndex?: number
 }
 
 const customStyles = {
@@ -56,9 +57,13 @@ const CustomModal = ({
   modalVisible,
   setModalOpen,
   under = false,
+  zIndex = 1000,
   ...rest
 }: CustomModal) => {
   const [visible, setVisible] = useState(false)
+
+  const style = under ? customStylesUnder : customStyles
+  style.overlay.zIndex = zIndex
 
   useEffect(() => {
     setVisible(modalVisible)
@@ -70,7 +75,7 @@ const CustomModal = ({
       onRequestClose={setModalOpen}
       isOpen={visible}
       ariaHideApp={false}
-      style={under ? customStylesUnder : customStyles}
+      style={style}
     >
       <Container under={under}>
         <div className="modal">

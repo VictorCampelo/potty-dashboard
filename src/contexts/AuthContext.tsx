@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router'
-import { api } from '../services/apiClient'
+import { api } from 'services/apiClient'
 import { AxiosResponse } from 'axios'
 
 type SignInCredentials = {
