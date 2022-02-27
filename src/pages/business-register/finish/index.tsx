@@ -32,6 +32,7 @@ type ShopkeeperUser = {
   lastName?: string
   password?: string
   passwordConfirmation?: string
+  chosenPlan?: string
 }
 
 const BusinessRegister = () => {
@@ -80,8 +81,8 @@ const BusinessRegister = () => {
       })
     }
   }, [])
-  // Toasts
 
+  // Toasts
   function notifySuccess(message: string) {
     toast.success(message, {
       position: 'top-right',
@@ -107,8 +108,11 @@ const BusinessRegister = () => {
   }
 
   async function handleFinishRegister() {
+    const planData = sessionStorage.getItem('plan')
+    console.log('handle:', planData)
     const userData = JSON.parse(sessionStorage.getItem('user'))
     const storeData = JSON.parse(sessionStorage.getItem('data'))
+
     const body = {
       avatar: image,
       userDto: {
@@ -116,7 +120,8 @@ const BusinessRegister = () => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         password: userData.password,
-        passwordConfirmation: userData.passwordConfirmation
+        passwordConfirmation: userData.passwordConfirmation,
+        chosenPlan: planData
       },
       storeDto: {
         name: storeData.name,
@@ -143,6 +148,8 @@ const BusinessRegister = () => {
       formData.append('avatar', JSON.stringify(body.avatar))
       formData.append('userDto', JSON.stringify(body.userDto))
       formData.append('storeDto', JSON.stringify(body.storeDto))
+
+      console.log('body:', body.userDto)
 
       const { data } = await api.post('/auth/signup-store', formData, {
         headers: {
