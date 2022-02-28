@@ -25,10 +25,10 @@ import { Drawer } from 'styles/pages/Store'
 import { IoIosClose } from 'react-icons/io'
 import router from 'next/router'
 interface Landing {
-  stores: []
+  products: []
 }
 
-const Landing = ({ stores }: Landing) => {
+const Landing = ({ products }: Landing) => {
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
 
@@ -89,17 +89,19 @@ const Landing = ({ stores }: Landing) => {
             <p>Ver todas as categorias</p>
             <AiOutlineRight size={25} color="var(--color-primary)" />
           </MoreCategory>
-          {stores.length !== 0 && (
+          {console.log(products)}
+          {products.length !== 0 && (
             <>
               <div className="carousel-container">
                 <div className="carousel-item">
                   <span className="title">Em promoção</span>
-                  <Carousel data={stores} isProduct promo />
+
+                  <Carousel data={products} isProduct promo />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Veja as últimas novidades</span>
-                  <Carousel data={stores} isProduct />
+                  <Carousel data={products} isProduct />
                 </div>
               </div>
               <h1 style={{ alignSelf: 'flex-start' }}>Lojas</h1>
@@ -107,12 +109,12 @@ const Landing = ({ stores }: Landing) => {
                 <div className="carousel-item">
                   <span className="title">Eletrônicos e eletrodomésticos</span>
 
-                  <Carousel data={stores} />
+                  <Carousel data={products} />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Restaurantes</span>
-                  <Carousel data={stores} />
+                  <Carousel data={products} />
                 </div>
               </div>
             </>
@@ -152,11 +154,11 @@ const Landing = ({ stores }: Landing) => {
 }
 
 export const getServerSideProps = async (ctx) => {
-  const { data } = await api.get('stores')
+  const { data } = await api.get('products/promoted')
 
   return {
     props: {
-      stores: data
+      products: data
     }
   }
 }

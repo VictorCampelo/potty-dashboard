@@ -40,6 +40,7 @@ type OrderHistorics = {
 type OrdersListProps = {
   id: string
   amount: number
+  results: Array
   situation: string
   createdAt: string
   orderNumber: string
@@ -72,7 +73,6 @@ const Pedidos = () => {
   async function getOrder(id: string) {
     try {
       const { data } = await api.get(`/orders/store/order?id=${id}`)
-      console.log(data)
       setOrder(data)
     } catch (e) {
       console.log(e)
@@ -150,8 +150,6 @@ const Pedidos = () => {
       const { data } = await api.get(
         `/orders/store?confirmed=false&offset=${off}&limit=8`
       )
-
-      console.log(data)
       setOrdersList(data.results)
       setTotalOrders(data.totalOrders)
     } catch (e) {
@@ -177,9 +175,13 @@ const Pedidos = () => {
             <header>
               <h1>Pedidos</h1>
 
-              <SearchButton placeholder="Pesquisar pedido" />
+              {ordersList.length > 0 ? (
+                <>
+                  <SearchButton placeholder="Pesquisar pedido" />
+                  <AiOutlineSearch size={24} />
+                </>
+              ) : <> </>}
 
-              <AiOutlineSearch size={24} />
             </header>
 
             {isLoading ? (
@@ -195,6 +197,15 @@ const Pedidos = () => {
               </div>
             ) : (
               <>
+                {ordersList.length >= 0 ? (
+                  <EmptyContainer>
+                    <div>
+                      <img src="/images/emptyCategories.svg" />
+                      <p>Ainda não há pedidos para serem exibidos</p>
+                    </div>
+                  </EmptyContainer>
+                ) :
+                <>
                 <OrderHead>
                   <section style={{ flex: 0.5 }}>
                     <span>Data</span>
@@ -249,8 +260,11 @@ const Pedidos = () => {
                     </OrderBody>
                   )
                 })}
+                </>
+              }
               </>
             )}
+            {ordersList.length > 0 ?
             <footer>
               <Pagination
                 onPageChange={setPage}
@@ -259,6 +273,7 @@ const Pedidos = () => {
                 registersPerPage={8}
               />
             </footer>
+            : <></>}
           </MainArea>
         </Content>
 
@@ -543,5 +558,29 @@ const MainArea = styled.main`
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+`
+const EmptyContainer = styled.div`
+  width: 100%;
+  padding: 2rem 0 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    img {
+      width: 60%;
+      height: 60%;
+    }
+    p {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
   }
 `
