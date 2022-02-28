@@ -1,12 +1,11 @@
-import React, { useRef } from 'react'
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import React, { useRef, useState } from 'react'
+import Router from 'next/router'
+import { AiFillStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
-import { GoLocation } from 'react-icons/go'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { api } from 'services/apiClient'
 import useMedia from 'use-media'
 import sizes from 'utils/sizes'
+import formatToBrl from 'utils/formatToBrl'
 
 interface Category {
   createdAt: string
@@ -69,6 +68,8 @@ interface CarouselProducts {
   storeName: string
 }
 
+type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
+
 const CarouselProducts = ({
   data = [],
   promo,
@@ -76,22 +77,33 @@ const CarouselProducts = ({
   buttons = true
 }: CarouselProducts) => {
   const carousel = useRef(null)
+  const [productsActiveImage] = useState({})
 
-  function handleScrollLeft(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollLeft = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft -= 276
   }
 
-  function handleScrollRight(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollRight = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft += 276
   }
 
   const widthScreen = useMedia({ minWidth: '426px' })
+
+  const previousImage = () => {
+    console.log('previous')
+  }
+
+  const nextImage = () => {
+    console.log('next')
+  }
+
+  const redirectToProduct = (productId: string) => {
+    Router.push(
+      `http://${storeName}.${process.env.HOST_NAME}/store/product/${productId}`
+    )
+  }
 
   return (
     <Wrapper>
@@ -102,16 +114,17 @@ const CarouselProducts = ({
       )}
 
       <Container ref={carousel}>
-        {data.map((product) => (
-          <a
-            href={`http://${storeName}.${process.env.HOST_NAME}/store/product/${product.id}`}
-            // href={`/store/product/${product.id}`}
-            key={product.id}
-          >
-            <Item>
+        {data.map((product) => {
+          productsActiveImage[product.id] =
+            product.files[0].url || '/images/capa-small.png'
+          return (
+            <Item
+              onClick={() => redirectToProduct(product.id)}
+              key={product.id}
+            >
               <div className="head">
                 <img
-                  src={product.files[0].url || '/images/capa-small.png'}
+                  src={productsActiveImage[product.id]}
                   className="store-banner"
                   alt="banner"
                 />
@@ -129,35 +142,39 @@ const CarouselProducts = ({
                     <span>
                       De:{' '}
                       <span style={{ textDecoration: 'line-through' }}>
-                        R$ {product.price.toFixed(2)}
+                        {formatToBrl(product.price)}
                       </span>
                     </span>
                   </>
                 )}
                 {product.discount > 0 ? (
-                  <h3>R$ {(product.price - product.discount).toFixed(2)}</h3>
+                  <h3>{formatToBrl(product.price - product.discount)}</h3>
                 ) : product.parcelAmount > 0 ? (
-                  <h3>
-                    R$ {(product.price / product.parcelAmount).toFixed(2)}
-                  </h3>
+                  <h3>{formatToBrl(product.price / product.parcelAmount)}</h3>
                 ) : (
-                  <h3>R$ {product.price}</h3>
+                  <h3>{formatToBrl(product.price)}</h3>
                 )}
                 {product.parcelAmount > 1 && (
                   <>
                     <span>
                       Em até {product.parcelAmount}x sem juros ou{' '}
-                      <strong>R$ {product.price.toFixed(2)}</strong> à vista
+                      <strong>{formatToBrl(product.price)}</strong> à vista
                     </span>
                   </>
                 )}
               </div>
               {widthScreen && (
                 <>
-                  <ButtonProduct className="btnProductLeft">
+                  <ButtonProduct
+                    className="btnProductLeft"
+                    onClick={previousImage}
+                  >
                     <BiChevronLeft size={15} color="black" />
                   </ButtonProduct>
-                  <ButtonProduct className="btnProductRight">
+                  <ButtonProduct
+                    className="btnProductRight"
+                    onClick={nextImage}
+                  >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
                 </>
@@ -166,8 +183,8 @@ const CarouselProducts = ({
                 <img src="/images/promo.svg" alt="promo" className="promo" />
               )}
             </Item>
-          </a>
-        ))}
+          )
+        })}
       </Container>
 
       {widthScreen && (
@@ -194,7 +211,6 @@ export default CarouselProducts
 const Wrapper = styled.div`
   width: 114%;
   display: flex;
-  /* gap: 2rem; */
   align-items: center;
   transform: translateX(-7%);
   padding: 1rem 2rem;
@@ -253,7 +269,6 @@ const ButtonMobile = styled(Button)`
 const Container = styled.div`
   display: flex;
   max-width: 100vw !important;
-  /* padding: var(--spacing-nano) var(--spacing-quarck); */
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;

@@ -1,19 +1,19 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
+import Router from 'next/router'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 import { GoLocation } from 'react-icons/go'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { api } from 'services/apiClient'
 import useMedia from 'use-media'
 import sizes from 'utils/sizes'
+import formatToBrl from 'utils/formatToBrl'
 
 interface Carousel {
   data: {
     id: string
     name: string
     title: string
-    files: Array
+    files: any[]
     price: string
     formatedName: string
     avgStars: number
@@ -31,6 +31,8 @@ interface Carousel {
   buttons?: boolean
 }
 
+type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
+
 const Carousel = ({
   data = [],
   isProduct = false,
@@ -38,22 +40,33 @@ const Carousel = ({
   buttons = true
 }: Carousel) => {
   const carousel = useRef(null)
+  const [activeImage] = useState({})
 
-  function handleScrollLeft(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollLeft = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft -= 276
   }
 
-  function handleScrollRight(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollRight = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft += 276
   }
 
   const widthScreen = useMedia({ minWidth: '426px' })
+
+  const previousImage = () => {
+    console.log('previous')
+  }
+
+  const nextImage = () => {
+    console.log('next')
+  }
+
+  const redirectToStore = (storeName: string) => {
+    Router.push(`http://${storeName}.${process.env.HOST_NAME}/store`)
+  }
+
+  console.log(data)
 
   return (
     <Wrapper>
@@ -64,12 +77,20 @@ const Carousel = ({
       )}
 
       <Container ref={carousel}>
-        {data.map((store) => (
-          <a
-            href={`http://${store.formatedName}.${process.env.HOST_NAME}/store`}
-            key={store.id}
-          >
-            <Item isProduct={isProduct}>
+        {data.map((store) => {
+          if (isProduct) {
+            activeImage[store.id] =
+              store?.files[0]?.url || '/images/capa-small.png'
+          } else {
+            activeImage[store.id] =
+              store?.background?.url || '/images/capa-small.png'
+          }
+          return (
+            <Item
+              isProduct={isProduct}
+              onClick={() => redirectToStore(store.formatedName)}
+              key={store.id}
+            >
               <div
                 className="head"
                 style={
@@ -80,19 +101,11 @@ const Carousel = ({
                     : { display: 'none' }
                 }
               >
-                {isProduct ? (
-                  <img
-                    src={store?.files[0]?.url || '/images/capa-small.png'}
-                    className="store-banner"
-                    alt="banner"
-                  />
-                ) : (
-                  <img
-                    src={store?.background?.url || '/images/capa-small.png'}
-                    className="store-banner"
-                    alt="banner"
-                  />
-                )}
+                <img
+                  src={activeImage[store.id]}
+                  className="store-banner"
+                  alt="banner"
+                />
               </div>
 
               {!isProduct && (
@@ -150,21 +163,28 @@ const Carousel = ({
                   <span>
                     De:{' '}
                     <span style={{ textDecoration: 'line-through' }}>
-                      {`R$ ${store.price}`}
+                      {formatToBrl(store.price)}
                     </span>
                   </span>
-                  <h3>{`R$ ${store.price}`}</h3>
+                  <h3>{formatToBrl(store.price)}</h3>
                   <span>
-                    Em até 12x sem juros ou <strong>{`R$ ${store.price}`}</strong> à vista
+                    Em até 12x sem juros ou{' '}
+                    <strong>{formatToBrl(store.price)}</strong> à vista
                   </span>
                 </div>
               )}
               {isProduct && widthScreen && (
                 <>
-                  <ButtonProduct className="btnProductLeft">
+                  <ButtonProduct
+                    className="btnProductLeft"
+                    onClick={previousImage}
+                  >
                     <BiChevronLeft size={15} color="black" />
                   </ButtonProduct>
-                  <ButtonProduct className="btnProductRight">
+                  <ButtonProduct
+                    className="btnProductRight"
+                    onClick={nextImage}
+                  >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
                 </>
@@ -173,8 +193,8 @@ const Carousel = ({
                 <img src="/images/promo.svg" alt="promo" className="promo" />
               )}
             </Item>
-          </a>
-        ))}
+          )
+        })}
       </Container>
 
       {widthScreen && (
@@ -201,7 +221,6 @@ export default Carousel
 const Wrapper = styled.div`
   width: 114%;
   display: flex;
-  /* gap: 2rem; */
   align-items: center;
   transform: translateX(-7%);
   padding: 1rem 2rem;
@@ -260,7 +279,6 @@ const ButtonMobile = styled(Button)`
 const Container = styled.div`
   display: flex;
   max-width: 100vw !important;
-  /* padding: var(--spacing-nano) var(--spacing-quarck); */
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;
