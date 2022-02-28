@@ -12,6 +12,9 @@ interface Carousel {
   data: {
     id: string
     name: string
+    title: string
+    files: Array
+    price: string
     formatedName: string
     avgStars: number
     sumStars: number
@@ -77,11 +80,19 @@ const Carousel = ({
                     : { display: 'none' }
                 }
               >
-                <img
-                  src={store.background?.url || '/images/capa-small.png'}
-                  className="store-banner"
-                  alt="banner"
-                />
+                {isProduct ? (
+                  <img
+                    src={store?.files[0]?.url || '/images/capa-small.png'}
+                    className="store-banner"
+                    alt="banner"
+                  />
+                ) : (
+                  <img
+                    src={store?.background?.url || '/images/capa-small.png'}
+                    className="store-banner"
+                    alt="banner"
+                  />
+                )}
               </div>
 
               {!isProduct && (
@@ -131,7 +142,7 @@ const Carousel = ({
               )}
               {isProduct && (
                 <div className="infoProduct">
-                  <p>{store.name}</p>
+                  <p>{store.title}</p>
                   <div className="stars">
                     <AiFillStar size={20} color="var(--gold)" />
                     <small>{store.sumStars} (110 pedidos)</small>
@@ -139,12 +150,12 @@ const Carousel = ({
                   <span>
                     De:{' '}
                     <span style={{ textDecoration: 'line-through' }}>
-                      R$ 3.099,99
+                      {`R$ ${store.price}`}
                     </span>
                   </span>
-                  <h3>R$ 289,99</h3>
+                  <h3>{`R$ ${store.price}`}</h3>
                   <span>
-                    Em até 12x sem juros ou <strong>R$ 2.899,99</strong> à vista
+                    Em até 12x sem juros ou <strong>{`R$ ${store.price}`}</strong> à vista
                   </span>
                 </div>
               )}
