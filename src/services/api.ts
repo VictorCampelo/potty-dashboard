@@ -20,7 +20,9 @@ export function setupApiClient(ctx = undefined) {
     },
     (error: AxiosError) => {
       if (error?.response?.status === 412) {
-        localStorage.setItem('non-subscribe-modal', 'true')
+        document
+          .querySelector('body')
+          .dispatchEvent(new Event('non-subscribe-modal-show'))
       }
 
       if (error?.response?.status === 401) {
