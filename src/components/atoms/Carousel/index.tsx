@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Router from 'next/router'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
@@ -14,7 +14,9 @@ interface Carousel {
     name: string
     title: string
     files: any[]
-    price: string
+    price: number
+    discount: number
+    sumOrders: number
     formatedName: string
     avgStars: number
     sumStars: number
@@ -40,7 +42,7 @@ const Carousel = ({
   buttons = true
 }: Carousel) => {
   const carousel = useRef(null)
-  const [activeImage] = useState({})
+  const [activeImage, setActiveImage] = useState({})
 
   const handleScrollLeft = (e: ButtonMouseEvent) => {
     e.preventDefault()
@@ -54,19 +56,38 @@ const Carousel = ({
 
   const widthScreen = useMedia({ minWidth: '426px' })
 
-  const previousImage = () => {
-    console.log('previous')
+  const previousImage = (store) => {
+    const activeUrl = activeImage[store.id]
+    const currentIndex = store.files.findIndex(({ url }) => url === activeUrl)
+    const nextIndex =
+      currentIndex - 1 < 0 ? store.files.length - 1 : currentIndex - 1
+    setActiveImage({ ...activeImage, [store.id]: store.files[nextIndex].url })
   }
 
-  const nextImage = () => {
-    console.log('next')
+  const nextImage = (store) => {
+    const activeUrl = activeImage[store.id]
+    const currentIndex = store.files.findIndex(({ url }) => url === activeUrl)
+    const nextIndex =
+      currentIndex + 1 > store.files.length - 1 ? 0 : currentIndex + 1
+    setActiveImage({ ...activeImage, [store.id]: store.files[nextIndex].url })
   }
 
   const redirectToStore = (storeName: string) => {
     Router.push(`http://${storeName}.${process.env.HOST_NAME}/store`)
   }
 
-  console.log(data)
+  const getDiscount = (price: number, discount: number) =>
+    price - (price * discount) / 100
+
+  useEffect(() => {
+    const newActiveImage = {}
+    data.forEach((store) => {
+      newActiveImage[store.id] =
+        (isProduct ? store.files[0]?.url : store?.background?.url) ||
+        '/images/capa-small.png'
+    })
+    setActiveImage(newActiveImage)
+  }, [])
 
   return (
     <Wrapper>
@@ -78,20 +99,10 @@ const Carousel = ({
 
       <Container ref={carousel}>
         {data.map((store) => {
-          if (isProduct) {
-            activeImage[store.id] =
-              store?.files[0]?.url || '/images/capa-small.png'
-          } else {
-            activeImage[store.id] =
-              store?.background?.url || '/images/capa-small.png'
-          }
           return (
-            <Item
-              isProduct={isProduct}
-              onClick={() => redirectToStore(store.formatedName)}
-              key={store.id}
-            >
+            <Item isProduct={isProduct} key={store.id}>
               <div
+                onClick={() => redirectToStore(store.formatedName)}
                 className="head"
                 style={
                   widthScreen
@@ -109,7 +120,10 @@ const Carousel = ({
               </div>
 
               {!isProduct && (
-                <div className="logo">
+                <div
+                  className="logo"
+                  onClick={() => redirectToStore(store.formatedName)}
+                >
                   <img
                     src={store.avatar?.url || '/images/icon.png'}
                     alt="logo"
@@ -119,7 +133,10 @@ const Carousel = ({
 
               {!isProduct && (
                 <>
-                  <div className="info">
+                  <div
+                    className="info"
+                    onClick={() => redirectToStore(store.formatedName)}
+                  >
                     <h3>{store.name}</h3>
 
                     <div className="stars">
@@ -150,26 +167,54 @@ const Carousel = ({
                       </span>
                     )}
                   </div>
-                  {widthScreen && <span className="city">{store.city}</span>}
+                  {widthScreen && (
+                    <span
+                      className="city"
+                      onClick={() => redirectToStore(store.formatedName)}
+                    >
+                      {store.city}
+                    </span>
+                  )}
                 </>
               )}
               {isProduct && (
-                <div className="infoProduct">
+                <div
+                  className="infoProduct"
+                  onClick={() => redirectToStore(store.formatedName)}
+                >
                   <p>{store.title}</p>
                   <div className="stars">
                     <AiFillStar size={20} color="var(--gold)" />
-                    <small>{store.sumStars} (110 pedidos)</small>
+                    <small>
+                      {store.sumStars} ({store.sumOrders} pedidos)
+                    </small>
                   </div>
-                  <span>
-                    De:{' '}
-                    <span style={{ textDecoration: 'line-through' }}>
-                      {formatToBrl(store.price)}
+                  {store.discount && (
+                    <span>
+                      De:{' '}
+                      <span style={{ textDecoration: 'line-through' }}>
+                        {formatToBrl(store.price)}
+                      </span>
                     </span>
-                  </span>
-                  <h3>{formatToBrl(store.price)}</h3>
+                  )}
+                  <h3>
+                    {formatToBrl(
+                      store.discount
+                        ? getDiscount(store.price, store.discount)
+                        : store.price
+                    )}
+                  </h3>
                   <span>
                     Em até 12x sem juros ou{' '}
-                    <strong>{formatToBrl(store.price)}</strong> à vista
+                    <strong>
+                      {' '}
+                      {formatToBrl(
+                        store.discount
+                          ? getDiscount(store.price, store.discount)
+                          : store.price
+                      )}
+                    </strong>{' '}
+                    à vista
                   </span>
                 </div>
               )}
@@ -177,20 +222,25 @@ const Carousel = ({
                 <>
                   <ButtonProduct
                     className="btnProductLeft"
-                    onClick={previousImage}
+                    onClick={() => previousImage(store)}
                   >
                     <BiChevronLeft size={15} color="black" />
                   </ButtonProduct>
                   <ButtonProduct
                     className="btnProductRight"
-                    onClick={nextImage}
+                    onClick={() => nextImage(store)}
                   >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
                 </>
               )}
               {promo && widthScreen && (
-                <img src="/images/promo.svg" alt="promo" className="promo" />
+                <img
+                  onClick={() => redirectToStore(store.formatedName)}
+                  src="/images/promo.svg"
+                  alt="promo"
+                  className="promo"
+                />
               )}
             </Item>
           )
