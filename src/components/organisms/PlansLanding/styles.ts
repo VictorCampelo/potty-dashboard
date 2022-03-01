@@ -27,7 +27,7 @@ export const Container = styled.div<PropsContainer>`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-xxs);
+    gap: var(--spacing-md);
     padding: 0 var(--spacing-quarck);
   }
 `

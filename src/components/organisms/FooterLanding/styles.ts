@@ -32,6 +32,7 @@ export const Register = styled.div`
     height: 45px;
 
     padding: 0;
+    margin: 0;
 
     text-transform: uppercase;
 
