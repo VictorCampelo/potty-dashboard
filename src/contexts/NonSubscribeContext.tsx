@@ -6,8 +6,6 @@ import {
   useEffect
 } from 'react'
 
-import watchAnyObject from 'utils/watchAnyObject'
-
 interface Data {
   activeModal: boolean
   showModal: () => void
@@ -32,15 +30,9 @@ export const NonSubscribeProvider = ({ children }: Props) => {
   }
 
   useEffect(() => {
-    watchAnyObject(
-      window?.localStorage,
-      ['setItem', 'getItem', 'removeItem'],
-      (method, key, ...args) => {
-        if (method === 'setItem' && key === 'non-subscribe-modal') {
-          setActiveModal(args[0] === 'true')
-        }
-      }
-    )
+    document
+      .querySelector('body')
+      .addEventListener('non-subscribe-modal-show', toggleModal)
   })
 
   return (
