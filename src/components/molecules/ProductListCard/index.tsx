@@ -37,21 +37,23 @@ export const ProductListCard = ({
       <Container isRed={isRed} isGreen={isGreen}>
         <div className="card-container">
           <div className="color">
-            <div className="icon">
-              {icon ? (
+            {icon ? (
+              <div className="icon">
                 <img
                   src={icon}
                   alt="Preview"
                   style={{ width: '100%', borderRadius: '10px' }}
                 />
-              ) : (
+              </div>
+            ) : (
+              <div className="icon border">
                 <RiCamera2Fill size={26} color="var(--gray-600)" />
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="desc-container-mobile">
               <div className="first-line" style={{ width: '300px' }}>
-                <div className="key-value" style={{ width: '170px' }}>
+                <div className="key-value" style={{ width: '180px' }}>
                   <span className="key">Nome</span>
                   <span className="value">{name}</span>
                 </div>
@@ -61,7 +63,7 @@ export const ProductListCard = ({
                       <BsThreeDotsVertical size={26} />
                     </button>
                   }
-                  position="right center"
+                  position="top center"
                   on="click"
                 >
                   <div
@@ -103,7 +105,7 @@ export const ProductListCard = ({
                 </Popup>
               </div>
 
-              <Swiper slidesPerView="auto">
+              <Swiper slidesPerView={1.9} spaceBetween={10}>
                 <SwiperSlide>
                   <div className="key-value">
                     <span className="key">Preço</span>

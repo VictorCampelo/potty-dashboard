@@ -82,8 +82,10 @@ export const Container = styled.div<ContainerProp>`
           width: 94px;
           height: 94px;
 
-          border: 3px solid #f4f4f4;
-          border-radius: var(--border-radius-xs);
+          &.border {
+            border: 3px solid #f4f4f4;
+            border-radius: var(--border-radius-xs);
+          }
         }
       }
 
@@ -106,7 +108,7 @@ export const Container = styled.div<ContainerProp>`
           margin-bottom: 7px;
         }
         .key-value {
-          width: max-content;
+          width: 94px;
           height: 44px;
           display: flex;
           flex-direction: column;
