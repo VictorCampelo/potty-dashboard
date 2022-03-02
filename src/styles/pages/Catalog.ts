@@ -124,6 +124,7 @@ export const Container = styled.div`
       ${[sizes.down('sm')]} {
         padding: var(--spacing-xxs);
         padding-top: var(--spacing-md);
+        gap: 32px;
       }
 
       display: flex;

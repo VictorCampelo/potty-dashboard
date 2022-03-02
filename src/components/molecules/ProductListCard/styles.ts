@@ -6,6 +6,18 @@ interface ContainerProp {
   isGreen: boolean
 }
 
+export const Hr = styled.hr`
+  border: 0;
+  width: 100%;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.02),
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.02)
+  );
+`
+
 export const Container = styled.div<ContainerProp>`
   width: auto;
   max-width: 1050px;
@@ -26,6 +38,7 @@ export const Container = styled.div<ContainerProp>`
     display: flex;
     flex-direction: row;
     align-items: center;
+
     .color {
       display: flex;
       flex-direction: row;
@@ -72,6 +85,7 @@ export const Container = styled.div<ContainerProp>`
       }
 
       .desc-container-mobile {
+        width: max-content;
         ${[sizes.up('sm')]} {
           display: none;
         }
@@ -85,7 +99,6 @@ export const Container = styled.div<ContainerProp>`
           display: flex;
           flex-direction: row;
           align-items: center;
-          /* justify-content: space-between; */
           gap: 4px;
         }
         .second-line {
@@ -94,7 +107,6 @@ export const Container = styled.div<ContainerProp>`
           align-items: center;
           gap: 12px;
           margin-top: 7px;
-          overflow: auto;
         }
         .key-value {
           width: max-content;

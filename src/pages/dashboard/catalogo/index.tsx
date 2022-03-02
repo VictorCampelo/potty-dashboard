@@ -495,8 +495,6 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       const { data } = await getProducts(storeId)
 
-      console.log(data)
-
       const formatedData = data.map((it) => ({
         ...it,
         categories: it.categories.map((cat: CategoryType) => cat.name)
