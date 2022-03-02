@@ -1,21 +1,14 @@
 import Head from 'next/head'
-import Header from '../components/molecules/HeaderShop'
+import Header from 'components/molecules/HeaderShop'
+import FooterContact from 'components/molecules/FooterContact'
 
 import styled from 'styled-components'
 import Carousel from 'components/atoms/Carousel'
-import { Footer } from 'styles/pages/Product'
-import {
-  AiFillFacebook,
-  AiFillPhone,
-  AiOutlineWhatsApp,
-  AiOutlineSearch,
-  AiOutlineRight
-} from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlineRight } from 'react-icons/ai'
 
 import { api } from 'services/apiClient'
 import { Input } from 'components/molecules/SearchInput'
 import { CardServices } from 'components/molecules/CardServices'
-import MapBdv from 'components/molecules/MapBdv'
 import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
@@ -66,12 +59,7 @@ const Landing = ({ products }: Landing) => {
           </HeaderMob>
         )}
         <Banner>
-          <img
-            src="/images/logo2.svg"
-            alt="banner"
-            width={319.19}
-            height={185.22}
-          />
+          <img src="/images/logo2.svg" alt="banner" width={320} height={186} />
         </Banner>
 
         <ContentProduct>
@@ -89,8 +77,7 @@ const Landing = ({ products }: Landing) => {
             <p>Ver todas as categorias</p>
             <AiOutlineRight size={25} color="var(--color-primary)" />
           </MoreCategory>
-          {console.log(products)}
-          {products.length !== 0 && (
+          {products.length && (
             <>
               <div className="carousel-container">
                 <div className="carousel-item">
@@ -121,31 +108,7 @@ const Landing = ({ products }: Landing) => {
           )}
         </ContentProduct>
 
-        <Footer>
-          <div>
-            <h1>Boa de Venda</h1>
-            <span>CNPJ: 26.745.054/0001-70</span>
-            <h1>Contato</h1>
-
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              +55 (86) 9 8178-9622
-            </span>
-
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              Whatsapp
-            </span>
-
-            <ContainerTerms>
-              <a href="">
-                <span>Termos de Uso e Políticas de Privacidade</span>
-              </a>
-              <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
-            </ContainerTerms>
-          </div>
-          <MapBdv />
-        </Footer>
+        <FooterContact />
       </Container>
 
       <CartButton />
@@ -153,7 +116,7 @@ const Landing = ({ products }: Landing) => {
   )
 }
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async () => {
   const { data } = await api.get('products/promoted')
 
   return {

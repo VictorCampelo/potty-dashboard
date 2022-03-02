@@ -1,20 +1,22 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import Router from 'next/router'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 import { GoLocation } from 'react-icons/go'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { api } from 'services/apiClient'
 import useMedia from 'use-media'
 import sizes from 'utils/sizes'
+import formatToBrl from 'utils/formatToBrl'
 
 interface Carousel {
   data: {
     id: string
     name: string
     title: string
-    files: Array
-    price: string
+    files: any[]
+    price: number
+    discount: number
+    sumOrders: number
     formatedName: string
     avgStars: number
     sumStars: number
@@ -31,6 +33,8 @@ interface Carousel {
   buttons?: boolean
 }
 
+type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
+
 const Carousel = ({
   data = [],
   isProduct = false,
@@ -38,22 +42,52 @@ const Carousel = ({
   buttons = true
 }: Carousel) => {
   const carousel = useRef(null)
+  const [activeImage, setActiveImage] = useState({})
 
-  function handleScrollLeft(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollLeft = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft -= 276
   }
 
-  function handleScrollRight(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollRight = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft += 276
   }
 
   const widthScreen = useMedia({ minWidth: '426px' })
+
+  const previousImage = (store) => {
+    const activeUrl = activeImage[store.id]
+    const currentIndex = store.files.findIndex(({ url }) => url === activeUrl)
+    const nextIndex =
+      currentIndex - 1 < 0 ? store.files.length - 1 : currentIndex - 1
+    setActiveImage({ ...activeImage, [store.id]: store.files[nextIndex].url })
+  }
+
+  const nextImage = (store) => {
+    const activeUrl = activeImage[store.id]
+    const currentIndex = store.files.findIndex(({ url }) => url === activeUrl)
+    const nextIndex =
+      currentIndex + 1 > store.files.length - 1 ? 0 : currentIndex + 1
+    setActiveImage({ ...activeImage, [store.id]: store.files[nextIndex].url })
+  }
+
+  const redirectToStore = (storeName: string) => {
+    Router.push(`http://${storeName}.${process.env.HOST_NAME}/store`)
+  }
+
+  const getDiscount = (price: number, discount: number) =>
+    price - (price * discount) / 100
+
+  useEffect(() => {
+    const newActiveImage = {}
+    data.forEach((store) => {
+      newActiveImage[store.id] =
+        (isProduct ? store.files[0]?.url : store?.background?.url) ||
+        '/images/capa-small.png'
+    })
+    setActiveImage(newActiveImage)
+  }, [])
 
   return (
     <Wrapper>
@@ -64,13 +98,11 @@ const Carousel = ({
       )}
 
       <Container ref={carousel}>
-        {data.map((store) => (
-          <a
-            href={`http://${store.formatedName}.${process.env.HOST_NAME}/store`}
-            key={store.id}
-          >
-            <Item isProduct={isProduct}>
+        {data.map((store) => {
+          return (
+            <Item isProduct={isProduct} key={store.id}>
               <div
+                onClick={() => redirectToStore(store.formatedName)}
                 className="head"
                 style={
                   widthScreen
@@ -80,23 +112,18 @@ const Carousel = ({
                     : { display: 'none' }
                 }
               >
-                {isProduct ? (
-                  <img
-                    src={store?.files[0]?.url || '/images/capa-small.png'}
-                    className="store-banner"
-                    alt="banner"
-                  />
-                ) : (
-                  <img
-                    src={store?.background?.url || '/images/capa-small.png'}
-                    className="store-banner"
-                    alt="banner"
-                  />
-                )}
+                <img
+                  src={activeImage[store.id]}
+                  className="store-banner"
+                  alt="banner"
+                />
               </div>
 
               {!isProduct && (
-                <div className="logo">
+                <div
+                  className="logo"
+                  onClick={() => redirectToStore(store.formatedName)}
+                >
                   <img
                     src={store.avatar?.url || '/images/icon.png'}
                     alt="logo"
@@ -106,7 +133,10 @@ const Carousel = ({
 
               {!isProduct && (
                 <>
-                  <div className="info">
+                  <div
+                    className="info"
+                    onClick={() => redirectToStore(store.formatedName)}
+                  >
                     <h3>{store.name}</h3>
 
                     <div className="stars">
@@ -137,44 +167,84 @@ const Carousel = ({
                       </span>
                     )}
                   </div>
-                  {widthScreen && <span className="city">{store.city}</span>}
+                  {widthScreen && (
+                    <span
+                      className="city"
+                      onClick={() => redirectToStore(store.formatedName)}
+                    >
+                      {store.city}
+                    </span>
+                  )}
                 </>
               )}
               {isProduct && (
-                <div className="infoProduct">
+                <div
+                  className="infoProduct"
+                  onClick={() => redirectToStore(store.formatedName)}
+                >
                   <p>{store.title}</p>
                   <div className="stars">
                     <AiFillStar size={20} color="var(--gold)" />
-                    <small>{store.sumStars} (110 pedidos)</small>
+                    <small>
+                      {store.sumStars} ({store.sumOrders} pedidos)
+                    </small>
                   </div>
-                  <span>
-                    De:{' '}
-                    <span style={{ textDecoration: 'line-through' }}>
-                      {`R$ ${store.price}`}
+                  {store.discount && (
+                    <span>
+                      De:{' '}
+                      <span style={{ textDecoration: 'line-through' }}>
+                        {formatToBrl(store.price)}
+                      </span>
                     </span>
-                  </span>
-                  <h3>{`R$ ${store.price}`}</h3>
+                  )}
+                  <h3>
+                    {formatToBrl(
+                      store.discount
+                        ? getDiscount(store.price, store.discount)
+                        : store.price
+                    )}
+                  </h3>
                   <span>
-                    Em até 12x sem juros ou <strong>{`R$ ${store.price}`}</strong> à vista
+                    Em até 12x sem juros ou{' '}
+                    <strong>
+                      {' '}
+                      {formatToBrl(
+                        store.discount
+                          ? getDiscount(store.price, store.discount)
+                          : store.price
+                      )}
+                    </strong>{' '}
+                    à vista
                   </span>
                 </div>
               )}
               {isProduct && widthScreen && (
                 <>
-                  <ButtonProduct className="btnProductLeft">
+                  <ButtonProduct
+                    className="btnProductLeft"
+                    onClick={() => previousImage(store)}
+                  >
                     <BiChevronLeft size={15} color="black" />
                   </ButtonProduct>
-                  <ButtonProduct className="btnProductRight">
+                  <ButtonProduct
+                    className="btnProductRight"
+                    onClick={() => nextImage(store)}
+                  >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
                 </>
               )}
               {promo && widthScreen && (
-                <img src="/images/promo.svg" alt="promo" className="promo" />
+                <img
+                  onClick={() => redirectToStore(store.formatedName)}
+                  src="/images/promo.svg"
+                  alt="promo"
+                  className="promo"
+                />
               )}
             </Item>
-          </a>
-        ))}
+          )
+        })}
       </Container>
 
       {widthScreen && (
@@ -201,7 +271,6 @@ export default Carousel
 const Wrapper = styled.div`
   width: 114%;
   display: flex;
-  /* gap: 2rem; */
   align-items: center;
   transform: translateX(-7%);
   padding: 1rem 2rem;
@@ -260,7 +329,6 @@ const ButtonMobile = styled(Button)`
 const Container = styled.div`
   display: flex;
   max-width: 100vw !important;
-  /* padding: var(--spacing-nano) var(--spacing-quarck); */
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;
