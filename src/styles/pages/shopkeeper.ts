@@ -8,6 +8,7 @@ export const Container = styled.div`
   div.cards-area {
     width: 100%;
     height: 100%;
+    gap: 1.5rem;
 
     padding: 20px;
 
@@ -22,11 +23,13 @@ export const Container = styled.div`
     .top-area {
       display: flex;
       flex-direction: row;
+      flex: 1;
     }
 
     .bottom-area {
       display: flex;
       flex-direction: row;
+      flex: 1;
     }
   }
 `

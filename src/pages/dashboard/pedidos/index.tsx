@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import DrawerLateral from '../../../components/molecules/DrawerLateral'
-import { Container } from '../../../styles/pages/shopkeeper'
+import DrawerLateral from 'components/molecules/DrawerLateral'
+import { Container } from 'styles/pages/shopkeeper'
 import Head from 'next/head'
 import styled from 'styled-components'
 
@@ -40,7 +40,7 @@ type OrderHistorics = {
 type OrdersListProps = {
   id: string
   amount: number
-  results: Array
+  results: any[]
   situation: string
   createdAt: string
   orderNumber: string
@@ -180,8 +180,9 @@ const Pedidos = () => {
                   <SearchButton placeholder="Pesquisar pedido" />
                   <AiOutlineSearch size={24} />
                 </>
-              ) : <> </>}
-
+              ) : (
+                <> </>
+              )}
             </header>
 
             {isLoading ? (
@@ -204,76 +205,81 @@ const Pedidos = () => {
                       <p>Ainda não há pedidos para serem exibidos</p>
                     </div>
                   </EmptyContainer>
-                ) :
-                <>
-                <OrderHead>
-                  <section style={{ flex: 0.5 }}>
-                    <span>Data</span>
-                  </section>
-
-                  <section style={{ flex: 0.75 }}>
-                    <span>N° do pedido</span>
-                  </section>
-
-                  <section style={{ flex: 0.35 }}>
-                    <span>Valor</span>
-                  </section>
-
-                  <section className="center" style={{ flex: 0.75 }}>
-                    <span>Detalhes</span>
-                  </section>
-
-                  <section style={{ flex: 0.75 }}>
-                    <span>Status</span>
-                  </section>
-                </OrderHead>
-                {ordersList?.map((order: OrderProps) => {
-                  const oldDate = cutStrDate(order.createdAt, 'T')
-                  const newDate = convertDate(oldDate)
-
-                  const buttonClasses = classDefine(order?.situation)
-
-                  return (
-                    <OrderBody key={order.id}>
+                ) : (
+                  <>
+                    <OrderHead>
                       <section style={{ flex: 0.5 }}>
-                        <span>{newDate}</span>
+                        <span>Data</span>
                       </section>
+
                       <section style={{ flex: 0.75 }}>
-                        <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                        <span>N° do pedido</span>
                       </section>
+
                       <section style={{ flex: 0.35 }}>
-                        <span>R$ {order.amount.toFixed(2)}</span>
+                        <span>Valor</span>
                       </section>
+
                       <section className="center" style={{ flex: 0.75 }}>
-                        <AiFillEye
-                          size={24}
-                          onClick={() => {
-                            toggleModalOrder(order)
-                            setClassButton(buttonClasses)
-                            setDate(newDate)
-                          }}
-                        />
+                        <span>Detalhes</span>
                       </section>
-                      <button className={buttonClasses} style={{ flex: 0.75 }}>
-                        {order.situation}
-                      </button>
-                    </OrderBody>
-                  )
-                })}
-                </>
-              }
+
+                      <section style={{ flex: 0.75 }}>
+                        <span>Status</span>
+                      </section>
+                    </OrderHead>
+                    {ordersList?.map((order: OrderProps) => {
+                      const oldDate = cutStrDate(order.createdAt, 'T')
+                      const newDate = convertDate(oldDate)
+
+                      const buttonClasses = classDefine(order?.situation)
+
+                      return (
+                        <OrderBody key={order.id}>
+                          <section style={{ flex: 0.5 }}>
+                            <span>{newDate}</span>
+                          </section>
+                          <section style={{ flex: 0.75 }}>
+                            <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                          </section>
+                          <section style={{ flex: 0.35 }}>
+                            <span>R$ {order.amount.toFixed(2)}</span>
+                          </section>
+                          <section className="center" style={{ flex: 0.75 }}>
+                            <AiFillEye
+                              size={24}
+                              onClick={() => {
+                                toggleModalOrder(order)
+                                setClassButton(buttonClasses)
+                                setDate(newDate)
+                              }}
+                            />
+                          </section>
+                          <button
+                            className={buttonClasses}
+                            style={{ flex: 0.75 }}
+                          >
+                            {order.situation}
+                          </button>
+                        </OrderBody>
+                      )
+                    })}
+                  </>
+                )}
               </>
             )}
-            {ordersList.length > 0 ?
-            <footer>
-              <Pagination
-                onPageChange={setPage}
-                totalCountOfRegisters={totalOrders}
-                currentPage={page}
-                registersPerPage={8}
-              />
-            </footer>
-            : <></>}
+            {ordersList.length > 0 ? (
+              <footer>
+                <Pagination
+                  onPageChange={setPage}
+                  totalCountOfRegisters={totalOrders}
+                  currentPage={page}
+                  registersPerPage={8}
+                />
+              </footer>
+            ) : (
+              <></>
+            )}
           </MainArea>
         </Content>
 

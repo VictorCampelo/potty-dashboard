@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { MultiSelect as Select } from 'components/molecules/Select'
@@ -21,7 +21,7 @@ import {
 } from 'services/products.services'
 
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { FiPlus, FiSearch } from 'react-icons/fi'
+import { FiPlus, FiSearch, FiArrowLeft } from 'react-icons/fi'
 import { IoIosClose, IoMdCamera } from 'react-icons/io'
 import { FaMoneyBill, FaPercentage, FaCoins } from 'react-icons/fa'
 import { GoArrowRight, GoArrowLeft } from 'react-icons/go'
@@ -130,7 +130,6 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
-  const [ilimitedQuantity, setIlimitedQuantity] = useState(true)
   const [enableDiscount, setEnableDiscount] = useState(false)
 
   const [addCupomModal, setAddCupomModal] = useState(false)
@@ -145,11 +144,6 @@ const catalog = ({ storeId }: CatalogType) => {
   const [products, setProducts] = useState<ProductType[]>([])
 
   const [categories, setCategories] = useState<CategoryType[]>([])
-  const [titleProduct, setTitleProduct] = useState('')
-  const [priceProduct, setPriceProduct] = useState(0)
-  const [descriptionProduct, setDescriptionProduct] = useState('')
-  const [inventoryProduct, setInventoryProduct] = useState('')
-  const [discountProduct, setDiscountProduct] = useState(0)
   const [installments, setInstallments] = useState({
     value: '1',
     label: '1x'
@@ -307,9 +301,9 @@ const catalog = ({ storeId }: CatalogType) => {
 
   // Functions
 
-  async function handleCreateCategory() {
+  async function handleCreateCategory(newCategory?: string) {
     try {
-      await createCategory(category, storeId)
+      await createCategory(category || newCategory, storeId)
 
       notifySuccess('Categoria criada com sucesso!')
 
@@ -377,7 +371,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const { register, handleSubmit, getValues, setValue } = useForm({
+  const { register, handleSubmit, getValues } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
@@ -387,7 +381,7 @@ const catalog = ({ storeId }: CatalogType) => {
     const formData = new FormData()
     formData.append('title', values.title)
     formData.append('price', String(formatToNumber(String(values.price))))
-    formData.append('description', descriptionProduct)
+    formData.append('description', values.description)
     formData.append('inventory', values.inventory)
     formData.append('discount', values.discount || '0')
     formData.append(
@@ -414,11 +408,6 @@ const catalog = ({ storeId }: CatalogType) => {
       toast.success('Produto criado com sucesso')
 
       setAddModal(false)
-      setTitleProduct('')
-      setPriceProduct(0)
-      setDescriptionProduct('')
-      setInventoryProduct('')
-      setDiscountProduct(0)
       setSelectedCategories([])
     } catch (e) {
       console.error(e)
@@ -465,7 +454,7 @@ const catalog = ({ storeId }: CatalogType) => {
       loadData()
     } catch (e) {
       notify('Erro ao excluir cupom, tente novamente!')
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -475,7 +464,7 @@ const catalog = ({ storeId }: CatalogType) => {
     const body = {
       title: values.title,
       price: formatToNumber(values.price),
-      description: descriptionProduct,
+      description: values.description,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
@@ -493,12 +482,7 @@ const catalog = ({ storeId }: CatalogType) => {
       notify('Erro ao editar produto, tente novamente!')
     }
 
-    setTitleProduct('')
-    setPriceProduct(0)
-    setDescriptionProduct('')
-    setInventoryProduct('')
     setEditProductId('')
-    setDiscountProduct(0)
     setSelectedCategories([])
     loadData()
     setEditProduct(false)
@@ -539,7 +523,6 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [radioSelected, setRadioSelected] = useState(1)
   const [ilimitedCupom, setIlimitedCupom] = useState(false)
-  const [typeCategory, setTypeCategory] = useState(false)
 
   const [priceWithDiscount, setPriceWithDiscount] = useState(formatToBrl(0))
 
@@ -676,7 +659,7 @@ const catalog = ({ storeId }: CatalogType) => {
               onClick={toggleAddCategoryModal}
             />
 
-            <Button title="Salvar" onClick={handleCreateCategory} />
+            <Button title="Salvar" onClick={() => handleCreateCategory()} />
           </div>
         </AddCategoryModalContainer>
       </CustomModal>
@@ -735,10 +718,8 @@ const catalog = ({ storeId }: CatalogType) => {
                 maxLength={600}
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
-                value={descriptionProduct}
                 flex={0}
                 {...register('description')}
-                onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
               <div className="row">
@@ -802,13 +783,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
-                  disabled={ilimitedQuantity}
                   {...register('inventory')}
-                />
-                <Checkbox
-                  confirm={ilimitedQuantity}
-                  toggleConfirm={() => setIlimitedQuantity(!ilimitedQuantity)}
-                  label="Quantidade ilimitada"
                 />
               </div>
 
@@ -822,6 +797,11 @@ const catalog = ({ storeId }: CatalogType) => {
                 placeholder="Suas categorias"
                 selectedValue={selectedCategories}
                 setSelectedValue={setSelectedCategories}
+                creatable={true}
+                formatCreateLabel={(inputValue) =>
+                  `Criar categoria "${inputValue}"`
+                }
+                onCreateOption={handleCreateCategory}
               />
               <span className="text-categories-added">
                 Categorias adicionadas: {selectedCategories.length}
@@ -941,9 +921,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 maxLength={600}
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
-                value={descriptionProduct}
                 {...register('description')}
-                onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
               <div className="row">
@@ -1230,7 +1208,6 @@ const catalog = ({ storeId }: CatalogType) => {
               <MultiSelect
                 loading={false}
                 name="Categorias"
-                disabled={!typeCategory}
                 options={categories.map((cat) => ({
                   value: String(cat.id),
                   label: cat.name
@@ -1328,6 +1305,12 @@ const catalog = ({ storeId }: CatalogType) => {
         <div className="area">
           <div className="list-container">
             <header className="header">
+              <a href="/">
+                <h1>
+                  <FiArrowLeft size={32} color="var(--gray-700)" /> Produtos
+                </h1>
+              </a>
+
               <button
                 className="addBtn"
                 onClick={
@@ -1360,30 +1343,28 @@ const catalog = ({ storeId }: CatalogType) => {
                 toggleState={toggleState}
                 content1={
                   <div className="products-container">
-                    {products.length > 0 ? (
-                      products.map((product, index) => {
-                        return (
-                          <ProductListCard
-                            key={product?.id + '-' + index}
-                            icon={product?.files[0]?.url}
-                            name={product?.title}
-                            code={product?.id}
-                            category={product?.categories}
-                            amount={product?.inventory}
-                            price={product?.price}
-                            excludeBtn={() => {
-                              handleOpenExcludeModal()
-                              setDeleteProductId(product.id)
-                            }}
-                            editBtn={() => {
-                              setEditProductId(product.id)
-                              setEditProduct(true)
-                            }}
-                            isRed={true}
-                            isGreen={true}
-                          />
-                        )
-                      })
+                    {products.length ? (
+                      products.map((product) => (
+                        <ProductListCard
+                          key={product?.id}
+                          icon={product?.files[0]?.url}
+                          name={product?.title}
+                          code={product?.id}
+                          category={product?.categories}
+                          amount={product?.inventory}
+                          price={product?.price}
+                          excludeBtn={() => {
+                            handleOpenExcludeModal()
+                            setDeleteProductId(product.id)
+                          }}
+                          editBtn={() => {
+                            setEditProductId(product.id)
+                            setEditProduct(true)
+                          }}
+                          isRed={true}
+                          isGreen={true}
+                        />
+                      ))
                     ) : (
                       <EmptyContainer>
                         <div>

@@ -982,7 +982,7 @@ const ProductShow = () => {
             <h1 style={{ height: '40px' }}>Produtos relacionados</h1>
             <div className="carousel-container">
               <div className="carousel-item">
-                <Carousel data={fakeProducts} isProduct />
+                <Carousel data={fakeProducts as any} isProduct />
               </div>
             </div>
           </ProductWrapper>
