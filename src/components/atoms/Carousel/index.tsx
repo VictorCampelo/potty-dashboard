@@ -3,8 +3,6 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 import { GoLocation } from 'react-icons/go'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { api } from 'services/apiClient'
 import useMedia from 'use-media'
 import sizes from 'utils/sizes'
 
@@ -13,7 +11,7 @@ interface Carousel {
     id: string
     name: string
     title: string
-    files: Array
+    files: any[]
     price: string
     formatedName: string
     avgStars: number
@@ -155,7 +153,8 @@ const Carousel = ({
                   </span>
                   <h3>{`R$ ${store.price}`}</h3>
                   <span>
-                    Em até 12x sem juros ou <strong>{`R$ ${store.price}`}</strong> à vista
+                    Em até 12x sem juros ou{' '}
+                    <strong>{`R$ ${store.price}`}</strong> à vista
                   </span>
                 </div>
               )}
