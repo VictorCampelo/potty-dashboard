@@ -799,7 +799,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 setSelectedValue={setSelectedCategories}
                 creatable={true}
                 formatCreateLabel={(inputValue) =>
-                  `Criar categoria "${inputValue}"`
+                  `➕ Criar categoria "${inputValue}"`
                 }
                 onCreateOption={handleCreateCategory}
               />
