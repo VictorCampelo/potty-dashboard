@@ -5,5 +5,5 @@ export default function formatToBrl(value: number | string): string {
     minimumFractionDigits: 2
   })
 
-  return formatter.format(value)
+  return formatter.format(Number(value))
 }

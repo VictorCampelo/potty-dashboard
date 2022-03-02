@@ -12,13 +12,13 @@ export const Container = styled.div`
   border-radius: 0 0 30px 30px;
   overflow-y: auto;
 
-  ${[sizes.down('sm')]} {
-    display: none;
-  }
-
   .bloc-tabs {
     display: flex;
     width: 500px;
+
+    ${[sizes.down('sm')]} {
+      display: none;
+    }
 
     margin-left: 30px;
   }

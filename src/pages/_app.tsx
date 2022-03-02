@@ -6,6 +6,7 @@ import { ShopkeeperProvider } from 'contexts/ShopkeeperContext'
 import { NonSubscribeProvider } from 'contexts/NonSubscribeContext'
 import GlobalStyle from 'styles/GlobalStyle'
 import ModalNonSubscribe from 'components/molecules/ModalNonSubscribe'
+import 'swiper/css'
 
 function MyApp({ Component, pageProps }) {
   return (

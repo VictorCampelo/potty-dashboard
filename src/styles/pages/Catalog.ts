@@ -57,8 +57,24 @@ export const Container = styled.div`
         border-radius: 30px 30px 0 0;
         padding: 20px;
 
+        h1 {
+          display: none;
+        }
+
         ${[sizes.down('sm')]} {
           flex-direction: row-reverse;
+          padding-top: 120px;
+
+          h1 {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            font-size: var(--font-size-xlg);
+          }
         }
 
         .addBtn {
@@ -104,6 +120,12 @@ export const Container = styled.div`
 
     .products-container {
       padding: var(--spacing-xxs) var(--spacing-md);
+
+      ${[sizes.down('sm')]} {
+        padding: var(--spacing-xxs);
+        padding-top: var(--spacing-md);
+        gap: 32px;
+      }
 
       display: flex;
       flex-direction: column;
