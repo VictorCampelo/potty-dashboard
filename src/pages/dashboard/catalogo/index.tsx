@@ -475,7 +475,7 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       await updateProduct(editProductId, body)
 
-      notifySuccess('Produto deletado com sucesso!')
+      notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
       console.error(e)
 
