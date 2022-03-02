@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import DrawerLateral from '../../../components/molecules/DrawerLateral'
-import { Container } from '../../../styles/pages/shopkeeper'
+import DrawerLateral from 'components/molecules/DrawerLateral'
+import { Container } from 'styles/pages/shopkeeper'
 import Head from 'next/head'
 import styled from 'styled-components'
 
@@ -40,6 +40,7 @@ type OrderHistorics = {
 type OrdersListProps = {
   id: string
   amount: number
+  results: any[]
   situation: string
   createdAt: string
   orderNumber: string
@@ -72,7 +73,6 @@ const Pedidos = () => {
   async function getOrder(id: string) {
     try {
       const { data } = await api.get(`/orders/store/order?id=${id}`)
-      console.log(data)
       setOrder(data)
     } catch (e) {
       console.log(e)
@@ -150,8 +150,6 @@ const Pedidos = () => {
       const { data } = await api.get(
         `/orders/store?confirmed=false&offset=${off}&limit=8`
       )
-
-      console.log(data)
       setOrdersList(data.results)
       setTotalOrders(data.totalOrders)
     } catch (e) {
@@ -177,9 +175,14 @@ const Pedidos = () => {
             <header>
               <h1>Pedidos</h1>
 
-              <SearchButton placeholder="Pesquisar pedido" />
-
-              <AiOutlineSearch size={24} />
+              {ordersList.length > 0 ? (
+                <>
+                  <SearchButton placeholder="Pesquisar pedido" />
+                  <AiOutlineSearch size={24} />
+                </>
+              ) : (
+                <> </>
+              )}
             </header>
 
             {isLoading ? (
@@ -195,70 +198,88 @@ const Pedidos = () => {
               </div>
             ) : (
               <>
-                <OrderHead>
-                  <section style={{ flex: 0.5 }}>
-                    <span>Data</span>
-                  </section>
-
-                  <section style={{ flex: 0.75 }}>
-                    <span>N° do pedido</span>
-                  </section>
-
-                  <section style={{ flex: 0.35 }}>
-                    <span>Valor</span>
-                  </section>
-
-                  <section className="center" style={{ flex: 0.75 }}>
-                    <span>Detalhes</span>
-                  </section>
-
-                  <section style={{ flex: 0.75 }}>
-                    <span>Status</span>
-                  </section>
-                </OrderHead>
-                {ordersList?.map((order: OrderProps) => {
-                  const oldDate = cutStrDate(order.createdAt, 'T')
-                  const newDate = convertDate(oldDate)
-
-                  const buttonClasses = classDefine(order?.situation)
-
-                  return (
-                    <OrderBody key={order.id}>
+                {ordersList.length >= 0 ? (
+                  <EmptyContainer>
+                    <div>
+                      <img src="/images/emptyCategories.svg" />
+                      <p>Ainda não há pedidos para serem exibidos</p>
+                    </div>
+                  </EmptyContainer>
+                ) : (
+                  <>
+                    <OrderHead>
                       <section style={{ flex: 0.5 }}>
-                        <span>{newDate}</span>
+                        <span>Data</span>
                       </section>
+
                       <section style={{ flex: 0.75 }}>
-                        <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                        <span>N° do pedido</span>
                       </section>
+
                       <section style={{ flex: 0.35 }}>
-                        <span>R$ {order.amount.toFixed(2)}</span>
+                        <span>Valor</span>
                       </section>
+
                       <section className="center" style={{ flex: 0.75 }}>
-                        <AiFillEye
-                          size={24}
-                          onClick={() => {
-                            toggleModalOrder(order)
-                            setClassButton(buttonClasses)
-                            setDate(newDate)
-                          }}
-                        />
+                        <span>Detalhes</span>
                       </section>
-                      <button className={buttonClasses} style={{ flex: 0.75 }}>
-                        {order.situation}
-                      </button>
-                    </OrderBody>
-                  )
-                })}
+
+                      <section style={{ flex: 0.75 }}>
+                        <span>Status</span>
+                      </section>
+                    </OrderHead>
+                    {ordersList?.map((order: OrderProps) => {
+                      const oldDate = cutStrDate(order.createdAt, 'T')
+                      const newDate = convertDate(oldDate)
+
+                      const buttonClasses = classDefine(order?.situation)
+
+                      return (
+                        <OrderBody key={order.id}>
+                          <section style={{ flex: 0.5 }}>
+                            <span>{newDate}</span>
+                          </section>
+                          <section style={{ flex: 0.75 }}>
+                            <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                          </section>
+                          <section style={{ flex: 0.35 }}>
+                            <span>R$ {order.amount.toFixed(2)}</span>
+                          </section>
+                          <section className="center" style={{ flex: 0.75 }}>
+                            <AiFillEye
+                              size={24}
+                              onClick={() => {
+                                toggleModalOrder(order)
+                                setClassButton(buttonClasses)
+                                setDate(newDate)
+                              }}
+                            />
+                          </section>
+                          <button
+                            className={buttonClasses}
+                            style={{ flex: 0.75 }}
+                          >
+                            {order.situation}
+                          </button>
+                        </OrderBody>
+                      )
+                    })}
+                  </>
+                )}
               </>
             )}
-            <footer>
-              <Pagination
-                onPageChange={setPage}
-                totalCountOfRegisters={totalOrders}
-                currentPage={page}
-                registersPerPage={8}
-              />
-            </footer>
+            {ordersList.length > 0 ? (
+              <footer>
+                <Pagination
+                  onPageChange={setPage}
+                  totalCountOfRegisters={totalOrders}
+                  currentPage={page}
+                  registersPerPage={8}
+                />
+              </footer>
+            ) : (
+              <></>
+            )}
           </MainArea>
         </Content>
 
@@ -543,5 +564,29 @@ const MainArea = styled.main`
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+`
+const EmptyContainer = styled.div`
+  width: 100%;
+  padding: 2rem 0 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    img {
+      width: 60%;
+      height: 60%;
+    }
+    p {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
   }
 `

@@ -1,21 +1,14 @@
 import Head from 'next/head'
-import Header from '../components/molecules/HeaderShop'
+import Header from 'components/molecules/HeaderShop'
+import FooterContact from 'components/molecules/FooterContact'
 
 import styled from 'styled-components'
 import Carousel from 'components/atoms/Carousel'
-import { Footer } from 'styles/pages/Product'
-import {
-  AiFillFacebook,
-  AiFillPhone,
-  AiOutlineWhatsApp,
-  AiOutlineSearch,
-  AiOutlineRight
-} from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlineRight } from 'react-icons/ai'
 
 import { api } from 'services/apiClient'
 import { Input } from 'components/molecules/SearchInput'
 import { CardServices } from 'components/molecules/CardServices'
-import MapBdv from 'components/molecules/MapBdv'
 import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
@@ -24,14 +17,14 @@ import { useState } from 'react'
 import { Drawer } from 'styles/pages/Store'
 import { IoIosClose } from 'react-icons/io'
 import router from 'next/router'
-
 interface Landing {
-  stores: []
+  products: []
 }
 
-const Landing = ({ stores }: Landing) => {
+const Landing = ({ products }: Landing) => {
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
+
   return (
     <Wrapper>
       <Head>
@@ -66,12 +59,7 @@ const Landing = ({ stores }: Landing) => {
           </HeaderMob>
         )}
         <Banner>
-          <img
-            src="/images/logo2.svg"
-            alt="banner"
-            width={319.19}
-            height={185.22}
-          />
+          <img src="/images/logo2.svg" alt="banner" width={320} height={186} />
         </Banner>
 
         <ContentProduct>
@@ -89,17 +77,18 @@ const Landing = ({ stores }: Landing) => {
             <p>Ver todas as categorias</p>
             <AiOutlineRight size={25} color="var(--color-primary)" />
           </MoreCategory>
-          {stores.length !== 0 && (
+          {products.length && (
             <>
               <div className="carousel-container">
                 <div className="carousel-item">
                   <span className="title">Em promoção</span>
-                  <Carousel data={stores} isProduct promo />
+
+                  <Carousel data={products} isProduct promo />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Veja as últimas novidades</span>
-                  <Carousel data={stores} isProduct />
+                  <Carousel data={products} isProduct />
                 </div>
               </div>
               <h1 style={{ alignSelf: 'flex-start' }}>Lojas</h1>
@@ -107,43 +96,19 @@ const Landing = ({ stores }: Landing) => {
                 <div className="carousel-item">
                   <span className="title">Eletrônicos e eletrodomésticos</span>
 
-                  <Carousel data={stores} />
+                  <Carousel data={products} />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Restaurantes</span>
-                  <Carousel data={stores} />
+                  <Carousel data={products} />
                 </div>
               </div>
             </>
           )}
         </ContentProduct>
 
-        <Footer>
-          <div>
-            <h1>Boa de Venda</h1>
-            <span>CNPJ: 26.745.054/0001-70</span>
-            <h1>Contato</h1>
-
-            <span>
-              <AiFillPhone size={24} color="var(--gray-700)" />
-              +55 (86) 9 8178-9622
-            </span>
-
-            <span>
-              <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-              Whatsapp
-            </span>
-
-            <ContainerTerms>
-              <a href="">
-                <span>Termos de Uso e Políticas de Privacidade</span>
-              </a>
-              <span>Copyright ©️ 2021 | Sino – Marketing & Tecnologia</span>
-            </ContainerTerms>
-          </div>
-          <MapBdv />
-        </Footer>
+        <FooterContact />
       </Container>
 
       <CartButton />
@@ -151,12 +116,12 @@ const Landing = ({ stores }: Landing) => {
   )
 }
 
-export const getServerSideProps = async (ctx) => {
-  const { data } = await api.get('stores')
+export const getServerSideProps = async () => {
+  const { data } = await api.get('products/promoted')
 
   return {
     props: {
-      stores: data
+      products: data
     }
   }
 }

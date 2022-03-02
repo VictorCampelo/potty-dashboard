@@ -33,7 +33,7 @@ export const Checkbox = ({
 
       {recovery && (
         <Link href="/recover">
-          <a>Esqueceu sua senha</a>
+          <a>Esqueceu sua senha?</a>
         </Link>
       )}
 

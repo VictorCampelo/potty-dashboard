@@ -369,7 +369,8 @@ const ProductShow = () => {
           productId,
           storeId,
           title,
-          enabled: true
+          enabled: true,
+          image: actualFile?.url
         }
       ])
 
@@ -383,13 +384,54 @@ const ProductShow = () => {
             productId,
             storeId,
             title,
-            enabled: true
+            enabled: true,
+            image: actualFile?.url
           }
         ])
       )
     }
 
     notifySuccess('Item adicionado no carrinho')
+  }
+
+  function handleDirectBuy() {
+    if (items.find((it) => it.productId == productId)) {
+      const copyItems = [...items]
+      copyItems.forEach((it) => {
+        if (it.productId == productId) it.amount = it.amount + 1
+      })
+    } else {
+      setItems([
+        ...items,
+        {
+          amount: 1,
+          price: discount ? getDiscount(price, discount) : price,
+          productId,
+          storeId,
+          title,
+          enabled: true,
+          image: actualFile?.url
+        }
+      ])
+
+      localStorage.setItem(
+        'ultimo.cart.items',
+        JSON.stringify([
+          ...items,
+          {
+            amount: 1,
+            price,
+            productId,
+            storeId,
+            title,
+            enabled: true,
+            image: actualFile?.url
+          }
+        ])
+      )
+    }
+
+    router.push('/cart/continue')
   }
 
   /**
@@ -635,6 +677,7 @@ const ProductShow = () => {
                         paddingRight: '0.5rem',
                         fontWeight: 600
                       }}
+                      onClick={handleDirectBuy}
                     />
                     <BigButton
                       title="ADICIONE AO CARRINHO"
@@ -939,7 +982,7 @@ const ProductShow = () => {
             <h1 style={{ height: '40px' }}>Produtos relacionados</h1>
             <div className="carousel-container">
               <div className="carousel-item">
-                <Carousel data={fakeProducts} isProduct />
+                <Carousel data={fakeProducts as any} isProduct />
               </div>
             </div>
           </ProductWrapper>

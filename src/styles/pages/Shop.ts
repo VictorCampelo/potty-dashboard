@@ -68,13 +68,13 @@ export const Container = styled.div`
 `
 
 export const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
 
-  width: auto;
-  max-width: 800px;
+  width: 600px;
+  height: 450px;
+  /* max-width: 800px; */
+
+  /* styles of multselect categories */
 
   .exit-container {
     display: flex;
@@ -138,12 +138,27 @@ export const ModalContainer = styled.div`
   }
 
   .categories-container {
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
+    height: 300px;
 
-    width: 500px;
+    /* width: 500px; */
     margin-bottom: var(--spacing-xs);
+
+    .rmsc {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .wrapper-categories-selecteds {
+      display: flex;
+      flex-wrap: wrap;
+      width: 500px;
+      margin: 0 auto;
+      justify-content: space-around;
+      margin-top: 50px;
+    }
   }
 
   .category-container {
@@ -258,7 +273,8 @@ export const ModalContainer = styled.div`
     align-items: center;
     width: 100%;
 
-    margin-top: var(--spacing-md);
+    /* margin-top: var(--spacing-md); */
+    margin-top: 20px;
 
     Button {
       width: 132px;

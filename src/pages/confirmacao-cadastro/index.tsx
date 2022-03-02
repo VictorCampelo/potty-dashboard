@@ -110,7 +110,6 @@ const BusinessRegisterConfirm = () => {
             <Input
               label="Token"
               placeholder="______"
-              icon={<HiOutlineKey size={20} />}
               maxLength={6}
               {...register('tokenDigits')}
               error={error || errors.tokenDigits}

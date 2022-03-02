@@ -543,10 +543,12 @@ const CartContinue = () => {
                 <h1>Produtos</h1>
 
                 <div className="productscontainer">
-                  {items.map((it) => (
+                  {items.map((it) => {
+                    console.log(it)
+                    return (
                     <ProductItem key={it.productId}>
                       <div className="imgcontainer">
-                        <img src="" alt="" />
+                        <img src={it?.image} alt="" />
                       </div>
 
                       <div className="infocontainer">
@@ -555,7 +557,7 @@ const CartContinue = () => {
                         <span>{it.amount}x</span>
                       </div>
                     </ProductItem>
-                  ))}
+                  )})}
                 </div>
               </ProductsContainer>
             </div>
@@ -849,10 +851,16 @@ export const ProductItem = styled.div`
   margin-top: 0.5rem;
 
   .imgcontainer {
+    display: flex;
     width: 60px;
     height: 60px;
     border-radius: 8px;
     background: #f3f3f3;
+    object-fit: contain;
+
+    img {
+      border-radius: 8px;
+    }
   }
 
   .infocontainer {

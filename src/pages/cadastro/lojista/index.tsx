@@ -33,9 +33,6 @@ const registerFormSchema = yup.object().shape({
     .string()
     .required('Senha obrigatória')
     .min(8, 'Mínimo 8 caracteres'),
-  // .matches(/[A-Z]+/, 'Deve conter, um caracter maiúsculo')
-  // .matches(/[@$!%*#?&]+/, 'Deve conter, um caracter especial')
-  // .matches(/\d+/, 'Deve conter, um número'),
   passwordConfirmation: yup
     .string()
     .required('Confirmação de senha obrigatória')
@@ -50,14 +47,10 @@ const RegisterShopkeeper = () => {
   const [confirm, setConfirm] = useState(false)
   const [errorEmail, setErrorEmail] = useState(false)
 
-  function toggleConfirm() {
-    setConfirm(!confirm)
-  }
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues
+    formState: { errors, isSubmitting }
   } = useForm({
     resolver: yupResolver(registerFormSchema)
   })
@@ -118,7 +111,6 @@ const RegisterShopkeeper = () => {
               label="Email"
               placeholder="exemplo@gmail.com"
               className="input"
-              icon={<FiMail size={20} color="var(--black-800)" />}
               {...register('email')}
               textError={errors.email?.message || 'Email já cadastrado'}
               error={errors.email || errorEmail}

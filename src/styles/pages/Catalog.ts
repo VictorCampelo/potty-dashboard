@@ -57,8 +57,24 @@ export const Container = styled.div`
         border-radius: 30px 30px 0 0;
         padding: 20px;
 
+        h1 {
+          display: none;
+        }
+
         ${[sizes.down('sm')]} {
           flex-direction: row-reverse;
+          padding-top: 120px;
+
+          h1 {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            font-size: var(--font-size-xlg);
+          }
         }
 
         .addBtn {
@@ -104,6 +120,12 @@ export const Container = styled.div`
 
     .products-container {
       padding: var(--spacing-xxs) var(--spacing-md);
+
+      ${[sizes.down('sm')]} {
+        padding: var(--spacing-xxs);
+        padding-top: var(--spacing-md);
+        gap: 32px;
+      }
 
       display: flex;
       flex-direction: column;
@@ -151,15 +173,15 @@ export const AddProductModalContainer = styled.form`
   .row {
     display: flex;
     gap: 1rem;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0;
   }
 
   .buttonContainer {
     display: flex;
     margin-top: 24px;
+    gap: 0.8rem;
     ${[sizes.down('sm')]} {
-      flex-direction: column;
-      gap: 1rem;
+      flex-direction: column-reverse;
     }
   }
 
@@ -225,6 +247,7 @@ export const AddProductModalContainer = styled.form`
       margin-top: -30px;
       display: flex;
       flex-direction: column;
+      gap: 0.5rem;
 
       textarea {
         resize: none;
@@ -238,16 +261,25 @@ export const AddProductModalContainer = styled.form`
           display: flex;
           flex-direction: column;
 
+          cursor: pointer;
+
           margin: 0 10px;
 
           .left-arrow {
             margin-top: -5px;
+          }
+
+          &:hover {
+            opacity: 0.7;
           }
         }
       }
     }
 
     .right-area {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
       margin-left: 30px;
       margin-top: -30px;
 
@@ -256,12 +288,10 @@ export const AddProductModalContainer = styled.form`
         margin-top: -22px;
       }
 
-      .input-container {
-        margin-bottom: 1rem;
-      }
-
-      h3 {
-        margin-bottom: var(--spacing-xxxs);
+      .text-categories-added {
+        font-size: 12px;
+        color: #363f4e;
+        margin: -0.8rem 0 var(--spacing-xxxs) 0;
       }
     }
 
@@ -276,7 +306,6 @@ export const AddProductModalContainer = styled.form`
     }
 
     h2 {
-      margin-top: 80px;
       font-family: Poppins;
       font-style: normal;
       font-weight: normal;
@@ -338,12 +367,14 @@ export const AddProductModalContainer = styled.form`
     }
 
     .array-fotos {
-      margin-top: 30px;
+      margin-top: 15px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 4px;
+      gap: 0.25rem;
+      padding: 0.5rem;
+
+      overflow: auto;
 
       .card-image {
         width: 100px;
@@ -549,9 +580,9 @@ export const AddCategoryModalContainer = styled.div`
   .buttonContainer {
     display: flex;
     margin-top: 24px;
+    gap: 1rem;
     ${[sizes.down('sm')]} {
-      flex-direction: column;
-      gap: 1rem;
+      flex-direction: column-reverse;
     }
   }
 `

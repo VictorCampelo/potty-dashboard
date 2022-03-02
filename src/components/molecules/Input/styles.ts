@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import sizes from 'utils/sizes'
 
 interface ContainerProps {
   error: boolean
@@ -11,6 +10,7 @@ export const Container = styled.div<ContainerProps>`
   max-width: 500px;
   display: flex;
   flex-direction: column;
+
   ${(props) => 'flex: ' + props.flex + ';'}
 
   .bar {
@@ -40,7 +40,7 @@ export const Container = styled.div<ContainerProps>`
     }
   }
 
-  .inputContainter {
+  .inputContainer {
     height: 2.5rem;
 
     display: flex;
@@ -79,5 +79,10 @@ export const Container = styled.div<ContainerProps>`
     }
 
     ${(props) => props.error && 'border: 1px solid var(--red);'}
+  }
+
+  .inputContainer.disabled,
+  .inputContainer.disabled input {
+    background: #d8d9dd;
   }
 `

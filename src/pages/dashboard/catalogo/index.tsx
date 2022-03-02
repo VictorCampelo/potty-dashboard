@@ -9,7 +9,7 @@ import {
   getCategories,
   getCupom,
   getProducts
-} from '../../../services/bussiness.services'
+} from 'services/bussiness.services'
 
 import {
   createCategory,
@@ -18,30 +18,25 @@ import {
   deleteProduct,
   updateCategory,
   updateProduct
-} from '../../../services/products.services'
+} from 'services/products.services'
 
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { FiPlus, FiSearch } from 'react-icons/fi'
+import { FiPlus, FiSearch, FiArrowLeft } from 'react-icons/fi'
 import { IoIosClose, IoMdCamera } from 'react-icons/io'
 import { FaMoneyBill, FaPercentage, FaCoins } from 'react-icons/fa'
 import { GoArrowRight, GoArrowLeft } from 'react-icons/go'
 import { IoTrashBinOutline } from 'react-icons/io5'
 import { FiBox } from 'react-icons/fi'
-import {
-  MdUpload,
-  MdOutlineArrowBackIosNew,
-  MdOutlineArrowForwardIos
-} from 'react-icons/md'
 
-import { Button } from '../../../components/atoms/Button'
-import CatalogTabs from '../../../components/molecules/CatalogTabs'
-import { CategoryListCard } from '../../../components/molecules/CategoryListCard'
-import CustomModal from '../../../components/molecules/CustomModal'
-import DrawerLateral from '../../../components/molecules/DrawerLateral'
-import DrawerBottom from '../../../components/molecules/DrawerBottom'
-import { Input } from '../../../components/molecules/Input'
-import { ProductListCard } from '../../../components/molecules/ProductListCard'
-import { TextArea } from '../../../components/molecules/TextArea'
+import { Button } from 'components/atoms/Button'
+import CatalogTabs from 'components/molecules/CatalogTabs'
+import { CategoryListCard } from 'components/molecules/CategoryListCard'
+import CustomModal from 'components/molecules/CustomModal'
+import DrawerLateral from 'components/molecules/DrawerLateral'
+import DrawerBottom from 'components/molecules/DrawerBottom'
+import { Input } from 'components/molecules/Input'
+import { ProductListCard } from 'components/molecules/ProductListCard'
+import { TextArea } from 'components/molecules/TextArea'
 import {
   AddCategoryModalContainer,
   AddProductModalContainer,
@@ -50,7 +45,7 @@ import {
   EditCategoryModalContainer,
   ExcludeModalContainer,
   EmptyContainer
-} from '../../../styles/pages/Catalog'
+} from 'styles/pages/Catalog'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { MultiSelect } from 'components/molecules/MultiSelect'
@@ -61,19 +56,11 @@ import CupomItem from 'components/molecules/CupomItem'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { string } from 'yup/lib/locale'
+import { format } from 'date-fns'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
-import { format, parseISO } from 'date-fns'
-
-type CupomType = {
-  code: string
-  discountPorcent: number
-  maxUsage: number
-  type: string
-  range: string
-  categoriesIds: string[]
-  validate: string
-}
+import { Checkbox } from 'components/atoms/Checkbox'
+import formatToBrl from 'utils/formatToBrl'
+import formatToNumber from 'utils/formatToNumber'
 
 type CategoryType = {
   name: string
@@ -143,6 +130,8 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
+  const [ilimitedQuantity, setIlimitedQuantity] = useState(false)
+  const [enableDiscount, setEnableDiscount] = useState(false)
 
   const [addCupomModal, setAddCupomModal] = useState(false)
 
@@ -153,34 +142,9 @@ const catalog = ({ storeId }: CatalogType) => {
   const [deleteCategoryId, setDeleteCategoryId] = useState('')
 
   const [category, setCategory] = useState('')
-  const [products, setProducts] = useState<ProductType[]>([
-    {
-      avgStars: 0,
-      createdAt: '',
-      deletedAt: '',
-      description: '',
-      discount: {},
-      files: [],
-      id: '',
-      inventory: 0,
-      lastSold: '',
-      price: 0,
-      sumFeedbacks: 0,
-      sumOrders: 0,
-      sumStars: 0,
-      tags: [],
-      title: '',
-      updatedAt: '',
-      categories: []
-    }
-  ])
+  const [products, setProducts] = useState<ProductType[]>([])
 
   const [categories, setCategories] = useState<CategoryType[]>([])
-  const [titleProduct, setTitleProduct] = useState('')
-  const [priceProduct, setPriceProduct] = useState(0)
-  const [descriptionProduct, setDescriptionProduct] = useState('')
-  const [inventoryProduct, setInventoryProduct] = useState('')
-  const [discountProduct, setDiscountProduct] = useState(0)
   const [installments, setInstallments] = useState({
     value: '1',
     label: '1x'
@@ -408,26 +372,17 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors, isSubmitting }
-  } = useForm({
+  const { register, handleSubmit, getValues } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = async (
-    values,
-    event
+    values
   ) => {
     const formData = new FormData()
     formData.append('title', values.title)
-    formData.append(
-      'price',
-      values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
-    )
-    formData.append('description', descriptionProduct)
+    formData.append('price', String(formatToNumber(String(values.price))))
+    formData.append('description', values.description)
     formData.append('inventory', values.inventory)
     formData.append('discount', values.discount || '0')
     formData.append(
@@ -454,11 +409,6 @@ const catalog = ({ storeId }: CatalogType) => {
       toast.success('Produto criado com sucesso')
 
       setAddModal(false)
-      setTitleProduct('')
-      setPriceProduct(0)
-      setDescriptionProduct('')
-      setInventoryProduct('')
-      setDiscountProduct(0)
       setSelectedCategories([])
     } catch (e) {
       console.error(e)
@@ -505,20 +455,17 @@ const catalog = ({ storeId }: CatalogType) => {
       loadData()
     } catch (e) {
       notify('Erro ao excluir cupom, tente novamente!')
-      console.log(e)
+      console.error(e)
     }
   }
 
   const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
-    values,
-    event
+    values
   ) => {
     const body = {
       title: values.title,
-      price: Number(
-        values.price.replace('R$ ', '').replaceAll('.', '').replaceAll(',', '.')
-      ),
-      description: descriptionProduct,
+      price: formatToNumber(values.price),
+      description: values.description,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
@@ -536,12 +483,7 @@ const catalog = ({ storeId }: CatalogType) => {
       notify('Erro ao editar produto, tente novamente!')
     }
 
-    setTitleProduct('')
-    setPriceProduct(0)
-    setDescriptionProduct('')
-    setInventoryProduct('')
     setEditProductId('')
-    setDiscountProduct(0)
     setSelectedCategories([])
     loadData()
     setEditProduct(false)
@@ -575,24 +517,27 @@ const catalog = ({ storeId }: CatalogType) => {
       const { data } = await getCupom()
 
       setCupons(data)
-
-      console.log(data)
     } catch (e) {
       notify('Erro ao buscar cupons')
     }
   }
 
+  const [radioSelected, setRadioSelected] = useState(1)
+  const [ilimitedCupom, setIlimitedCupom] = useState(false)
+
+  const [priceWithDiscount, setPriceWithDiscount] = useState(formatToBrl(0))
+
+  const updatePriceWithDiscount = () => {
+    const values = Array.from(getValues(['price', 'discount']))
+    const price = formatToNumber(values[0])
+    const discount = Number(values[1])
+    const newPrice = price - price * (discount / 100)
+    setPriceWithDiscount(formatToBrl(newPrice < 0 ? 0 : newPrice))
+  }
+
   useEffect(() => {
     loadData()
   }, [])
-
-  const [radioSelected, setRadioSelected] = useState(1)
-  const [ilimitedCupom, setIlimitedCupom] = useState(false)
-  const [typeCategory, setTypeCategory] = useState(false)
-
-  function handleChangeTypeCategory() {
-    setTypeCategory(!typeCategory)
-  }
 
   return (
     <>
@@ -763,6 +708,7 @@ const catalog = ({ storeId }: CatalogType) => {
             <div className="left-area">
               <Input
                 label="Nome do produto"
+                flex={0}
                 icon={<FiBox />}
                 placeholder="Nome do produto"
                 {...register('title')}
@@ -773,9 +719,8 @@ const catalog = ({ storeId }: CatalogType) => {
                 maxLength={600}
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
-                value={descriptionProduct}
+                flex={0}
                 {...register('description')}
-                onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
               <div className="row">
@@ -801,13 +746,14 @@ const catalog = ({ storeId }: CatalogType) => {
               <div className="desconto">
                 <Input
                   label="Desconto"
+                  disabled={!enableDiscount}
                   icon={<FaPercentage />}
                   mask="number"
                   placeholder="0.0%"
                   {...register('discount')}
                 />
 
-                <div className="arrows">
+                <div className="arrows" onClick={updatePriceWithDiscount}>
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
@@ -817,9 +763,18 @@ const catalog = ({ storeId }: CatalogType) => {
                   mask="monetary"
                   disabled
                   icon={<FaMoneyBill />}
+                  value={priceWithDiscount}
                   placeholder="R$ 0"
                 />
               </div>
+
+              <Checkbox
+                confirm={enableDiscount}
+                toggleConfirm={() => {
+                  setEnableDiscount(!enableDiscount)
+                }}
+                label="Desconto"
+              />
             </div>
 
             <div className="right-area">
@@ -829,7 +784,13 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
+                  disabled={ilimitedQuantity}
                   {...register('inventory')}
+                />
+                <Checkbox
+                  confirm={ilimitedQuantity}
+                  toggleConfirm={() => setIlimitedQuantity(!ilimitedQuantity)}
+                  label="Quantidade ilimitada"
                 />
               </div>
 
@@ -844,96 +805,90 @@ const catalog = ({ storeId }: CatalogType) => {
                 selectedValue={selectedCategories}
                 setSelectedValue={setSelectedCategories}
               />
-              <h3>{'Categorias adicionadas: ' + selectedCategories.length}</h3>
+              <span className="text-categories-added">
+                Categorias adicionadas: {selectedCategories.length}
+              </span>
 
-              <h2>Foto do produto</h2>
+              <div>
+                <h2>Fotos do produto</h2>
 
-              {/*<div className="foto">
-                 <div className="title-foto">Foto</div>
-                 <label htmlFor="image">
-                  Enviar foto
-                  <MdUpload size={20} />
-                </label>
-              </div> */}
-
-              <div className="array-fotos">
-                <MdOutlineArrowBackIosNew />
-                <input
-                  id="image"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple={false}
-                  maxLength={1}
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                  onClick={() => setCurrentImage(1)}
-                />
-                <input
-                  id="image1"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple={false}
-                  maxLength={1}
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                  onClick={() => setCurrentImage(2)}
-                />
-                <input
-                  id="image2"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple={false}
-                  maxLength={1}
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                  onClick={() => setCurrentImage(3)}
-                />
-                <label htmlFor="image">
-                  <div className="card-image">
-                    {imageSrc ? (
-                      <img
-                        src={imageSrc}
-                        width="100%"
-                        height="100%"
-                        alt="Foto Produto"
-                      />
-                    ) : (
-                      <IoMdCamera size={25} color="#6C7079" />
-                    )}
-                  </div>
-                </label>
-                <label htmlFor="image1">
-                  <div className="card-image">
-                    {imageSrc1 ? (
-                      <img
-                        src={imageSrc1}
-                        width="100%"
-                        height="100%"
-                        alt="Foto Produto"
-                      />
-                    ) : (
-                      <IoMdCamera size={25} color="#6C7079" />
-                    )}
-                  </div>
-                </label>
-                <label htmlFor="image2">
-                  <div className="card-image">
-                    {imageSrc2 ? (
-                      <img
-                        src={imageSrc2}
-                        width="100%"
-                        height="100%"
-                        alt="Foto Produto"
-                      />
-                    ) : (
-                      <IoMdCamera size={25} color="#6C7079" />
-                    )}
-                  </div>
-                </label>
-                <MdOutlineArrowForwardIos />
+                <div className="array-fotos">
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={false}
+                    maxLength={1}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                    onClick={() => setCurrentImage(1)}
+                  />
+                  <input
+                    id="image1"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={false}
+                    maxLength={1}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                    onClick={() => setCurrentImage(2)}
+                  />
+                  <input
+                    id="image2"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={false}
+                    maxLength={1}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                    onClick={() => setCurrentImage(3)}
+                  />
+                  <label htmlFor="image">
+                    <div className="card-image">
+                      {imageSrc ? (
+                        <img
+                          src={imageSrc}
+                          width="100%"
+                          height="100%"
+                          alt="Foto Produto"
+                        />
+                      ) : (
+                        <IoMdCamera size={25} color="#6C7079" />
+                      )}
+                    </div>
+                  </label>
+                  <label htmlFor="image1">
+                    <div className="card-image">
+                      {imageSrc1 ? (
+                        <img
+                          src={imageSrc1}
+                          width="100%"
+                          height="100%"
+                          alt="Foto Produto"
+                        />
+                      ) : (
+                        <IoMdCamera size={25} color="#6C7079" />
+                      )}
+                    </div>
+                  </label>
+                  <label htmlFor="image2">
+                    <div className="card-image">
+                      {imageSrc2 ? (
+                        <img
+                          src={imageSrc2}
+                          width="100%"
+                          height="100%"
+                          alt="Foto Produto"
+                        />
+                      ) : (
+                        <IoMdCamera size={25} color="#6C7079" />
+                      )}
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -968,9 +923,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 maxLength={600}
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
-                value={descriptionProduct}
                 {...register('description')}
-                onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
               <div className="row">
@@ -989,20 +942,20 @@ const catalog = ({ storeId }: CatalogType) => {
                   setSelectedValue={setInstallments}
                   loading={false}
                   placeholder="Selecione o número de parcelas"
-                  style={{ width: '50%' }}
                 />
               </div>
 
               <div className="desconto">
                 <Input
                   label="Desconto"
+                  disabled={!enableDiscount}
                   icon={<FaPercentage />}
                   mask="number"
                   placeholder="0.0%"
                   {...register('discount')}
                 />
 
-                <div className="arrows">
+                <div className="arrows" onClick={updatePriceWithDiscount}>
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
@@ -1010,34 +963,23 @@ const catalog = ({ storeId }: CatalogType) => {
                 <Input
                   label="Preço com desconto"
                   mask="monetary"
-                  value={(
-                    (Number(
-                      getValues?.('discount')
-                        ?.replace('R$ ', '')
-                        ?.replaceAll('.', '')
-                        ?.replaceAll(',', '.') || '0'
-                    ) *
-                      Number(discountProduct)) /
-                    100
-                  ).toFixed(2)}
+                  value={priceWithDiscount}
                   disabled
                   icon={<FaMoneyBill />}
                   placeholder="R$ 0"
                 />
               </div>
+
+              <Checkbox
+                confirm={enableDiscount}
+                toggleConfirm={() => {
+                  setEnableDiscount(!enableDiscount)
+                }}
+                label="Desconto"
+              />
             </div>
 
             <div className="right-area">
-              {/* <div className="input-container">
-                <Input
-                  label="Quantidade atual"
-                  icon={<FaCoins />}
-                  placeholder="0"
-                  mask="number"
-                  {...register('inventory')}
-                />
-              </div> */}
-
               <MultiSelect
                 loading={false}
                 name="Categorias"
@@ -1051,94 +993,86 @@ const catalog = ({ storeId }: CatalogType) => {
               />
               <h3>{'Categorias adicionadas: ' + selectedCategories.length}</h3>
 
-              <h2>Foto do produto</h2>
+              <div>
+                <h2>Fotos do produto</h2>
 
-              {/*<div className="foto">
-                 <div className="title-foto">Foto</div>
-                 <label htmlFor="image">
-                  Enviar foto
-                  <MdUpload size={20} />
-                </label>
-              </div> */}
-
-              <div className="array-fotos">
-                <MdOutlineArrowBackIosNew />
-                <input
-                  id="image"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple={false}
-                  maxLength={1}
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                  onClick={() => setCurrentImage(1)}
-                />
-                <input
-                  id="image1"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple={false}
-                  maxLength={1}
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                  onClick={() => setCurrentImage(2)}
-                />
-                <input
-                  id="image2"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple={false}
-                  maxLength={1}
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                  onClick={() => setCurrentImage(3)}
-                />
-                <label htmlFor="image">
-                  <div className="card-image">
-                    {imageSrc ? (
-                      <img
-                        src={imageSrc}
-                        width="100%"
-                        height="100%"
-                        alt="Foto Produto"
-                      />
-                    ) : (
-                      <IoMdCamera size={25} color="#6C7079" />
-                    )}
-                  </div>
-                </label>
-                <label htmlFor="image1">
-                  <div className="card-image">
-                    {imageSrc1 ? (
-                      <img
-                        src={imageSrc1}
-                        width="100%"
-                        height="100%"
-                        alt="Foto Produto"
-                      />
-                    ) : (
-                      <IoMdCamera size={25} color="#6C7079" />
-                    )}
-                  </div>
-                </label>
-                <label htmlFor="image2">
-                  <div className="card-image">
-                    {imageSrc2 ? (
-                      <img
-                        src={imageSrc2}
-                        width="100%"
-                        height="100%"
-                        alt="Foto Produto"
-                      />
-                    ) : (
-                      <IoMdCamera size={25} color="#6C7079" />
-                    )}
-                  </div>
-                </label>
-                <MdOutlineArrowForwardIos />
+                <div className="array-fotos">
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={false}
+                    maxLength={1}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                    onClick={() => setCurrentImage(1)}
+                  />
+                  <input
+                    id="image1"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={false}
+                    maxLength={1}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                    onClick={() => setCurrentImage(2)}
+                  />
+                  <input
+                    id="image2"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple={false}
+                    maxLength={1}
+                    onChange={onFileChange}
+                    style={{ display: 'none' }}
+                    onClick={() => setCurrentImage(3)}
+                  />
+                  <label htmlFor="image">
+                    <div className="card-image">
+                      {imageSrc ? (
+                        <img
+                          src={imageSrc}
+                          width="100%"
+                          height="100%"
+                          alt="Foto Produto"
+                        />
+                      ) : (
+                        <IoMdCamera size={25} color="#6C7079" />
+                      )}
+                    </div>
+                  </label>
+                  <label htmlFor="image1">
+                    <div className="card-image">
+                      {imageSrc1 ? (
+                        <img
+                          src={imageSrc1}
+                          width="100%"
+                          height="100%"
+                          alt="Foto Produto"
+                        />
+                      ) : (
+                        <IoMdCamera size={25} color="#6C7079" />
+                      )}
+                    </div>
+                  </label>
+                  <label htmlFor="image2">
+                    <div className="card-image">
+                      {imageSrc2 ? (
+                        <img
+                          src={imageSrc2}
+                          width="100%"
+                          height="100%"
+                          alt="Foto Produto"
+                        />
+                      ) : (
+                        <IoMdCamera size={25} color="#6C7079" />
+                      )}
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -1276,7 +1210,6 @@ const catalog = ({ storeId }: CatalogType) => {
               <MultiSelect
                 loading={false}
                 name="Categorias"
-                disabled={!typeCategory}
                 options={categories.map((cat) => ({
                   value: String(cat.id),
                   label: cat.name
@@ -1285,7 +1218,9 @@ const catalog = ({ storeId }: CatalogType) => {
                 selectedValue={selectedCategories}
                 setSelectedValue={setSelectedCategories}
               />
-              <h3>{'Categorias adicionadas: ' + selectedCategories.length}</h3>
+              <span className="text-categories-added">
+                Categorias adicionadas: {selectedCategories.length}
+              </span>
 
               <div className="radio-area">
                 <input type="checkbox" name="type" value="1" id="priv" />
@@ -1372,6 +1307,12 @@ const catalog = ({ storeId }: CatalogType) => {
         <div className="area">
           <div className="list-container">
             <header className="header">
+              <a href="/">
+                <h1>
+                  <FiArrowLeft size={32} color="var(--gray-700)" /> Produtos
+                </h1>
+              </a>
+
               <button
                 className="addBtn"
                 onClick={
@@ -1404,30 +1345,28 @@ const catalog = ({ storeId }: CatalogType) => {
                 toggleState={toggleState}
                 content1={
                   <div className="products-container">
-                    {products.length > 0 ? (
-                      products.map((product, index) => {
-                        return (
-                          <ProductListCard
-                            key={product?.id + '-' + index}
-                            icon={product?.files[0]?.url}
-                            name={product?.title}
-                            code={product?.id}
-                            category={product?.categories}
-                            amount={product?.inventory}
-                            price={product?.price}
-                            excludeBtn={() => {
-                              handleOpenExcludeModal()
-                              setDeleteProductId(product.id)
-                            }}
-                            editBtn={() => {
-                              setEditProductId(product.id)
-                              setEditProduct(true)
-                            }}
-                            isRed={true}
-                            isGreen={true}
-                          />
-                        )
-                      })
+                    {products.length ? (
+                      products.map((product) => (
+                        <ProductListCard
+                          key={product?.id}
+                          icon={product?.files[0]?.url}
+                          name={product?.title}
+                          code={product?.id}
+                          category={product?.categories}
+                          amount={product?.inventory}
+                          price={product?.price}
+                          excludeBtn={() => {
+                            handleOpenExcludeModal()
+                            setDeleteProductId(product.id)
+                          }}
+                          editBtn={() => {
+                            setEditProductId(product.id)
+                            setEditProduct(true)
+                          }}
+                          isRed={true}
+                          isGreen={true}
+                        />
+                      ))
                     ) : (
                       <EmptyContainer>
                         <div>

@@ -101,7 +101,6 @@ const Register = () => {
                 label="Email"
                 placeholder="exemplo@gmail.com"
                 className="input"
-                icon={<FiMail size={20} color="var(--black-800)" />}
                 {...register('email')}
                 textError={errors.email?.message}
                 error={errors.email}
@@ -164,7 +163,6 @@ const Register = () => {
               </div>
             </>
           )}
-          <Checkbox confirm={confirm} toggleConfirm={toggleConfirm} termsUse />
           <div className="buttonContainer">
             <Button title="CONTINUAR" type="submit" />
           </div>

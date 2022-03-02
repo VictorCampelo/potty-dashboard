@@ -21,12 +21,12 @@ const Register = () => {
     try {
       const res = await recoverPassword(email)
 
+      console.log(res)
+
       router.push('/recover/token')
     } catch (e) {
       console.error(e)
     }
-
-    router.push('recover/token')
   }
 
   return (
@@ -40,6 +40,7 @@ const Register = () => {
         <form>
           <div className="recoverTitle">
             <h1>Recuperação de senha</h1>
+            <br></br>
             <p>
               Para recuperar sua senha, informe seu email para receber o token
               para poder realizar a alteração da senha.

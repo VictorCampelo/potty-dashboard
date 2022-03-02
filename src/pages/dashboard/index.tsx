@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DrawerLateral from '../../components/molecules/DrawerLateral'
 import DrawerBottom from '../../components/molecules/DrawerBottom'
 import CardShop from '../../components/molecules/CardShop'
@@ -25,10 +25,15 @@ import {
 
 import { AuthContext } from 'contexts/AuthContext'
 import formatToBrl from 'utils/formatToBrl'
-
+import { api } from 'services/apiClient'
+import NoneItems from 'components/atoms/NoneItems'
 
 const Shopkeeper = () => {
-  const [options, setOptions] = useState({})
+  const [lastSolds, setLastSolds] = useState([])
+  const [mostSolds, setMostSolds] = useState([])
+  const [lastFeedback, setLastFeedback] = useState([])
+  const [amountSold, setAmountSolds] = useState([])
+  const [income, setIncome] = useState([])
 
   const dataChart = [
     {
@@ -114,6 +119,51 @@ const Shopkeeper = () => {
     }
   ]
 
+  const getMostSolds = async () => {
+    try {
+      const { data } = await api.get('dashboard/mostSolds')
+      setMostSolds(data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const getLastSolds = async () => {
+    try {
+      const { data } = await api.get('dashboard/lastSolds')
+      setLastSolds(data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const getLastFeedbacks = async () => {
+    try {
+      const { data } = await api.get('dashboard/lastFeedbacks')
+      setLastFeedback(data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const getAmountSoldProducts = async () => {
+    try {
+      const { data } = await api.get('dashboard/amountSoldProducts')
+      setAmountSolds(data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const getIncome = async () => {
+    try {
+      const { data } = await api.get('dashboard/income')
+      setIncome(data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
@@ -131,6 +181,14 @@ const Shopkeeper = () => {
     return null
   }
 
+  useEffect(() => {
+    getMostSolds()
+    getLastSolds()
+    getLastFeedbacks()
+    getAmountSoldProducts()
+    getIncome()
+  }, [])
+
   return (
     <>
       <Head>
@@ -141,66 +199,21 @@ const Shopkeeper = () => {
 
         <div className="cards-area">
           <div className="top-area">
-            <CardShop title="Produtos mais vendidos" dataSelector width="400">
-              <CardProduct
-                srcImg="/images/coffee.png"
-                name="Café Preto"
-                cod="cod: 6932"
-                quant="10.569"
-              />
-
-              <CardProduct
-                srcImg="/images/cheese-bread.png"
-                name="Pão de queijo"
-                cod="cod: 5686"
-                quant="4.860"
-              />
-
-              <CardProduct
-                srcImg="/images/coffee2.png"
-                name="Cappuccino"
-                cod="cod: 583"
-                quant="2.956"
-              />
-
-              <CardProduct
-                srcImg="/images/coffee1.png"
-                name="Chá verde"
-                cod="cod: 6972"
-                quant="1.658"
-              />
-
-              <CardProduct
-                srcImg="/images/cheese-bread.png"
-                name="Pão de queijo"
-                cod="cod: 5686"
-                quant="4.860"
-              />
-
-              <CardProduct
-                srcImg="/images/coffee2.png"
-                name="Cappuccino"
-                cod="cod: 583"
-                quant="2.956"
-              />
-
-              <CardProduct
-                srcImg="/images/coffee1.png"
-                name="Chá verde"
-                cod="cod: 6972"
-                quant="1.658"
-              />
-
-              <CardProduct
-                srcImg="/images/coffee1.png"
-                name="Chá verde"
-                cod="cod: 6972"
-                quant="1.658"
-              />
+            <CardShop title="Produtos mais vendidos" width="400">
+              {mostSolds.map((product) => (
+                <CardProduct
+                  key={product.id}
+                  srcImg="/images/coffee.png"
+                  name="Café Preto"
+                  cod="cod: 6932"
+                  quant="10.569"
+                />
+              ))}
+              {mostSolds.length === 0 && <NoneItems />}
             </CardShop>
 
-            <CardShop title="Rendimentos" dataSelector>
-              <ResponsiveContainer width="90%" height="90%">
+            <CardShop title="Rendimentos">
+              {/* <ResponsiveContainer width="90%" height="90%">
                 <LineChart width={900} height={250} data={dataChartMonths}>
                   <XAxis dataKey="name" />
                   <YAxis width={10} style={{ display: 'none' }} />
@@ -235,95 +248,43 @@ const Shopkeeper = () => {
                     }}
                   ></Line>
                 </LineChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> */}
+              <NoneItems />
             </CardShop>
           </div>
 
           <div className="bottom-area">
             <CardShop title="Últimos Feedbacks" width="400">
-              <CardFeedback
-                name="Henrique Soares"
-                quantStar={5} //max stars is 5
-                text="Entrega extremamente rápida, entregador educado e gentil, produto exatamente como o descrito. Parabéns! Com certeza voltarei a comprar!"
-                time="Há 30 minutos"
-                width={280}
-              />
-              <CardFeedback
-                name="Sara Sousa"
-                quantStar={2} //max stars is 5
-                text="Infelizmente o produto veio errado, acabei me perjudicando por esse erro bobo."
-                time="Há 2 horas"
-                width={280}
-              />
-              <CardFeedback
-                name="Francisco José"
-                quantStar={5} //max stars is 5
-                text="Produto perfeito!! Parabéns aos responsáveis"
-                time="Há 3 horas"
-                width={280}
-              />
-              <CardFeedback
-                name="Francisco José"
-                quantStar={5} //max stars is 5
-                text="Produto perfeito!! Parabéns aos responsáveis"
-                time="Há 3 horas"
-                width={280}
-              />
-              <CardFeedback
-                name="Francisco José"
-                quantStar={5} //max stars is 5
-                text="Produto perfeito!! Parabéns aos responsáveis"
-                time="Há 3 horas"
-                width={280}
-              />
+              {lastFeedback.map((feedback) => (
+                <CardFeedback
+                  key={feedback.id}
+                  name="Sara Sousa"
+                  quantStar={2}
+                  text="Infelizmente o produto veio errado, acabei me perjudicando por esse erro bobo."
+                  time="Há 2 horas"
+                  width={280}
+                />
+              ))}
+              {lastFeedback.length === 0 && <NoneItems />}
             </CardShop>
 
             <CardShop title="Últimos produtos vendidos" width="400">
-              <CardProduct
-                srcImg="/images/coffee.png"
-                name="Café Preto"
-                cod="cod: 6932"
-                quant="10.569"
-                tipo={2}
-                preco="2,00"
-              />
-              <CardProduct
-                srcImg="/images/cheese-bread.png"
-                name="Pão de queijo"
-                cod="cod: 6932"
-                quant="10.569"
-                tipo={2}
-                preco="3,00"
-              />
-              <CardProduct
-                srcImg="/images/coffee2.png"
-                name="Cappuccino"
-                cod="cod: 6932"
-                quant="10.569"
-                tipo={2}
-                preco="10,00"
-              />
-              <CardProduct
-                srcImg="/images/coffee1.png"
-                name="Chá verde"
-                cod="cod: 6932"
-                quant="10.569"
-                tipo={2}
-                preco="2,00"
-              />
-
-              <CardProduct
-                srcImg="/images/coffee.png"
-                name="Café Preto"
-                cod="cod: 6932"
-                quant="10.569"
-                tipo={2}
-                preco="2,00"
-              />
+              {lastSolds.map((product) => (
+                <CardProduct
+                  key={product.id}
+                  srcImg="/images/coffee.png"
+                  name="Café Preto"
+                  cod="cod: 6932"
+                  quant="10.569"
+                  tipo={2}
+                  preco="2,00"
+                />
+              ))}
+              {lastSolds.length === 0 && <NoneItems />}
             </CardShop>
 
-            <CardShop title="Quantidade de acessos a loja" dataSelector>
-              <ResponsiveContainer width="90%" minWidth="400px" height="90%">
+            <CardShop title="Quantidade de acessos a loja">
+              {/* <ResponsiveContainer width="90%" minWidth="400px" height="90%">
                 <BarChart
                   width={400}
                   height={360}
@@ -347,7 +308,8 @@ const Shopkeeper = () => {
                     ))}
                   </Bar>
                 </BarChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> */}
+              <NoneItems />
             </CardShop>
           </div>
         </div>
