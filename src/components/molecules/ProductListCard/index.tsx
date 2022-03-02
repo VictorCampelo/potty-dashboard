@@ -4,6 +4,7 @@ import { RiPencilFill, RiCamera2Fill } from 'react-icons/ri'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import formatToBrl from 'utils/formatToBrl'
 import { ellipsis } from 'functions/ellipsis'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import Popup from 'reactjs-popup'
 
 interface IProductListCard extends React.AllHTMLAttributes<HTMLAllCollection> {
@@ -102,29 +103,41 @@ export const ProductListCard = ({
                 </Popup>
               </div>
 
-              <div className="second-line">
-                <div className="key-value">
-                  <span className="key">Preço</span>
-                  <span className="value">{formatToBrl(price)}</span>
-                </div>
-                <div className="key-value">
-                  <span className="key">Quantidade</span>
-                  <span
-                    className="value"
-                    style={{ margin: amount ? 'auto' : '0' }}
-                  >
-                    {amount || 'Ilimitada'}
-                  </span>
-                </div>
-                <div className="key-value">
-                  <span className="key">Categoria</span>
-                  <span className="value">{category}</span>
-                </div>
-                <div className="key-value">
-                  <span className="key">Código</span>
-                  <span className="value">{ellipsis(code, 8)}</span>
-                </div>
-              </div>
+              <Swiper slidesPerView="auto">
+                <SwiperSlide>
+                  <div className="key-value">
+                    <span className="key">Preço</span>
+                    <span className="value">{formatToBrl(price)}</span>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                  <div className="key-value">
+                    <span className="key">Quantidade</span>
+                    <span
+                      className="value"
+                      style={{ margin: amount ? 'auto' : '0' }}
+                    >
+                      {amount || 'Ilimitada'}
+                    </span>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                  <div className="key-value">
+                    <span className="key">Categoria</span>
+                    <span className="value">{category}</span>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                  {' '}
+                  <div className="key-value">
+                    <span className="key">Código</span>
+                    <span className="value">{ellipsis(code, 8)}</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
 
             <div className="desc-container">

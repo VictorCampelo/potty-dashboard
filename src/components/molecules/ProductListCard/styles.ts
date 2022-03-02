@@ -7,6 +7,9 @@ interface ContainerProp {
 }
 
 export const Hr = styled.hr`
+  ${[sizes.up('sm')]} {
+    display: none;
+  }
   border: 0;
   width: 100%;
   height: 1px;
@@ -85,7 +88,7 @@ export const Container = styled.div<ContainerProp>`
       }
 
       .desc-container-mobile {
-        width: max-content;
+        width: 200px;
         ${[sizes.up('sm')]} {
           display: none;
         }
@@ -100,13 +103,7 @@ export const Container = styled.div<ContainerProp>`
           flex-direction: row;
           align-items: center;
           gap: 4px;
-        }
-        .second-line {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 12px;
-          margin-top: 7px;
+          margin-bottom: 7px;
         }
         .key-value {
           width: max-content;
