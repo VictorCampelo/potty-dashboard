@@ -130,7 +130,7 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
-  const [ilimitedQuantity, setIlimitedQuantity] = useState(true)
+  const [ilimitedQuantity, setIlimitedQuantity] = useState(false)
   const [enableDiscount, setEnableDiscount] = useState(false)
 
   const [addCupomModal, setAddCupomModal] = useState(false)
@@ -145,11 +145,6 @@ const catalog = ({ storeId }: CatalogType) => {
   const [products, setProducts] = useState<ProductType[]>([])
 
   const [categories, setCategories] = useState<CategoryType[]>([])
-  const [titleProduct, setTitleProduct] = useState('')
-  const [priceProduct, setPriceProduct] = useState(0)
-  const [descriptionProduct, setDescriptionProduct] = useState('')
-  const [inventoryProduct, setInventoryProduct] = useState('')
-  const [discountProduct, setDiscountProduct] = useState(0)
   const [installments, setInstallments] = useState({
     value: '1',
     label: '1x'
@@ -377,7 +372,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const { register, handleSubmit, getValues, setValue } = useForm({
+  const { register, handleSubmit, getValues } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
@@ -387,7 +382,7 @@ const catalog = ({ storeId }: CatalogType) => {
     const formData = new FormData()
     formData.append('title', values.title)
     formData.append('price', String(formatToNumber(String(values.price))))
-    formData.append('description', descriptionProduct)
+    formData.append('description', values.description)
     formData.append('inventory', values.inventory)
     formData.append('discount', values.discount || '0')
     formData.append(
@@ -414,11 +409,6 @@ const catalog = ({ storeId }: CatalogType) => {
       toast.success('Produto criado com sucesso')
 
       setAddModal(false)
-      setTitleProduct('')
-      setPriceProduct(0)
-      setDescriptionProduct('')
-      setInventoryProduct('')
-      setDiscountProduct(0)
       setSelectedCategories([])
     } catch (e) {
       console.error(e)
@@ -465,7 +455,7 @@ const catalog = ({ storeId }: CatalogType) => {
       loadData()
     } catch (e) {
       notify('Erro ao excluir cupom, tente novamente!')
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -475,7 +465,7 @@ const catalog = ({ storeId }: CatalogType) => {
     const body = {
       title: values.title,
       price: formatToNumber(values.price),
-      description: descriptionProduct,
+      description: values.description,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
@@ -493,12 +483,7 @@ const catalog = ({ storeId }: CatalogType) => {
       notify('Erro ao editar produto, tente novamente!')
     }
 
-    setTitleProduct('')
-    setPriceProduct(0)
-    setDescriptionProduct('')
-    setInventoryProduct('')
     setEditProductId('')
-    setDiscountProduct(0)
     setSelectedCategories([])
     loadData()
     setEditProduct(false)
@@ -509,6 +494,8 @@ const catalog = ({ storeId }: CatalogType) => {
   const loadData = async () => {
     try {
       const { data } = await getProducts(storeId)
+
+      console.log(data)
 
       const formatedData = data.map((it) => ({
         ...it,
@@ -532,8 +519,6 @@ const catalog = ({ storeId }: CatalogType) => {
       const { data } = await getCupom()
 
       setCupons(data)
-
-      console.log(data)
     } catch (e) {
       notify('Erro ao buscar cupons')
     }
@@ -541,7 +526,6 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [radioSelected, setRadioSelected] = useState(1)
   const [ilimitedCupom, setIlimitedCupom] = useState(false)
-  const [typeCategory, setTypeCategory] = useState(false)
 
   const [priceWithDiscount, setPriceWithDiscount] = useState(formatToBrl(0))
 
@@ -737,10 +721,8 @@ const catalog = ({ storeId }: CatalogType) => {
                 maxLength={600}
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
-                value={descriptionProduct}
                 flex={0}
                 {...register('description')}
-                onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
               <div className="row">
@@ -943,9 +925,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 maxLength={600}
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
-                value={descriptionProduct}
                 {...register('description')}
-                onChange={(e) => setDescriptionProduct(e.target.value)}
               />
 
               <div className="row">
@@ -1232,7 +1212,6 @@ const catalog = ({ storeId }: CatalogType) => {
               <MultiSelect
                 loading={false}
                 name="Categorias"
-                disabled={!typeCategory}
                 options={categories.map((cat) => ({
                   value: String(cat.id),
                   label: cat.name
