@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { MultiSelect as Select } from 'components/molecules/Select'
@@ -21,7 +21,7 @@ import {
 } from 'services/products.services'
 
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { FiPlus, FiSearch } from 'react-icons/fi'
+import { FiPlus, FiSearch, FiArrowLeft } from 'react-icons/fi'
 import { IoIosClose, IoMdCamera } from 'react-icons/io'
 import { FaMoneyBill, FaPercentage, FaCoins } from 'react-icons/fa'
 import { GoArrowRight, GoArrowLeft } from 'react-icons/go'
@@ -1309,6 +1309,12 @@ const catalog = ({ storeId }: CatalogType) => {
         <div className="area">
           <div className="list-container">
             <header className="header">
+              <a href="/">
+                <h1>
+                  <FiArrowLeft size={32} color="var(--gray-700)" /> Produtos
+                </h1>
+              </a>
+
               <button
                 className="addBtn"
                 onClick={
