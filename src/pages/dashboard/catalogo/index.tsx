@@ -130,7 +130,6 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [addModal, setAddModal] = useState(false)
   const [addCategoryModal, setCategoryAddModal] = useState(false)
-  const [ilimitedQuantity, setIlimitedQuantity] = useState(false)
   const [enableDiscount, setEnableDiscount] = useState(false)
 
   const [addCupomModal, setAddCupomModal] = useState(false)
@@ -302,9 +301,9 @@ const catalog = ({ storeId }: CatalogType) => {
 
   // Functions
 
-  async function handleCreateCategory() {
+  async function handleCreateCategory(newCategory?: string) {
     try {
-      await createCategory(category, storeId)
+      await createCategory(category || newCategory, storeId)
 
       notifySuccess('Categoria criada com sucesso!')
 
@@ -660,7 +659,7 @@ const catalog = ({ storeId }: CatalogType) => {
               onClick={toggleAddCategoryModal}
             />
 
-            <Button title="Salvar" onClick={handleCreateCategory} />
+            <Button title="Salvar" onClick={() => handleCreateCategory()} />
           </div>
         </AddCategoryModalContainer>
       </CustomModal>
@@ -784,13 +783,7 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaCoins />}
                   placeholder="0"
                   mask="number"
-                  disabled={ilimitedQuantity}
                   {...register('inventory')}
-                />
-                <Checkbox
-                  confirm={ilimitedQuantity}
-                  toggleConfirm={() => setIlimitedQuantity(!ilimitedQuantity)}
-                  label="Quantidade ilimitada"
                 />
               </div>
 
@@ -804,6 +797,11 @@ const catalog = ({ storeId }: CatalogType) => {
                 placeholder="Suas categorias"
                 selectedValue={selectedCategories}
                 setSelectedValue={setSelectedCategories}
+                creatable={true}
+                formatCreateLabel={(inputValue) =>
+                  `Criar categoria "${inputValue}"`
+                }
+                onCreateOption={handleCreateCategory}
               />
               <span className="text-categories-added">
                 Categorias adicionadas: {selectedCategories.length}
