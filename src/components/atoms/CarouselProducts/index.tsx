@@ -1,12 +1,11 @@
-import React, { useRef } from 'react'
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import React, { useRef, useState, useEffect } from 'react'
+import Router from 'next/router'
+import { AiFillStar } from 'react-icons/ai'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
-import { GoLocation } from 'react-icons/go'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { api } from 'services/apiClient'
 import useMedia from 'use-media'
 import sizes from 'utils/sizes'
+import formatToBrl from 'utils/formatToBrl'
 
 interface Category {
   createdAt: string
@@ -69,6 +68,8 @@ interface CarouselProducts {
   storeName: string
 }
 
+type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
+
 const CarouselProducts = ({
   data = [],
   promo,
@@ -76,22 +77,58 @@ const CarouselProducts = ({
   buttons = true
 }: CarouselProducts) => {
   const carousel = useRef(null)
+  const [activeImage, setActiveImage] = useState({})
 
-  function handleScrollLeft(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollLeft = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft -= 276
   }
 
-  function handleScrollRight(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  const handleScrollRight = (e: ButtonMouseEvent) => {
     e.preventDefault()
     carousel.current.scrollLeft += 276
   }
 
   const widthScreen = useMedia({ minWidth: '426px' })
+
+  const previousImage = (product) => {
+    const activeUrl = activeImage[product.id]
+    const currentIndex = product.files.findIndex(({ url }) => url === activeUrl)
+    const nextIndex =
+      currentIndex - 1 < 0 ? product.files.length - 1 : currentIndex - 1
+    setActiveImage({
+      ...activeImage,
+      [product.id]: product.files[nextIndex].url
+    })
+  }
+
+  const nextImage = (product) => {
+    const activeUrl = activeImage[product.id]
+    const currentIndex = product.files.findIndex(({ url }) => url === activeUrl)
+    const nextIndex =
+      currentIndex + 1 > product.files.length - 1 ? 0 : currentIndex + 1
+    setActiveImage({
+      ...activeImage,
+      [product.id]: product.files[nextIndex].url
+    })
+  }
+  const redirectToProduct = (productId: string) => {
+    Router.push(
+      `http://${storeName}.${process.env.HOST_NAME}/store/product/${productId}`
+    )
+  }
+
+  const getDiscount = (price: number, discount: number) =>
+    price - (price * discount) / 100
+
+  useEffect(() => {
+    const newActiveImage = {}
+    data.forEach((product) => {
+      newActiveImage[product.id] =
+        product.files[0].url || '/images/capa-small.png'
+    })
+    setActiveImage(newActiveImage)
+  }, [])
 
   return (
     <Wrapper>
@@ -102,21 +139,23 @@ const CarouselProducts = ({
       )}
 
       <Container ref={carousel}>
-        {data.map((product) => (
-          <a
-            href={`http://${storeName}.${process.env.HOST_NAME}/store/product/${product.id}`}
-            // href={`/store/product/${product.id}`}
-            key={product.id}
-          >
-            <Item>
-              <div className="head">
+        {data.map((product) => {
+          return (
+            <Item key={product.id}>
+              <div
+                className="head"
+                onClick={() => redirectToProduct(product.id)}
+              >
                 <img
-                  src={product.files[0].url || '/images/capa-small.png'}
+                  src={activeImage[product.id]}
                   className="store-banner"
                   alt="banner"
                 />
               </div>
-              <div className="infoProduct">
+              <div
+                className="infoProduct"
+                onClick={() => redirectToProduct(product.id)}
+              >
                 <p>{product.title}</p>
                 <div className="stars">
                   <AiFillStar size={20} color="var(--gold)" />
@@ -124,50 +163,59 @@ const CarouselProducts = ({
                     {product.avgStars} ({product.sumOrders} pedidos)
                   </small>
                 </div>
-                {product.discount > 0 && (
+                {product.discount && (
                   <>
                     <span>
                       De:{' '}
                       <span style={{ textDecoration: 'line-through' }}>
-                        R$ {product.price.toFixed(2)}
+                        {formatToBrl(product.price)}
                       </span>
                     </span>
                   </>
                 )}
-                {product.discount > 0 ? (
-                  <h3>R$ {(product.price - product.discount).toFixed(2)}</h3>
-                ) : product.parcelAmount > 0 ? (
+                {product.discount ? (
                   <h3>
-                    R$ {(product.price / product.parcelAmount).toFixed(2)}
+                    {formatToBrl(getDiscount(product.price, product.discount))}
                   </h3>
+                ) : product.parcelAmount > 0 ? (
+                  <h3>{formatToBrl(product.price / product.parcelAmount)}</h3>
                 ) : (
-                  <h3>R$ {product.price}</h3>
+                  <h3>{formatToBrl(product.price)}</h3>
                 )}
                 {product.parcelAmount > 1 && (
-                  <>
-                    <span>
-                      Em até {product.parcelAmount}x sem juros ou{' '}
-                      <strong>R$ {product.price.toFixed(2)}</strong> à vista
-                    </span>
-                  </>
+                  <span>
+                    Em até {product.parcelAmount}x sem juros ou{' '}
+                    <strong>{formatToBrl(product.price)}</strong> à vista
+                  </span>
                 )}
               </div>
               {widthScreen && (
                 <>
-                  <ButtonProduct className="btnProductLeft">
+                  <ButtonProduct
+                    className="btnProductLeft"
+                    onClick={() => previousImage(product)}
+                  >
                     <BiChevronLeft size={15} color="black" />
                   </ButtonProduct>
-                  <ButtonProduct className="btnProductRight">
+                  <ButtonProduct
+                    className="btnProductRight"
+                    onClick={() => nextImage(product)}
+                  >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
                 </>
               )}
               {promo && widthScreen && (
-                <img src="/images/promo.svg" alt="promo" className="promo" />
+                <img
+                  onClick={() => redirectToProduct(product.id)}
+                  src="/images/promo.svg"
+                  alt="promo"
+                  className="promo"
+                />
               )}
             </Item>
-          </a>
-        ))}
+          )
+        })}
       </Container>
 
       {widthScreen && (
@@ -194,7 +242,6 @@ export default CarouselProducts
 const Wrapper = styled.div`
   width: 114%;
   display: flex;
-  /* gap: 2rem; */
   align-items: center;
   transform: translateX(-7%);
   padding: 1rem 2rem;
@@ -253,7 +300,6 @@ const ButtonMobile = styled(Button)`
 const Container = styled.div`
   display: flex;
   max-width: 100vw !important;
-  /* padding: var(--spacing-nano) var(--spacing-quarck); */
   overflow-x: scroll;
   scroll-behavior: smooth;
   gap: 1rem;
