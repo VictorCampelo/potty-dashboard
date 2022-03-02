@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import sizes from 'utils/sizes'
 
 interface ContainerProp {
   isRed: boolean
@@ -17,11 +18,14 @@ export const Container = styled.div<ContainerProp>`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: var(--border-radius-sm);
 
+  ${[sizes.down('sm')]} {
+    box-shadow: none;
+  }
+
   .card-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-
     .color {
       display: flex;
       flex-direction: row;
@@ -31,6 +35,14 @@ export const Container = styled.div<ContainerProp>`
       height: 76px;
 
       background-color: #f4f5f6;
+      ${[sizes.down('sm')]} {
+        width: 100%;
+        height: 96px;
+        background-color: transparent;
+        align-items: unset;
+        gap: 8px;
+      }
+
       border-radius: 8px;
 
       z-index: 5;
@@ -49,6 +61,71 @@ export const Container = styled.div<ContainerProp>`
 
         margin-left: var(--spacing-nano);
         margin-right: var(--spacing-nano);
+
+        ${[sizes.down('sm')]} {
+          width: 94px;
+          height: 94px;
+
+          border: 3px solid #f4f4f4;
+          border-radius: var(--border-radius-xs);
+        }
+      }
+
+      .desc-container-mobile {
+        ${[sizes.up('sm')]} {
+          display: none;
+        }
+
+        .action-button {
+          background: transparent;
+          padding: 4px;
+          border: none;
+        }
+        .first-line {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          /* justify-content: space-between; */
+          gap: 4px;
+        }
+        .second-line {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 12px;
+          margin-top: 7px;
+          overflow: auto;
+        }
+        .key-value {
+          width: max-content;
+          height: 44px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          background: #e7e8ea;
+
+          padding: 2px 8px;
+
+          border-radius: 10px;
+
+          .key {
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 19px;
+            color: #6c7079;
+          }
+
+          .value {
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 21px;
+            color: #363f4e;
+          }
+        }
       }
 
       .desc-container {
@@ -56,6 +133,10 @@ export const Container = styled.div<ContainerProp>`
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+        ${[sizes.down('sm')]} {
+          display: none;
+        }
 
         width: 100%;
         height: 76px;
@@ -126,6 +207,10 @@ export const Container = styled.div<ContainerProp>`
 export const ContainerButtons = styled.div`
   display: flex;
   flex-direction: column;
+
+  ${[sizes.down('sm')]} {
+    display: none;
+  }
 
   justify-content: space-around;
   align-items: center;

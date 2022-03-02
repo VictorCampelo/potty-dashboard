@@ -1347,30 +1347,28 @@ const catalog = ({ storeId }: CatalogType) => {
                 toggleState={toggleState}
                 content1={
                   <div className="products-container">
-                    {products.length > 0 ? (
-                      products.map((product, index) => {
-                        return (
-                          <ProductListCard
-                            key={product?.id + '-' + index}
-                            icon={product?.files[0]?.url}
-                            name={product?.title}
-                            code={product?.id}
-                            category={product?.categories}
-                            amount={product?.inventory}
-                            price={product?.price}
-                            excludeBtn={() => {
-                              handleOpenExcludeModal()
-                              setDeleteProductId(product.id)
-                            }}
-                            editBtn={() => {
-                              setEditProductId(product.id)
-                              setEditProduct(true)
-                            }}
-                            isRed={true}
-                            isGreen={true}
-                          />
-                        )
-                      })
+                    {products.length ? (
+                      products.map((product) => (
+                        <ProductListCard
+                          key={product?.id}
+                          icon={product?.files[0]?.url}
+                          name={product?.title}
+                          code={product?.id}
+                          category={product?.categories}
+                          amount={product?.inventory}
+                          price={product?.price}
+                          excludeBtn={() => {
+                            handleOpenExcludeModal()
+                            setDeleteProductId(product.id)
+                          }}
+                          editBtn={() => {
+                            setEditProductId(product.id)
+                            setEditProduct(true)
+                          }}
+                          isRed={true}
+                          isGreen={true}
+                        />
+                      ))
                     ) : (
                       <EmptyContainer>
                         <div>

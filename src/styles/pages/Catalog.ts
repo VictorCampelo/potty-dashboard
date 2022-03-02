@@ -121,6 +121,11 @@ export const Container = styled.div`
     .products-container {
       padding: var(--spacing-xxs) var(--spacing-md);
 
+      ${[sizes.down('sm')]} {
+        padding: var(--spacing-xxs);
+        padding-top: var(--spacing-md);
+      }
+
       display: flex;
       flex-direction: column;
       align-items: flex-start;
