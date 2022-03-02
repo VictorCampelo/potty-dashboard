@@ -113,7 +113,8 @@ const Carousel = ({
   }
 
   const redirectToStore = (storeName: string) => {
-    Router.push(`http://${storeName}.${process.env.HOST_NAME}/store`)
+    // Router.push(`http://${storeName}.${process.env.HOST_NAME}/store`)
+    Router.push(`http://${storeName}.${process.env.hostName}/store`)
   }
 
   const getDiscount = (price: number, discount: number) =>
