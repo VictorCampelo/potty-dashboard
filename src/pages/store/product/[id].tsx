@@ -289,7 +289,7 @@ const ProductShow = () => {
   async function loadData() {
     try {
       const { data } = await getProduct(`${id}`)
-      console.log(data)
+
       setTitle(data?.title)
       setDesc(data?.description)
       setAvgStars(data?.avgStars)

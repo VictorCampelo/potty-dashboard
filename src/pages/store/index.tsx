@@ -186,8 +186,6 @@ const Products = () => {
   useEffect(() => {
     if (name) {
       loadData()
-
-      console.log(products)
     }
   }, [name])
 

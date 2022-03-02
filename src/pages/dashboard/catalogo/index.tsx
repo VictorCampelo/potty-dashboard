@@ -532,8 +532,6 @@ const catalog = ({ storeId }: CatalogType) => {
       const { data } = await getCupom()
 
       setCupons(data)
-
-      console.log(data)
     } catch (e) {
       notify('Erro ao buscar cupons')
     }

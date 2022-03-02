@@ -33,6 +33,46 @@ interface Carousel {
   buttons?: boolean
 }
 
+interface IStoreProps {
+  data: {
+    CNPJ: string
+    addressNumber: number
+    avatar: string
+    avgStars: number
+    background: string
+    city: string
+    createdAt: string
+    deliveryFee: number
+    description: string
+    enabled: boolean
+    facebookLink: string
+    formatedName: string
+    id: string
+    likes: number
+    name: string
+    neighborhood: string
+    phone: string
+    schedules: {
+      dom: string
+      qua: string
+      qui: string
+      sab: string
+      seg: string
+    }
+    state: string
+    street: string
+    sumFeedbacks: number
+    sumOrders: number
+    sumStars: number
+    updatedAt: string
+    whatsappLink: string
+    zipcode: string
+  }[]
+  isProduct?: boolean
+  promo?: boolean
+  buttons?: boolean
+}
+
 type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 
 const Carousel = ({
@@ -40,7 +80,7 @@ const Carousel = ({
   isProduct = false,
   promo,
   buttons = true
-}: Carousel) => {
+}: Carousel | IStoreProps) => {
   const carousel = useRef(null)
   const [activeImage, setActiveImage] = useState({})
 
@@ -86,6 +126,7 @@ const Carousel = ({
         (isProduct ? store.files[0]?.url : store?.background?.url) ||
         '/images/capa-small.png'
     })
+
     setActiveImage(newActiveImage)
   }, [])
 

@@ -13,7 +13,7 @@ import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Drawer } from 'styles/pages/Store'
 import { IoIosClose } from 'react-icons/io'
 import router from 'next/router'
@@ -24,6 +24,13 @@ interface Landing {
 const Landing = ({ products }: Landing) => {
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
+  const [stores, setStores] = useState()
+
+  useEffect(() => {
+    api.get('/stores').then((result) => {
+      setStores(result.data)
+    })
+  }, [])
 
   return (
     <Wrapper>
@@ -96,12 +103,12 @@ const Landing = ({ products }: Landing) => {
                 <div className="carousel-item">
                   <span className="title">Eletrônicos e eletrodomésticos</span>
 
-                  <Carousel data={products} />
+                  <Carousel data={stores} />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Restaurantes</span>
-                  <Carousel data={products} />
+                  <Carousel data={stores} />
                 </div>
               </div>
             </>
@@ -118,7 +125,6 @@ const Landing = ({ products }: Landing) => {
 
 export const getServerSideProps = async () => {
   const { data } = await api.get('products/promoted')
-
   return {
     props: {
       products: data
