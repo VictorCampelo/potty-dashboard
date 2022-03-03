@@ -242,7 +242,6 @@ const CartContinue = () => {
     try {
       const res = await api.patch('/users', article)
       if (res.status == 200) {
-        console.log('deu certo')
         setAddressUser({
           uf: article.uf,
           city: article.city,
@@ -544,20 +543,20 @@ const CartContinue = () => {
 
                 <div className="productscontainer">
                   {items.map((it) => {
-                    console.log(it)
                     return (
-                    <ProductItem key={it.productId}>
-                      <div className="imgcontainer">
-                        <img src={it?.image} alt="" />
-                      </div>
+                      <ProductItem key={it.productId}>
+                        <div className="imgcontainer">
+                          <img src={it?.image} alt="" />
+                        </div>
 
-                      <div className="infocontainer">
-                        <h4>{it.title}</h4>
+                        <div className="infocontainer">
+                          <h4>{it.title}</h4>
 
-                        <span>{it.amount}x</span>
-                      </div>
-                    </ProductItem>
-                  )})}
+                          <span>{it.amount}x</span>
+                        </div>
+                      </ProductItem>
+                    )
+                  })}
                 </div>
               </ProductsContainer>
             </div>
