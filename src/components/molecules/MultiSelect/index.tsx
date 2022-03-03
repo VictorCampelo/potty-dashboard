@@ -1,4 +1,5 @@
 import Select from 'react-select'
+import Creatable from 'react-select/creatable'
 
 import { Container, SelectStylesMulti } from './styles'
 
@@ -13,6 +14,9 @@ interface SelectInterface extends React.InputHTMLAttributes<HTMLSelectElement> {
     label: string
   }>
   colorTheme?: string
+  creatable?: boolean
+  formatCreateLabel?: (inputValue: string) => string
+  onCreateOption?: (inputValue: string) => void
 }
 
 export const MultiSelect = ({
@@ -22,57 +26,69 @@ export const MultiSelect = ({
   setSelectedValue,
   loading,
   name,
-  colorTheme
+  colorTheme,
+  creatable,
+  formatCreateLabel,
+  onCreateOption
 }: SelectInterface) => {
+  const props = {
+    placeholderButtonLabel: placeholder,
+    value: selectedValue,
+    onChange: (values) => setSelectedValue(values),
+    options: options,
+    placeholder: placeholder,
+    noOptionsMessage: () => 'Nenhum resultado encontrado',
+    styles: SelectStylesMulti,
+    theme: (theme) => {
+      switch (colorTheme) {
+        case 'red':
+          return {
+            ...theme,
+            borderRadius: 0,
+            colors: {
+              ...theme.colors,
+              primary: '#E66072',
+              primary75: '#80363F',
+              primary50: '#BF505F',
+              primary25: '#FF6A7D',
+              primary10: '#FF6A7D'
+            }
+          }
+        case 'green':
+          return {
+            ...theme,
+            borderRadius: 0,
+            colors: {
+              ...theme.colors,
+              primary: '#41AB8F',
+              primary75: '#59EBC5',
+              primary50: '#4FD1AF',
+              primary25: '#9EE0DC'
+            }
+          }
+        default:
+          return {
+            ...theme
+          }
+      }
+    },
+    isLoading: loading,
+    closeMenuOnSelect: false,
+    isMulti: true
+  }
+
   return (
     <Container>
       <label> {name} </label>
-
-      <Select
-        placeholderButtonLabel={placeholder}
-        value={selectedValue}
-        onChange={(values) => setSelectedValue(values)}
-        options={options}
-        placeholder={placeholder}
-        noOptionsMessage={() => 'Nenhum resultado encontrado'}
-        styles={SelectStylesMulti}
-        theme={(theme) => {
-          switch (colorTheme) {
-            case 'red':
-              return {
-                ...theme,
-                borderRadius: 0,
-                colors: {
-                  ...theme.colors,
-                  primary: '#E66072',
-                  primary75: '#80363F',
-                  primary50: '#BF505F',
-                  primary25: '#FF6A7D',
-                  primary10: '#FF6A7D'
-                }
-              }
-            case 'green':
-              return {
-                ...theme,
-                borderRadius: 0,
-                colors: {
-                  ...theme.colors,
-                  primary: '#41AB8F',
-                  primary75: '#59EBC5',
-                  primary50: '#4FD1AF',
-                  primary25: '#9EE0DC'
-                }
-              }
-            default:
-              return {
-                ...theme
-              }
-          }
-        }}
-        isLoading={loading}
-        closeMenuOnSelect={false}
-        isMulti
-      />
+      {creatable ? (
+        <Creatable
+          {...props}
+          formatCreateLabel={formatCreateLabel}
+          onCreateOption={onCreateOption}
+        />
+      ) : (
+        <Select {...props} />
+      )}
     </Container>
   )
 }

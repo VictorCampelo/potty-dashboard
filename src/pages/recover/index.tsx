@@ -21,8 +21,6 @@ const Register = () => {
     try {
       const res = await recoverPassword(email)
 
-      console.log(res)
-
       router.push('/recover/token')
     } catch (e) {
       console.error(e)
