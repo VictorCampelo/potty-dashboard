@@ -49,6 +49,7 @@ import { CropModalContainer } from 'styles/pages/Catalog'
 import Cropper from 'react-easy-crop'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 import { PaymentItem } from 'components/atoms/PaymentItem'
+import { DeliveryInp } from 'components/atoms/DeliveryInp'
 
 type TimeTableArrayType = {
   [0]
@@ -1115,7 +1116,7 @@ const Shop = ({ storeId, id }: Shop) => {
                 <a
                   onClick={() =>
                     handleChangeModalOpen(
-                      setModalPaymentIsOpen,
+                      setConfigModal,
                       setModalDeliveryIsOpen
                     )
                   }
@@ -1182,6 +1183,56 @@ const Shop = ({ storeId, id }: Shop) => {
                   border={true}
                   onClick={() =>
                     handleChangeModalOpen(setModalPaymentIsOpen, setConfigModal)
+                  }
+                />
+              </div>
+              <div className="wrap-btn-confirm">
+                <ConfigButton title="Confirmar" />
+              </div>
+            </div>
+          </ModalContainer>
+        </CustomModal>
+
+        {/*DELIVERY OPTIONS*/}
+        <CustomModal
+          buttons={false}
+          showCloseButton={false}
+          modalVisible={modalDeliveryOptionsIsOpen}
+          setModalOpen={() =>
+            setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+          }
+        >
+          <ModalContainer>
+            <div className="exit-container">
+              <h1>Formas de entrega</h1>
+              <IoIosClose
+                onClick={() =>
+                  setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+                }
+                size={36}
+                color={'black'}
+              />
+            </div>
+
+            <p>
+              Selecione como você deseja que seus clientes recebam seus produtos
+            </p>
+
+            <div>
+              <DeliveryInp label="Retirada na loja" />
+              <DeliveryInp label="Envio de produto" />
+            </div>
+
+            <div className="buttons-container-payment">
+              <div className="wrap-btn-back">
+                <Button
+                  title="Voltar"
+                  border={true}
+                  onClick={() =>
+                    handleChangeModalOpen(
+                      setModalDeliveryIsOpen,
+                      setConfigModal
+                    )
                   }
                 />
               </div>
