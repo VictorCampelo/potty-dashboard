@@ -98,6 +98,12 @@ export const ModalContainer = styled.div`
     }
   }
 
+  div.payment-options {
+    label {
+      margin: 12px 0;
+    }
+  }
+
   .timeTables-container {
     display: flex;
     flex-direction: row;

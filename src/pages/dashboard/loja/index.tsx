@@ -47,6 +47,7 @@ import getCroppedImg from 'functions/cropImage'
 import { CropModalContainer } from 'styles/pages/Catalog'
 import Cropper from 'react-easy-crop'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
+import { PaymentItem } from 'components/atoms/PaymentItem'
 
 type TimeTableArrayType = {
   [0]
@@ -1139,8 +1140,15 @@ const Shop = ({ storeId, id }: Shop) => {
               />
             </div>
 
-            <div className="options">
-              <a>Pix</a>
+            <p>
+              Selecione pelo menos uma forma para seus clientes realizarem
+              pagamentos
+            </p>
+
+            <div className="payment-options">
+              {methodsOfPaymentsFake.map((item, i) => (
+                <PaymentItem key={i} label={item} />
+              ))}
             </div>
 
             <div className="buttons-container">

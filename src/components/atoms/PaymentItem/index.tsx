@@ -9,8 +9,8 @@ interface IPaymentProps {
 export const PaymentItem = (props: IPaymentProps) => {
   return (
     <Container>
-      {props.label}
       <input type="checkbox" {...props.rest} />
+      {props.label}
     </Container>
   )
 }
