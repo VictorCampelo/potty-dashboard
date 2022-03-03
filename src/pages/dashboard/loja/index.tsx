@@ -439,7 +439,7 @@ const Shop = ({ storeId, id }: Shop) => {
   }
 
   // MODAL METHODS
-  const [modalPayIsOpen, setModalPayIsOpen] = useState(false)
+  const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
   const { inputPaymentValue } = useContext(PaymentContext)
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
@@ -1106,7 +1106,10 @@ const Shop = ({ storeId, id }: Shop) => {
                 <div key={ind} className="wrap-opts">
                   <a
                     onClick={() =>
-                      handleChangeModalOpen(setModalPayIsOpen, setConfigModal)
+                      handleChangeModalOpen(
+                        setModalPaymentIsOpen,
+                        setConfigModal
+                      )
                     }
                   >
                     {opt}
@@ -1129,14 +1132,14 @@ const Shop = ({ storeId, id }: Shop) => {
         <CustomModal
           buttons={false}
           showCloseButton={false}
-          modalVisible={modalPayIsOpen}
-          setModalOpen={() => setModalPayIsOpen(!modalPayIsOpen)}
+          modalVisible={modalPaymentIsOpen}
+          setModalOpen={() => setModalPaymentIsOpen(!modalPaymentIsOpen)}
         >
           <ModalContainer>
             <div className="exit-container">
               <h1>Formas de Pagamento</h1>
               <IoIosClose
-                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
+                onClick={() => setModalPaymentIsOpen(!modalPaymentIsOpen)}
                 size={36}
                 color={'black'}
               />
@@ -1159,7 +1162,7 @@ const Shop = ({ storeId, id }: Shop) => {
                   title="Voltar"
                   border={true}
                   onClick={() =>
-                    handleChangeModalOpen(setConfigModal, setModalPayIsOpen)
+                    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
                   }
                 />
               </div>
