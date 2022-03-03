@@ -436,6 +436,18 @@ const Shop = ({ storeId, id }: Shop) => {
     })
   }
 
+  // MODAL METHODS
+  const [modalPayIsOpen, setModalPayIsOpen] = useState(false)
+  const modalFakeOptions = [
+    'Formas de pagamento',
+    'Opções de entrega',
+    'Opções indefinidas',
+    'Opções indefinidas',
+    'Opções indefinidas',
+    'Opções indefinidas',
+    'Ecluir loja'
+  ]
+
   // Modal de horarios
 
   function handleOpenTimeModal() {
@@ -764,7 +776,6 @@ const Shop = ({ storeId, id }: Shop) => {
             </form>
           </ModalContainer>
         </CustomModal>
-
         <CustomModal
           buttons={false}
           showCloseButton={false}
@@ -816,7 +827,6 @@ const Shop = ({ storeId, id }: Shop) => {
             </div>
           </ModalContainer>
         </CustomModal>
-
         <CustomModal
           buttons={false}
           showCloseButton={false}
@@ -905,7 +915,6 @@ const Shop = ({ storeId, id }: Shop) => {
             </form>
           </ModalContainer>
         </CustomModal>
-
         <CustomModal
           buttons={false}
           showCloseButton={false}
@@ -975,7 +984,6 @@ const Shop = ({ storeId, id }: Shop) => {
             </form>
           </ModalContainer>
         </CustomModal>
-
         <CustomModal
           buttons={false}
           showCloseButton={false}
@@ -1057,6 +1065,7 @@ const Shop = ({ storeId, id }: Shop) => {
           </ModalContainer>
         </CustomModal>
 
+        {/* ADVANCED OPTIONS MODAL */}
         <CustomModal
           buttons={false}
           showCloseButton={false}
@@ -1073,13 +1082,50 @@ const Shop = ({ storeId, id }: Shop) => {
               />
             </div>
 
-            <div className="options"></div>
+            <div className="options">
+              {modalFakeOptions.map((opt, ind) => (
+                <div key={ind} className="wrap-opts">
+                  <a onClick={() => setModalPayIsOpen(true)}>{opt}</a>
+                </div>
+              ))}
+            </div>
 
             <div className="buttons-container">
               <Button
                 title="Voltar"
                 border={true}
                 onClick={() => setConfigModal(!configModal)}
+              />
+            </div>
+          </ModalContainer>
+        </CustomModal>
+
+        {/*PAYMENT METHODS*/}
+        <CustomModal
+          buttons={false}
+          showCloseButton={false}
+          modalVisible={modalPayIsOpen}
+          setModalOpen={() => setModalPayIsOpen(!modalPayIsOpen)}
+        >
+          <ModalContainer>
+            <div className="exit-container">
+              <h1>Formas de Pagamento</h1>
+              <IoIosClose
+                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
+                size={36}
+                color={'black'}
+              />
+            </div>
+
+            <div className="options">
+              <a>Pix</a>
+            </div>
+
+            <div className="buttons-container">
+              <Button
+                title="Voltar"
+                border={true}
+                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
               />
             </div>
           </ModalContainer>
@@ -1138,9 +1184,7 @@ const Shop = ({ storeId, id }: Shop) => {
             </section>
           </CropModalContainer>
         </CustomModal>
-
         <DrawerLateral greenOption={1} />
-
         <div className="cards-area">
           <div className="left-area">
             <DescriptionCard
@@ -1235,7 +1279,6 @@ const Shop = ({ storeId, id }: Shop) => {
             />
           </div>
         </div>
-
         <DrawerBottom greenOption={1} />
       </Container>
     </>
