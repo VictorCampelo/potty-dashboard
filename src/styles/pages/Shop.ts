@@ -104,6 +104,29 @@ export const ModalContainer = styled.div`
     }
   }
 
+  .buttons-container-payment {
+    display: flex;
+    padding-top: 20px;
+
+    div.wrap-btn-back,
+    div.wrap-btn-confirm {
+      width: 100%;
+    }
+
+    div.wrap-btn-back {
+      button {
+        width: 196px;
+        margin-right: 10px;
+      }
+    }
+    div.wrap-btn-confirm {
+      button {
+        width: 196px;
+        margin-left: 10px;
+      }
+    }
+  }
+
   .timeTables-container {
     display: flex;
     flex-direction: row;

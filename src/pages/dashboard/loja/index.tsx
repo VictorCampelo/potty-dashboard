@@ -1152,17 +1152,19 @@ const Shop = ({ storeId, id }: Shop) => {
             </div>
 
             <div className="buttons-container-payment">
-              <Button
-                title="Voltar"
-                border={true}
-                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
-              />
-
-              <Button
-                title="Confirmar"
-                border={true}
-                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
-              />
+              <div className="wrap-btn-back">
+                <Button
+                  title="Voltar"
+                  border={true}
+                  onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
+                />
+              </div>
+              <div className="wrap-btn-confirm">
+                <ConfigButton
+                  title="Confirmar"
+                  onClick={() => setConfigModal(true)}
+                />
+              </div>
             </div>
           </ModalContainer>
         </CustomModal>
