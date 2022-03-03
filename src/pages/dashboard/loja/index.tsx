@@ -1079,15 +1079,13 @@ const Shop = ({ storeId, id }: Shop) => {
           setModalOpen={() => setConfigModal(!configModal)}
         >
           <ModalContainer>
-            <div className="exit-container modal-advanced-title">
-              <div>
-                <h1>Configurações adicionais</h1>
-                <IoIosClose
-                  onClick={() => setConfigModal(!configModal)}
-                  size={36}
-                  color={'black'}
-                />
-              </div>
+            <div className="exit-container">
+              <h1>Configurações adicionais</h1>
+              <IoIosClose
+                onClick={() => setConfigModal(!configModal)}
+                size={36}
+                color={'black'}
+              />
             </div>
 
             <div className="options">

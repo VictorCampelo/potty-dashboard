@@ -77,39 +77,24 @@ export const ModalContainer = styled.div`
   /* styles of multselect categories */
 
   .exit-container {
-    ::after {
-      content: '';
-      display: block;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        rgba(108, 112, 121, 0.01),
-        #6c7079,
-        rgba(108, 112, 121, 0.01)
-      );
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 30px;
+
+    h1 {
+      font-family: var(--font-family-primary);
+      font-style: var(--font-style-normal);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-md);
+      line-height: 36px;
+
+      color: var(--color-secondary-darker);
     }
 
-    div {
-      display: flex;
-      justify-content: space-between;
-
-      width: 100%;
-      margin-bottom: 20px;
-
-      h1 {
-        font-family: var(--font-family-primary);
-        font-style: var(--font-style-normal);
-        font-weight: var(--font-weight-medium);
-        font-size: var(--font-size-md);
-        line-height: 36px;
-
-        color: var(--color-secondary-darker);
-      }
-
-      svg {
-        cursor: pointer;
-      }
+    svg {
+      cursor: pointer;
     }
   }
 
@@ -158,6 +143,19 @@ export const ModalContainer = styled.div`
     :last-child {
       color: red;
       font-weight: 600;
+    }
+
+    :first-child::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0.01),
+        #6c7079,
+        rgba(108, 112, 121, 0.01)
+      );
     }
 
     a {
