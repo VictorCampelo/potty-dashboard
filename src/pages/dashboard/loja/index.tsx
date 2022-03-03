@@ -1,10 +1,11 @@
 import DrawerLateral from '../../../components/molecules/DrawerLateral'
 import DrawerBottom from '../../../components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
+import { PaymentContext } from '../../../contexts/PaymentContext'
 
 import { MultiSelect as MyMultSelect } from 'react-multi-select-component'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import {
   ConfigButton,
   Container,
@@ -439,19 +440,11 @@ const Shop = ({ storeId, id }: Shop) => {
 
   // MODAL METHODS
   const [modalPayIsOpen, setModalPayIsOpen] = useState(false)
-  const [teste, setTeste] = useState({})
+  const { inputPaymentValue } = useContext(PaymentContext)
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(true)
     funcModalOpen(false)
-  }
-
-  function abc(data) {
-    setTeste(data)
-  }
-
-  function abcd() {
-    console.log(teste)
   }
 
   const methodsOfPaymentsFake = [
@@ -1156,7 +1149,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
             <div className="payment-options">
               {methodsOfPaymentsFake.map((item, i) => (
-                <PaymentItem key={i} label={item} />
+                <PaymentItem key={i} label={item} value={item} />
               ))}
             </div>
 
@@ -1171,7 +1164,10 @@ const Shop = ({ storeId, id }: Shop) => {
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton title="Confirmar" />
+                <ConfigButton
+                  title="Confirmar"
+                  onClick={() => console.log(inputPaymentValue)}
+                />
               </div>
             </div>
           </ModalContainer>
