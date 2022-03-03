@@ -1347,7 +1347,7 @@ const catalog = ({ storeId }: CatalogType) => {
                       products.map((product) => (
                         <ProductListCard
                           key={product?.id}
-                          icon={product?.files[0]?.url}
+                          icon={product?.files?.shift()?.url}
                           name={product?.title}
                           code={product?.id}
                           category={product?.categories}
