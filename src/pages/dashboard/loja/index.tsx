@@ -1151,9 +1151,15 @@ const Shop = ({ storeId, id }: Shop) => {
               ))}
             </div>
 
-            <div className="buttons-container">
+            <div className="buttons-container-payment">
               <Button
                 title="Voltar"
+                border={true}
+                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
+              />
+
+              <Button
+                title="Confirmar"
                 border={true}
                 onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
               />
