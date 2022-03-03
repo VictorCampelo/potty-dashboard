@@ -444,6 +444,16 @@ const Shop = ({ storeId, id }: Shop) => {
     funcModalOpen(false)
   }
 
+  const methodsOfPaymentsFake = [
+    'Cartão de crédito',
+    'Cartão de débito',
+    'Em dinheiro',
+    'Link de pagamento',
+    'Picpay',
+    'Pix',
+    'WhatsApp Pay'
+  ]
+
   const modalFakeOptions = [
     'Formas de pagamento',
     'Opções de entrega',
