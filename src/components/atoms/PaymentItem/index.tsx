@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container } from './style'
 
 interface IPaymentProps {
   label: string
-  rest?: any
+  value?: string
 }
 
 export const PaymentItem = (props: IPaymentProps) => {
+  const [isChecked, setIsChecked] = useState(false)
+
   return (
     <Container>
-      <input type="checkbox" {...props.rest} />
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={() => setIsChecked(!isChecked)}
+        value={props.value}
+      />
       {props.label}
     </Container>
   )

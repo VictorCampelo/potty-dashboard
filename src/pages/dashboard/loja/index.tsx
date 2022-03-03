@@ -439,10 +439,19 @@ const Shop = ({ storeId, id }: Shop) => {
 
   // MODAL METHODS
   const [modalPayIsOpen, setModalPayIsOpen] = useState(false)
+  const [teste, setTeste] = useState({})
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(true)
     funcModalOpen(false)
+  }
+
+  function abc(data) {
+    setTeste(data)
+  }
+
+  function abcd() {
+    console.log(teste)
   }
 
   const methodsOfPaymentsFake = [
@@ -1162,10 +1171,7 @@ const Shop = ({ storeId, id }: Shop) => {
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton
-                  title="Confirmar"
-                  onClick={() => setConfigModal(true)}
-                />
+                <ConfigButton title="Confirmar" />
               </div>
             </div>
           </ModalContainer>

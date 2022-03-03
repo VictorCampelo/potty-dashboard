@@ -7,6 +7,7 @@ export const Container = styled.label`
   font-size: 15px;
   line-height: 22.5px;
   position: relative;
+  cursor: pointer;
 
   input {
     width: 1px;
