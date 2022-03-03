@@ -440,11 +440,12 @@ const Shop = ({ storeId, id }: Shop) => {
 
   // MODAL METHODS
   const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
+  const [modalDeliveryOptionsIsOpen, setModalDeliveryIsOpen] = useState(false)
   const { inputPaymentValue } = useContext(PaymentContext)
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
-    funcModalClose(true)
-    funcModalOpen(false)
+    funcModalClose(false)
+    funcModalOpen(true)
   }
 
   const methodsOfPaymentsFake = [
@@ -591,7 +592,6 @@ const Shop = ({ storeId, id }: Shop) => {
   async function loadData() {
     try {
       const { data } = await getStore(`${storeId}`)
-      console.log(data)
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
 
@@ -1102,20 +1102,39 @@ const Shop = ({ storeId, id }: Shop) => {
             </div>
 
             <div className="options">
-              {modalFakeOptions.map((opt, ind) => (
-                <div key={ind} className="wrap-opts">
-                  <a
-                    onClick={() =>
-                      handleChangeModalOpen(
-                        setModalPaymentIsOpen,
-                        setConfigModal
-                      )
-                    }
-                  >
-                    {opt}
-                  </a>
-                </div>
-              ))}
+              <div className="wrap-opts">
+                <a
+                  onClick={() =>
+                    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
+                  }
+                >
+                  Formas de pagamento
+                </a>
+              </div>
+              <div className="wrap-opts">
+                <a
+                  onClick={() =>
+                    handleChangeModalOpen(
+                      setModalPaymentIsOpen,
+                      setModalDeliveryIsOpen
+                    )
+                  }
+                >
+                  Opções de entrega
+                </a>
+              </div>
+              <div className="wrap-opts">
+                <a>Opções indefinidas</a>
+              </div>
+              <div className="wrap-opts">
+                <a>Opções indefinidas</a>
+              </div>
+              <div className="wrap-opts">
+                <a>Opções indefinidas</a>
+              </div>
+              <div className="wrap-opts">
+                <a>Excluir loja</a>
+              </div>
             </div>
 
             <div className="buttons-container">
@@ -1162,15 +1181,12 @@ const Shop = ({ storeId, id }: Shop) => {
                   title="Voltar"
                   border={true}
                   onClick={() =>
-                    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
+                    handleChangeModalOpen(setModalPaymentIsOpen, setConfigModal)
                   }
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton
-                  title="Confirmar"
-                  onClick={() => console.log(inputPaymentValue)}
-                />
+                <ConfigButton title="Confirmar" />
               </div>
             </div>
           </ModalContainer>
