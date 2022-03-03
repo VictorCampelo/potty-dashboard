@@ -77,24 +77,39 @@ export const ModalContainer = styled.div`
   /* styles of multselect categories */
 
   .exit-container {
-    display: flex;
-    justify-content: space-between;
-
-    width: 100%;
-    margin-bottom: var(--spacing-xs);
-
-    h1 {
-      font-family: var(--font-family-primary);
-      font-style: var(--font-style-normal);
-      font-weight: var(--font-weight-medium);
-      font-size: var(--font-size-md);
-      line-height: 36px;
-
-      color: var(--color-secondary-darker);
+    ::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0.01),
+        #6c7079,
+        rgba(108, 112, 121, 0.01)
+      );
     }
 
-    svg {
-      cursor: pointer;
+    div {
+      display: flex;
+      justify-content: space-between;
+
+      width: 100%;
+      margin-bottom: 20px;
+
+      h1 {
+        font-family: var(--font-family-primary);
+        font-style: var(--font-style-normal);
+        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-md);
+        line-height: 36px;
+
+        color: var(--color-secondary-darker);
+      }
+
+      svg {
+        cursor: pointer;
+      }
     }
   }
 
@@ -134,6 +149,35 @@ export const ModalContainer = styled.div`
 
         margin-right: var(--spacing-xxs);
       }
+    }
+  }
+
+  .wrap-opts {
+    height: 47px;
+
+    :last-child {
+      color: red;
+      font-weight: 600;
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: 400;
+      line-height: 47px;
+      font-size: 15px;
+    }
+
+    ::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0.01),
+        #6c7079,
+        rgba(108, 112, 121, 0.01)
+      );
     }
   }
 

@@ -445,7 +445,7 @@ const Shop = ({ storeId, id }: Shop) => {
     'Opções indefinidas',
     'Opções indefinidas',
     'Opções indefinidas',
-    'Ecluir loja'
+    'Excluir loja'
   ]
 
   // Modal de horarios
@@ -1073,13 +1073,15 @@ const Shop = ({ storeId, id }: Shop) => {
           setModalOpen={() => setConfigModal(!configModal)}
         >
           <ModalContainer>
-            <div className="exit-container">
-              <h1>Configurações adicionais</h1>
-              <IoIosClose
-                onClick={() => setConfigModal(!configModal)}
-                size={36}
-                color={'black'}
-              />
+            <div className="exit-container modal-advanced-title">
+              <div>
+                <h1>Configurações adicionais</h1>
+                <IoIosClose
+                  onClick={() => setConfigModal(!configModal)}
+                  size={36}
+                  color={'black'}
+                />
+              </div>
             </div>
 
             <div className="options">
