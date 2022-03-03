@@ -61,7 +61,7 @@ export const Container = styled.div<ContainerProp>`
 
       border-radius: 8px;
 
-      z-index: 5;
+      z-index: 1;
 
       .icon {
         width: 60px;
@@ -230,7 +230,7 @@ export const ContainerButtons = styled.div`
   height: 100%;
   border-radius: var(--border-radius-sm);
   margin-left: calc(var(--spacing-xxs) * -1);
-  z-index: 4;
+  z-index: 1;
   background-color: var(--white);
   padding-left: var(--spacing-xxxs);
 

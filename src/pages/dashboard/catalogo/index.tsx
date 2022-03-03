@@ -475,7 +475,7 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       await updateProduct(editProductId, body)
 
-      notifySuccess('Produto deletado com sucesso!')
+      notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
       console.error(e)
 
@@ -799,7 +799,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 setSelectedValue={setSelectedCategories}
                 creatable={true}
                 formatCreateLabel={(inputValue) =>
-                  `Criar categoria "${inputValue}"`
+                  `➕ Criar categoria "${inputValue}"`
                 }
                 onCreateOption={handleCreateCategory}
               />

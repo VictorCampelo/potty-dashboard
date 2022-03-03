@@ -29,6 +29,7 @@ const Landing = ({ products }: Landing) => {
   useEffect(() => {
     api.get('/stores').then((result) => {
       setStores(result.data)
+      console.log(result.data)
     })
   }, [])
 
