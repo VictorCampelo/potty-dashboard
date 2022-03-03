@@ -438,6 +438,12 @@ const Shop = ({ storeId, id }: Shop) => {
 
   // MODAL METHODS
   const [modalPayIsOpen, setModalPayIsOpen] = useState(false)
+
+  function handleChangeModalOpen(funcModalClose, funcModalOpen) {
+    funcModalClose(true)
+    funcModalOpen(false)
+  }
+
   const modalFakeOptions = [
     'Formas de pagamento',
     'Opções de entrega',
@@ -1087,7 +1093,13 @@ const Shop = ({ storeId, id }: Shop) => {
             <div className="options">
               {modalFakeOptions.map((opt, ind) => (
                 <div key={ind} className="wrap-opts">
-                  <a onClick={() => setModalPayIsOpen(true)}>{opt}</a>
+                  <a
+                    onClick={() =>
+                      handleChangeModalOpen(setModalPayIsOpen, setConfigModal)
+                    }
+                  >
+                    {opt}
+                  </a>
                 </div>
               ))}
             </div>
