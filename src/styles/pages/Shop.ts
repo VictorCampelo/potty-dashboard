@@ -81,7 +81,7 @@ export const ModalContainer = styled.div`
     justify-content: space-between;
 
     width: 100%;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 30px;
 
     h1 {
       font-family: var(--font-family-primary);
@@ -95,6 +95,35 @@ export const ModalContainer = styled.div`
 
     svg {
       cursor: pointer;
+    }
+  }
+
+  div.payment-options {
+    label {
+      margin: 12px 0;
+    }
+  }
+
+  .buttons-container-payment {
+    display: flex;
+    padding-top: 20px;
+
+    div.wrap-btn-back,
+    div.wrap-btn-confirm {
+      width: 100%;
+    }
+
+    div.wrap-btn-back {
+      button {
+        width: 196px;
+        margin-right: 10px;
+      }
+    }
+    div.wrap-btn-confirm {
+      button {
+        width: 196px;
+        margin-left: 10px;
+      }
     }
   }
 
@@ -134,6 +163,48 @@ export const ModalContainer = styled.div`
 
         margin-right: var(--spacing-xxs);
       }
+    }
+  }
+
+  .wrap-opts {
+    height: 47px;
+
+    :last-child {
+      color: red;
+      font-weight: 600;
+    }
+
+    :first-child::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0.01),
+        #6c7079,
+        rgba(108, 112, 121, 0.01)
+      );
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: 400;
+      line-height: 47px;
+      font-size: 15px;
+    }
+
+    ::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0.01),
+        #6c7079,
+        rgba(108, 112, 121, 0.01)
+      );
     }
   }
 
