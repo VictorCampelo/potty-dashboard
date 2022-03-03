@@ -1156,7 +1156,9 @@ const Shop = ({ storeId, id }: Shop) => {
                 <Button
                   title="Voltar"
                   border={true}
-                  onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
+                  onClick={() =>
+                    handleChangeModalOpen(setConfigModal, setModalPayIsOpen)
+                  }
                 />
               </div>
               <div className="wrap-btn-confirm">
