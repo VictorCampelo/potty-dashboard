@@ -29,29 +29,73 @@ import {
 import sizes from 'utils/sizes'
 import { Checkbox } from 'components/atoms/Checkbox'
 import formatToBrl from 'utils/formatToBrl'
+import formatPhone from 'utils/masks/formatPhone'
 
 interface PaymentForm {
   value: string
   label: string
 }
 
-// interface AddressRegisterFormData {
-//   state: string
-//   city: string
-//   publicPlace: string
-//   number: string
-//   district: string
-//   cep: string
-// }
-
 interface UserAddress {
   uf: string
+  street: string
   city: string
   zipcode: string
-  addressNumber: string
-  complement: string
   neighborhood: string
+  complement: string
+  addressNumber: number
+  logradouro: string
+}
+
+export interface User extends UserAddress {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  role: string
+  files: any[]
+  store: Store
+  profileImage: string
+}
+
+export interface Store {
+  id: string
+  name: string
+  formatedName: string
+  CNPJ: string
+  phone: string
   street: string
+  zipcode: string
+  addressNumber: number
+  neighborhood: string
+  city: string
+  state: string
+  description: string
+  enabled: boolean
+  sumOrders: number
+  sumFeedbacks: number
+  sumStars: number
+  avgStars: number
+  facebookLink: any
+  whatsappLink: any
+  schedules: Schedules
+  createdAt: string
+  updatedAt: string
+  likes: number
+  deliveryFee: number
+  avatar: any
+  background: any
+  paymentMethods: any[]
+}
+
+export interface Schedules {
+  dom: string[]
+  qua: string[]
+  qui: string[]
+  sab: string[]
+  seg: string[]
+  sex: string[]
+  ter: string[]
 }
 
 const addressRegisterFormSchema = yup.object().shape({
@@ -70,7 +114,7 @@ const CartContinue = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 
   const { items, setItems } = useContext(CartContext)
-  const [userAddress, setUserAddress] = useState<UserAddress | null>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   const [addressModalActive, setAddressModalActive] = useState(false)
   const [clearModalActive, setClearModalActive] = useState(false)
@@ -133,69 +177,27 @@ const CartContinue = () => {
 
   async function handleFinishPurchase() {
     try {
-      let data
-      if (!widthScreen) {
-        const stores = []
+      const products = items.map((item) => {
+        return {
+          storeId: item.storeId,
+          orderProducts: [
+            {
+              productId: 'uuid', //item.id,
+              amount: item.amount,
+              paymentMethod: paymentForm.value
+            }
+          ]
+        }
+      })
 
-        items.forEach((it) => {
-          if (stores.some((store) => store.storeId == it.storeId)) {
-            stores.find((store) =>
-              store.orderProducts.push({
-                productId: it.productId,
-                amount: it.amount
-              })
-            )
-          } else {
-            stores.push({
-              storeId: it.storeId,
-              orderProducts: [
-                {
-                  productId: it.productId,
-                  amount: it.amount
-                }
-              ]
-            })
-          }
-        })
-
-        const res = await api.post(`/orders`, {
-          products: [...stores]
-        })
-
-        data = res.data
-      } else {
-        const stores = []
-
-        items.forEach((it) => {
-          if (stores.some((store) => store.storeId == it.storeId)) {
-            stores.find((store) =>
-              store.orderProducts.push({
-                productId: it.productId,
-                amount: it.amount
-              })
-            )
-          } else {
-            stores.push({
-              storeId: it.storeId,
-              orderProducts: [
-                {
-                  productId: it.productId,
-                  amount: it.amount
-                }
-              ]
-            })
-          }
-        })
-
-        const res = await api.post(`/orders`, {
-          products: [...stores]
-        })
-
-        data = res.data
-      }
+      const { data } = await api.post(`/orders`, {
+        products
+      })
 
       localStorage.setItem('ultimo.cart.items', '')
+
       data.whatsapp.forEach((it) => window.open(it))
+
       router.push('/cart/finish')
     } catch (e) {
       console.error(e)
@@ -233,29 +235,18 @@ const CartContinue = () => {
 
       const { status } = await api.patch('/users', address)
 
-      if (status === 200) setUserAddress(address)
+      if (status === 200) setUser({ ...user, ...address })
     } catch (e) {
       console.error(e)
-      toast.error('Erro ao adicionar endereço, tente novamente mais tarde!')
+      toast.error('Erro ao atualizar endereço, tente novamente mais tarde!')
     }
   }
 
-  async function loadData() {
+  async function loadUserData() {
     try {
       const { data, status } = await getUser()
 
-      if (status === 200) {
-        // const name = `${data?.firstName} ${data?.lastName}`
-        setUserAddress({
-          uf: data?.uf,
-          city: data?.city,
-          zipcode: data?.zipcode,
-          addressNumber: data?.addressNumber,
-          complement: data?.complement,
-          neighborhood: data?.neighborhood,
-          street: data?.street
-        })
-      }
+      if (status === 200) setUser(data)
     } catch (e) {
       console.error(e)
       router.push('/login')
@@ -263,8 +254,7 @@ const CartContinue = () => {
   }
 
   useEffect(() => {
-    loadData()
-    console.log(items)
+    loadUserData()
   }, [])
 
   return (
@@ -448,20 +438,38 @@ const CartContinue = () => {
                 <h1>Endereço</h1>
 
                 <AddressInfo>
-                  <span>
-                    <strong>Nome do usuário:</strong> {name}
-                  </span>
+                  {user ? (
+                    <>
+                      <span>
+                        <strong>Nome do usuário:</strong> {user.firstName}{' '}
+                        {user.lastName}
+                      </span>
 
-                  <span>
-                    <strong>Endereço: </strong>
-                    {userAddress?.street} {userAddress?.addressNumber},{' '}
-                    {userAddress?.neighborhood},{userAddress?.city},{' '}
-                    {userAddress?.uf}, {userAddress?.zipcode}, Brasil
-                  </span>
+                      <span>
+                        <strong>Endereço: </strong>
+                        {user.street} {user.addressNumber}, {user.neighborhood},
+                        {user.city}, {user.uf}, {user.zipcode}, Brasil
+                      </span>
 
-                  <span>
-                    <strong>Telefone: </strong> 8999821-1234
-                  </span>
+                      <span>
+                        <strong>Telefone: </strong> {formatPhone('00000000000')}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span>
+                        <strong>Nome do usuário:</strong> Carregando...
+                      </span>
+
+                      <span>
+                        <strong>Endereço: </strong> Carregando...
+                      </span>
+
+                      <span>
+                        <strong>Telefone: </strong> Carregando...
+                      </span>
+                    </>
+                  )}
                 </AddressInfo>
 
                 <NewAddressButton onClick={() => setAddressModalActive(true)}>
