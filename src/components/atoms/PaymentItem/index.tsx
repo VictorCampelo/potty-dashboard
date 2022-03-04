@@ -1,16 +1,20 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Container } from './style'
 import { PaymentContext } from '../../../contexts/PaymentContext'
 
 interface IPaymentItemProps {
   label: string
   value: string
-  checked?: boolean
 }
 
 export const PaymentItem = (props: IPaymentItemProps) => {
   const [isInputChecked, setIsInputChecked] = useState(false)
-  const { setInputPaymentValue, inputPaymentValue } = useContext(PaymentContext)
+  const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
+
+  useEffect(() => {
+    if (inputPaymentValue.some((item) => item == props.label))
+      setIsInputChecked(true)
+  }, [inputPaymentValue])
 
   function handleChange() {
     setIsInputChecked(!isInputChecked)

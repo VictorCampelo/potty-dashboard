@@ -451,7 +451,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const [paymentsOptions, setPaymentOptions] = useState<
     IPaymentesOptions[] | []
   >([])
-  const { inputPaymentValue } = useContext(PaymentContext)
+  const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
 
   const [dataStore, setDataStore] = useState()
 
@@ -474,6 +474,7 @@ const Shop = ({ storeId, id }: Shop) => {
     formData.append('storeDto', JSON.stringify(storeDto))
     const { data } = await api.patch('/stores', formData)
     setDataStore(data)
+    setModalPaymentIsOpen(!modalPaymentIsOpen)
   }
 
   // Modal de horarios
@@ -600,7 +601,11 @@ const Shop = ({ storeId, id }: Shop) => {
   async function loadData() {
     try {
       const { data } = await getStore(`${storeId}`)
+
       setDataStore(data)
+
+      setInputPaymentValue(data.paymentMethods.map((item) => item.methodName))
+
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
 
