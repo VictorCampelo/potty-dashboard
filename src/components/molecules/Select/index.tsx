@@ -26,13 +26,9 @@ export const MultiSelect = ({
   setSelectedValue,
   loading,
   name,
-  colorTheme,
+  colorTheme = 'orange',
   ...rest
 }: SelectInterface) => {
-  const handleChange = (value: ValueType<OptionTypeBase, false>, event) => {
-    setSelectedValue(value)
-  }
-
   return (
     <Container {...rest}>
       <label> {name} </label>
@@ -40,7 +36,7 @@ export const MultiSelect = ({
       <Select
         placeholderButtonLabel={placeholder}
         value={selectedValue}
-        onChange={(values, event) => handleChange(values, event)}
+        onChange={(values) => setSelectedValue(values)}
         options={options}
         placeholder={placeholder}
         styles={SelectStylesMulti}
@@ -69,6 +65,18 @@ export const MultiSelect = ({
                   primary75: '#59EBC5',
                   primary50: '#4FD1AF',
                   primary25: '#9EE0DC'
+                }
+              }
+            case 'orange':
+              return {
+                ...theme,
+                borderRadius: 0,
+                colors: {
+                  ...theme.colors,
+                  primary: '#ff7a00',
+                  primary75: '#dd6f08',
+                  primary50: '#C4C4C4',
+                  primary25: '#f4f4f4'
                 }
               }
             default:
