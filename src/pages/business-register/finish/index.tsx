@@ -121,7 +121,7 @@ const BusinessRegister = () => {
         lastName: userData.lastName,
         password: userData.password,
         passwordConfirmation: userData.passwordConfirmation,
-        chosenPlan: planData
+        chosenPlan: planData.toLowerCase()
       },
       storeDto: {
         name: storeData.name,
@@ -157,6 +157,9 @@ const BusinessRegister = () => {
         }
       })
 
+      console.log('resposta', data?.user?.planUrl)
+      console.log('data', data)
+
       sessionStorage.setItem(
         'AuthTokens',
         JSON.stringify({
@@ -164,8 +167,17 @@ const BusinessRegister = () => {
           tokenDigits: data.user.confirmationTokenDigits
         })
       )
+
+      if (data.user.planUrl === 'Plan not found') {
+        Router.push(`/confirmacao-cadastro`)
+
+        console.log('if')
+      } else {
+        window.open(data.user.planUrl, '_blank')
+        Router.push(`/confirmacao-cadastro`)
+        console.log('else')
+      }
       // })
-      Router.push(`/confirmacao-cadastro`)
     } catch (e) {
       console.error(e)
     }
