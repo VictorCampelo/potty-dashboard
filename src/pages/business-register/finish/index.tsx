@@ -109,7 +109,6 @@ const BusinessRegister = () => {
 
   async function handleFinishRegister() {
     const planData = sessionStorage.getItem('plan')
-    console.log('handle:', planData)
     const userData = JSON.parse(sessionStorage.getItem('user'))
     const storeData = JSON.parse(sessionStorage.getItem('data'))
 
@@ -149,16 +148,11 @@ const BusinessRegister = () => {
       formData.append('userDto', JSON.stringify(body.userDto))
       formData.append('storeDto', JSON.stringify(body.storeDto))
 
-      console.log('body:', body.userDto)
-
       const { data } = await api.post('/auth/signup-store', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-
-      console.log('resposta', data?.user?.planUrl)
-      console.log('data', data)
 
       sessionStorage.setItem(
         'AuthTokens',
@@ -170,14 +164,10 @@ const BusinessRegister = () => {
 
       if (data.user.planUrl === 'Plan not found') {
         Router.push(`/confirmacao-cadastro`)
-
-        console.log('if')
       } else {
         window.open(data.user.planUrl, '_blank')
         Router.push(`/confirmacao-cadastro`)
-        console.log('else')
       }
-      // })
     } catch (e) {
       console.error(e)
     }
