@@ -440,12 +440,26 @@ const Shop = ({ storeId, id }: Shop) => {
   }
 
   // MODAL METHODS
+  interface IPaymentesOptions {
+    id: string
+    methodName: string
+    allowParcels: boolean
+  }
+
   const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
   const [modalDeliveryOptionsIsOpen, setModalDeliveryIsOpen] = useState(false)
+  const [paymentsOptions, setPaymentOptions] = useState<IPaymentesOptions | []>(
+    []
+  )
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
     funcModalOpen(true)
+  }
+
+  async function getPaymentOptions() {
+    const { data } = await api.get('/payments/find')
+    console.log(data)
   }
 
   const methodsOfPaymentsFake = [
@@ -1103,13 +1117,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
             <div className="options">
               <div className="wrap-opts">
-                <a
-                  onClick={() =>
-                    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
-                  }
-                >
-                  Formas de pagamento
-                </a>
+                <a onClick={getPaymentOptions}>Formas de pagamento</a>
               </div>
               <div className="wrap-opts">
                 <a
