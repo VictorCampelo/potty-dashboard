@@ -28,10 +28,18 @@ export const Container = styled.div<ContainerProps>`
 
     border-radius: 5px;
     border: 1px solid black;
-    background: var(--white);
+    background: transparent;
 
     margin-right: 10px;
     padding: 4px;
+  }
+
+  .check.disabled .btn {
+    border: 1px solid var(--gray-200);
+  }
+
+  .check.disabled label {
+    opacity: 0.5;
   }
 
   .check {
