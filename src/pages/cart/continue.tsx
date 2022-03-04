@@ -407,8 +407,10 @@ const CartContinue = () => {
             <div className="buttons-container">
               <Button
                 title="Voltar"
+                type="button"
                 border
                 style={widthScreen ? undefined : { display: 'none' }}
+                onClick={() => setAddressModalActive(false)}
               />
               <Button title="Atualizar" type="submit" />
             </div>
