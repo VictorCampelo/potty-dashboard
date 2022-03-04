@@ -5,15 +5,16 @@ import { PaymentContext } from '../../../contexts/PaymentContext'
 interface IPaymentItemProps {
   label: string
   value: string
+  checked?: boolean
 }
 
 export const PaymentItem = (props: IPaymentItemProps) => {
-  const [isChecked, setIsChecked] = useState(false)
+  const [isInputChecked, setIsInputChecked] = useState(false)
   const { setInputPaymentValue, inputPaymentValue } = useContext(PaymentContext)
 
   function handleChange() {
-    setIsChecked(!isChecked)
-    if (!isChecked) {
+    setIsInputChecked(!isInputChecked)
+    if (!isInputChecked) {
       setInputPaymentValue([props.label, ...inputPaymentValue])
       return
     }
@@ -24,7 +25,7 @@ export const PaymentItem = (props: IPaymentItemProps) => {
 
   return (
     <Container>
-      <input type="checkbox" checked={isChecked} onChange={handleChange} />
+      <input type="checkbox" checked={isInputChecked} onChange={handleChange} />
       {props.label}
     </Container>
   )
