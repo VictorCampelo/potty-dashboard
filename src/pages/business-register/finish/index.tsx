@@ -32,6 +32,7 @@ type ShopkeeperUser = {
   lastName?: string
   password?: string
   passwordConfirmation?: string
+  chosenPlan?: string
 }
 
 const BusinessRegister = () => {
@@ -80,8 +81,8 @@ const BusinessRegister = () => {
       })
     }
   }, [])
-  // Toasts
 
+  // Toasts
   function notifySuccess(message: string) {
     toast.success(message, {
       position: 'top-right',
@@ -107,8 +108,10 @@ const BusinessRegister = () => {
   }
 
   async function handleFinishRegister() {
+    const planData = sessionStorage.getItem('plan')
     const userData = JSON.parse(sessionStorage.getItem('user'))
     const storeData = JSON.parse(sessionStorage.getItem('data'))
+
     const body = {
       avatar: image,
       userDto: {
@@ -116,7 +119,8 @@ const BusinessRegister = () => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         password: userData.password,
-        passwordConfirmation: userData.passwordConfirmation
+        passwordConfirmation: userData.passwordConfirmation,
+        chosenPlan: planData.toLowerCase()
       },
       storeDto: {
         name: storeData.name,
@@ -157,8 +161,13 @@ const BusinessRegister = () => {
           tokenDigits: data.user.confirmationTokenDigits
         })
       )
-      // })
-      Router.push(`/confirmacao-cadastro`)
+
+      if (data.user.planUrl === 'Plan not found') {
+        Router.push(`/confirmacao-cadastro`)
+      } else {
+        window.open(data.user.planUrl, '_blank')
+        Router.push(`/confirmacao-cadastro`)
+      }
     } catch (e) {
       console.error(e)
     }
