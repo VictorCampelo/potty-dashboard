@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface ContainerProps {
-  confirm: boolean
+  size: 'small' | 'medium'
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -19,8 +19,8 @@ export const Container = styled.div<ContainerProps>`
   }
 
   .btn {
-    width: 20px;
-    height: 20px;
+    ${(props) => props.size === 'small' && 'width: 16px;height: 16px;'}
+    ${(props) => props.size === 'medium' && 'width: 20px;height: 20px;'}
 
     display: flex;
     justify-content: center;
@@ -36,6 +36,7 @@ export const Container = styled.div<ContainerProps>`
 
   .check {
     display: flex;
+    align-items: center;
 
     label {
       font-size: 0.875rem;

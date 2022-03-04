@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import HeaderProducts from 'components/molecules/HeaderShop'
 import { BsWhatsapp } from 'react-icons/bs'
-import { FiChevronLeft, FiPlus, FiArrowLeft } from 'react-icons/fi'
+import { FiChevronLeft, FiArrowLeft } from 'react-icons/fi'
 import { MultiSelect as Select } from 'components/molecules/Select'
 import { useContext, useState, useEffect } from 'react'
 import router from 'next/router'
@@ -30,6 +30,8 @@ import sizes from 'utils/sizes'
 import { Checkbox } from 'components/atoms/Checkbox'
 import formatToBrl from 'utils/formatToBrl'
 import formatPhone from 'utils/masks/formatPhone'
+import { IoPencilOutline } from 'react-icons/io5'
+import getNumberArray from 'utils/getNumberArray'
 
 interface PaymentForm {
   value: string
@@ -69,12 +71,15 @@ const addressRegisterFormSchema = yup.object().shape({
 const CartContinue = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 
-  const { items, setItems } = useContext(CartContext)
+  const { items, loadingItems, setItems } = useContext(CartContext)
   const [user, setUser] = useState<User | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<any>(null)
 
   const [addressModalActive, setAddressModalActive] = useState(false)
   const [clearModalActive, setClearModalActive] = useState(false)
 
+  const [deliveryMethod, setDeliveryMethod] =
+    useState<'house' | 'store'>('house')
   const [parcelCheckbox, setParcelCheckbox] = useState(false)
 
   const toggleParcelCheckbox = () => {
@@ -83,6 +88,10 @@ const CartContinue = () => {
 
   const toggleClearModal = () => {
     setClearModalActive(!clearModalActive)
+  }
+
+  const handleSelectProduct = (product: any) => {
+    setSelectedProduct(product)
   }
 
   const total = items.reduce((prev, curr) => {
@@ -118,11 +127,6 @@ const CartContinue = () => {
     }
   ]
 
-  const Installments = [...Array(12)].map((it, idx) => ({
-    value: String(idx + 1),
-    label: idx + 1 + 'x'
-  }))
-
   const {
     register,
     handleSubmit,
@@ -138,7 +142,7 @@ const CartContinue = () => {
           storeId: item.storeId,
           orderProducts: [
             {
-              productId: 'uuid', //item.id,
+              productId: item.productId,
               amount: item.amount,
               paymentMethod: paymentForm.value
             }
@@ -208,6 +212,16 @@ const CartContinue = () => {
       router.push('/login')
     }
   }
+
+  const parcels = getNumberArray({
+    size: 12,
+    startAt: 1
+  }).map((parcel) => {
+    return {
+      value: `${parcel}`,
+      label: `${parcel}x`
+    }
+  })
 
   useEffect(() => {
     loadUserData()
@@ -391,7 +405,24 @@ const CartContinue = () => {
           <CardsContainer>
             <div className="top-container">
               <AddressCard>
-                <h1>Endereço</h1>
+                <h2> {selectedProduct?.title}</h2>
+
+                <DeliveryMethod>
+                  <span>Escolha a forma que deseja receber seus pedidos</span>
+
+                  <Checkbox
+                    confirm={deliveryMethod === 'house'}
+                    toggleConfirm={() => setDeliveryMethod('house')}
+                    size="small"
+                    label="Receber em domicílio"
+                  />
+                  <Checkbox
+                    confirm={deliveryMethod === 'store'}
+                    toggleConfirm={() => setDeliveryMethod('store')}
+                    size="small"
+                    label="Retirar na loja"
+                  />
+                </DeliveryMethod>
 
                 <AddressInfo>
                   {user ? (
@@ -403,7 +434,7 @@ const CartContinue = () => {
 
                       <span>
                         <strong>Endereço: </strong>
-                        {user.street} {user.addressNumber}, {user.neighborhood},
+                        {user.street} {user.addressNumber}, {user.neighborhood},{' '}
                         {user.city}, {user.uf}, {user.zipcode}, Brasil
                       </span>
 
@@ -428,12 +459,14 @@ const CartContinue = () => {
                   )}
                 </AddressInfo>
 
-                <NewAddressButton onClick={() => setAddressModalActive(true)}>
-                  <FiPlus size={24} />
-                  Adicionar novo endereço
-                </NewAddressButton>
+                <UpdateAddressButton
+                  onClick={() => setAddressModalActive(true)}
+                >
+                  <IoPencilOutline size={24} />
+                  Atualizar endereço
+                </UpdateAddressButton>
 
-                <h1>Forma de pagamento</h1>
+                <h3>Forma de pagamento</h3>
 
                 <div
                   style={{ display: 'flex', gap: 16 }}
@@ -448,55 +481,52 @@ const CartContinue = () => {
                     placeholder="Selecione sua forma de pagamento"
                   />
 
-                  {paymentForm?.value === '0' && widthScreen && (
+                  {parcelCheckbox && (
                     <Select
                       name="Parcelamento"
-                      options={Installments}
+                      options={parcels}
                       selectedValue={installments}
                       setSelectedValue={setInstallments}
                       loading={false}
                       placeholder="Selecione o número de parcelas"
                     />
                   )}
-
-                  {!widthScreen && (
-                    <>
-                      <Checkbox
-                        confirm={parcelCheckbox}
-                        toggleConfirm={toggleParcelCheckbox}
-                        label="Parcelar Compra"
-                      />
-                      <Select
-                        name="Parcelamento"
-                        options={Installments}
-                        selectedValue={installments}
-                        setSelectedValue={setInstallments}
-                        loading={false}
-                        placeholder="Selecione o número de parcelas"
-                        style={!parcelCheckbox && { display: 'none' }}
-                      />
-                    </>
-                  )}
                 </div>
+
+                <Checkbox
+                  confirm={parcelCheckbox}
+                  toggleConfirm={toggleParcelCheckbox}
+                  label="Parcelar Compra"
+                />
               </AddressCard>
 
               <ProductsContainer>
                 <h1>Produtos</h1>
 
                 <div className="products-container">
-                  {items.map((it) => (
-                    <ProductItem key={it.productId}>
-                      <div className="img-container">
-                        <img src={it?.image} alt="" />
-                      </div>
+                  {loadingItems ? (
+                    <>Carregando...</>
+                  ) : (
+                    items.map((product) => (
+                      <ProductItem
+                        key={product.productId}
+                        active={
+                          selectedProduct?.productId === product.productId
+                        }
+                        onClick={() => handleSelectProduct(product)}
+                      >
+                        <div className="img-container">
+                          <img src={product?.image} alt="" />
+                        </div>
 
-                      <div className="info-container">
-                        <h4>{it.title}</h4>
+                        <div className="info-container">
+                          <h4>{product.title}</h4>
 
-                        <span>{it.amount}x</span>
-                      </div>
-                    </ProductItem>
-                  ))}
+                          <span>{product.amount}x</span>
+                        </div>
+                      </ProductItem>
+                    ))
+                  )}
                 </div>
               </ProductsContainer>
             </div>
@@ -568,14 +598,15 @@ export default CartContinue
 
 const CardsContainer = styled.section`
   width: 100%;
-  height: 67vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   margin-top: 1.5rem;
 
   .top-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     height: 80%;
     gap: 2rem;
     min-height: 350px;
@@ -583,11 +614,12 @@ const CardsContainer = styled.section`
 `
 
 const AddressCard = styled.section`
-  flex: 3;
-  height: 100%;
+  grid-column: span 2 / span 3;
+  width: 100%;
+  max-height: 580px;
   background: white;
   border-radius: 30px;
-  padding: 1.5rem;
+  padding: 1.5rem 2rem 3.5rem 2rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
   ${[sizes.down('lgMob')]} {
@@ -608,15 +640,42 @@ const AddressCard = styled.section`
     font-size: 1.5rem;
     font-weight: 500;
   }
-`
 
+  h2 {
+    font-size: 30px;
+    line-height: 45px;
+    font-weight: 600;
+    color: var(--color-secondary-darker);
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 45px;
+    font-weight: 600;
+  }
+`
+const DeliveryMethod = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 0;
+
+  div {
+    margin: 0.1rem 0 !important;
+  }
+`
 const AddressInfo = styled.div`
   width: 100%;
+  height: 128px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: #fff6ed;
   border: 1px solid var(--color-primary);
-  padding: 0.9rem 0.75rem;
-  border-radius: 11px;
-  margin-top: 0.5rem;
+  padding: 1.2rem 1rem;
+  border-radius: 30px;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
   ${[sizes.down('lgMob')]} {
     display: flex;
     flex-wrap: wrap;
@@ -632,14 +691,13 @@ const AddressInfo = styled.div`
 const Complement = styled(Input)`
   width: 400px;
 `
-const NewAddressButton = styled.button`
+const UpdateAddressButton = styled.button`
   display: flex;
   align-items: center;
   color: var(--color-primary);
   background: transparent;
   border: none;
   font-weight: bold;
-  margin-top: 0.5rem;
   margin-bottom: 1rem;
   transition: color 0.2s;
 
@@ -662,11 +720,11 @@ const NewAddressButton = styled.button`
 `
 
 const ProductsContainer = styled.section`
-  flex: 1;
-  height: 100%;
+  width: 100%;
+  max-height: 580px;
   background: white;
   border-radius: 30px;
-  padding: 2rem 1.5rem;
+
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   display: flex;
   flex-direction: column;
@@ -677,6 +735,8 @@ const ProductsContainer = styled.section`
   h1 {
     font-size: 1.5rem;
     font-weight: 500;
+    text-align: center;
+    padding: 1.5rem;
   }
 
   .products-container {
@@ -759,16 +819,33 @@ export const CartContainerFooter = styled(CartContainer)`
   justify-content: space-between;
 `
 
-export const ProductItem = styled.div`
+export const ProductItem = styled.div<{ active: boolean }>`
+  height: 96px;
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
-  margin-top: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  padding-left: 1.5rem;
+
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover {
+    background: var(--gray-150);
+  }
+
+  ${(props) =>
+    props.active &&
+    `
+  background: #FFF6ED;
+  border: 1px solid #FF7A00;`}
 
   .img-container {
     display: flex;
-    width: 60px;
-    height: 60px;
+    width: 81px;
+    height: 81px;
     border-radius: 8px;
     background: #f3f3f3;
     object-fit: contain;
@@ -779,7 +856,7 @@ export const ProductItem = styled.div`
   }
 
   .info-container {
-    height: 60px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -787,6 +864,11 @@ export const ProductItem = styled.div`
 
     h4 {
       font-size: 1rem;
+      font-weight: 500;
+    }
+
+    span {
+      font-weight: 600;
     }
   }
 `

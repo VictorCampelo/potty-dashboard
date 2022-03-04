@@ -27,9 +27,8 @@ export const Container = styled.main`
   align-items: center;
   justify-content: center;
   display: flex;
-  padding: 0 4rem;
+  padding: 0 3rem;
   ${[sizes.down('lgMob')]} {
-    /* background: var(--white); */
     background: white;
     width: 100vw;
     height: 100vh;
@@ -43,8 +42,16 @@ export const Content = styled.section`
   height: 100%;
   width: 100%;
   padding-top: 1.5rem;
+
+  h1 {
+    font-size: var(--font-size-lg);
+  }
+
   ${[sizes.down('lgMob')]} {
     padding-top: 1rem;
+    h1 {
+      font-size: var(--font-size-md);
+    }
     .header {
       margin-left: 1rem;
       display: flex;
@@ -53,7 +60,6 @@ export const Content = styled.section`
     }
     .checkbox {
       display: flex;
-      /* width: 100%; */
       justify-content: space-between;
       align-items: center;
       margin: 1rem 0 1rem 1rem;
