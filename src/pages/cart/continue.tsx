@@ -36,6 +36,7 @@ import getNumberArray from 'utils/getNumberArray'
 interface PaymentForm {
   value: string
   label: string
+  hasParcel?: boolean
 }
 
 interface UserAddress {
@@ -109,7 +110,8 @@ const CartContinue = () => {
   const paymentForms = [
     {
       value: '0',
-      label: 'Cartão de crédito'
+      label: 'Cartão de crédito',
+      hasParcel: true
     },
     {
       value: '1',
@@ -245,6 +247,10 @@ const CartContinue = () => {
       router.push('/login')
     }
   }
+
+  useEffect(() => {
+    setSelectedProduct(items[0])
+  }, [loadingItems])
 
   useEffect(() => {
     loadUserData()
@@ -509,6 +515,7 @@ const CartContinue = () => {
                 </div>
 
                 <Checkbox
+                  disabled={!paymentForm.hasParcel}
                   confirm={parcelCheckbox}
                   toggleConfirm={toggleParcelCheckbox}
                   label="Parcelar Compra"
@@ -531,7 +538,7 @@ const CartContinue = () => {
                         onClick={() => handleSelectProduct(product)}
                       >
                         <div className="img-container">
-                          <img src={product?.image} alt="" />
+                          <img src={product?.image} alt="Foto do produto" />
                         </div>
 
                         <div className="info-container">
@@ -637,14 +644,17 @@ const AddressCard = styled.section`
   padding: 1.5rem 2rem 3.5rem 2rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
+  .paymentContainer {
+    display: flex;
+    gap: 16px;
+  }
+
   ${[sizes.down('lgMob')]} {
     box-shadow: none;
     max-width: 100vw;
 
     .paymentContainer {
-      display: flex;
       flex-wrap: wrap;
-      gap: 16px;
     }
 
     h1 {
@@ -666,7 +676,7 @@ const AddressCard = styled.section`
 
   h3 {
     font-size: 24px;
-    line-height: 45px;
+    line-height: 60px;
     font-weight: 600;
   }
 `
@@ -756,10 +766,10 @@ const ProductsContainer = styled.section`
   }
 
   .products-container {
-    flex: 1;
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow: hidden auto;
+    padding: 0 0.75rem;
   }
 `
 
