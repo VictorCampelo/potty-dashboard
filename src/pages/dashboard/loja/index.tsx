@@ -448,9 +448,12 @@ const Shop = ({ storeId, id }: Shop) => {
 
   const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
   const [modalDeliveryOptionsIsOpen, setModalDeliveryIsOpen] = useState(false)
-  const [paymentsOptions, setPaymentOptions] = useState<IPaymentesOptions | []>(
-    []
-  )
+  const [paymentsOptions, setPaymentOptions] = useState<
+    IPaymentesOptions[] | []
+  >([])
+  const { inputPaymentValue } = useContext(PaymentContext)
+
+  const [dataStore, setDataStore] = useState()
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
@@ -459,28 +462,19 @@ const Shop = ({ storeId, id }: Shop) => {
 
   async function getPaymentOptions() {
     const { data } = await api.get('/payments/find')
-    console.log(data)
+    setPaymentOptions(data)
+    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
   }
 
-  const methodsOfPaymentsFake = [
-    'Cartão de crédito',
-    'Cartão de débito',
-    'Em dinheiro',
-    'Link de pagamento',
-    'Picpay',
-    'Pix',
-    'WhatsApp Pay'
-  ]
-
-  const modalFakeOptions = [
-    'Formas de pagamento',
-    'Opções de entrega',
-    'Opções indefinidas',
-    'Opções indefinidas',
-    'Opções indefinidas',
-    'Opções indefinidas',
-    'Excluir loja'
-  ]
+  async function setPaymentOptionsInStore() {
+    const formData = new FormData()
+    const storeDto = {
+      paymentMethods: inputPaymentValue
+    }
+    formData.append('storeDto', JSON.stringify(storeDto))
+    const { data } = await api.patch('/stores', formData)
+    setDataStore(data)
+  }
 
   // Modal de horarios
 
@@ -606,6 +600,7 @@ const Shop = ({ storeId, id }: Shop) => {
   async function loadData() {
     try {
       const { data } = await getStore(`${storeId}`)
+      setDataStore(data)
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
 
@@ -1178,8 +1173,12 @@ const Shop = ({ storeId, id }: Shop) => {
             </p>
 
             <div className="payment-options">
-              {methodsOfPaymentsFake.map((item, i) => (
-                <PaymentItem key={i} label={item} value={item} />
+              {paymentsOptions.map((payment, i) => (
+                <PaymentItem
+                  key={i}
+                  label={payment.methodName}
+                  value={payment.id}
+                />
               ))}
             </div>
 
@@ -1194,7 +1193,10 @@ const Shop = ({ storeId, id }: Shop) => {
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton title="Confirmar" />
+                <ConfigButton
+                  title="Confirmar"
+                  onClick={setPaymentOptionsInStore}
+                />
               </div>
             </div>
           </ModalContainer>

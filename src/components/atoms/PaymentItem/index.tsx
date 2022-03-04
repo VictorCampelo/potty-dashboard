@@ -14,11 +14,11 @@ export const PaymentItem = (props: IPaymentItemProps) => {
   function handleChange() {
     setIsChecked(!isChecked)
     if (!isChecked) {
-      setInputPaymentValue([props.value, ...inputPaymentValue])
+      setInputPaymentValue([props.label, ...inputPaymentValue])
       return
     }
     setInputPaymentValue(
-      inputPaymentValue.filter((item) => item != props.value)
+      inputPaymentValue.filter((item) => item != props.label)
     )
   }
 
