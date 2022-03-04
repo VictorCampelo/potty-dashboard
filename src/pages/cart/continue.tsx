@@ -47,55 +47,11 @@ interface UserAddress {
   logradouro: string
 }
 
-export interface User extends UserAddress {
+interface User extends UserAddress {
   id: string
   email: string
   firstName: string
   lastName: string
-  role: string
-  files: any[]
-  store: Store
-  profileImage: string
-}
-
-export interface Store {
-  id: string
-  name: string
-  formatedName: string
-  CNPJ: string
-  phone: string
-  street: string
-  zipcode: string
-  addressNumber: number
-  neighborhood: string
-  city: string
-  state: string
-  description: string
-  enabled: boolean
-  sumOrders: number
-  sumFeedbacks: number
-  sumStars: number
-  avgStars: number
-  facebookLink: any
-  whatsappLink: any
-  schedules: Schedules
-  createdAt: string
-  updatedAt: string
-  likes: number
-  deliveryFee: number
-  avatar: any
-  background: any
-  paymentMethods: any[]
-}
-
-export interface Schedules {
-  dom: string[]
-  qua: string[]
-  qui: string[]
-  sab: string[]
-  seg: string[]
-  sex: string[]
-  ter: string[]
 }
 
 const addressRegisterFormSchema = yup.object().shape({
