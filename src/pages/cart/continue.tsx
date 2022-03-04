@@ -28,22 +28,33 @@ import {
 } from 'styles/pages/Cart'
 import sizes from 'utils/sizes'
 import { Checkbox } from 'components/atoms/Checkbox'
+import formatToBrl from 'utils/formatToBrl'
 
-type PaymentForm = {
+interface PaymentForm {
   value: string
   label: string
 }
 
-type adressRegisterFormData = {
-  state: string
+// interface AddressRegisterFormData {
+//   state: string
+//   city: string
+//   publicPlace: string
+//   number: string
+//   district: string
+//   cep: string
+// }
+
+interface UserAddress {
+  uf: string
   city: string
-  publicPlace: string
-  number: string
-  district: string
-  cep: string
+  zipcode: string
+  addressNumber: string
+  complement: string
+  neighborhood: string
+  street: string
 }
 
-const adressRegisterFormSchema = yup.object().shape({
+const addressRegisterFormSchema = yup.object().shape({
   uf: yup.string().required('Estado obrigatório'),
   city: yup.string().required('Cidade obrigatória'),
   street: yup.string().required('Logradouro obrigatório'),
@@ -55,37 +66,23 @@ const adressRegisterFormSchema = yup.object().shape({
     .min(9, 'Mínimo 8 caracteres')
 })
 
-type AddressProps = {
-  uf: string
-  city: string
-  zipcode: string
-  addressNumber: string
-  complement: string
-  neighborhood: string
-  street: string
-}
-
 const CartContinue = () => {
+  const widthScreen = useMedia({ minWidth: '426px' })
+
   const { items, setItems } = useContext(CartContext)
-  const [addAdressModal, setAddAdressModal] = useState(false)
-  const [name, setName] = useState('')
-  const [address, setAddress] = useState('')
-  const [phone, setPhone] = useState('')
-  const [user, setUser] = useState({})
-  const [addressUser, setAddressUser] = useState<AddressProps | undefined>(
-    {} as AddressProps
-  )
+  const [userAddress, setUserAddress] = useState<UserAddress | null>(null)
 
-  // Estado Modal Clear Items
-  const [itemsClear, setItemsClear] = useState(false)
-  const [parcel, setParcel] = useState(false)
+  const [addressModalActive, setAddressModalActive] = useState(false)
+  const [clearModalActive, setClearModalActive] = useState(false)
 
-  function toggleParcel() {
-    setParcel(!parcel)
+  const [parcelCheckbox, setParcelCheckbox] = useState(false)
+
+  const toggleParcelCheckbox = () => {
+    setParcelCheckbox(!parcelCheckbox)
   }
 
-  function handleClear() {
-    setItemsClear(!itemsClear)
+  const toggleClearModal = () => {
+    setClearModalActive(!clearModalActive)
   }
 
   const total = items.reduce((prev, curr) => {
@@ -129,17 +126,12 @@ const CartContinue = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues,
-    setValue,
-    watch
+    formState: { errors }
   } = useForm({
-    resolver: yupResolver(adressRegisterFormSchema)
+    resolver: yupResolver(addressRegisterFormSchema)
   })
 
-  const widthScreen = useMedia({ minWidth: '426px' })
-
-  async function handleFinishPurcharse() {
+  async function handleFinishPurchase() {
     try {
       let data
       if (!widthScreen) {
@@ -206,6 +198,8 @@ const CartContinue = () => {
       data.whatsapp.forEach((it) => window.open(it))
       router.push('/cart/finish')
     } catch (e) {
+      console.error(e)
+
       if (e.response.status === 401) {
         return toast.error(
           'Clique aqui para fazer o login e finalizar sua compra!',
@@ -225,48 +219,34 @@ const CartContinue = () => {
     }
   }
 
-  const handleUpdateAddress: SubmitHandler<AddressProps> = async (
-    values,
-    event
-  ) => {
-    const article = {
-      uf: values.uf,
-      city: values.city,
-      zipcode: values.zipcode,
-      addressNumber: values.addressNumber,
-      complement: values.complement,
-      neighborhood: values.neighborhood,
-      street: values.street
-    }
-
+  const handleUpdateAddress: SubmitHandler<UserAddress> = async (values) => {
     try {
-      const res = await api.patch('/users', article)
-      if (res.status == 200) {
-        setAddressUser({
-          uf: article.uf,
-          city: article.city,
-          zipcode: article.zipcode,
-          addressNumber: article.addressNumber,
-          complement: article.complement,
-          neighborhood: article.neighborhood,
-          street: article.street
-        })
-        setAddAdressModal(!addAdressModal)
+      const address = {
+        uf: values.uf,
+        city: values.city,
+        zipcode: values.zipcode,
+        addressNumber: values.addressNumber,
+        complement: values.complement,
+        neighborhood: values.neighborhood,
+        street: values.street
       }
+
+      const { status } = await api.patch('/users', address)
+
+      if (status === 200) setUserAddress(address)
     } catch (e) {
-      console.log('Erro ao adicionar endereço')
+      console.error(e)
+      toast.error('Erro ao adicionar endereço, tente novamente mais tarde!')
     }
   }
 
   async function loadData() {
     try {
-      // Consumindo os dados da /me para popular a tela de checkout
-      const response = await getUser()
-      if (response.status == 200) {
-        const data = response?.data
-        const name = `${data?.firstName} ${data?.lastName}`
-        setName(name)
-        setAddressUser({
+      const { data, status } = await getUser()
+
+      if (status === 200) {
+        // const name = `${data?.firstName} ${data?.lastName}`
+        setUserAddress({
           uf: data?.uf,
           city: data?.city,
           zipcode: data?.zipcode,
@@ -276,13 +256,15 @@ const CartContinue = () => {
           street: data?.street
         })
       }
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      console.error(e)
       router.push('/login')
     }
   }
+
   useEffect(() => {
     loadData()
+    console.log(items)
   }, [])
 
   return (
@@ -295,11 +277,10 @@ const CartContinue = () => {
 
       <CustomModal
         buttons={false}
-        modalVisible={itemsClear}
-        setModalOpen={handleClear}
+        modalVisible={clearModalActive}
+        setModalOpen={toggleClearModal}
       >
         <ModalContainer>
-          {/* <div className="clearContainer"> */}
           <div className="title" style={{ textAlign: 'center' }}>
             <span>
               Realmente deseja <strong>esvaziar</strong> o carrinho?
@@ -313,23 +294,20 @@ const CartContinue = () => {
               title="ESVAZIAR"
               onClick={() => {
                 setItems([])
-                handleClear()
+                toggleClearModal()
               }}
               style={{ marginBottom: 'var(--spacing-xxs)' }}
             />
-            <span onClick={handleClear}>CANCELAR</span>
+            <span onClick={toggleClearModal}>CANCELAR</span>
           </div>
-          {/* </div> */}
         </ModalContainer>
       </CustomModal>
 
       <CustomModal
         buttons={false}
         showCloseButton={false}
-        setModalOpen={() => {
-          setAddAdressModal(!addAdressModal)
-        }}
-        modalVisible={addAdressModal}
+        setModalOpen={() => setAddressModalActive(!addressModalActive)}
+        modalVisible={addressModalActive}
         under={!widthScreen}
       >
         <ModalContainer>
@@ -337,16 +315,16 @@ const CartContinue = () => {
             <FiArrowLeft
               size={25}
               color="black"
-              onClick={() => setAddAdressModal(false)}
-              style={widthScreen ? { display: 'none' } : undefined}
+              onClick={() => setAddressModalActive(false)}
+              style={widthScreen && { display: 'none' }}
             />
             <h1>Adicionar novo endereço</h1>
 
             <IoIosClose
-              onClick={() => setAddAdressModal(false)}
+              onClick={() => setAddressModalActive(false)}
               size={36}
               color={'black'}
-              style={widthScreen ? undefined : { display: 'none' }}
+              style={!widthScreen && { display: 'none' }}
             />
           </div>
 
@@ -466,30 +444,30 @@ const CartContinue = () => {
 
           <CardsContainer>
             <div className="top-container">
-              <AdressCard>
+              <AddressCard>
                 <h1>Endereço</h1>
 
-                <AdressInfo>
+                <AddressInfo>
                   <span>
                     <strong>Nome do usuário:</strong> {name}
                   </span>
 
                   <span>
                     <strong>Endereço: </strong>
-                    {addressUser?.street} {addressUser?.addressNumber},{' '}
-                    {addressUser?.neighborhood},{addressUser?.city},{' '}
-                    {addressUser?.uf}, {addressUser?.zipcode}, Brasil
+                    {userAddress?.street} {userAddress?.addressNumber},{' '}
+                    {userAddress?.neighborhood},{userAddress?.city},{' '}
+                    {userAddress?.uf}, {userAddress?.zipcode}, Brasil
                   </span>
 
                   <span>
                     <strong>Telefone: </strong> 8999821-1234
                   </span>
-                </AdressInfo>
+                </AddressInfo>
 
-                <NewAdressButton onClick={() => setAddAdressModal(true)}>
+                <NewAddressButton onClick={() => setAddressModalActive(true)}>
                   <FiPlus size={24} />
                   Adicionar novo endereço
-                </NewAdressButton>
+                </NewAddressButton>
 
                 <h1>Forma de pagamento</h1>
 
@@ -520,8 +498,8 @@ const CartContinue = () => {
                   {!widthScreen && (
                     <>
                       <Checkbox
-                        confirm={parcel}
-                        toggleConfirm={toggleParcel}
+                        confirm={parcelCheckbox}
+                        toggleConfirm={toggleParcelCheckbox}
                         label="Parcelar Compra"
                       />
                       <Select
@@ -531,32 +509,30 @@ const CartContinue = () => {
                         setSelectedValue={setInstallments}
                         loading={false}
                         placeholder="Selecione o número de parcelas"
-                        style={parcel ? undefined : { display: 'none' }}
+                        style={!parcelCheckbox && { display: 'none' }}
                       />
                     </>
                   )}
                 </div>
-              </AdressCard>
+              </AddressCard>
 
               <ProductsContainer>
                 <h1>Produtos</h1>
 
-                <div className="productscontainer">
-                  {items.map((it) => {
-                    return (
-                      <ProductItem key={it.productId}>
-                        <div className="imgcontainer">
-                          <img src={it?.image} alt="" />
-                        </div>
+                <div className="products-container">
+                  {items.map((it) => (
+                    <ProductItem key={it.productId}>
+                      <div className="img-container">
+                        <img src={it?.image} alt="" />
+                      </div>
 
-                        <div className="infocontainer">
-                          <h4>{it.title}</h4>
+                      <div className="info-container">
+                        <h4>{it.title}</h4>
 
-                          <span>{it.amount}x</span>
-                        </div>
-                      </ProductItem>
-                    )
-                  })}
+                        <span>{it.amount}x</span>
+                      </div>
+                    </ProductItem>
+                  ))}
                 </div>
               </ProductsContainer>
             </div>
@@ -578,18 +554,13 @@ const CartContinue = () => {
                 <div className="info">
                   <div>
                     <span>Total: </span>
-                    <strong>
-                      {new Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }).format(total)}
-                    </strong>
+                    <strong>{formatToBrl(total)}</strong>
                   </div>
                   <span className="spanBottom"></span>
                 </div>
 
                 <div className="buttonContainer">
-                  <button className="finish" onClick={handleFinishPurcharse}>
+                  <button className="finish" onClick={handleFinishPurchase}>
                     <BsWhatsapp size={24} color="white" />
                     FINALIZAR COMPRA
                   </button>
@@ -602,38 +573,19 @@ const CartContinue = () => {
                 <div className="info">
                   <div>
                     <span>Total: </span>
-                    <strong>
-                      {!widthScreen
-                        ? new Intl.NumberFormat('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL'
-                          }).format(
-                            items
-                              .filter((it) => it.enabled)
-                              .reduce((prev, curr) => {
-                                return (
-                                  prev +
-                                  Number(curr.price) * Number(curr.amount)
-                                )
-                              }, 0)
-                          )
-                        : new Intl.NumberFormat('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL'
-                          }).format(total)}
-                    </strong>
+                    <strong>{formatToBrl(total)}</strong>
                   </div>
                   <span className="spanBottom">
                     {items.filter((it) => it.enabled).length <= 1
                       ? items.length + ' item'
                       : items.length + ' itens'}
                     {!widthScreen && (
-                      <a onClick={handleClear}>Esvaziar Carrinho</a>
+                      <a onClick={toggleClearModal}>Esvaziar Carrinho</a>
                     )}
                   </span>
                 </div>
                 <div className="buttonContainerMob">
-                  <button className="finish" onClick={handleFinishPurcharse}>
+                  <button className="finish" onClick={handleFinishPurchase}>
                     {' '}
                     <BsWhatsapp size={24} color="white" />
                     <p>FINALIZAR</p>
@@ -666,7 +618,7 @@ const CardsContainer = styled.section`
   }
 `
 
-const AdressCard = styled.section`
+const AddressCard = styled.section`
   flex: 3;
   height: 100%;
   background: white;
@@ -694,7 +646,7 @@ const AdressCard = styled.section`
   }
 `
 
-const AdressInfo = styled.div`
+const AddressInfo = styled.div`
   width: 100%;
   background: #fff6ed;
   border: 1px solid var(--color-primary);
@@ -716,7 +668,7 @@ const AdressInfo = styled.div`
 const Complement = styled(Input)`
   width: 400px;
 `
-const NewAdressButton = styled.button`
+const NewAddressButton = styled.button`
   display: flex;
   align-items: center;
   color: var(--color-primary);
@@ -763,7 +715,7 @@ const ProductsContainer = styled.section`
     font-weight: 500;
   }
 
-  .productscontainer {
+  .products-container {
     flex: 1;
     height: 100%;
     width: 100%;
@@ -849,7 +801,7 @@ export const ProductItem = styled.div`
   margin-bottom: 1rem;
   margin-top: 0.5rem;
 
-  .imgcontainer {
+  .img-container {
     display: flex;
     width: 60px;
     height: 60px;
@@ -862,7 +814,7 @@ export const ProductItem = styled.div`
     }
   }
 
-  .infocontainer {
+  .info-container {
     height: 60px;
     display: flex;
     flex-direction: column;
