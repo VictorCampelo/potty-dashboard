@@ -15,7 +15,7 @@ import CustomModal from 'components/molecules/CustomModal'
 import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/Input'
 import * as yup from 'yup'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BiBuildings, BiMapAlt } from 'react-icons/bi'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
@@ -82,21 +82,19 @@ const CartContinue = () => {
     useState<'house' | 'store'>('house')
   const [parcelCheckbox, setParcelCheckbox] = useState(false)
 
-  const toggleParcelCheckbox = () => {
-    setParcelCheckbox(!parcelCheckbox)
-  }
-
-  const toggleClearModal = () => {
-    setClearModalActive(!clearModalActive)
-  }
-
-  const handleSelectProduct = (product: any) => {
-    setSelectedProduct(product)
-  }
-
   const total = items.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
+
+  const parcels = getNumberArray({
+    size: 12,
+    startAt: 1
+  }).map((parcel) => {
+    return {
+      value: `${parcel}`,
+      label: `${parcel}x`
+    }
+  })
 
   const [paymentForm, setPaymentForm] = useState<PaymentForm>({
     value: '0',
@@ -130,12 +128,43 @@ const CartContinue = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm({
     resolver: yupResolver(addressRegisterFormSchema)
   })
 
-  async function handleFinishPurchase() {
+  const toggleParcelCheckbox = () => {
+    setParcelCheckbox(!parcelCheckbox)
+  }
+
+  const toggleClearModal = () => {
+    setClearModalActive(!clearModalActive)
+  }
+
+  const handleSelectProduct = (product: any) => {
+    setSelectedProduct(product)
+  }
+
+  const openAddressModal = () => {
+    const address = {
+      uf: user.uf,
+      city: user.city,
+      zipcode: user.zipcode,
+      addressNumber: user.addressNumber,
+      complement: user.complement,
+      neighborhood: user.neighborhood,
+      street: user.street
+    }
+
+    Object.entries(address).forEach(([key, value]) => {
+      setValue(key, value)
+    })
+
+    setAddressModalActive(true)
+  }
+
+  const handleFinishPurchase = async () => {
     try {
       const products = items.map((item) => {
         return {
@@ -181,7 +210,7 @@ const CartContinue = () => {
     }
   }
 
-  const handleUpdateAddress: SubmitHandler<UserAddress> = async (values) => {
+  const handleUpdateAddress = async (values: UserAddress) => {
     try {
       const address = {
         uf: values.uf,
@@ -196,13 +225,17 @@ const CartContinue = () => {
       const { status } = await api.patch('/users', address)
 
       if (status === 200) setUser({ ...user, ...address })
+
+      setAddressModalActive(false)
+
+      toast.success('Endereço atualizado com sucesso!')
     } catch (e) {
       console.error(e)
       toast.error('Erro ao atualizar endereço, tente novamente mais tarde!')
     }
   }
 
-  async function loadUserData() {
+  const loadUserData = async () => {
     try {
       const { data, status } = await getUser()
 
@@ -212,16 +245,6 @@ const CartContinue = () => {
       router.push('/login')
     }
   }
-
-  const parcels = getNumberArray({
-    size: 12,
-    startAt: 1
-  }).map((parcel) => {
-    return {
-      value: `${parcel}`,
-      label: `${parcel}x`
-    }
-  })
 
   useEffect(() => {
     loadUserData()
@@ -276,7 +299,7 @@ const CartContinue = () => {
               size={25}
               color="black"
               onClick={() => setAddressModalActive(false)}
-              style={widthScreen && { display: 'none' }}
+              style={widthScreen ? { display: 'none' } : undefined}
             />
             <h1>Adicionar novo endereço</h1>
 
@@ -284,7 +307,7 @@ const CartContinue = () => {
               onClick={() => setAddressModalActive(false)}
               size={36}
               color={'black'}
-              style={!widthScreen && { display: 'none' }}
+              style={widthScreen ? undefined : { display: 'none' }}
             />
           </div>
 
@@ -364,6 +387,7 @@ const CartContinue = () => {
                 maxLength={45}
               />
             </div>
+
             <div className="row">
               <Complement
                 label="Complemento"
@@ -380,11 +404,7 @@ const CartContinue = () => {
                 border
                 style={widthScreen ? undefined : { display: 'none' }}
               />
-              <Button
-                title="Adicionar"
-                style={{ marginBottom: 80 }}
-                type="submit"
-              />
+              <Button title="Atualizar" type="submit" />
             </div>
           </form>
         </ModalContainer>
@@ -459,19 +479,14 @@ const CartContinue = () => {
                   )}
                 </AddressInfo>
 
-                <UpdateAddressButton
-                  onClick={() => setAddressModalActive(true)}
-                >
+                <UpdateAddressButton onClick={openAddressModal}>
                   <IoPencilOutline size={24} />
                   Atualizar endereço
                 </UpdateAddressButton>
 
                 <h3>Forma de pagamento</h3>
 
-                <div
-                  style={{ display: 'flex', gap: 16 }}
-                  className="paymentContainer"
-                >
+                <div className="paymentContainer">
                   <Select
                     name="Forma de pagamento"
                     options={paymentForms}
@@ -629,6 +644,7 @@ const AddressCard = styled.section`
     .paymentContainer {
       display: flex;
       flex-wrap: wrap;
+      gap: 16px;
     }
 
     h1 {
