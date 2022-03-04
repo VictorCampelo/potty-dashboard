@@ -442,7 +442,6 @@ const Shop = ({ storeId, id }: Shop) => {
   // MODAL METHODS
   const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
   const [modalDeliveryOptionsIsOpen, setModalDeliveryIsOpen] = useState(false)
-  const { inputPaymentValue } = useContext(PaymentContext)
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
@@ -1204,7 +1203,7 @@ const Shop = ({ storeId, id }: Shop) => {
         >
           <ModalContainer>
             <div className="exit-container">
-              <h1>Formas de entrega</h1>
+              <h1>Opções de entrega</h1>
               <IoIosClose
                 onClick={() =>
                   setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
@@ -1218,12 +1217,19 @@ const Shop = ({ storeId, id }: Shop) => {
               Selecione como você deseja que seus clientes recebam seus produtos
             </p>
 
-            <div>
-              <DeliveryInp label="Retirada na loja" />
-              <DeliveryInp label="Envio de produto" />
+            <div className="wrap-delivery-options">
+              <div>
+                <DeliveryInp label="Retirada na loja" />
+                <DeliveryInp label="Envio de produto" />
+              </div>
+
+              <label className="label-input-frete">
+                <span>Taxa de frete fixa</span>
+                <input type="number" />
+              </label>
             </div>
 
-            <div className="buttons-container-payment">
+            <div className="buttons-container-payment btns-delivery">
               <div className="wrap-btn-back">
                 <Button
                   title="Voltar"

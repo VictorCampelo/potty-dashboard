@@ -104,6 +104,61 @@ export const ModalContainer = styled.div`
     }
   }
 
+  div.wrap-delivery-options {
+    div {
+      margin: 20px 0;
+
+      label {
+        margin: 15px 0;
+      }
+    }
+
+    label.label-input-frete {
+      position: relative;
+
+      ::after {
+        content: url('../../../images/money.svg');
+        width: 18px;
+        display: block;
+        height: 14px;
+        position: absolute;
+        left: 12px;
+        bottom: 6px;
+      }
+
+      ::before {
+        content: 'R$';
+        display: block;
+        position: absolute;
+        left: 40px;
+        bottom: -1px;
+        z-index: 3;
+      }
+
+      span {
+        display: block;
+        margin: 10px 0;
+      }
+
+      input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      input[type='number'] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+
+      input {
+        width: 214px;
+        height: 40px;
+        border: 1px solid #363f4e;
+        box-sizing: border-box;
+        border-radius: 8px;
+        padding-left: 60px;
+      }
+    }
+  }
+
   .buttons-container-payment {
     display: flex;
     padding-top: 20px;
@@ -125,6 +180,10 @@ export const ModalContainer = styled.div`
         margin-left: 10px;
       }
     }
+  }
+
+  .buttons-container-payment.btns-delivery {
+    margin-top: 100px;
   }
 
   .timeTables-container {
