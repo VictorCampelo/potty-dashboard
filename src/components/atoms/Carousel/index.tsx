@@ -123,7 +123,7 @@ const Carousel = ({
     const newActiveImage = {}
     data.forEach((store) => {
       newActiveImage[store.id] =
-        (isProduct ? store.files[0]?.url : store?.background?.url) ||
+        (isProduct ? store.files?.shift()?.url : store?.background?.url) ||
         '/images/capa-small.png'
     })
 

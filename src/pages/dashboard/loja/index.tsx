@@ -49,6 +49,7 @@ import { CropModalContainer } from 'styles/pages/Catalog'
 import Cropper from 'react-easy-crop'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 import { PaymentItem } from 'components/atoms/PaymentItem'
+import { DeliveryInp } from 'components/atoms/DeliveryInp'
 
 type TimeTableArrayType = {
   [0]
@@ -439,12 +440,12 @@ const Shop = ({ storeId, id }: Shop) => {
   }
 
   // MODAL METHODS
-  const [modalPayIsOpen, setModalPayIsOpen] = useState(false)
-  const { inputPaymentValue } = useContext(PaymentContext)
+  const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
+  const [modalDeliveryOptionsIsOpen, setModalDeliveryIsOpen] = useState(false)
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
-    funcModalClose(true)
-    funcModalOpen(false)
+    funcModalClose(false)
+    funcModalOpen(true)
   }
 
   const methodsOfPaymentsFake = [
@@ -591,7 +592,6 @@ const Shop = ({ storeId, id }: Shop) => {
   async function loadData() {
     try {
       const { data } = await getStore(`${storeId}`)
-      console.log(data)
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
 
@@ -1102,17 +1102,39 @@ const Shop = ({ storeId, id }: Shop) => {
             </div>
 
             <div className="options">
-              {modalFakeOptions.map((opt, ind) => (
-                <div key={ind} className="wrap-opts">
-                  <a
-                    onClick={() =>
-                      handleChangeModalOpen(setModalPayIsOpen, setConfigModal)
-                    }
-                  >
-                    {opt}
-                  </a>
-                </div>
-              ))}
+              <div className="wrap-opts">
+                <a
+                  onClick={() =>
+                    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
+                  }
+                >
+                  Formas de pagamento
+                </a>
+              </div>
+              <div className="wrap-opts">
+                <a
+                  onClick={() =>
+                    handleChangeModalOpen(
+                      setConfigModal,
+                      setModalDeliveryIsOpen
+                    )
+                  }
+                >
+                  Opções de entrega
+                </a>
+              </div>
+              <div className="wrap-opts">
+                <a>Opções indefinidas</a>
+              </div>
+              <div className="wrap-opts">
+                <a>Opções indefinidas</a>
+              </div>
+              <div className="wrap-opts">
+                <a>Opções indefinidas</a>
+              </div>
+              <div className="wrap-opts">
+                <a>Excluir loja</a>
+              </div>
             </div>
 
             <div className="buttons-container">
@@ -1129,14 +1151,14 @@ const Shop = ({ storeId, id }: Shop) => {
         <CustomModal
           buttons={false}
           showCloseButton={false}
-          modalVisible={modalPayIsOpen}
-          setModalOpen={() => setModalPayIsOpen(!modalPayIsOpen)}
+          modalVisible={modalPaymentIsOpen}
+          setModalOpen={() => setModalPaymentIsOpen(!modalPaymentIsOpen)}
         >
           <ModalContainer>
             <div className="exit-container">
               <h1>Formas de Pagamento</h1>
               <IoIosClose
-                onClick={() => setModalPayIsOpen(!modalPayIsOpen)}
+                onClick={() => setModalPaymentIsOpen(!modalPaymentIsOpen)}
                 size={36}
                 color={'black'}
               />
@@ -1159,15 +1181,69 @@ const Shop = ({ storeId, id }: Shop) => {
                   title="Voltar"
                   border={true}
                   onClick={() =>
-                    handleChangeModalOpen(setConfigModal, setModalPayIsOpen)
+                    handleChangeModalOpen(setModalPaymentIsOpen, setConfigModal)
                   }
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton
-                  title="Confirmar"
-                  onClick={() => console.log(inputPaymentValue)}
+                <ConfigButton title="Confirmar" />
+              </div>
+            </div>
+          </ModalContainer>
+        </CustomModal>
+
+        {/*DELIVERY OPTIONS*/}
+        <CustomModal
+          buttons={false}
+          showCloseButton={false}
+          modalVisible={modalDeliveryOptionsIsOpen}
+          setModalOpen={() =>
+            setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+          }
+        >
+          <ModalContainer>
+            <div className="exit-container">
+              <h1>Opções de entrega</h1>
+              <IoIosClose
+                onClick={() =>
+                  setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+                }
+                size={36}
+                color={'black'}
+              />
+            </div>
+
+            <p>
+              Selecione como você deseja que seus clientes recebam seus produtos
+            </p>
+
+            <div className="wrap-delivery-options">
+              <div>
+                <DeliveryInp label="Retirada na loja" />
+                <DeliveryInp label="Envio de produto" />
+              </div>
+
+              <label className="label-input-frete">
+                <span>Taxa de frete fixa</span>
+                <input type="number" />
+              </label>
+            </div>
+
+            <div className="buttons-container-payment btns-delivery">
+              <div className="wrap-btn-back">
+                <Button
+                  title="Voltar"
+                  border={true}
+                  onClick={() =>
+                    handleChangeModalOpen(
+                      setModalDeliveryIsOpen,
+                      setConfigModal
+                    )
+                  }
                 />
+              </div>
+              <div className="wrap-btn-confirm">
+                <ConfigButton title="Confirmar" />
               </div>
             </div>
           </ModalContainer>

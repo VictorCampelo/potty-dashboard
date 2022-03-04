@@ -24,6 +24,7 @@ type ShopkeeperUser = {
   lastName?: string
   password?: string
   passwordConfirmation?: string
+  chosenPlan?: string
 }
 
 type ShopkeepeerContextData = {
