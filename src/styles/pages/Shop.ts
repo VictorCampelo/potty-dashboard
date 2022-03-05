@@ -98,6 +98,14 @@ export const ModalContainer = styled.div`
     }
   }
 
+  .wrap-payments-and-buttons {
+    /* background-color: red; */
+    height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   div.payment-options {
     label {
       margin: 12px 0;

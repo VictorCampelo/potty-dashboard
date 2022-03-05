@@ -1176,32 +1176,36 @@ const Shop = ({ storeId, id }: Shop) => {
               Selecione pelo menos uma forma para seus clientes realizarem
               pagamentos
             </p>
-
-            <div className="payment-options">
-              {paymentsOptions.map((payment, i) => (
-                <PaymentItem
-                  key={i}
-                  label={payment.methodName}
-                  value={payment.id}
-                />
-              ))}
-            </div>
-
-            <div className="buttons-container-payment">
-              <div className="wrap-btn-back">
-                <Button
-                  title="Voltar"
-                  border={true}
-                  onClick={() =>
-                    handleChangeModalOpen(setModalPaymentIsOpen, setConfigModal)
-                  }
-                />
+            <div className="wrap-payments-and-buttons">
+              <div className="payment-options">
+                {paymentsOptions.map((payment, i) => (
+                  <PaymentItem
+                    key={i}
+                    label={payment.methodName}
+                    value={payment.id}
+                  />
+                ))}
               </div>
-              <div className="wrap-btn-confirm">
-                <ConfigButton
-                  title="Confirmar"
-                  onClick={setPaymentOptionsInStore}
-                />
+
+              <div className="buttons-container-payment">
+                <div className="wrap-btn-back">
+                  <Button
+                    title="Voltar"
+                    border={true}
+                    onClick={() =>
+                      handleChangeModalOpen(
+                        setModalPaymentIsOpen,
+                        setConfigModal
+                      )
+                    }
+                  />
+                </div>
+                <div className="wrap-btn-confirm">
+                  <ConfigButton
+                    title="Confirmar"
+                    onClick={setPaymentOptionsInStore}
+                  />
+                </div>
               </div>
             </div>
           </ModalContainer>
