@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Container } from './style'
 import { PaymentContext } from '../../../contexts/PaymentContext'
 
@@ -8,23 +8,28 @@ interface IPaymentItemProps {
 }
 
 export const PaymentItem = (props: IPaymentItemProps) => {
-  const [isChecked, setIsChecked] = useState(false)
-  const { setInputPaymentValue, inputPaymentValue } = useContext(PaymentContext)
+  const [isInputChecked, setIsInputChecked] = useState(false)
+  const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
+
+  useEffect(() => {
+    if (inputPaymentValue.some((item) => item == props.label))
+      setIsInputChecked(true)
+  }, [inputPaymentValue])
 
   function handleChange() {
-    setIsChecked(!isChecked)
-    if (!isChecked) {
-      setInputPaymentValue([props.value, ...inputPaymentValue])
+    setIsInputChecked(!isInputChecked)
+    if (!isInputChecked) {
+      setInputPaymentValue([props.label, ...inputPaymentValue])
       return
     }
     setInputPaymentValue(
-      inputPaymentValue.filter((item) => item != props.value)
+      inputPaymentValue.filter((item) => item != props.label)
     )
   }
 
   return (
     <Container>
-      <input type="checkbox" checked={isChecked} onChange={handleChange} />
+      <input type="checkbox" checked={isInputChecked} onChange={handleChange} />
       {props.label}
     </Container>
   )
