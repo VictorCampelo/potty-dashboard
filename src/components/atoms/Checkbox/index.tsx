@@ -21,8 +21,7 @@ export const Checkbox = ({
   size = 'medium',
   disabled
 }: CheckboxProps) => {
-  const id = String(Math.random())
-
+  const id = label
   return (
     <Container size={size}>
       <div className={`check ${disabled && 'disabled'}`}>
