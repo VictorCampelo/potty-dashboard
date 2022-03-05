@@ -95,8 +95,8 @@ const CartContinue = () => {
   }, 0)
 
   const parcelsOptions = getNumberArray({
-    size: 12,
-    startAt: 1
+    size: 11,
+    startAt: 2
   }).map((parcel) => {
     return {
       value: `${parcel}`,
@@ -108,8 +108,8 @@ const CartContinue = () => {
   const [paymentMethodOption, setPaymentMethodOption] =
     useState<Option | null>(null)
   const [parcelOption, setParcelOption] = useState<Option>({
-    value: '1',
-    label: '1x'
+    value: '2',
+    label: '2x'
   })
   const [allowParcels, setAllowParcels] = useState(false)
 
@@ -249,15 +249,18 @@ const CartContinue = () => {
 
         return
       }
+
       const products = Object.entries(_.groupBy(items, 'storeId')).map(
         ([value, key]) => {
           const orderProducts = key.map((item) => {
-            return {
+            const order = {
               productId: item.productId,
-              amount: item.amount,
+              amount: Number(item.amount),
               paymentMethod: itemsPaymentMethod[item.productId].methodName,
-              parcels: itemsPaymentMethod[item.productId].parcels
+              parcels: Number(itemsPaymentMethod[item.productId].parcels)
             }
+            if (!order.parcels) delete order.parcels
+            return order
           })
           return {
             storeId: value,
