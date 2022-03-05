@@ -117,6 +117,9 @@ const CartContinue = () => {
     [productId: string]: { methodName: string; parcels?: string }
   }>({})
 
+  const finallyPurchase =
+    Object.keys(itemsPaymentMethod).length === items.length
+
   const updateItemPaymentMethod = ({
     productId,
     methodName,
@@ -134,7 +137,7 @@ const CartContinue = () => {
       !paymentMethods.find((methods) => methods.methodName === methodName)
         .allowParcels
     ) {
-      updated.parcels = '0'
+      updated.parcels = undefined
 
       setParcelOption({
         value: '1',
@@ -157,7 +160,7 @@ const CartContinue = () => {
     updateItemPaymentMethod({
       productId: selectedProduct.productId,
       methodName: option.value,
-      parcels: parcelOption.value
+      parcels: parcelOption?.value
     })
   }
 
@@ -180,6 +183,32 @@ const CartContinue = () => {
 
   const handleSelectProduct = (product: any) => {
     setSelectedProduct(product)
+
+    const method = itemsPaymentMethod[product.productId]
+
+    if (method) {
+      setPaymentMethodOption({
+        value: method.methodName,
+        label: method.methodName
+      })
+
+      setAllowParcels(
+        paymentMethods.find(
+          ({ methodName }) => methodName === method.methodName
+        ).allowParcels
+      )
+
+      if (Number(method.parcels) > 0) {
+        setParcelOption({
+          value: method.parcels,
+          label: `${method.parcels}x`
+        })
+        setAllowParcels(true)
+      } else {
+        setParcelOption(null)
+        setParcelCheckbox(false)
+      }
+    }
   }
 
   const openAddressModal = () => {
@@ -202,8 +231,24 @@ const CartContinue = () => {
 
   const handleFinishPurchase = async () => {
     try {
-      // TODO: if products need payment method show button proximo, else show button falar no whatsapp
+      if (!finallyPurchase) {
+        const nextItemIndex =
+          items.findIndex(
+            ({ productId }) => productId === selectedProduct.productId
+          ) + 1
 
+        const nextItem = items[nextItemIndex]
+
+        setSelectedProduct(nextItem)
+
+        updateItemPaymentMethod({
+          productId: nextItem.productId,
+          methodName: paymentMethodOption.value,
+          parcels: parcelOption?.value
+        })
+
+        return
+      }
       const products = Object.entries(_.groupBy(items, 'storeId')).map(
         ([value, key]) => {
           const orderProducts = key.map((item) => {
@@ -302,10 +347,6 @@ const CartContinue = () => {
       updatePaymentMethods(items[0].storeId)
     }
   }, [loadingItems])
-
-  useEffect(() => {
-    setParcelCheckbox(allowParcels)
-  }, [allowParcels])
 
   useEffect(() => {
     loadUserData()
@@ -588,8 +629,8 @@ const CartContinue = () => {
                     toggleParcelCheckbox()
                     updateItemPaymentMethod({
                       productId: selectedProduct.productId,
-                      methodName: paymentMethodOption.value,
-                      parcels: parcelOption.value
+                      methodName: paymentMethodOption?.value,
+                      parcels: !parcelCheckbox ? parcelOption?.value : '0'
                     })
                   }}
                   label="Parcelar Compra"
@@ -650,9 +691,19 @@ const CartContinue = () => {
                 </div>
 
                 <div className="buttonContainer">
-                  <button className="finish" onClick={handleFinishPurchase}>
-                    <BsWhatsapp size={24} color="white" />
-                    FINALIZAR COMPRA
+                  <button
+                    className="finish"
+                    onClick={handleFinishPurchase}
+                    disabled={!paymentMethodOption?.value}
+                  >
+                    {finallyPurchase ? (
+                      <>
+                        <BsWhatsapp size={24} color="white" />
+                        FINALIZAR COMPRAR
+                      </>
+                    ) : (
+                      <>PRÓXIMO PRODUTO</>
+                    )}
                   </button>
                 </div>
               </CartContainerFooter>
@@ -907,6 +958,10 @@ export const CartContainer = styled.section`
         border: 1px solid var(--color-primary);
         background: white;
         color: var(--color-primary);
+      }
+
+      &:disabled {
+        opacity: 0.5;
       }
     }
   }
