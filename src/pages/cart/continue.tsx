@@ -33,6 +33,7 @@ import formatPhone from 'utils/masks/formatPhone'
 import { IoPencilOutline } from 'react-icons/io5'
 import getNumberArray from 'utils/getNumberArray'
 import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
+import _ from 'lodash'
 
 interface IPaymentMethod {
   id: string
@@ -125,14 +126,16 @@ const CartContinue = () => {
     methodName: string
     parcels: string
   }) => {
-    const updated: any = {}
-    updated.methodName = methodName
+    const updated = {
+      methodName,
+      parcels
+    }
     if (
-      paymentMethods.find((methods) => methods.methodName === methodName)
+      !paymentMethods.find((methods) => methods.methodName === methodName)
         .allowParcels
     ) {
-      updated.parcels = parcels
-    } else {
+      updated.parcels = '0'
+
       setParcelOption({
         value: '1',
         label: '1x'
@@ -145,7 +148,7 @@ const CartContinue = () => {
     })
   }
 
-  const onSelectPaymentMethod = (option: any) => {
+  const onSelectPaymentMethod = (option) => {
     setPaymentMethodOption(option)
     setAllowParcels(
       paymentMethods.find(({ methodName }) => methodName === option.value)
@@ -199,20 +202,24 @@ const CartContinue = () => {
 
   const handleFinishPurchase = async () => {
     try {
-      const products = items.map((item) => {
-        const paymentMethod = itemsPaymentMethod[item.productId]
-        return {
-          storeId: item.storeId,
-          orderProducts: [
-            {
+      // TODO: if products need payment method show button proximo, else show button falar no whatsapp
+
+      const products = Object.entries(_.groupBy(items, 'storeId')).map(
+        ([value, key]) => {
+          const orderProducts = key.map((item) => {
+            return {
               productId: item.productId,
               amount: item.amount,
-              parcels: paymentMethod.parcels,
-              paymentMethod: paymentMethod.methodName
+              paymentMethod: itemsPaymentMethod[item.productId].methodName,
+              parcels: itemsPaymentMethod[item.productId].parcels
             }
-          ]
+          })
+          return {
+            storeId: value,
+            orderProducts
+          }
         }
-      })
+      )
 
       const { data } = await api.post(`/orders`, { products })
 
@@ -291,7 +298,6 @@ const CartContinue = () => {
 
   useEffect(() => {
     if (!loadingItems && items.length) {
-      console.log(items[0])
       setSelectedProduct(items[0])
       updatePaymentMethods(items[0].storeId)
     }
