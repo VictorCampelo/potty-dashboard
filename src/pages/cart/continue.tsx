@@ -32,11 +32,12 @@ import formatToBrl from 'utils/formatToBrl'
 import formatPhone from 'utils/masks/formatPhone'
 import { IoPencilOutline } from 'react-icons/io5'
 import getNumberArray from 'utils/getNumberArray'
+import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
 
-interface PaymentForm {
-  value: string
-  label: string
-  hasParcel?: boolean
+interface IPaymentMethod {
+  id: string
+  methodName: string
+  allowParcels: boolean
 }
 
 interface UserAddress {
@@ -57,6 +58,11 @@ interface User extends UserAddress {
   lastName: string
 }
 
+interface Option {
+  label: string
+  value: string
+}
+
 const addressRegisterFormSchema = yup.object().shape({
   uf: yup.string().required('Estado obrigatório'),
   city: yup.string().required('Cidade obrigatória'),
@@ -74,7 +80,7 @@ const CartContinue = () => {
 
   const { items, loadingItems, setItems } = useContext(CartContext)
   const [user, setUser] = useState<User | null>(null)
-  const [selectedProduct, setSelectedProduct] = useState<any>(null)
+  const [selectedProduct, setSelectedProduct] = useState(null)
 
   const [addressModalActive, setAddressModalActive] = useState(false)
   const [clearModalActive, setClearModalActive] = useState(false)
@@ -87,7 +93,7 @@ const CartContinue = () => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
 
-  const parcels = getNumberArray({
+  const parcelsOptions = getNumberArray({
     size: 12,
     startAt: 1
   }).map((parcel) => {
@@ -97,35 +103,60 @@ const CartContinue = () => {
     }
   })
 
-  const [paymentForm, setPaymentForm] = useState<PaymentForm>({
-    value: '0',
-    label: 'Cartão de crédito'
-  })
-
-  const [installments, setInstallments] = useState<PaymentForm>({
-    value: '0',
+  const [paymentMethods, setPaymentMethods] = useState<IPaymentMethod[]>([])
+  const [paymentMethodOption, setPaymentMethodOption] =
+    useState<Option | null>(null)
+  const [parcelOption, setParcelOption] = useState<Option>({
+    value: '1',
     label: '1x'
   })
+  const [allowParcels, setAllowParcels] = useState(false)
 
-  const paymentForms = [
-    {
-      value: '0',
-      label: 'Cartão de crédito',
-      hasParcel: true
-    },
-    {
-      value: '1',
-      label: 'Cartão de debito'
-    },
-    {
-      value: '2',
-      label: 'Pix'
-    },
-    {
-      value: '3',
-      label: 'Boleto'
+  const [itemsPaymentMethod, setItemsPaymentMethod] = useState<{
+    [productId: string]: { methodName: string; parcels?: string }
+  }>({})
+
+  const updateItemPaymentMethod = ({
+    productId,
+    methodName,
+    parcels
+  }: {
+    productId: string
+    methodName: string
+    parcels: string
+  }) => {
+    const updated: any = {}
+    updated.methodName = methodName
+    if (
+      paymentMethods.find((methods) => methods.methodName === methodName)
+        .allowParcels
+    ) {
+      updated.parcels = parcels
+    } else {
+      setParcelOption({
+        value: '1',
+        label: '1x'
+      })
+      setAllowParcels(false)
     }
-  ]
+    setItemsPaymentMethod({
+      ...itemsPaymentMethod,
+      [productId]: updated
+    })
+  }
+
+  const onSelectPaymentMethod = (option: any) => {
+    setPaymentMethodOption(option)
+    setAllowParcels(
+      paymentMethods.find(({ methodName }) => methodName === option.value)
+        .allowParcels
+    )
+    updateItemPaymentMethod({
+      productId: selectedProduct.productId,
+      methodName: option.value,
+      parcels: parcelOption.value
+    })
+  }
 
   const {
     register,
@@ -169,21 +200,21 @@ const CartContinue = () => {
   const handleFinishPurchase = async () => {
     try {
       const products = items.map((item) => {
+        const paymentMethod = itemsPaymentMethod[item.productId]
         return {
           storeId: item.storeId,
           orderProducts: [
             {
               productId: item.productId,
               amount: item.amount,
-              paymentMethod: paymentForm.value
+              parcels: paymentMethod.parcels,
+              paymentMethod: paymentMethod.methodName
             }
           ]
         }
       })
 
-      const { data } = await api.post(`/orders`, {
-        products
-      })
+      const { data } = await api.post(`/orders`, { products })
 
       localStorage.setItem('ultimo.cart.items', '')
 
@@ -248,9 +279,27 @@ const CartContinue = () => {
     }
   }
 
+  const updatePaymentMethods = async (storeId: string) => {
+    try {
+      const { data } = await api.get(`/stores/id/${storeId}`)
+
+      setPaymentMethods(data.paymentMethods)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   useEffect(() => {
-    setSelectedProduct(items[0])
+    if (!loadingItems && items.length) {
+      console.log(items[0])
+      setSelectedProduct(items[0])
+      updatePaymentMethods(items[0].storeId)
+    }
   }, [loadingItems])
+
+  useEffect(() => {
+    setParcelCheckbox(allowParcels)
+  }, [allowParcels])
 
   useEffect(() => {
     loadUserData()
@@ -497,9 +546,12 @@ const CartContinue = () => {
                 <div className="paymentContainer">
                   <Select
                     name="Forma de pagamento"
-                    options={paymentForms}
-                    selectedValue={paymentForm}
-                    setSelectedValue={setPaymentForm}
+                    options={paymentMethods.map(({ methodName }) => ({
+                      value: methodName,
+                      label: capitalizeFirstLetter(methodName)
+                    }))}
+                    selectedValue={paymentMethodOption}
+                    setSelectedValue={onSelectPaymentMethod}
                     loading={false}
                     placeholder="Selecione sua forma de pagamento"
                   />
@@ -507,9 +559,16 @@ const CartContinue = () => {
                   {parcelCheckbox && (
                     <Select
                       name="Parcelamento"
-                      options={parcels}
-                      selectedValue={installments}
-                      setSelectedValue={setInstallments}
+                      options={parcelsOptions}
+                      selectedValue={parcelOption}
+                      setSelectedValue={(option) => {
+                        setParcelOption(option)
+                        updateItemPaymentMethod({
+                          productId: selectedProduct.productId,
+                          methodName: paymentMethodOption.value,
+                          parcels: option.value
+                        })
+                      }}
                       loading={false}
                       placeholder="Selecione o número de parcelas"
                     />
@@ -517,9 +576,16 @@ const CartContinue = () => {
                 </div>
 
                 <Checkbox
-                  disabled={!paymentForm.hasParcel}
+                  disabled={!allowParcels}
                   confirm={parcelCheckbox}
-                  toggleConfirm={toggleParcelCheckbox}
+                  toggleConfirm={() => {
+                    toggleParcelCheckbox()
+                    updateItemPaymentMethod({
+                      productId: selectedProduct.productId,
+                      methodName: paymentMethodOption.value,
+                      parcels: parcelOption.value
+                    })
+                  }}
                   label="Parcelar Compra"
                 />
               </AddressCard>

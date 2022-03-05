@@ -1,4 +1,4 @@
-import Select, { OptionTypeBase, ValueType } from 'react-select'
+import Select from 'react-select'
 
 import { Container, SelectStylesMulti } from './styles'
 
@@ -9,7 +9,7 @@ interface SelectInterface {
   selectedValue: {
     value: string
     label: string
-  }
+  } | null
   loading: boolean
   setSelectedValue: (item) => void
   options: Array<{
