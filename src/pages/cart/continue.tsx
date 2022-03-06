@@ -81,7 +81,7 @@ const CartContinue = () => {
     useState<PaymentMethod | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const [storesDisableDelivery, setStoresDisableDelivery] = useState<{
+  const [storesWithoutDelivery, setStoresWithoutDelivery] = useState<{
     [storeId: string]: boolean
   }>({})
 
@@ -158,6 +158,7 @@ const CartContinue = () => {
       paymentMethods.find(({ methodName }) => methodName === option.value)
         .allowParcels
     )
+    setParcelOption(null)
     updateItemPaymentMethod({
       productId: selectedProduct.productId,
       methodName: option.value,
@@ -211,6 +212,7 @@ const CartContinue = () => {
           label: `${method.parcels}x`
         })
         setAllowParcels(true)
+        setParcelCheckbox(true)
       } else {
         setParcelOption(null)
         setParcelCheckbox(false)
@@ -277,7 +279,7 @@ const CartContinue = () => {
           return {
             storeId,
             orderProducts,
-            delivery: !!storesDisableDelivery[storeId]
+            delivery: storesWithoutDelivery[storeId] ? false : true
           }
         }
       )
@@ -359,8 +361,8 @@ const CartContinue = () => {
 
   useEffect(() => {
     if (selectedProduct?.storeId)
-      setStoresDisableDelivery({
-        ...storesDisableDelivery,
+      setStoresWithoutDelivery({
+        ...storesWithoutDelivery,
         [selectedProduct.storeId]: deliveryMethod === 'store'
       })
   }, [deliveryMethod])
