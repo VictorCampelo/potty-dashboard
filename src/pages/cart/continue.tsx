@@ -81,6 +81,9 @@ const CartContinue = () => {
     useState<PaymentMethod | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const [storesDisableDelivery, setStoresDisableDelivery] = useState<{
+    [storeId: string]: boolean
+  }>({})
 
   const [addressModalActive, setAddressModalActive] = useState(false)
   const [clearModalActive, setClearModalActive] = useState(false)
@@ -236,12 +239,15 @@ const CartContinue = () => {
   const handleFinishPurchase = async () => {
     try {
       if (!finallyPurchase) {
-        const nextItemIndex =
-          items.findIndex(
-            ({ productId }) => productId === selectedProduct.productId
-          ) + 1
+        const productsIds = items.map(({ productId }) => productId)
+        const productsIdsWithPaymentMethod = Object.keys(itemsPaymentMethod)
+        const productsThatsNeedPaymentMethod = productsIds.filter(
+          (id) => !productsIdsWithPaymentMethod.includes(id)
+        )
 
-        const nextItem = items[nextItemIndex]
+        const nextItem = items.find(
+          ({ productId }) => productId === productsThatsNeedPaymentMethod[0]
+        )
 
         setSelectedProduct(nextItem)
 
@@ -257,8 +263,8 @@ const CartContinue = () => {
       }
 
       const products = Object.entries(_.groupBy(items, 'storeId')).map(
-        ([value, key]) => {
-          const orderProducts = key.map((item) => {
+        ([storeId, products]) => {
+          const orderProducts = products.map((item) => {
             const order = {
               productId: item.productId,
               amount: Number(item.amount),
@@ -269,8 +275,9 @@ const CartContinue = () => {
             return order
           })
           return {
-            storeId: value,
-            orderProducts
+            storeId,
+            orderProducts,
+            delivery: !!storesDisableDelivery[storeId]
           }
         }
       )
@@ -349,6 +356,14 @@ const CartContinue = () => {
       setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
     }
   }, [loadingItems, loadingStores])
+
+  useEffect(() => {
+    if (selectedProduct?.storeId)
+      setStoresDisableDelivery({
+        ...storesDisableDelivery,
+        [selectedProduct.storeId]: deliveryMethod === 'store'
+      })
+  }, [deliveryMethod])
 
   useEffect(() => {
     loadUserData()
