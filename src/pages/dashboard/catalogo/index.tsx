@@ -175,6 +175,45 @@ const catalog = ({ storeId }: CatalogType) => {
     label: idx + 1 + 'x'
   }))
 
+  // METHODS/FUNCTIONS FOR EDIT PRODUCT MODAL
+
+  interface IFileProps {
+    id: string
+    name: string
+    filename: string
+    alternativeText: string
+    url: string
+  }
+
+  interface ICategoriesProps {
+    id: string
+    name: string
+    enabled: boolean
+    type: string
+    storeProductsId: string
+  }
+  interface IProductForEditingProps {
+    categories: ICategoriesProps[]
+    length: number
+    description: string
+    discount: number
+    files: IFileProps[]
+    id: string
+    inventory: number
+    lastSold: string
+    parcelAmount: number
+    price: number
+    storeId: string
+    sumFeedbacks: number
+    sumOrders: number
+    sumStars: number
+    tags: string
+    title: string
+  }
+
+  const [productForEditing, setProductForEditing] =
+    useState<IProductForEditingProps | []>()
+
   const date = new Date()
   date.setDate(date.getDate() + 30)
 
@@ -493,7 +532,7 @@ const catalog = ({ storeId }: CatalogType) => {
   const loadData = async () => {
     try {
       const { data } = await getProducts(storeId)
-
+      console.log(data)
       const formatedData = data.map((it) => ({
         ...it,
         categories: it.categories.map((cat: CategoryType) => cat.name)
@@ -906,7 +945,7 @@ const catalog = ({ storeId }: CatalogType) => {
         modalVisible={editProduct}
       >
         <AddProductModalContainer onSubmit={handleSubmit(handleUpdateProduct)}>
-          <h1 className="titulo-cadastro">Cadastrar Produto</h1>
+          <h1 className="titulo-cadastro">Editar Produto</h1>
           <div className="input-infos">
             <div className="left-area">
               <Input
