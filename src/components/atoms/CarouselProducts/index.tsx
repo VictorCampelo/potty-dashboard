@@ -125,7 +125,7 @@ const CarouselProducts = ({
     const newActiveImage = {}
     data.forEach((product) => {
       newActiveImage[product.id] =
-        product.files[0].url || '/images/capa-small.png'
+        product.files[0]?.url || '/images/capa-small.png'
     })
     setActiveImage(newActiveImage)
   }, [])

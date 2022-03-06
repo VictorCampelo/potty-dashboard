@@ -161,8 +161,9 @@ const Carousel = ({
                     : { display: 'none' }
                 }
               >
+                {console.log(store)}
                 <img
-                  src={activeImage[store.id]}
+                  src={store?.background?.url || '/images/capa-small.png'}
                   className="store-banner"
                   alt="banner"
                 />
@@ -173,8 +174,9 @@ const Carousel = ({
                   className="logo"
                   onClick={() => redirectToStore(store.formatedName)}
                 >
+                  {console.log(store)}
                   <img
-                    src={store.avatar?.url || '/images/icon.png'}
+                    src={store?.avatar?.url || '/images/icon.png'}
                     alt="logo"
                   />
                 </div>
