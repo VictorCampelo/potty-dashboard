@@ -35,7 +35,11 @@ import getNumberArray from 'utils/getNumberArray'
 import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
 import _ from 'lodash'
 
-import type { PaymentMethod } from 'context/CartContext'
+interface PaymentMethod {
+  id: string
+  methodName: string
+  allowParcels: boolean
+}
 
 interface UserAddress {
   uf: string
@@ -78,7 +82,7 @@ const CartContinue = () => {
   const { stores, loadingStores, items, loadingItems, setItems } =
     useContext(CartContext)
   const [paymentMethods, setPaymentMethods] =
-    useState<PaymentMethod | null>(null)
+    useState<PaymentMethod[] | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [storesWithoutDelivery, setStoresWithoutDelivery] = useState<{
