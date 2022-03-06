@@ -4,6 +4,7 @@ import FooterContact from 'components/molecules/FooterContact'
 
 import styled from 'styled-components'
 import Carousel from 'components/atoms/Carousel'
+import CarouselProducts from 'components/atoms/CarouselProducts'
 import { AiOutlineSearch, AiOutlineRight } from 'react-icons/ai'
 
 import { api } from 'services/apiClient'
@@ -89,13 +90,12 @@ const Landing = ({ products }: Landing) => {
               <div className="carousel-container">
                 <div className="carousel-item">
                   <span className="title">Em promoção</span>
-
-                  <Carousel data={products} isProduct promo />
+                  <CarouselProducts data={products} promo />
                 </div>
 
                 <div className="carousel-item">
                   <span className="title">Veja as últimas novidades</span>
-                  <Carousel data={products} isProduct />
+                  <CarouselProducts data={products} />
                 </div>
               </div>
               <h1 style={{ alignSelf: 'flex-start' }}>Lojas</h1>

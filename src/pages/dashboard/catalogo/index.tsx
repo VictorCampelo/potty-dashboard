@@ -70,9 +70,10 @@ type CategoryType = {
   createdAt: string
   updatedAt: string
 }
-type FileProduct = {
-  url: string
-}
+
+// type FileProduct = {
+//   url: string
+// }
 
 type ProductType = {
   avgStars: number
@@ -81,7 +82,7 @@ type ProductType = {
   description: string
   parcelAmount: number
   discount: any
-  files: FileProduct[]
+  files: Files[]
   id: string
   inventory: number
   lastSold: any
@@ -103,6 +104,30 @@ interface Cupom {
   code: string
   discountPorcent: number
   maxUsage: number
+}
+
+interface Files {
+  id: string
+  name: string
+  filename: string
+  alternativeText: string
+  caption: string
+  hash: string
+  ext: string
+  mime: string
+  provider: string
+  url: string
+  previewUrl: string
+  width: string
+  height: string
+  createdBy: string
+  updatedBy: string
+  formats: string
+  providerMetadata: string
+  tags: string
+  createdAt: string
+  updatedAt: string
+  deletedAt: string
 }
 
 type CreateProductFormData = {
@@ -524,6 +549,7 @@ const catalog = ({ storeId }: CatalogType) => {
   const loadData = async () => {
     try {
       const { data } = await getProducts(storeId)
+      console.log(data)
 
       const formatedData = data.map((it) => ({
         ...it,
@@ -1392,7 +1418,7 @@ const catalog = ({ storeId }: CatalogType) => {
                       products.map((product) => (
                         <ProductListCard
                           key={product?.id}
-                          icon={product?.files?.shift()?.url}
+                          icon={product?.files[0]?.url}
                           name={product?.title}
                           code={product?.id}
                           category={product?.categories}
