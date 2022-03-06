@@ -83,6 +83,7 @@ const Carousel = ({
 }: Carousel | IStoreProps) => {
   const carousel = useRef(null)
   const [activeImage, setActiveImage] = useState({})
+  const [env, setEnv] = useState('')
 
   const handleScrollLeft = (e: ButtonMouseEvent) => {
     e.preventDefault()
@@ -113,12 +114,12 @@ const Carousel = ({
   }
 
   const redirectToStore = (storeName: string) => {
-    Router.push(`http://${storeName}.${process.env.HOST_NAME}/store`)
+    Router.push(`http://${storeName}.${process.env.hostName}/store`)
   }
 
   const redirectToProduct = (storeName: string, id: string) => {
     Router.push(
-      `http://${storeName}.${process.env.HOST_NAME}/store/product/${id}`
+      `http://${storeName}.${process.env.hostName}/store/product/${id}`
     )
   }
 
@@ -127,6 +128,7 @@ const Carousel = ({
 
   useEffect(() => {
     const newActiveImage = {}
+
     data.forEach((store) => {
       newActiveImage[store.id] =
         (isProduct ? store.files?.shift()?.url : store?.background?.url) ||
