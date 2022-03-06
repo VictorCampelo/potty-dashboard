@@ -182,10 +182,10 @@ const catalog = ({ storeId }: CatalogType) => {
   const [productEditValue, setProductEditValue] = useState('')
 
   function editProductSelected(product: ProductType) {
-    console.log(product)
     setEnableDiscount(false)
     setValue('title', product.title)
     setValue('price', product.price)
+    setValue('inventory', product.inventory)
     setValue('discount', product.discount)
     if (Number(product.discount) > 0) setEnableDiscount(true)
 
@@ -194,8 +194,6 @@ const catalog = ({ storeId }: CatalogType) => {
       value: product.parcelAmount.toString(),
       label: `${product.parcelAmount}x`
     })
-
-    console.log(categories)
 
     const catSelecteds = categories
       .filter((cat) =>
@@ -501,11 +499,9 @@ const catalog = ({ storeId }: CatalogType) => {
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
-      files: [imageSrc, imageSrc1, imageSrc2],
+      // files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
     }
-
-    console.log(body)
 
     try {
       await updateProduct(editProductId, body)
@@ -528,7 +524,7 @@ const catalog = ({ storeId }: CatalogType) => {
   const loadData = async () => {
     try {
       const { data } = await getProducts(storeId)
-      console.log(data)
+
       const formatedData = data.map((it) => ({
         ...it,
         categories: it.categories.map((cat: CategoryType) => cat.name)
@@ -1017,6 +1013,16 @@ const catalog = ({ storeId }: CatalogType) => {
             </div>
 
             <div className="right-area">
+              <div className="input-container">
+                <Input
+                  label="Quantidade atual"
+                  icon={<FaCoins />}
+                  placeholder="0"
+                  mask="number"
+                  {...register('inventory')}
+                />
+              </div>
+
               <MultiSelect
                 loading={false}
                 name="Categorias"
