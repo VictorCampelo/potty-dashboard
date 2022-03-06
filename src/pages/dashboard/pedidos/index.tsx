@@ -198,7 +198,7 @@ const Pedidos = () => {
               </div>
             ) : (
               <>
-                {ordersList.length >= 0 ? (
+                {ordersList.length <= 0 ? (
                   <EmptyContainer>
                     <div>
                       <img src="/images/emptyCategories.svg" />
@@ -310,7 +310,10 @@ const Pedidos = () => {
                           <div className="imageArea">
                             {/* <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" /> */}
                             <img
-                              src={item.product.files[0].url}
+                              src={
+                                item?.product?.files[0]?.url ||
+                                '/images/capa.png'
+                              }
                               alt="Imagem do produto"
                             />
                           </div>

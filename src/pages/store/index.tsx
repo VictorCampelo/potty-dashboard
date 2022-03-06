@@ -498,6 +498,7 @@ const Products = () => {
                       {buttonOn ? (
                         <>
                           {products.map((e) => {
+                            console.log(e.files)
                             return (
                               <ProductCard
                                 key={e.id}
@@ -507,7 +508,10 @@ const Products = () => {
                                   src="https://brastemp.vtexassets.com/arquivos/ids/213732/Geladeira-BRE80AK-Frontal.jpg?v=637298140570900000"
                                   alt="geladeira frost free"
                                 /> */}
-                                <img src={e.files[0].url} alt={e.title} />
+                                <img
+                                  src={e.files[0]?.url || '/images/capa.png'}
+                                  alt={e.title}
+                                />
                                 <div className="title">
                                   <span>{ellipsis(e.title, 30)}</span>
                                 </div>
