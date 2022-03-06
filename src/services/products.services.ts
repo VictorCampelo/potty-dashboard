@@ -26,7 +26,7 @@ export const updateProduct = async (id: string, data) => {
     headers: { 'content-type': 'multipart/form-data' }
   }
 
-  const res = await api.patch(`/products/details/${id}`, data, config)
+  const res = await api.patch(`/products/details/${id}`, data)
 
   return res
 }

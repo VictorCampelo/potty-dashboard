@@ -70,16 +70,19 @@ type CategoryType = {
   createdAt: string
   updatedAt: string
 }
-type FileProduct = {
-  url: string
-}
+
+// type FileProduct = {
+//   url: string
+// }
+
 type ProductType = {
   avgStars: number
   createdAt: string
   deletedAt: string
   description: string
+  parcelAmount: number
   discount: any
-  files: FileProduct[]
+  files: Files[]
   id: string
   inventory: number
   lastSold: any
@@ -101,6 +104,30 @@ interface Cupom {
   code: string
   discountPorcent: number
   maxUsage: number
+}
+
+interface Files {
+  id: string
+  name: string
+  filename: string
+  alternativeText: string
+  caption: string
+  hash: string
+  ext: string
+  mime: string
+  provider: string
+  url: string
+  previewUrl: string
+  width: string
+  height: string
+  createdBy: string
+  updatedBy: string
+  formats: string
+  providerMetadata: string
+  tags: string
+  createdAt: string
+  updatedAt: string
+  deletedAt: string
 }
 
 type CreateProductFormData = {
@@ -174,6 +201,35 @@ const catalog = ({ storeId }: CatalogType) => {
     value: String(idx + 1),
     label: idx + 1 + 'x'
   }))
+
+  // METHODS/FUNCTIONS FOR EDIT PRODUCT MODAL
+
+  const [productEditValue, setProductEditValue] = useState('')
+
+  function editProductSelected(product: ProductType) {
+    setEnableDiscount(false)
+    setValue('title', product.title)
+    setValue('price', product.price)
+    setValue('inventory', product.inventory)
+    setValue('discount', product.discount)
+    if (Number(product.discount) > 0) setEnableDiscount(true)
+
+    setProductEditValue(product.description)
+    setInstallments({
+      value: product.parcelAmount.toString(),
+      label: `${product.parcelAmount}x`
+    })
+
+    const catSelecteds = categories
+      .filter((cat) =>
+        product.categories.some((selected) => selected == cat.name)
+      )
+      .map((item) => ({ label: item.name, value: item.id }))
+
+    setSelectedCategories(catSelecteds)
+  }
+
+  // ## -- ##
 
   const date = new Date()
   date.setDate(date.getDate() + 30)
@@ -371,7 +427,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const { register, handleSubmit, getValues } = useForm({
+  const { register, handleSubmit, getValues, setValue } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
@@ -464,11 +520,11 @@ const catalog = ({ storeId }: CatalogType) => {
     const body = {
       title: values.title,
       price: formatToNumber(values.price),
-      description: values.description,
+      description: productEditValue,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
-      files: [imageSrc, imageSrc1, imageSrc2],
+      // files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
     }
 
@@ -493,6 +549,7 @@ const catalog = ({ storeId }: CatalogType) => {
   const loadData = async () => {
     try {
       const { data } = await getProducts(storeId)
+      console.log(data)
 
       const formatedData = data.map((it) => ({
         ...it,
@@ -906,7 +963,7 @@ const catalog = ({ storeId }: CatalogType) => {
         modalVisible={editProduct}
       >
         <AddProductModalContainer onSubmit={handleSubmit(handleUpdateProduct)}>
-          <h1 className="titulo-cadastro">Cadastrar Produto</h1>
+          <h1 className="titulo-cadastro">Editar Produto</h1>
           <div className="input-infos">
             <div className="left-area">
               <Input
@@ -919,12 +976,16 @@ const catalog = ({ storeId }: CatalogType) => {
               <TextArea
                 label="Descrição do produto"
                 maxLength={600}
+                name="description"
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
+                flex={0}
                 {...register('description')}
+                value={productEditValue}
+                onChange={(e) => setProductEditValue(e.target.value)}
               />
 
-              <div className="row">
+              <div className="row-edit">
                 <Input
                   label="Preço"
                   icon={<FaMoneyBill />}
@@ -978,6 +1039,16 @@ const catalog = ({ storeId }: CatalogType) => {
             </div>
 
             <div className="right-area">
+              <div className="input-container">
+                <Input
+                  label="Quantidade atual"
+                  icon={<FaCoins />}
+                  placeholder="0"
+                  mask="number"
+                  {...register('inventory')}
+                />
+              </div>
+
               <MultiSelect
                 loading={false}
                 name="Categorias"
@@ -1347,7 +1418,7 @@ const catalog = ({ storeId }: CatalogType) => {
                       products.map((product) => (
                         <ProductListCard
                           key={product?.id}
-                          icon={product?.files?.shift()?.url}
+                          icon={product?.files[0]?.url}
                           name={product?.title}
                           code={product?.id}
                           category={product?.categories}
@@ -1360,6 +1431,7 @@ const catalog = ({ storeId }: CatalogType) => {
                           editBtn={() => {
                             setEditProductId(product.id)
                             setEditProduct(true)
+                            editProductSelected(product)
                           }}
                           isRed={true}
                           isGreen={true}

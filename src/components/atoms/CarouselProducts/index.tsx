@@ -114,7 +114,7 @@ const CarouselProducts = ({
   }
   const redirectToProduct = (productId: string) => {
     Router.push(
-      `http://${storeName}.${process.env.HOST_NAME}/store/product/${productId}`
+      `http://${storeName}.${process.env.hostName}/store/product/${productId}`
     )
   }
 
@@ -125,7 +125,7 @@ const CarouselProducts = ({
     const newActiveImage = {}
     data.forEach((product) => {
       newActiveImage[product.id] =
-        product.files[0].url || '/images/capa-small.png'
+        product.files[0]?.url || '/images/capa-small.png'
     })
     setActiveImage(newActiveImage)
   }, [])

@@ -71,7 +71,7 @@ export const ModalContainer = styled.div`
   align-items: center;
 
   width: 600px;
-  height: 450px;
+  height: 650px;
   /* max-width: 800px; */
 
   /* styles of multselect categories */

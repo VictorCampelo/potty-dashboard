@@ -253,6 +253,15 @@ export const AddProductModalContainer = styled.form`
         resize: none;
       }
 
+      .row-edit {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        div:first-child {
+          width: 90%;
+        }
+      }
+
       .desconto {
         display: flex;
         align-items: flex-end;
