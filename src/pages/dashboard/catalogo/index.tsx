@@ -963,7 +963,7 @@ const catalog = ({ storeId }: CatalogType) => {
                 onChange={(e) => setProductEditValue(e.target.value)}
               />
 
-              <div className="row">
+              <div className="row-edit">
                 <Input
                   label="Preço"
                   icon={<FaMoneyBill />}
