@@ -55,6 +55,7 @@ interface CarouselProducts {
     lastSold: null
     parcelAmount: number
     price: number
+    store: { formatedName: string }
     storeId: string
     sumFeedbacks: number
     sumOrders: number
@@ -63,9 +64,9 @@ interface CarouselProducts {
     title: string
     updatedAt: string
   }[]
+  storeName?: string
   promo?: boolean
   buttons?: boolean
-  storeName: string
 }
 
 type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -73,7 +74,6 @@ type ButtonMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 const CarouselProducts = ({
   data = [],
   promo,
-  storeName,
   buttons = true
 }: CarouselProducts) => {
   const carousel = useRef(null)
@@ -114,7 +114,7 @@ const CarouselProducts = ({
   }
   const redirectToProduct = (productId: string) => {
     Router.push(
-      `http://${storeName}.${process.env.hostName}/store/product/${productId}`
+      `http://${data[0]?.store?.formatedName}.${process.env.hostName}/store/product/${productId}`
     )
   }
 
