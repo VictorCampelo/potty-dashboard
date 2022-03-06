@@ -85,6 +85,9 @@ export const MultiSelect = ({
               }
           }
         }}
+        noOptionsMessage={({ inputValue }) =>
+          !inputValue ? 'Nenhuma opção' : 'Nenhum resultado encontrado'
+        }
         isLoading={loading}
       />
     </Container>
