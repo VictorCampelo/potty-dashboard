@@ -243,13 +243,10 @@ const CartContinue = () => {
       if (!finallyPurchase) {
         const productsIds = items.map(({ productId }) => productId)
         const productsIdsWithPaymentMethod = Object.keys(itemsPaymentMethod)
-        const productsThatsNeedPaymentMethod = productsIds.filter(
+        const nextItemId = productsIds.find(
           (id) => !productsIdsWithPaymentMethod.includes(id)
         )
-
-        const nextItem = items.find(
-          ({ productId }) => productId === productsThatsNeedPaymentMethod[0]
-        )
+        const nextItem = items.find(({ productId }) => productId === nextItemId)
 
         setSelectedProduct(nextItem)
 
