@@ -73,11 +73,13 @@ type CategoryType = {
 type FileProduct = {
   url: string
 }
+
 type ProductType = {
   avgStars: number
   createdAt: string
   deletedAt: string
   description: string
+  parcelAmount: number
   discount: any
   files: FileProduct[]
   id: string
@@ -177,42 +179,34 @@ const catalog = ({ storeId }: CatalogType) => {
 
   // METHODS/FUNCTIONS FOR EDIT PRODUCT MODAL
 
-  interface IFileProps {
-    id: string
-    name: string
-    filename: string
-    alternativeText: string
-    url: string
+  const [productEditValue, setProductEditValue] = useState('')
+
+  function editProductSelected(product: ProductType) {
+    console.log(product)
+    setEnableDiscount(false)
+    setValue('title', product.title)
+    setValue('price', product.price)
+    setValue('discount', product.discount)
+    if (Number(product.discount) > 0) setEnableDiscount(true)
+
+    setProductEditValue(product.description)
+    setInstallments({
+      value: product.parcelAmount.toString(),
+      label: `${product.parcelAmount}x`
+    })
+
+    console.log(categories)
+
+    const catSelecteds = categories
+      .filter((cat) =>
+        product.categories.some((selected) => selected == cat.name)
+      )
+      .map((item) => ({ label: item.name, value: item.id }))
+
+    setSelectedCategories(catSelecteds)
   }
 
-  interface ICategoriesProps {
-    id: string
-    name: string
-    enabled: boolean
-    type: string
-    storeProductsId: string
-  }
-  interface IProductForEditingProps {
-    categories: ICategoriesProps[]
-    length: number
-    description: string
-    discount: number
-    files: IFileProps[]
-    id: string
-    inventory: number
-    lastSold: string
-    parcelAmount: number
-    price: number
-    storeId: string
-    sumFeedbacks: number
-    sumOrders: number
-    sumStars: number
-    tags: string
-    title: string
-  }
-
-  const [productForEditing, setProductForEditing] =
-    useState<IProductForEditingProps | []>()
+  // ## -- ##
 
   const date = new Date()
   date.setDate(date.getDate() + 30)
@@ -410,7 +404,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const { register, handleSubmit, getValues } = useForm({
+  const { register, handleSubmit, getValues, setValue } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
@@ -503,13 +497,15 @@ const catalog = ({ storeId }: CatalogType) => {
     const body = {
       title: values.title,
       price: formatToNumber(values.price),
-      description: values.description,
+      description: productEditValue,
       inventory: Number(values.inventory || '0'),
       discount: Number(values.discount),
       categoriesIds: selectedCategories.map((cat) => cat.value),
       files: [imageSrc, imageSrc1, imageSrc2],
       parcelAmount: Number(installments.value)
     }
+
+    console.log(body)
 
     try {
       await updateProduct(editProductId, body)
@@ -958,9 +954,13 @@ const catalog = ({ storeId }: CatalogType) => {
               <TextArea
                 label="Descrição do produto"
                 maxLength={600}
+                name="description"
                 placeholder="Descrição"
                 icon={<GiHamburgerMenu />}
+                flex={0}
                 {...register('description')}
+                value={productEditValue}
+                onChange={(e) => setProductEditValue(e.target.value)}
               />
 
               <div className="row">
@@ -1399,6 +1399,7 @@ const catalog = ({ storeId }: CatalogType) => {
                           editBtn={() => {
                             setEditProductId(product.id)
                             setEditProduct(true)
+                            editProductSelected(product)
                           }}
                           isRed={true}
                           isGreen={true}
