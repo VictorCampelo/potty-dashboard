@@ -12,7 +12,7 @@ interface CartItem {
   image?: string
 }
 
-export interface PaymentMethod {
+interface PaymentMethod {
   id: string
   methodName: string
   allowParcels: boolean
