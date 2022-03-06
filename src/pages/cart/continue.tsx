@@ -35,11 +35,7 @@ import getNumberArray from 'utils/getNumberArray'
 import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
 import _ from 'lodash'
 
-interface IPaymentMethod {
-  id: string
-  methodName: string
-  allowParcels: boolean
-}
+import type { PaymentMethod } from 'context/CartContext'
 
 interface UserAddress {
   uf: string
@@ -79,7 +75,10 @@ const addressRegisterFormSchema = yup.object().shape({
 const CartContinue = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
 
-  const { items, loadingItems, setItems } = useContext(CartContext)
+  const { stores, loadingStores, items, loadingItems, setItems } =
+    useContext(CartContext)
+  const [paymentMethods, setPaymentMethods] =
+    useState<PaymentMethod | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [selectedProduct, setSelectedProduct] = useState(null)
 
@@ -104,7 +103,6 @@ const CartContinue = () => {
     }
   })
 
-  const [paymentMethods, setPaymentMethods] = useState<IPaymentMethod[]>([])
   const [paymentMethodOption, setPaymentMethodOption] =
     useState<Option | null>(null)
   const [parcelOption, setParcelOption] = useState<Option>({
@@ -173,6 +171,10 @@ const CartContinue = () => {
     resolver: yupResolver(addressRegisterFormSchema)
   })
 
+  const getStore = (storeId: string) => {
+    return stores.find(({ id }) => id === storeId)
+  }
+
   const toggleParcelCheckbox = () => {
     setParcelCheckbox(!parcelCheckbox)
   }
@@ -183,6 +185,8 @@ const CartContinue = () => {
 
   const handleSelectProduct = (product: any) => {
     setSelectedProduct(product)
+
+    setPaymentMethods(getStore(product.storeId).paymentMethods)
 
     const method = itemsPaymentMethod[product.productId]
 
@@ -241,6 +245,8 @@ const CartContinue = () => {
 
         setSelectedProduct(nextItem)
 
+        setPaymentMethods(getStore(nextItem.storeId).paymentMethods)
+
         updateItemPaymentMethod({
           productId: nextItem.productId,
           methodName: paymentMethodOption.value,
@@ -271,7 +277,7 @@ const CartContinue = () => {
 
       const { data } = await api.post(`/orders`, { products })
 
-      localStorage.setItem('ultimo.cart.items', '')
+      localStorage.setItem('ultimo.cart.items', '[]')
 
       data.whatsapp.forEach((it) => window.open(it))
 
@@ -334,22 +340,15 @@ const CartContinue = () => {
     }
   }
 
-  const updatePaymentMethods = async (storeId: string) => {
-    try {
-      const { data } = await api.get(`/stores/id/${storeId}`)
-
-      setPaymentMethods(data.paymentMethods)
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
   useEffect(() => {
-    if (!loadingItems && items.length) {
-      setSelectedProduct(items[0])
-      updatePaymentMethods(items[0].storeId)
+    if (!loadingItems && !loadingStores && items.length && stores.length) {
+      const firstItem = items[0]
+
+      setSelectedProduct(firstItem)
+
+      setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
     }
-  }, [loadingItems])
+  }, [loadingItems, loadingStores])
 
   useEffect(() => {
     loadUserData()
@@ -596,7 +595,7 @@ const CartContinue = () => {
                 <div className="paymentContainer">
                   <Select
                     name="Forma de pagamento"
-                    options={paymentMethods.map(({ methodName }) => ({
+                    options={paymentMethods?.map(({ methodName }) => ({
                       value: methodName,
                       label: capitalizeFirstLetter(methodName)
                     }))}
@@ -641,33 +640,42 @@ const CartContinue = () => {
               </AddressCard>
 
               <ProductsContainer>
-                <h1>Produtos</h1>
+                {loadingStores ? (
+                  <h1>Carregando...</h1>
+                ) : (
+                  stores.map((store) => {
+                    return (
+                      <div key={store.id}>
+                        <h1>{store.name}</h1>
 
-                <div className="products-container">
-                  {loadingItems ? (
-                    <>Carregando...</>
-                  ) : (
-                    items.map((product) => (
-                      <ProductItem
-                        key={product.productId}
-                        active={
-                          selectedProduct?.productId === product.productId
-                        }
-                        onClick={() => handleSelectProduct(product)}
-                      >
-                        <div className="img-container">
-                          <img src={product?.image} alt="Foto do produto" />
+                        <div className="products-container">
+                          {store.items.map((product) => (
+                            <ProductItem
+                              key={product.productId}
+                              active={
+                                selectedProduct?.productId === product.productId
+                              }
+                              onClick={() => handleSelectProduct(product)}
+                            >
+                              <div className="img-container">
+                                <img
+                                  src={product?.image}
+                                  alt="Foto do produto"
+                                />
+                              </div>
+
+                              <div className="info-container">
+                                <h4>{product.title}</h4>
+
+                                <span>{product.amount}x</span>
+                              </div>
+                            </ProductItem>
+                          ))}
                         </div>
-
-                        <div className="info-container">
-                          <h4>{product.title}</h4>
-
-                          <span>{product.amount}x</span>
-                        </div>
-                      </ProductItem>
-                    ))
-                  )}
-                </div>
+                      </div>
+                    )
+                  })
+                )}
               </ProductsContainer>
             </div>
 
@@ -890,7 +898,7 @@ const ProductsContainer = styled.section`
     font-size: 1.5rem;
     font-weight: 500;
     text-align: center;
-    padding: 1.5rem;
+    padding: 0.5rem 0;
   }
 
   .products-container {
