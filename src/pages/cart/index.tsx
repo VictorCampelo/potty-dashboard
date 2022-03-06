@@ -3,7 +3,6 @@ import HeaderProducts from 'components/molecules/HeaderShop'
 import { IoTrashOutline } from 'react-icons/io5'
 import Counter from 'components/atoms/Counter'
 import { AiFillCamera } from 'react-icons/ai'
-import { BsWhatsapp } from 'react-icons/bs'
 import { useContext } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { useEffect, useState } from 'react'
@@ -12,7 +11,6 @@ import router from 'next/router'
 import { useMedia } from 'use-media'
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { FaCheck } from 'react-icons/fa'
-import { toast } from 'react-toastify'
 
 import {
   EmptyCartContainer,
@@ -23,8 +21,9 @@ import {
   CartHead,
   CartProduct,
   SeeProductsButton
-} from '../../styles/pages/Cart'
+} from 'styles/pages/Cart'
 import { Player } from '@lottiefiles/react-lottie-player'
+import formatToBrl from 'utils/formatToBrl'
 
 const Cart = () => {
   const widthScreen = useMedia({ minWidth: '426px' })
@@ -72,12 +71,6 @@ const Cart = () => {
     )
   }
 
-  useEffect(() => {
-    if (items.length > 0) {
-      localStorage.setItem('ultimo.cart.items', JSON.stringify(items))
-    }
-  }, [items])
-
   async function handleMakeCheckout() {
     try {
       await api.get('users/me')
@@ -89,6 +82,13 @@ const Cart = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (items.length > 0) {
+      localStorage.setItem('ultimo.cart.items', JSON.stringify(items))
+    }
+  }, [items])
+
   return (
     <>
       <Head>
@@ -107,7 +107,7 @@ const Cart = () => {
           <div
             className="checkbox"
             style={
-              widthScreen || items.length == 0 ? { display: 'none' } : undefined
+              widthScreen || !items.length ? { display: 'none' } : undefined
             }
           >
             <div className="check">
@@ -135,7 +135,7 @@ const Cart = () => {
             </div>
           </div>
 
-          {items.length == 0 ? (
+          {!items.length ? (
             <EmptyCartContainer>
               <Player
                 autoplay
@@ -145,7 +145,9 @@ const Cart = () => {
               />
               <h1>Carrinho vazio!</h1>
 
-              <p>Você ainda não possui itens no seu {'\n'} carrinho</p>
+              <p>
+                Você ainda não possui itens no seu <br /> carrinho
+              </p>
 
               <SeeProductsButton
                 title="Ver produtos"
@@ -257,10 +259,7 @@ const Cart = () => {
                     <p className="subTotal">
                       Subtotal:{' '}
                       <strong style={{ color: 'var(--color-primary)' }}>
-                        {new Intl.NumberFormat('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(it.price * it.amount)}
+                        {formatToBrl(it.price * it.amount)}
                       </strong>
                     </p>
                   )}
@@ -269,32 +268,14 @@ const Cart = () => {
             </CartContainer>
           )}
 
-          {items.length !== 0 && (
+          {items.length && (
             <CartContainerFooter
               disabled={items.filter((it) => it.enabled).length === 0}
             >
               <div className="info">
                 <div>
                   <span>Total: </span>
-                  <strong>
-                    {!widthScreen
-                      ? new Intl.NumberFormat('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(
-                          items
-                            .filter((it) => it.enabled)
-                            .reduce((prev, curr) => {
-                              return (
-                                prev + Number(curr.price) * Number(curr.amount)
-                              )
-                            }, 0)
-                        )
-                      : new Intl.NumberFormat('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(total)}
-                  </strong>
+                  <strong>{formatToBrl(total)}</strong>
                 </div>
                 <span className="spanBottom">
                   {items.filter((it) => it.enabled).length <= 1

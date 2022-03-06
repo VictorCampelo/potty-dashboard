@@ -440,33 +440,42 @@ const Shop = ({ storeId, id }: Shop) => {
   }
 
   // MODAL METHODS
+  interface IPaymentesOptions {
+    id: string
+    methodName: string
+    allowParcels: boolean
+  }
+
   const [modalPaymentIsOpen, setModalPaymentIsOpen] = useState(false)
   const [modalDeliveryOptionsIsOpen, setModalDeliveryIsOpen] = useState(false)
+  const [paymentsOptions, setPaymentOptions] = useState<
+    IPaymentesOptions[] | []
+  >([])
+  const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
+
+  const [dataStore, setDataStore] = useState()
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
     funcModalOpen(true)
   }
 
-  const methodsOfPaymentsFake = [
-    'Cartão de crédito',
-    'Cartão de débito',
-    'Em dinheiro',
-    'Link de pagamento',
-    'Picpay',
-    'Pix',
-    'WhatsApp Pay'
-  ]
+  async function getPaymentOptions() {
+    const { data } = await api.get('/payments/find')
+    setPaymentOptions(data)
+    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
+  }
 
-  const modalFakeOptions = [
-    'Formas de pagamento',
-    'Opções de entrega',
-    'Opções indefinidas',
-    'Opções indefinidas',
-    'Opções indefinidas',
-    'Opções indefinidas',
-    'Excluir loja'
-  ]
+  async function setPaymentOptionsInStore() {
+    const formData = new FormData()
+    const storeDto = {
+      paymentMethods: inputPaymentValue
+    }
+    formData.append('storeDto', JSON.stringify(storeDto))
+    const { data } = await api.patch('/stores', formData)
+    setDataStore(data)
+    setModalPaymentIsOpen(!modalPaymentIsOpen)
+  }
 
   // Modal de horarios
 
@@ -592,6 +601,11 @@ const Shop = ({ storeId, id }: Shop) => {
   async function loadData() {
     try {
       const { data } = await getStore(`${storeId}`)
+
+      setDataStore(data)
+
+      setInputPaymentValue(data.paymentMethods.map((item) => item.methodName))
+
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
 
@@ -1103,13 +1117,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
             <div className="options">
               <div className="wrap-opts">
-                <a
-                  onClick={() =>
-                    handleChangeModalOpen(setConfigModal, setModalPaymentIsOpen)
-                  }
-                >
-                  Formas de pagamento
-                </a>
+                <a onClick={getPaymentOptions}>Formas de pagamento</a>
               </div>
               <div className="wrap-opts">
                 <a
@@ -1168,25 +1176,36 @@ const Shop = ({ storeId, id }: Shop) => {
               Selecione pelo menos uma forma para seus clientes realizarem
               pagamentos
             </p>
-
-            <div className="payment-options">
-              {methodsOfPaymentsFake.map((item, i) => (
-                <PaymentItem key={i} label={item} value={item} />
-              ))}
-            </div>
-
-            <div className="buttons-container-payment">
-              <div className="wrap-btn-back">
-                <Button
-                  title="Voltar"
-                  border={true}
-                  onClick={() =>
-                    handleChangeModalOpen(setModalPaymentIsOpen, setConfigModal)
-                  }
-                />
+            <div className="wrap-payments-and-buttons">
+              <div className="payment-options">
+                {paymentsOptions.map((payment, i) => (
+                  <PaymentItem
+                    key={i}
+                    label={payment.methodName}
+                    value={payment.id}
+                  />
+                ))}
               </div>
-              <div className="wrap-btn-confirm">
-                <ConfigButton title="Confirmar" />
+
+              <div className="buttons-container-payment">
+                <div className="wrap-btn-back">
+                  <Button
+                    title="Voltar"
+                    border={true}
+                    onClick={() =>
+                      handleChangeModalOpen(
+                        setModalPaymentIsOpen,
+                        setConfigModal
+                      )
+                    }
+                  />
+                </div>
+                <div className="wrap-btn-confirm">
+                  <ConfigButton
+                    title="Confirmar"
+                    onClick={setPaymentOptionsInStore}
+                  />
+                </div>
               </div>
             </div>
           </ModalContainer>

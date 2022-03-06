@@ -116,6 +116,12 @@ const Carousel = ({
     Router.push(`http://${storeName}.${process.env.hostName}/store`)
   }
 
+  const redirectToProduct = (storeName: string, id: string) => {
+    Router.push(
+      `http://${storeName}.${process.env.hostName}/store/product/${id}`
+    )
+  }
+
   const getDiscount = (price: number, discount: number) =>
     price - (price * discount) / 100
 
@@ -221,7 +227,9 @@ const Carousel = ({
               {isProduct && (
                 <div
                   className="infoProduct"
-                  onClick={() => redirectToStore(store.formatedName)}
+                  onClick={() =>
+                    redirectToProduct(store.store.formatedName, store.id)
+                  }
                 >
                   <p>{store.title}</p>
                   <div className="stars">

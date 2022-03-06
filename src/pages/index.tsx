@@ -29,7 +29,6 @@ const Landing = ({ products }: Landing) => {
   useEffect(() => {
     api.get('/stores').then((result) => {
       setStores(result.data)
-      console.log(result.data)
     })
   }, [])
 
@@ -125,7 +124,7 @@ const Landing = ({ products }: Landing) => {
 }
 
 export const getServerSideProps = async () => {
-  const { data } = await api.get('products/promoted')
+  const { data } = await api.get('/products/promoted')
   return {
     props: {
       products: data
