@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface ContainerProps {
-  confirm: boolean
+  size: 'small' | 'medium'
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -19,8 +19,8 @@ export const Container = styled.div<ContainerProps>`
   }
 
   .btn {
-    width: 20px;
-    height: 20px;
+    ${(props) => props.size === 'small' && 'width: 16px;height: 16px;'}
+    ${(props) => props.size === 'medium' && 'width: 20px;height: 20px;'}
 
     display: flex;
     justify-content: center;
@@ -28,14 +28,23 @@ export const Container = styled.div<ContainerProps>`
 
     border-radius: 5px;
     border: 1px solid black;
-    background: var(--white);
+    background: transparent;
 
     margin-right: 10px;
     padding: 4px;
   }
 
+  .check.disabled .btn {
+    border: 1px solid var(--gray-200);
+  }
+
+  .check.disabled label {
+    opacity: 0.5;
+  }
+
   .check {
     display: flex;
+    align-items: center;
 
     label {
       font-size: 0.875rem;

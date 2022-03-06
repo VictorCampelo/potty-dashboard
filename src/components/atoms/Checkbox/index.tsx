@@ -8,6 +8,8 @@ interface CheckboxProps {
   label?: string
   termsUse?: boolean
   recovery?: boolean
+  size?: 'small' | 'medium'
+  disabled?: boolean
 }
 
 export const Checkbox = ({
@@ -15,20 +17,24 @@ export const Checkbox = ({
   toggleConfirm,
   label,
   recovery = false,
-  termsUse
+  termsUse,
+  size = 'medium',
+  disabled
 }: CheckboxProps) => {
+  const id = label
   return (
-    <Container confirm={confirm}>
-      <div className="check">
+    <Container size={size}>
+      <div className={`check ${disabled && 'disabled'}`}>
         <button
           type="button"
-          id="btn"
+          id={id}
           className="btn"
-          onClick={() => toggleConfirm()}
+          onClick={toggleConfirm}
+          disabled={disabled}
         >
           {confirm && <FaCheck color="var(--gray-800)" />}
         </button>
-        {label && <label htmlFor="btn">{label}</label>}
+        {label && <label htmlFor={id}>{label}</label>}
       </div>
 
       {recovery && (
