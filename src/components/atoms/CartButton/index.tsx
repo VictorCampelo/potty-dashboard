@@ -3,6 +3,7 @@ import router from 'next/router'
 import { useContext } from 'react'
 import styled from 'styled-components'
 import sizes from 'utils/sizes'
+import formatToBrl from 'utils/formatToBrl'
 
 interface CartButtonProps {
   isFromProduct?: boolean
@@ -25,11 +26,7 @@ export const CartButton = ({ isFromProduct = false }: CartButtonProps) => {
         {!isFromProduct && <div className="product-len">{items.length}</div>}
       </div>
 
-      {items.length > 0 && (
-        <p>
-          {' | '} R$ {total.toFixed(2)}
-        </p>
-      )}
+      {items.length && <p>| {formatToBrl(total)}</p>}
     </ContainerCart>
   )
 }
