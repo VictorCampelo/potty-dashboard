@@ -4,8 +4,8 @@ export const Container = styled.body`
   background: var(--gray-100);
   max-width: 1300px;
   margin: 0 auto;
-  border: 1px solid black;
   min-height: 100vh;
+  box-sizing: border-box;
 
   .wrap-search-content,
   .wrap-result-text {
@@ -35,9 +35,46 @@ export const WrapMainContent = styled.div`
 `
 
 export const LeftSideContainer = styled.div`
-  border: 1px solid black;
+  padding: 0 40px;
+
+  h3 {
+    margin-bottom: 20px;
+  }
+
+  .wrap-order,
+  .wrap-filter {
+    padding: 25px;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-radius: 30px;
+  }
+
+  .wrap-order-icons {
+    width: 200px;
+    padding: 25px;
+    height: 73px;
+    display: flex;
+    background-color: var(--white);
+    justify-content: space-around;
+    margin-bottom: 30px;
+    border-radius: 30px;
+
+    svg {
+      font-size: 2rem;
+    }
+  }
+
+  .wrap-order {
+    height: 286px;
+    max-width: 270px;
+  }
+
+  .wrap-filter {
+    height: 150px;
+  }
 `
 
-export const MainContent = styled.div`
-  border: 1px solid black;
-`
+export const MainContent = styled.div``
