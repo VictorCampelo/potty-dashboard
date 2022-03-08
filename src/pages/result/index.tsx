@@ -156,22 +156,31 @@ const Result = () => {
           <LeftSideContainer>
             <h3>Ordenar por:</h3>
             <div className="wrap-order">
-              <a href="">Menor resultado</a>
-              <a href="">Mais pedidos</a>
-              <a href="">Mais recente</a>
-              <a href="">Preço</a>
+              <button>Menor resultado</button>
+              <button>Mais pedidos</button>
+              <button>Mais recente</button>
+              <button>
+                Preço <img src="/images/updown.svg" alt="updown" />
+              </button>
             </div>
 
             <h3>Filtrar por:</h3>
             <div className="wrap-filter">
-              <label>
-                <input type="checkbox" />
-                4.0 ou mais
-              </label>
-              <label>
-                <input type="checkbox" />
-                Desconto
-              </label>
+              <div className="wrap-input">
+                <label>
+                  <input type="checkbox" />
+                  <span>
+                    <img src="/images/Star.svg" alt="estrela" /> 4.0 ou mais
+                  </span>
+                </label>
+              </div>
+
+              <div className="wrap-input">
+                <label>
+                  <input type="checkbox" />
+                  <span>Desconto</span>
+                </label>
+              </div>
             </div>
 
             <h3>Listar como:</h3>
@@ -180,7 +189,7 @@ const Result = () => {
               <FaList />
             </div>
 
-            <a href="">Mostrar somente lojas</a>
+            <button className="link">Mostrar somente lojas</button>
           </LeftSideContainer>
           <MainContent>
             <h3>Lojas</h3>

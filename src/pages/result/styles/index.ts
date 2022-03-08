@@ -7,6 +7,14 @@ export const Container = styled.body`
   min-height: 100vh;
   box-sizing: border-box;
 
+  button {
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: left;
+  }
+
   .wrap-search-content,
   .wrap-result-text {
     max-width: 1000px;
@@ -41,11 +49,15 @@ export const LeftSideContainer = styled.div`
 
   h3 {
     margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-secondary-darker);
   }
 
   .wrap-order,
   .wrap-filter {
     padding: 25px;
+    width: 269px;
     background-color: var(--white);
     display: flex;
     flex-direction: column;
@@ -72,10 +84,80 @@ export const LeftSideContainer = styled.div`
   .wrap-order {
     height: 286px;
     max-width: 270px;
+    padding: 23px 32px;
+
+    button + button::before {
+      content: '';
+      display: block;
+      width: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0),
+        rgba(108, 112, 121, 0.26),
+        rgba(108, 112, 121, 0)
+      );
+      height: 1px;
+      margin-bottom: 15px;
+    }
   }
 
   .wrap-filter {
     height: 150px;
+    padding: 23px 32px;
+    font-size: 24px;
+    font-weight: 400;
+    position: relative;
+
+    div + div::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-bottom: 15px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0),
+        rgba(108, 112, 121, 0.26),
+        rgba(108, 112, 121, 0)
+      );
+    }
+
+    .wrap-input {
+      position: relative;
+
+      label span {
+        margin-left: 20px;
+      }
+
+      label::after {
+        content: '';
+        width: 16px;
+        height: 16px;
+        border: 1px solid black;
+        display: block;
+        border-radius: 4px;
+        position: absolute;
+        left: -10px;
+        bottom: 9px;
+      }
+
+      input:checked:before {
+        content: '';
+        width: 14px;
+        height: 14px;
+        background-color: black;
+        display: block;
+        border-radius: 4px;
+        position: absolute;
+        left: -8px;
+        bottom: 11px;
+      }
+
+      input {
+        width: 0px;
+        height: 0px;
+      }
+    }
   }
 `
 
