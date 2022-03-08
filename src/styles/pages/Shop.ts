@@ -68,13 +68,11 @@ export const Container = styled.div`
 `
 
 export const ModalContainer = styled.div`
-  align-items: center;
+  display: grid;
+  justify-content: center;
 
-  width: 600px;
-  height: 550px;
-  /* max-width: 800px; */
-
-  /* styles of multselect categories */
+  min-width: 470px;
+  min-height: 300px;
 
   .exit-container {
     display: flex;
@@ -281,14 +279,6 @@ export const ModalContainer = styled.div`
   }
 
   .categories-container {
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-    height: 300px;
-
-    /* width: 500px; */
-    margin-bottom: var(--spacing-xs);
-
     .rmsc {
       width: 100%;
       margin-bottom: 20px;
@@ -302,6 +292,13 @@ export const ModalContainer = styled.div`
       justify-content: space-around;
       margin-top: 50px;
     }
+  }
+
+  .description {
+    max-width: 420px;
+    text-align: center;
+    margin-top: var(--spacing-xs);
+    font-size: 13px;
   }
 
   .category-container {
@@ -416,10 +413,9 @@ export const ModalContainer = styled.div`
     align-items: center;
     width: 100%;
 
-    /* margin-top: var(--spacing-md); */
-    margin-top: 20px;
+    margin-top: var(--font-size-md);
 
-    Button {
+    button {
       width: 132px;
     }
   }
