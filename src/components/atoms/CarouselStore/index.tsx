@@ -1,7 +1,15 @@
 import React from 'react'
 import { Container } from './styles'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { CardStoreItem } from '../CardStoreItem'
+
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+import 'swiper/css/bundle'
 
 interface IStoresFoundProps {
   CNPJ: string
@@ -66,9 +74,25 @@ export const CarouselStore = ({ stores }: { stores: IStoresFoundProps[] }) => {
   console.log(stores)
   return (
     <Container>
-      {stores
-        ? stores.map((store, i) => <CardStoreItem key={i} data={store} />)
-        : null}
+      <Swiper spaceBetween={30} slidesPerView={3}>
+        {stores &&
+          stores.map((store, i) => (
+            <div key={i}>
+              <SwiperSlide className="swiper-slide">
+                <CardStoreItem data={store} />
+              </SwiperSlide>
+            </div>
+          ))}
+        <SwiperSlide>
+          <div></div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div></div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div></div>
+        </SwiperSlide>
+      </Swiper>
     </Container>
   )
 }

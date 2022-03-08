@@ -1,10 +1,16 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  display: flex;
-  margin: 20px;
+  width: 1030px;
 
-  div {
-    margin-left: 20px;
+  .swiper {
+    width: 100%;
+    height: 100%;
+    padding: 20px 20px;
+    margin-bottom: 50px;
+  }
+
+  .swiper-slide {
+    min-width: 500px;
   }
 `
