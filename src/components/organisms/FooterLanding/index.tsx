@@ -18,7 +18,7 @@ const FooterLanding = () => {
         </div>
 
         <Button
-          title="Cadastrar Loja"
+          title="Ver planos"
           onClick={() => router.push('/cadastro/lojista')}
         />
       </Register>

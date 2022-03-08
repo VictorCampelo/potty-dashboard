@@ -1,18 +1,16 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { PulseLoader } from 'react-spinners'
-import { api } from '../../services/apiClient'
-import Header from '../../components/molecules/Header'
+import { api } from 'services/apiClient'
+import Header from 'components/molecules/Header'
 import Head from 'next/head'
 import { toast } from 'react-toastify'
-import { Container, Wrapper } from '../../styles/pages/preLogin'
+import { Container, Wrapper } from 'styles/pages/preLogin'
 import { Button } from 'components/atoms/Button'
 import router, { useRouter } from 'next/router'
-import { copyFileSync } from 'fs'
 
 export default function confirmation() {
   const [isLoading, setIsLoading] = useState(true)
-  const [title, setTitle] = useState('')
 
   const { token, tokenDigits } = useRouter().query
 
@@ -69,7 +67,7 @@ export default function confirmation() {
           <form className="confirmationAuth" style={{ textAlign: 'center' }}>
             <img src="/images/right.svg" className="confirmImg" />
 
-            <h2>Cadastro confirmado com sucesso</h2>
+            <h2>Cadastro confirmado com sucesso!</h2>
             <div className="buttonContainer">
               <div>
                 <Button
