@@ -1,5 +1,6 @@
 import { Input } from 'components/molecules/SearchInput'
 import Head from 'next/head'
+import Header from 'components/molecules/HeaderShop'
 import { VscSearch } from 'react-icons/vsc'
 import {
   Wrapper,
@@ -440,7 +441,7 @@ const ProductShow = () => {
       <Head>
         <title>Produto | Boa de Venda</title>
       </Head>
-      <HeaderShop isMain={false} />
+      <Header />
       {isLoading ? (
         <div
           style={{

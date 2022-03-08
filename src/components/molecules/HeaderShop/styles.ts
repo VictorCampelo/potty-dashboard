@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export const Container = styled.header<ContainerProps>`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin: 0 auto;
   padding: var(--spacing-nano) var(--spacing-xxxs);
@@ -20,9 +20,10 @@ export const Container = styled.header<ContainerProps>`
   .logo {
     display: flex;
     align-content: center;
+    margin-right: 400px;
     ${(props) => props.isMain == false && 'display: none;'}
     img {
-      max-width: 80%;
+      max-width: 100%;
     }
   }
 
