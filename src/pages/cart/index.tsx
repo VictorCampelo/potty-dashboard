@@ -181,7 +181,7 @@ const Cart = () => {
                           style={{ flex: 5, justifyContent: 'flex-start' }}
                         >
                           <div className="imgContainer">
-                            <AiFillCamera size={28} color="white" />
+                            <img src={it?.image} />
                           </div>
 
                           <span>{it.title}</span>

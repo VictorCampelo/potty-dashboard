@@ -213,6 +213,7 @@ const Products = () => {
               <span>Aberto agora</span>
             </div>
           )}
+
           <HeaderShop />
 
           {!widthScreen && (

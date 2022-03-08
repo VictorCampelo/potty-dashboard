@@ -120,7 +120,7 @@ const BusinessRegister = () => {
         lastName: userData.lastName,
         password: userData.password,
         passwordConfirmation: userData.passwordConfirmation,
-        chosenPlan: planData.toLowerCase()
+        chosenPlan: planData?.toLowerCase()
       },
       storeDto: {
         name: storeData.name,
@@ -137,8 +137,6 @@ const BusinessRegister = () => {
         addressNumber: storeData.number,
         neighborhood: storeData.district,
         street: storeData.publicPlace
-
-        // address: `${storeData.publicPlace}, n° ${storeData.number}, ${storeData.district}, CEP: ${storeData.cep}`
       }
     }
 

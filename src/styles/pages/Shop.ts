@@ -71,7 +71,7 @@ export const ModalContainer = styled.div`
   align-items: center;
 
   width: 600px;
-  height: 650px;
+  height: 550px;
   /* max-width: 800px; */
 
   /* styles of multselect categories */
@@ -165,6 +165,11 @@ export const ModalContainer = styled.div`
         padding-left: 60px;
       }
     }
+  }
+  div.container-input-entrega {
+    width: 250px;
+    background-color: #999;
+    margin-top: 300px;
   }
 
   .buttons-container-payment {

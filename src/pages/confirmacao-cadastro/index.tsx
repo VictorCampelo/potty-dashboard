@@ -40,6 +40,10 @@ const BusinessRegisterConfirm = () => {
   ) => {
     try {
       setLoading(true)
+      if (token) {
+        await api.patch(`/auth/token?tokenDigits=${token}`)
+      }
+
       await api.patch(`/auth/token?tokenDigits=${values.tokenDigits}`)
 
       router.push({
@@ -57,7 +61,7 @@ const BusinessRegisterConfirm = () => {
     const user = JSON.parse(sessionStorage.getItem('user'))
     setLoading(true)
     try {
-      await api.post('/auth/send-confirmation-email', { email: user?.email })
+      await api.patch('/auth/send-confirmation-email', { email: user?.email })
     } catch (e) {
       toast.error(`${e}`, {
         position: 'top-right',
@@ -128,7 +132,7 @@ const BusinessRegisterConfirm = () => {
                 title="CONTINUAR"
                 onClick={() => {
                   sessionStorage.clear()
-                  router.push('/landing')
+                  router.push('/')
                 }}
               />
             </div>
