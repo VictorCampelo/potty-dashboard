@@ -14,7 +14,7 @@ import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { useEffect, useState } from 'react'
+import React, { ReactEventHandler, useEffect, useState } from 'react'
 import { Drawer } from 'styles/pages/Store'
 import { IoIosClose } from 'react-icons/io'
 import router from 'next/router'
@@ -26,6 +26,11 @@ const Landing = ({ products }: Landing) => {
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
   const [stores, setStores] = useState()
+  const [searchData, setSearchData] = useState('')
+
+  function handleSubmit() {
+    console.log(searchData)
+  }
 
   useEffect(() => {
     api.get('/stores').then((result) => {
@@ -74,9 +79,12 @@ const Landing = ({ products }: Landing) => {
           <div className="search-boxes">
             <Input
               type="text"
+              onClick={handleSubmit}
               placeholder="Pesquise por produto, serviço, estabelecimento ou cidade"
-              icon={<AiOutlineSearch size={25} />}
+              icon={<AiOutlineSearch size={25} type="submit" />}
               search
+              value={searchData}
+              onChange={(e) => setSearchData(e.target.value)}
             />
           </div>
 
