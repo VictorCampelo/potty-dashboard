@@ -3,7 +3,6 @@ import DrawerLateral from 'components/molecules/DrawerLateral'
 import { Container } from 'styles/pages/shopkeeper'
 import Head from 'next/head'
 import styled from 'styled-components'
-
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { Pagination } from 'components/molecules/Pagination'
@@ -16,6 +15,8 @@ import { Button } from 'components/atoms/Button'
 import { ellipsis } from 'functions/ellipsis'
 import { PulseLoader } from 'react-spinners'
 import formatToBrl from 'utils/formatToBrl'
+import moment from 'moment'
+import { MultiSelect } from 'components/molecules/Select'
 
 type File = {
   id: string
@@ -23,7 +24,7 @@ type File = {
   filename: string
   url: string
 }
-type OrderHistorics = {
+type OrderHistoric = {
   product: {
     title: string
     description: string
@@ -49,18 +50,24 @@ type OrdersListProps = {
 
 interface OrderProps extends OrdersListProps {
   customerAddress: string
-  orderHistorics: OrderHistorics[]
+  orderHistorics: OrderHistoric[]
 }
 
 const Pedidos = () => {
   const [ordersList, setOrdersList] = useState<OrdersListProps[]>([])
   const [modalVisible, setModalVisible] = useState(false)
   const [order, setOrder] = useState<OrderProps>({} as OrderProps)
-  const [classButton, setClassButton] = useState('')
+  const [productStatusOption, setProductStatusOption] = useState<any>(null)
   const [date, setDate] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [totalOrders, setTotalOrders] = useState(0)
   const [page, setPage] = useState(1)
+
+  const productStatusOptions = [
+    { label: 'Recebido', value: 'recived' },
+    { label: 'Concluído', value: 'confirm' },
+    { label: 'Cancelado', value: 'refused' }
+  ]
 
   function toggleModalOrder(order: OrderProps) {
     setIsLoading(true)
@@ -73,7 +80,7 @@ const Pedidos = () => {
       const { data } = await api.get(`/orders/store/order?id=${id}`)
       setOrder(data)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setIsLoading(false)
     }
@@ -101,45 +108,24 @@ const Pedidos = () => {
   }
 
   function classDefine(situation: string): string {
-    const recived = situation === 'Recebido' ? 'recived' : ''
+    const received = situation === 'Recebido' ? 'recived' : ''
     const confirm = situation === 'Concluído' ? 'confirm' : ''
     const refused = situation === 'Cancelado' ? 'refused' : ''
-    const buttonClasses = `statusButton ${recived} ${confirm} ${refused}`
+    const buttonClasses = `statusButton ${received} ${confirm} ${refused}`
 
     return buttonClasses
   }
 
-  function percurArray(arr: OrderHistorics[]) {
-    let qtd = 0
+  function getQuantityAndPrice(orders: OrderHistoric[]) {
+    let productQtd = 0
     let price = 0
-    for (let x = 0; x < arr.length; x++) {
-      qtd += arr[x].productQtd
-      price += arr[x].product.price * arr[x].productQtd
-    }
 
-    return { productQtd: qtd, price }
-  }
+    orders.forEach((order) => {
+      productQtd += order.productQtd
+      price += order.product.price * order.productQtd
+    })
 
-  function cutStrDate(date: string, limit: string) {
-    let newDate = ''
-
-    for (let x = 0; x < date.length; x++) {
-      if (date[x] === limit) {
-        break
-      }
-      newDate += date[x]
-    }
-
-    return newDate
-  }
-
-  function convertDate(date: string) {
-    const day = `${date[8]}${date[9]}`
-    const month = `${date[5]}${date[6]}`
-    const year = `${date[0]}${date[1]}${date[2]}${date[3]}`
-    const newDate = `${day}/${month}/${year}`
-
-    return newDate
+    return { productQtd, price }
   }
 
   async function loadData(off: number) {
@@ -150,9 +136,15 @@ const Pedidos = () => {
       setOrdersList(data.results)
       setTotalOrders(data.totalOrders)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  function handleSubmit() {
+    if (productStatusOption.value !== order.situation) {
+      // update
     }
   }
 
@@ -228,15 +220,16 @@ const Pedidos = () => {
                       </section>
                     </OrderHead>
                     {ordersList?.map((order: OrderProps) => {
-                      const oldDate = cutStrDate(order.createdAt, 'T')
-                      const newDate = convertDate(oldDate)
+                      const createdAt = moment(order.createdAt).format(
+                        'DD/MM/YYYY'
+                      )
 
                       const buttonClasses = classDefine(order?.situation)
 
                       return (
                         <OrderBody key={order.id}>
                           <section style={{ flex: 0.5 }}>
-                            <span>{newDate}</span>
+                            <span>{createdAt}</span>
                           </section>
                           <section style={{ flex: 0.75 }}>
                             <span>
@@ -254,9 +247,12 @@ const Pedidos = () => {
                             <AiFillEye
                               size={24}
                               onClick={() => {
+                                setProductStatusOption({
+                                  label: order.situation,
+                                  value: order.situation
+                                })
                                 toggleModalOrder(order)
-                                setClassButton(buttonClasses)
-                                setDate(newDate)
+                                setDate(createdAt)
                               }}
                             />
                           </section>
@@ -273,7 +269,7 @@ const Pedidos = () => {
                 )}
               </>
             )}
-            {ordersList.length > 0 ? (
+            {ordersList.length && (
               <footer>
                 <Pagination
                   onPageChange={setPage}
@@ -282,8 +278,6 @@ const Pedidos = () => {
                   registersPerPage={8}
                 />
               </footer>
-            ) : (
-              <></>
             )}
           </MainArea>
         </Content>
@@ -346,10 +340,14 @@ const Pedidos = () => {
                 </div>
                 <div className="rightContainer">
                   <div className="status">
-                    <span>Status:</span>
-                    <button className={classButton} style={{ flex: 0.75 }}>
-                      {order?.situation}
-                    </button>
+                    <MultiSelect
+                      name="Status:"
+                      options={productStatusOptions}
+                      selectedValue={productStatusOption}
+                      setSelectedValue={setProductStatusOption}
+                      placeholder="Selecione um status"
+                      loading={false}
+                    />
                   </div>
                   <div className="gradient" />
                   <div className="informationOrder">
@@ -364,7 +362,10 @@ const Pedidos = () => {
                       <div>
                         <span>Quantidade:</span>
                         <span>
-                          {percurArray(order?.orderHistorics).productQtd}
+                          {
+                            getQuantityAndPrice(order?.orderHistorics)
+                              .productQtd
+                          }
                         </span>
                       </div>
                       <div>
@@ -392,7 +393,7 @@ const Pedidos = () => {
                         <span>
                           <strong>
                             {formatToBrl(
-                              percurArray(order?.orderHistorics).price
+                              getQuantityAndPrice(order?.orderHistorics).price
                             )}
                           </strong>
                         </span>
@@ -412,7 +413,7 @@ const Pedidos = () => {
               <div className="buttonsContainer">
                 <div>
                   <Button title="VOLTAR" border />
-                  <Button title="SALVAR" />
+                  <Button title="SALVAR" onClick={handleSubmit} />
                 </div>
               </div>
             </ModalContainer>
@@ -492,21 +493,21 @@ const OrderBody = styled.div`
     font-weight: bold;
     border: none;
     height: 38px;
+  }
 
-    &.confirm {
-      background: var(--confirmation);
-      color: white;
-    }
+  .confirm {
+    background: var(--confirmation) !important;
+    color: white !important;
+  }
 
-    &.refused {
-      background: var(--red);
-      color: white;
-    }
+  .refused {
+    background: var(--red) !important;
+    color: white !important;
+  }
 
-    &.recived {
-      background: var(--gray-700);
-      color: white;
-    }
+  .recived {
+    background: var(--gray-700) !important;
+    color: white !important;
   }
 `
 
