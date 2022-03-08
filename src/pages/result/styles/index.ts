@@ -41,11 +41,15 @@ export const LeftSideContainer = styled.div`
 
   h3 {
     margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-secondary-darker);
   }
 
   .wrap-order,
   .wrap-filter {
     padding: 25px;
+    width: 269px;
     background-color: var(--white);
     display: flex;
     flex-direction: column;
@@ -72,6 +76,27 @@ export const LeftSideContainer = styled.div`
   .wrap-order {
     height: 286px;
     max-width: 270px;
+    padding: 23px 32px;
+
+    a {
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    a + a::before {
+      content: '';
+      display: block;
+      width: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0),
+        rgba(108, 112, 121, 0.26),
+        rgba(108, 112, 121, 0)
+      );
+      height: 1px;
+      margin-bottom: 15px;
+    }
   }
 
   .wrap-filter {

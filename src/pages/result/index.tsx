@@ -159,7 +159,9 @@ const Result = () => {
               <a href="">Menor resultado</a>
               <a href="">Mais pedidos</a>
               <a href="">Mais recente</a>
-              <a href="">Preço</a>
+              <a href="">
+                Preço <img src="/images/updown.svg" alt="updown" />
+              </a>
             </div>
 
             <h3>Filtrar por:</h3>
