@@ -156,7 +156,10 @@ const Pedidos = () => {
         })
       }
 
+      loadData(ordersList.length * (page - 1))
+
       toast.success('Status atualizado com sucesso!')
+
       toggleModalVisible()
     } catch {
       toast.error('Não foi possível alterar status!')
