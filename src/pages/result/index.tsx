@@ -201,20 +201,20 @@ const Result = () => {
                 </div>
               </>
             ) : null}
-            <h3>Produtos</h3>
+
+            {searchData.productsFound && <h3>Produtos</h3>}
             <div className="wrap-cards-products">
-              {searchData.productsFound
-                ? searchData.productsFound.map((product, i) => (
-                    <CardProductSearch
-                      description={product.description}
-                      price={product.price}
-                      stars={product.avgStars}
-                      imgUrl={product.files[0]?.url}
-                      key={i}
-                      storeName={product.title}
-                    />
-                  ))
-                : null}
+              {searchData.productsFound &&
+                searchData.productsFound.map((product, i) => (
+                  <CardProductSearch
+                    description={product.description}
+                    price={product.price}
+                    stars={product.avgStars}
+                    imgUrl={product.files[0]?.url}
+                    key={i}
+                    storeName={product.title}
+                  />
+                ))}
             </div>
           </MainContent>
         </WrapMainContent>
