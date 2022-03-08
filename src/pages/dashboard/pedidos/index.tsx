@@ -15,6 +15,7 @@ import { ModalContainer, Product } from 'styles/components/Modal'
 import { Button } from 'components/atoms/Button'
 import { ellipsis } from 'functions/ellipsis'
 import { PulseLoader } from 'react-spinners'
+import formatToBrl from 'utils/formatToBrl'
 
 type File = {
   id: string
@@ -50,6 +51,7 @@ interface OrderProps extends OrdersListProps {
   customerAddress: string
   orderHistorics: OrderHistorics[]
 }
+
 const Pedidos = () => {
   const [ordersList, setOrdersList] = useState<OrdersListProps[]>([])
   const [modalVisible, setModalVisible] = useState(false)
@@ -59,10 +61,6 @@ const Pedidos = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [totalOrders, setTotalOrders] = useState(0)
   const [page, setPage] = useState(1)
-
-  useEffect(() => {
-    loadData(ordersList.length * (page - 1))
-  }, [page])
 
   function toggleModalOrder(order: OrderProps) {
     setIsLoading(true)
@@ -85,8 +83,7 @@ const Pedidos = () => {
     setModalVisible(!modalVisible)
   }
 
-  //recebe um texto: string, e inclui um format: string a cada position: number
-  function formatText(text: string, format: string, position = 3) {
+  function formatTextEachPosition(text: string, format: string, position = 3) {
     const len = text.length
 
     let jump = position
@@ -163,6 +160,10 @@ const Pedidos = () => {
     loadData(0)
   }, [])
 
+  useEffect(() => {
+    loadData(ordersList.length * (page - 1))
+  }, [page])
+
   return (
     <>
       <Head>
@@ -175,13 +176,11 @@ const Pedidos = () => {
             <header>
               <h1>Pedidos</h1>
 
-              {ordersList.length > 0 ? (
+              {ordersList.length && (
                 <>
                   <SearchButton placeholder="Pesquisar pedido" />
                   <AiOutlineSearch size={24} />
                 </>
-              ) : (
-                <> </>
               )}
             </header>
 
@@ -198,7 +197,7 @@ const Pedidos = () => {
               </div>
             ) : (
               <>
-                {ordersList.length <= 0 ? (
+                {!ordersList.length ? (
                   <EmptyContainer>
                     <div>
                       <img src="/images/emptyCategories.svg" />
@@ -240,10 +239,16 @@ const Pedidos = () => {
                             <span>{newDate}</span>
                           </section>
                           <section style={{ flex: 0.75 }}>
-                            <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                            <span>
+                              {formatTextEachPosition(
+                                order.orderNumber,
+                                ' ',
+                                3
+                              )}
+                            </span>
                           </section>
                           <section style={{ flex: 0.35 }}>
-                            <span>R$ {order.amount.toFixed(2)}</span>
+                            <span>{formatToBrl(order.amount)}</span>
                           </section>
                           <section className="center" style={{ flex: 0.75 }}>
                             <AiFillEye
@@ -294,7 +299,8 @@ const Pedidos = () => {
                 <div className="information">
                   <h2>Dados do pedido</h2>
                   <span>
-                    Nº do pedido: {formatText(order.orderNumber, '-')}
+                    Nº do pedido:{' '}
+                    {formatTextEachPosition(order.orderNumber, '-')}
                   </span>
                 </div>
                 <div className="close">
@@ -308,7 +314,6 @@ const Pedidos = () => {
                       <Product key={item.productId}>
                         <div className="productInformation">
                           <div className="imageArea">
-                            {/* <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" /> */}
                             <img
                               src={
                                 item?.product?.files[0]?.url ||
@@ -325,14 +330,14 @@ const Pedidos = () => {
                             </div>
                             <div className="price">
                               <span>{item.productQtd}x</span>
-                              <span>R$ {item.product.price.toFixed(2)}</span>
+                              <span>{formatToBrl(item.product.price)}</span>
                             </div>
                           </div>
                         </div>
                         <div className="totalPrice">
                           <span>
-                            Subtotal: R${' '}
-                            {(item.productQtd * item.product.price).toFixed(2)}
+                            Subtotal:{' '}
+                            {formatToBrl(item.productQtd * item.product.price)}
                           </span>
                         </div>
                       </Product>
@@ -358,14 +363,13 @@ const Pedidos = () => {
                       </div>
                       <div>
                         <span>Quantidade:</span>
-                        {/* <span>{order?.orderHistorics[0]?.productQtd}</span> */}
                         <span>
                           {percurArray(order?.orderHistorics).productQtd}
                         </span>
                       </div>
                       <div>
                         <span>Cupons:</span>
-                        <span>- R$ 0,00</span>
+                        <span>- {formatToBrl(0)}</span>
                       </div>
                     </div>
 
@@ -387,9 +391,8 @@ const Pedidos = () => {
                         </span>
                         <span>
                           <strong>
-                            R${' '}
-                            {percurArray(order?.orderHistorics).price.toFixed(
-                              2
+                            {formatToBrl(
+                              percurArray(order?.orderHistorics).price
                             )}
                           </strong>
                         </span>

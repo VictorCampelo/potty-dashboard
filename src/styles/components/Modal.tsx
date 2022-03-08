@@ -5,28 +5,38 @@ export const Product = styled.div`
   flex-direction: column;
   gap: var(--spacing-xxxs);
   width: 400px;
+
   .productInformation {
-    /* height: 130px; */
     display: flex;
-    .description {
-      width: 300px;
-      display: flex;
-      flex-direction: column;
-      .price {
-        display: flex;
-        gap: var(--spacing-md);
-      }
-    }
+    gap: 20px;
+
     .imageArea {
+      width: 125px;
+      height: 142px;
+
       margin: var(--spacing-quarck);
-      height: 136px;
-      width: 136px;
 
       img {
         width: 100%;
         height: 100%;
+        border-radius: 8px;
       }
     }
+
+    .description {
+      display: flex;
+      flex-direction: column;
+
+      .price {
+        display: flex;
+        gap: var(--spacing-md);
+        font-weight: 600;
+      }
+    }
+  }
+
+  .totalPrice {
+    font-weight: 600;
   }
 `
 export const ModalContainer = styled.div`
