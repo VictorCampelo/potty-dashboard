@@ -255,6 +255,9 @@ export const CartProduct = styled.div`
         height: 110px;
         /* width: 120px; */
         margin-right: 0;
+        img {
+          width: 110px;
+        }
       }
     }
     .spanProductInformation {
@@ -297,12 +300,18 @@ export const CartProduct = styled.div`
     }
 
     .imgContainer {
+      display: flex;
       width: 90px;
       height: 90px;
       border-radius: 5px;
       background: var(--gray-300);
       margin-right: 1rem;
-      padding: 30px;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 90px;
+        border-radius: 10px;
+      }
     }
   }
 `

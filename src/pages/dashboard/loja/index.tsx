@@ -748,8 +748,6 @@ const Shop = ({ storeId, id }: Shop) => {
                       {...register('qui[1]')}
                     />
                   </div>
-                </div>
-                <div className="right-container">
                   <div className="dates">
                     <p>Sexta:</p>
                     <Input
@@ -916,7 +914,7 @@ const Shop = ({ storeId, id }: Shop) => {
                 <Input
                   label="Número"
                   placeholder="0000"
-                  defaultValue={number}
+                  defaultValue={addressNumber}
                   flex={1}
                   type="numeric"
                   maxLength={6}

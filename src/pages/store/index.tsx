@@ -1,7 +1,6 @@
-import HeaderShop from '../../components/molecules/HeaderShop'
-import Link from 'next/link'
+import HeaderShop from 'components/molecules/HeaderShop'
 import Head from 'next/head'
-import { CheckboxFilter } from '../../components/atoms/CheckboxFilter'
+import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import {
   AiFillFacebook,
   AiFillPhone,
@@ -33,20 +32,18 @@ import {
   Drawer,
   ProductWrapper,
   Button
-} from '../../styles/pages/Store'
+} from 'styles/pages/Store'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getProducts, getStore, getStoreId } from 'services/bussiness.services'
 import { ellipsis } from 'functions/ellipsis'
-import styled from 'styled-components'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoIosClose } from 'react-icons/io'
 import { Input } from 'components/molecules/SearchInput'
-import Carousel from 'components/atoms/Carousel'
 import CarouselProducts from 'components/atoms/CarouselProducts'
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi'
 import { Pagination } from 'components/molecules/Pagination'
@@ -54,8 +51,9 @@ import formatToBrl from 'utils/formatToBrl'
 
 const Products = () => {
   const router = useRouter()
-  // const { name } = router.query
+
   const [name, setName] = useState('')
+
   useEffect(() => {
     const hostName = window.location.hostname
 
@@ -105,10 +103,11 @@ const Products = () => {
   const [favorite, setFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  const widthScreen = useMedia({ minWidth: '426px' })
+
   function handleFavorite() {
     setFavorite(!favorite)
   }
-  const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleOpenProduct(id) {
     router.push(`/store/product/${id}`)
@@ -145,9 +144,9 @@ const Products = () => {
       }
 
       setTelefone(data?.phone)
-      setFacebook(data?.facebook_link)
-      setInstagram(data?.instagram_link)
-      setWhatsApp(data?.whatsapp_link)
+      setFacebook(data?.facebookLink)
+      setInstagram(data?.instagramLink)
+      setWhatsApp(data?.whatsappLink)
 
       setBusinessAddress(data?.address)
     } catch (e) {
@@ -214,6 +213,7 @@ const Products = () => {
               <span>Aberto agora</span>
             </div>
           )}
+
           <HeaderShop />
 
           {!widthScreen && (
@@ -498,7 +498,6 @@ const Products = () => {
                       {buttonOn ? (
                         <>
                           {products.map((e) => {
-                            console.log(e.files)
                             return (
                               <ProductCard
                                 key={e.id}
@@ -687,7 +686,7 @@ const Products = () => {
                   </span>
                 )}
 
-                {whatsApp && (
+                {facebook && (
                   <a href="facebook.com">
                     <AiFillFacebook size={24} color="var(--gray-700)" />
                     {facebook}
