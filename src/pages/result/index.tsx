@@ -14,6 +14,7 @@ import {
 } from './styles'
 import { api } from 'services/apiClient'
 import Carousel from 'components/atoms/Carousel'
+import { CardStoreItem } from 'components/atoms/CardStoreItem'
 
 interface ISearchProps {
   productsFound: [
@@ -183,6 +184,9 @@ const Result = () => {
           </LeftSideContainer>
           <MainContent>
             <h3>Lojas</h3>
+            <div>
+              <CardStoreItem />
+            </div>
           </MainContent>
         </WrapMainContent>
       </Container>
