@@ -62,7 +62,11 @@ interface IStoresFoundProps {
 export const CardStoreItem = ({ data }: { data: IStoresFoundProps }) => {
   return (
     <Container>
-      <img src={data.avatar?.url} alt="" className="img-profile" />
+      <img
+        src={data.avatar?.url || '/images/storeFake.png'}
+        alt=""
+        className="img-profile"
+      />
       <div className="wrap-texts">
         <h2>{data.name.split(' ')[0]}</h2>
         <div className="wrap-starts">

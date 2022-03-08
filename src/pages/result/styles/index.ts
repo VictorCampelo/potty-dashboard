@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Container = styled.body`
   background: var(--gray-100);
-  max-width: 1300px;
+  max-width: 1440px;
   margin: 0 auto;
   min-height: 100vh;
   box-sizing: border-box;
@@ -24,6 +24,7 @@ export const Container = styled.body`
     padding: 65px 20px 50px 20px;
     div {
       min-width: 100%;
+      height: 60px;
     }
   }
 
@@ -40,8 +41,7 @@ export const Container = styled.body`
 export const WrapMainContent = styled.div`
   display: grid;
   grid-template-columns: 3fr 9fr;
-
-  overflow-x: hidden;
+  padding: 0 20px;
 `
 
 export const LeftSideContainer = styled.div`
@@ -85,6 +85,12 @@ export const LeftSideContainer = styled.div`
     height: 286px;
     max-width: 270px;
     padding: 23px 32px;
+
+    a {
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 400;
+    }
 
     button + button::before {
       content: '';
@@ -161,4 +167,9 @@ export const LeftSideContainer = styled.div`
   }
 `
 
-export const MainContent = styled.div``
+export const MainContent = styled.div`
+  h3 {
+    font-size: 32px;
+    font-weight: 500;
+  }
+`

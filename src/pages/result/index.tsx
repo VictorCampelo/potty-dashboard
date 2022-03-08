@@ -15,6 +15,7 @@ import {
 import { api } from 'services/apiClient'
 
 import { CarouselStore } from 'components/atoms/CarouselStore'
+import { CardProductSearch } from 'components/atoms/CardProductSearch'
 
 interface ISearchProps {
   productsFound: [
@@ -192,9 +193,28 @@ const Result = () => {
             <button className="link">Mostrar somente lojas</button>
           </LeftSideContainer>
           <MainContent>
-            <h3>Lojas</h3>
-            <div>
-              <CarouselStore stores={searchData.storesFound} />
+            {searchData.storesFound ? (
+              <>
+                <h3>Lojas</h3>
+                <div className="wrap-cards-store">
+                  <CarouselStore stores={searchData.storesFound} />
+                </div>
+              </>
+            ) : null}
+            <h3>Produtos</h3>
+            <div className="wrap-cards-products">
+              {searchData.productsFound
+                ? searchData.productsFound.map((product, i) => (
+                    <CardProductSearch
+                      description={product.description}
+                      price={product.price}
+                      stars={product.avgStars}
+                      imgUrl={product.files[0]?.url}
+                      key={i}
+                      storeName={product.title}
+                    />
+                  ))
+                : null}
             </div>
           </MainContent>
         </WrapMainContent>
