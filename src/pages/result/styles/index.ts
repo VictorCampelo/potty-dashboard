@@ -86,6 +86,12 @@ export const LeftSideContainer = styled.div`
     max-width: 270px;
     padding: 23px 32px;
 
+    a {
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 400;
+    }
+
     button + button::before {
       content: '';
       display: block;
