@@ -36,7 +36,7 @@ const DescriptionInputBase: ForwardRefRenderFunction<
         <textarea
           ref={ref}
           className="textArea"
-          maxLength={500}
+          maxLength={300}
           placeholder={placeholder}
           {...rest}
         ></textarea>

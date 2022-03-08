@@ -1,24 +1,20 @@
-import DrawerLateral from '../../../components/molecules/DrawerLateral'
-import DrawerBottom from '../../../components/molecules/DrawerBottom'
+import DrawerLateral from 'components/molecules/DrawerLateral'
+import DrawerBottom from 'components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
-import { PaymentContext } from '../../../contexts/PaymentContext'
+import { PaymentContext } from 'contexts/PaymentContext'
 
 import { MultiSelect as MyMultSelect } from 'react-multi-select-component'
 
 import React, { useCallback, useContext, useState } from 'react'
-import {
-  ConfigButton,
-  Container,
-  ModalContainer
-} from '../../../styles/pages/Shop'
+import { ConfigButton, Container, ModalContainer } from 'styles/pages/Shop'
 
-import DescriptionCard from '../../../components/molecules/DescriptionCard'
-import InfoCard from '../../../components/molecules/InfoCard'
-import CustomModal from '../../../components/molecules/CustomModal'
-import { Button } from '../../../components/atoms/Button'
-import { Input } from '../../../components/molecules/Input'
+import DescriptionCard from 'components/molecules/DescriptionCard'
+import InfoCard from 'components/molecules/InfoCard'
+import CustomModal from 'components/molecules/CustomModal'
+import { Button } from 'components/atoms/Button'
+import { Input } from 'components/molecules/Input'
 import { FiSearch } from 'react-icons/fi'
-import { CategoryCard } from '../../../components/molecules/CategoryCard'
+import { CategoryCard } from 'components/molecules/CategoryCard'
 import { IoCellular, IoFastFood } from 'react-icons/io5'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { BiBuildings, BiMapAlt, BiTimeFive } from 'react-icons/bi'
@@ -33,7 +29,7 @@ import {
   editBussinesInfo,
   editTimeTable,
   getStore
-} from '../../../services/bussiness.services'
+} from 'services/bussiness.services'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -123,6 +119,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const [formatedName, setFormatedName] = useState('')
   const [stars, setStars] = useState()
   const [desc, setDesc] = useState('')
+  const [descInputLength, setDescInputLength] = useState(0)
 
   const [telefone, setTelefone] = useState('')
   const [instagram, setInstagram] = useState('')
@@ -152,7 +149,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const [category, setCategory] = useState('')
 
   const [isLoading, setIsLoading] = useState(true)
-  const { handleSubmit, register } = useForm()
+  const { handleSubmit, register, setValue } = useForm()
   const router = useRouter()
 
   //state of edit categories
@@ -174,18 +171,19 @@ const Shop = ({ storeId, id }: Shop) => {
   // Functions
 
   const handleEditTimeTable: SubmitHandler<EditTimeTable> = async (values) => {
-    const body = {
-      schedules: {
-        seg: [values.seg[0], values.seg[1]],
-        ter: [values.ter[0], values.ter[1]],
-        qua: [values.qua[0], values.qua[1]],
-        qui: [values.qui[0], values.qui[1]],
-        sex: [values.sex[0], values.sex[1]],
-        sab: [values.sab[0], values.sab[1]],
-        dom: [values.dom[0], values.dom[1]]
-      }
-    }
     try {
+      const body = {
+        schedules: {
+          seg: [values.seg[0], values.seg[1]],
+          ter: [values.ter[0], values.ter[1]],
+          qua: [values.qua[0], values.qua[1]],
+          qui: [values.qui[0], values.qui[1]],
+          sex: [values.sex[0], values.sex[1]],
+          sab: [values.sab[0], values.sab[1]],
+          dom: [values.dom[0], values.dom[1]]
+        }
+      }
+
       await editTimeTable(body)
 
       toast.success('Horários editado(s) com sucesso!', {
@@ -233,25 +231,29 @@ const Shop = ({ storeId, id }: Shop) => {
   const handleEditBussinesDesc: SubmitHandler<EditBusinessInfo> = async (
     values
   ) => {
-    const body = {
-      storeDto: {
-        name: values.name,
-        description: values.description
-      }
-    }
-
-    const formData = new FormData()
-    formData.append('storeDto', JSON.stringify(body.storeDto))
-    formData.append(
-      'avatar',
-      previewIcon ? dataURLtoFile(previewIcon, getFileName()) : null
-    )
-    formData.append(
-      'background',
-      previewBanner ? dataURLtoFile(previewBanner, getFileName()) : null
-    )
-
     try {
+      if (String(values.description).length > 300) {
+        return toast.error('A descrição não pode conter mais 300 caracteres!')
+      }
+
+      const body = {
+        storeDto: {
+          name: values.name,
+          description: values.description
+        }
+      }
+
+      const formData = new FormData()
+      formData.append('storeDto', JSON.stringify(body.storeDto))
+      formData.append(
+        'avatar',
+        previewIcon ? dataURLtoFile(previewIcon, getFileName()) : null
+      )
+      formData.append(
+        'background',
+        previewBanner ? dataURLtoFile(previewBanner, getFileName()) : null
+      )
+
       await editBussinesInfo(formData)
 
       toast.success('Informações editada(s) com sucesso!', {
@@ -1085,7 +1087,15 @@ const Shop = ({ storeId, id }: Shop) => {
                     defaultValue={desc}
                     placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
                     {...register('description')}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.slice(0, 301)
+                      setDescInputLength(e.target.value.length)
+                      if (e.target.value.length <= 300) {
+                        setValue('description', e.target.value)
+                      }
+                    }}
                   />
+                  <span>{descInputLength}/300</span>
                 </div>
               </div>
 
