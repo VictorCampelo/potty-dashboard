@@ -1415,6 +1415,7 @@ const Shop = ({ storeId, id }: Shop) => {
               button={() => handleOpenCategoryModal()}
               isLoading={isLoading}
               vazio={vazio}
+              categories={dataStore?.categories?.map(({ name }) => name)}
               voidText="Nenhuma categoria foi encontrada..."
             />
 

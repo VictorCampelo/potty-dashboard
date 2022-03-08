@@ -7,9 +7,17 @@ import { FaFacebook } from 'react-icons/fa'
 import { FiInstagram } from 'react-icons/fi'
 import { IoLogoWhatsapp } from 'react-icons/io5'
 
-import { GiKnifeFork } from 'react-icons/gi'
+import {
+  GiDrinkMe,
+  GiElectric,
+  GiElectricalCrescent,
+  GiElectricalResistance,
+  GiElectricalSocket,
+  GiKnifeFork,
+  GiShirt
+} from 'react-icons/gi'
 import { BsMap } from 'react-icons/bs'
-import { PuffLoader, PulseLoader } from 'react-spinners'
+import { PulseLoader } from 'react-spinners'
 
 interface InfoCard extends React.InputHTMLAttributes<HTMLInputElement> {
   title?: string //titulo padrao de todo card
@@ -32,7 +40,7 @@ interface InfoCard extends React.InputHTMLAttributes<HTMLInputElement> {
   sex?: any
   sab?: any // tipo timetable
 
-  category?: string // nome do tipo category
+  categories?: string[]
 
   local?: string // endereço do tipo local
 
@@ -57,7 +65,7 @@ const InfoCard = ({
   sex,
   sab,
 
-  category,
+  categories,
 
   local,
 
@@ -191,15 +199,31 @@ const InfoCard = ({
             {type === 'category' ? (
               <div id="category">
                 {!vazio ? (
-                  <>
-                    {category === 'Alimentação' ? (
-                      <GiKnifeFork size={15} />
-                    ) : null}
-                    <h2>{category}</h2>
-                    <span style={{ marginLeft: '-8px' }}>
-                      {!category && 'Nenhuma categoria cadastrada...'}
-                    </span>
-                  </>
+                  <div>
+                    {categories?.length ? (
+                      categories.map((category) => {
+                        return (
+                          <div key={category} className="categories-info">
+                            {category === 'Roupas' && <GiShirt size={20} />}
+                            {category === 'Eletrodomésticos' && (
+                              <GiElectric size={20} />
+                            )}
+                            {category === 'Eletrônicos' && (
+                              <GiElectricalResistance size={20} />
+                            )}
+                            {category === 'Comida' && <GiKnifeFork size={20} />}
+                            {category === 'Bebida' && <GiDrinkMe size={20} />}
+
+                            <h2>{category}</h2>
+                          </div>
+                        )
+                      })
+                    ) : (
+                      <span style={{ marginLeft: '-8px' }}>
+                        Nenhuma categoria cadastrada...
+                      </span>
+                    )}
+                  </div>
                 ) : (
                   <>
                     <div className="voidText">
