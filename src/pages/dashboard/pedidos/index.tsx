@@ -17,6 +17,7 @@ import { PulseLoader } from 'react-spinners'
 import formatToBrl from 'utils/formatToBrl'
 import moment from 'moment'
 import { MultiSelect } from 'components/molecules/Select'
+import { toast } from 'react-toastify'
 
 type File = {
   id: string
@@ -64,9 +65,10 @@ const Pedidos = () => {
   const [page, setPage] = useState(1)
 
   const productStatusOptions = [
-    { label: 'Recebido', value: 'recived' },
-    { label: 'Concluído', value: 'confirm' },
-    { label: 'Cancelado', value: 'refused' }
+    { label: 'Recebido', value: 'Recebido' },
+    { label: 'Processando', value: 'Processando' },
+    { label: 'Concluído', value: 'Concluído' },
+    { label: 'Cancelado', value: 'Cancelado' }
   ]
 
   function toggleModalOrder(order: OrderProps) {
@@ -108,10 +110,11 @@ const Pedidos = () => {
   }
 
   function classDefine(situation: string): string {
-    const received = situation === 'Recebido' ? 'recived' : ''
+    const received = situation === 'Recebido' ? 'received' : ''
     const confirm = situation === 'Concluído' ? 'confirm' : ''
     const refused = situation === 'Cancelado' ? 'refused' : ''
-    const buttonClasses = `statusButton ${received} ${confirm} ${refused}`
+    const processing = situation === 'Processando' ? 'processing' : ''
+    const buttonClasses = `statusButton ${received} ${confirm} ${refused} ${processing}`
 
     return buttonClasses
   }
@@ -142,9 +145,21 @@ const Pedidos = () => {
     }
   }
 
-  function handleSubmit() {
-    if (productStatusOption.value !== order.situation) {
-      // update
+  async function handleSubmit() {
+    try {
+      const situation = productStatusOption.value
+
+      if (situation !== order.situation) {
+        await api.patch('/orders/update', {
+          orderId: order.id,
+          situation
+        })
+      }
+
+      toast.success('Status atualizado com sucesso!')
+      toggleModalVisible()
+    } catch {
+      toast.error('Não foi possível alterar status!')
     }
   }
 
@@ -412,7 +427,7 @@ const Pedidos = () => {
               </div>
               <div className="buttonsContainer">
                 <div>
-                  <Button title="VOLTAR" border />
+                  <Button title="VOLTAR" border onClick={toggleModalVisible} />
                   <Button title="SALVAR" onClick={handleSubmit} />
                 </div>
               </div>
@@ -500,12 +515,17 @@ const OrderBody = styled.div`
     color: white !important;
   }
 
+  .processing {
+    background: var(--yellow) !important;
+    color: white !important;
+  }
+
   .refused {
     background: var(--red) !important;
     color: white !important;
   }
 
-  .recived {
+  .received {
     background: var(--gray-700) !important;
     color: white !important;
   }
