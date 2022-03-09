@@ -194,7 +194,7 @@ export const Container = styled.div<ContainerProp>`
           align-items: center;
           text-align: center;
 
-          width: 100px;
+          width: 105px;
           height: 24px;
 
           display: flex;
