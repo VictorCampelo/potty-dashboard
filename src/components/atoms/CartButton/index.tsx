@@ -1,6 +1,6 @@
 import { CartContext } from 'contexts/CartContext'
 import router from 'next/router'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import sizes from 'utils/sizes'
 import formatToBrl from 'utils/formatToBrl'
@@ -26,7 +26,7 @@ export const CartButton = ({ isFromProduct = false }: CartButtonProps) => {
         {!isFromProduct && <div className="product-len">{items.length}</div>}
       </div>
 
-      {items.length && <p>| {formatToBrl(total)}</p>}
+      {items.length ? <p>| {formatToBrl(total)}</p> : null}
     </ContainerCart>
   )
 }
