@@ -715,7 +715,7 @@ const catalog = ({ storeId }: CatalogType) => {
             <IoIosClose
               onClick={toggleAddCategoryModal}
               size={36}
-              color={'black'}
+              color="black"
             />
           </div>
 
@@ -968,7 +968,12 @@ const catalog = ({ storeId }: CatalogType) => {
           </div>
 
           <div className="buttonContainer">
-            <Button title="Voltar" border onClick={toggleAddModal} />
+            <Button
+              type="button"
+              title="Voltar"
+              border
+              onClick={toggleAddModal}
+            />
 
             <Button title="Salvar" type="submit" />
           </div>
@@ -1167,10 +1172,11 @@ const catalog = ({ storeId }: CatalogType) => {
 
           <div className="buttonContainer">
             <Button
+              type="button"
               title="Voltar"
               border
               style={{ marginRight: 16 }}
-              onClick={toggleAddModal}
+              onClick={toggleEditProduct}
             />
 
             <Button title="Salvar" type="submit" />
