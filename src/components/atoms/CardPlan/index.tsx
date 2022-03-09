@@ -4,6 +4,7 @@ import formatToBrl from 'utils/formatToBrl'
 
 import { Button } from 'components/atoms/Button'
 import { useRouter } from 'next/router'
+import { api } from 'services/apiClient'
 interface Props {
   crown?: boolean
   colors: {
@@ -27,9 +28,9 @@ const CardPlan = ({
   quotaPrice,
   quota
 }: Props) => {
-  const selectPlan = (label) => {
-    sessionStorage.setItem('plan', label)
-    router.push('/cadastro/lojista')
+  const selectPlan = async (label) => {
+    const { data } = await api.get(`/plans/find/${label.toLowerCase()}`)
+    window.open(data.url, '_blank')
   }
 
   const router = useRouter()
