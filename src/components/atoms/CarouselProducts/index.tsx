@@ -203,15 +203,17 @@ const CarouselProducts = ({
                   >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
+                  {console.log(product)}
                 </>
               )}
               {promo && widthScreen && (
-                <img
+                <div
+                  className="promoContainer"
                   onClick={() => redirectToProduct(product.id)}
-                  src="/images/promo.svg"
-                  alt="promo"
-                  className="promo"
-                />
+                >
+                  {`${product?.discount?.toFixed(1)}%`}
+                  <br></br>OFF
+                </div>
               )}
             </Item>
           )
@@ -479,5 +481,25 @@ const Item = styled.div`
     margin-top: var(--spacing-nano);
     color: var(--gray-600);
     gap: 10px;
+  }
+
+  .promoContainer {
+    display: flex;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 70%;
+    margin-top: 5%;
+    background-image: url('/images/promo.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70px 100px;
+    object-fit: contain;
+    color: var(--white);
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-xxxxs);
   }
 `
