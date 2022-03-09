@@ -114,7 +114,7 @@ const CarouselProducts = ({
   }
   const redirectToProduct = (productId: string) => {
     Router.push(
-      `https://${data[0]?.store?.formatedName}.${process.env.hostName}/store/product/${productId}`
+      `${location.protocol}//${data[0]?.store?.formatedName}.${process.env.hostName}/store/product/${productId}`
     )
   }
 
