@@ -156,7 +156,7 @@ const CarouselProducts = ({
                 className="infoProduct"
                 onClick={() => redirectToProduct(product.id)}
               >
-                <p>{product.title}</p>
+                <p>{`${product.title.substring(0, 26)}...`}</p>
                 <div className="stars">
                   <AiFillStar size={20} color="var(--gold)" />
                   <small>
@@ -331,7 +331,7 @@ const Item = styled.div`
   width: 260px;
   height: 360px;
   background: var(--white);
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
   border-radius: var(--border-radius-gg);
 
   overflow: hidden;
