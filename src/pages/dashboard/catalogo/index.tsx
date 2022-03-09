@@ -1402,6 +1402,8 @@ const catalog = ({ storeId }: CatalogType) => {
                 className="addBtn"
                 onClick={() => {
                   reset()
+                  setSelectedCategories([])
+                  setInstallments(null)
                   setDiscount(0)
                   setPriceWithDiscount(formatToBrl(0))
                   if (toggleState == 1) handleOpenAddModal()
