@@ -407,7 +407,7 @@ const Item = styled.div<ItemProps>`
   width: 260px;
   height: 360px;
   background: var(--white);
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
   border-radius: var(--border-radius-gg);
 
   overflow: hidden;
