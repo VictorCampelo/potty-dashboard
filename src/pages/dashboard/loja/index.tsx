@@ -1,25 +1,16 @@
-import DrawerLateral from '../../../components/molecules/DrawerLateral'
-import DrawerBottom from '../../../components/molecules/DrawerBottom'
+import DrawerLateral from 'components/molecules/DrawerLateral'
+import DrawerBottom from 'components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
-import { PaymentContext } from '../../../contexts/PaymentContext'
-
-import { MultiSelect as MyMultSelect } from 'react-multi-select-component'
+import { PaymentContext } from 'contexts/PaymentContext'
 
 import React, { useCallback, useContext, useState } from 'react'
-import {
-  ConfigButton,
-  Container,
-  ModalContainer
-} from '../../../styles/pages/Shop'
+import { ConfigButton, Container, ModalContainer } from 'styles/pages/Shop'
 
-import DescriptionCard from '../../../components/molecules/DescriptionCard'
-import InfoCard from '../../../components/molecules/InfoCard'
-import CustomModal from '../../../components/molecules/CustomModal'
-import { Button } from '../../../components/atoms/Button'
-import { Input } from '../../../components/molecules/Input'
-import { FiSearch } from 'react-icons/fi'
-import { CategoryCard } from '../../../components/molecules/CategoryCard'
-import { IoCellular, IoFastFood } from 'react-icons/io5'
+import DescriptionCard from 'components/molecules/DescriptionCard'
+import InfoCard from 'components/molecules/InfoCard'
+import CustomModal from 'components/molecules/CustomModal'
+import { Button } from 'components/atoms/Button'
+import { Input } from 'components/molecules/Input'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { BiBuildings, BiMapAlt, BiTimeFive } from 'react-icons/bi'
 import { FaBuilding, FaRoad } from 'react-icons/fa'
@@ -32,15 +23,16 @@ import { useEffect } from 'react'
 import {
   editBussinesInfo,
   editTimeTable,
-  getStore
-} from '../../../services/bussiness.services'
+  getStore,
+  getStoreCategories
+} from 'services/bussiness.services'
 import { toast } from 'react-toastify'
 import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { ShopImage } from 'components/molecules/ShopImage'
-import { AiFillCamera, AiFillShop } from 'react-icons/ai'
+import { AiFillCamera } from 'react-icons/ai'
 import { DescriptionInput } from 'components/molecules/DescriptionInput'
 import { api } from 'services/apiClient'
 import { Point } from 'react-easy-crop/types'
@@ -50,6 +42,7 @@ import Cropper from 'react-easy-crop'
 import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 import { PaymentItem } from 'components/atoms/PaymentItem'
 import { DeliveryInp } from 'components/atoms/DeliveryInp'
+import { MultiSelect } from 'components/molecules/MultiSelect'
 
 type TimeTableArrayType = {
   [0]
@@ -123,6 +116,7 @@ const Shop = ({ storeId, id }: Shop) => {
   const [formatedName, setFormatedName] = useState('')
   const [stars, setStars] = useState()
   const [desc, setDesc] = useState('')
+  const [descInputLength, setDescInputLength] = useState(0)
 
   const [telefone, setTelefone] = useState('')
   const [instagram, setInstagram] = useState('')
@@ -149,43 +143,29 @@ const Shop = ({ storeId, id }: Shop) => {
   const [sex, setSex] = useState([])
   const [sab, setSab] = useState([])
 
-  const [category, setCategory] = useState('')
-
   const [isLoading, setIsLoading] = useState(true)
-  const { handleSubmit, register } = useForm()
+  const { handleSubmit, register, setValue } = useForm()
   const router = useRouter()
 
-  //state of edit categories
-  const [selected, setSelected] = useState([])
-
-  //Fake data of categories
-  const categoriasFake = [
-    { label: 'Calçados', value: 'Calçados' },
-    { label: 'Eletronicos', value: 'Eletronicos' },
-    { label: 'Mesa', value: 'Mesa' },
-    { label: 'Cama', value: 'Cama' },
-    { label: 'Eletro-Domesticos', value: 'Eletro-Domesticos' },
-    { label: 'Informatica', value: 'Informatica' },
-    { label: 'Papelaria', value: 'Papelaria' },
-    { label: 'Alimentos', value: 'Alimentos' },
-    { label: 'Limpeza', value: 'Limpeza' }
-  ]
+  const [categoriesOptions, setCategoriesOptions] = useState([])
+  const [categoriesOption, setCategoriesOption] = useState(null)
 
   // Functions
 
   const handleEditTimeTable: SubmitHandler<EditTimeTable> = async (values) => {
-    const body = {
-      schedules: {
-        seg: [values.seg[0], values.seg[1]],
-        ter: [values.ter[0], values.ter[1]],
-        qua: [values.qua[0], values.qua[1]],
-        qui: [values.qui[0], values.qui[1]],
-        sex: [values.sex[0], values.sex[1]],
-        sab: [values.sab[0], values.sab[1]],
-        dom: [values.dom[0], values.dom[1]]
-      }
-    }
     try {
+      const body = {
+        schedules: {
+          seg: [values.seg[0], values.seg[1]],
+          ter: [values.ter[0], values.ter[1]],
+          qua: [values.qua[0], values.qua[1]],
+          qui: [values.qui[0], values.qui[1]],
+          sex: [values.sex[0], values.sex[1]],
+          sab: [values.sab[0], values.sab[1]],
+          dom: [values.dom[0], values.dom[1]]
+        }
+      }
+
       await editTimeTable(body)
 
       toast.success('Horários editado(s) com sucesso!', {
@@ -233,25 +213,29 @@ const Shop = ({ storeId, id }: Shop) => {
   const handleEditBussinesDesc: SubmitHandler<EditBusinessInfo> = async (
     values
   ) => {
-    const body = {
-      storeDto: {
-        name: values.name,
-        description: values.description
-      }
-    }
-
-    const formData = new FormData()
-    formData.append('storeDto', JSON.stringify(body.storeDto))
-    formData.append(
-      'avatar',
-      previewIcon ? dataURLtoFile(previewIcon, getFileName()) : null
-    )
-    formData.append(
-      'background',
-      previewBanner ? dataURLtoFile(previewBanner, getFileName()) : null
-    )
-
     try {
+      if (String(values.description).length > 300) {
+        return toast.error('A descrição não pode conter mais 300 caracteres!')
+      }
+
+      const body = {
+        storeDto: {
+          name: values.name,
+          description: values.description
+        }
+      }
+
+      const formData = new FormData()
+      formData.append('storeDto', JSON.stringify(body.storeDto))
+      formData.append(
+        'avatar',
+        previewIcon ? dataURLtoFile(previewIcon, getFileName()) : null
+      )
+      formData.append(
+        'background',
+        previewBanner ? dataURLtoFile(previewBanner, getFileName()) : null
+      )
+
       await editBussinesInfo(formData)
 
       toast.success('Informações editada(s) com sucesso!', {
@@ -453,7 +437,7 @@ const Shop = ({ storeId, id }: Shop) => {
   >([])
   const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
 
-  const [dataStore, setDataStore] = useState()
+  const [dataStore, setDataStore] = useState(null)
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
@@ -570,15 +554,7 @@ const Shop = ({ storeId, id }: Shop) => {
     }
   }
 
-  function removeThisItem(item) {
-    setSelected(() =>
-      selected.filter((category) => category.value != item.value)
-    )
-  }
-
   async function cropImage(current) {
-    // Get cropped image file
-
     const Image = await getCroppedImg(previewImage, croppedAreaPixels, rotation)
 
     try {
@@ -596,13 +572,53 @@ const Shop = ({ storeId, id }: Shop) => {
     }
   }
 
+  async function updateStoreCategories() {
+    try {
+      const body = {
+        storeDto: {
+          categoriesIds: categoriesOption.map(({ value }) => value)
+        }
+      }
+
+      const formData = new FormData()
+
+      formData.append('storeDto', JSON.stringify(body.storeDto))
+
+      await editBussinesInfo(formData)
+
+      toast.success('Categorias da loja foram atualizadas com sucesso!')
+    } catch {
+      toast.error('Não foi possível atualizar as categorias da loja.')
+    }
+  }
+
   // Data
+  async function loadCategories() {
+    try {
+      const categories = (await getStoreCategories()).data
+      if (!categories.length) return
+
+      setCategoriesOptions(
+        categories.map(({ id, name }) => {
+          return { label: name, value: id }
+        })
+      )
+    } catch {
+      toast.error('Não foi possível carregar as categorias')
+    }
+  }
 
   async function loadData() {
     try {
-      const { data } = await getStore(`${storeId}`)
+      const { data } = await getStore(String(storeId))
 
       setDataStore(data)
+
+      setCategoriesOption(
+        data?.categories?.map(({ id, name }) => {
+          return { label: name, value: id }
+        })
+      )
 
       setInputPaymentValue(data.paymentMethods.map((item) => item.methodName))
 
@@ -639,7 +655,7 @@ const Shop = ({ storeId, id }: Shop) => {
       setAddressNumber(data?.addressNumber)
       // setBusinessAddress()
     } catch (e) {
-      console.log(e)
+      console.error(e)
       setVazio(true)
       toast.error('Erro ao buscar dados, tente novamente mais tarde', {
         position: 'top-right',
@@ -657,6 +673,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
   useEffect(() => {
     loadData()
+    loadCategories()
   }, [])
 
   return (
@@ -819,43 +836,33 @@ const Shop = ({ storeId, id }: Shop) => {
               <IoIosClose
                 onClick={toggleCategoryModal}
                 size={36}
-                color={'black'}
+                color="black"
               />
             </div>
-            <div className="categories-container">
-              {/* <Input
-                label=""
-                placeholder="Categoria"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                icon={<FiSearch size={20} color="var(--black-800)" />}
-              ></Input> */}
-              <MyMultSelect
-                options={categoriasFake}
-                value={selected}
-                onChange={setSelected}
-                labelledBy="Categorias"
-                overrideStrings={{
-                  search: 'Procurar',
-                  selectAll: 'Selecionar todos',
-                  selectSomeItems: 'Selecione...',
-                  allItemsAreSelected: 'Todos os itens selecionados'
-                }}
-              />
 
-              <div className="wrapper-categories-selecteds">
-                {selected.map((item, i) => (
-                  <CategoryCard
-                    key={i}
-                    label={item.value}
-                    click={() => removeThisItem(item)}
-                  />
-                ))}
-              </div>
+            <div className="categories-container">
+              <MultiSelect
+                options={categoriesOptions}
+                selectedValue={categoriesOption}
+                setSelectedValue={setCategoriesOption}
+                placeholder="Selecione as categorias"
+                name="Categorias"
+                loading={false}
+              />
             </div>
+
             <div className="buttons-container">
-              <Button title="Confirmar" border={true}></Button>
+              <Button
+                title="Confirmar"
+                border={true}
+                onClick={updateStoreCategories}
+              ></Button>
             </div>
+
+            <p className="description">
+              Selecionando as categorias que você trabalha, ajuda as pessoas a
+              encontrarem seus produtos.
+            </p>
           </ModalContainer>
         </CustomModal>
         <CustomModal
@@ -1085,7 +1092,15 @@ const Shop = ({ storeId, id }: Shop) => {
                     defaultValue={desc}
                     placeholder="Faça uma descrição rápida e útil do seu negócio para seus clientes."
                     {...register('description')}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.slice(0, 301)
+                      setDescInputLength(e.target.value.length)
+                      if (e.target.value.length <= 300) {
+                        setValue('description', e.target.value)
+                      }
+                    }}
                   />
+                  <span>{descInputLength}/300</span>
                 </div>
               </div>
 
@@ -1400,6 +1415,7 @@ const Shop = ({ storeId, id }: Shop) => {
               button={() => handleOpenCategoryModal()}
               isLoading={isLoading}
               vazio={vazio}
+              categories={dataStore?.categories?.map(({ name }) => name)}
               voidText="Nenhuma categoria foi encontrada..."
             />
 

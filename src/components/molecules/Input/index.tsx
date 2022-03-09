@@ -52,13 +52,15 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, Input> = (
 
   return (
     <Container flex={flex} error={error}>
-      {label ? (
+      {label && (
         <section className="labelContent">
           <label>{label}</label>
 
-          {error && textError && <span>{textError}</span>}
+          {error && textError && (
+            <span className="text-error">{textError}</span>
+          )}
         </section>
-      ) : null}
+      )}
 
       <div className={`inputContainer ${rest.disabled && 'disabled'}`}>
         {!!icon && icon}

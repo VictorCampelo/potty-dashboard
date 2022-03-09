@@ -25,6 +25,18 @@ export const Container = styled.section`
     }
   }
 
+  div#categories {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .categories-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 2px 0;
+  }
+
   .top {
     display: flex;
     justify-content: space-between;

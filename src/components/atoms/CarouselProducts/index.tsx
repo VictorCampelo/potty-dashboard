@@ -114,7 +114,7 @@ const CarouselProducts = ({
   }
   const redirectToProduct = (productId: string) => {
     Router.push(
-      `https://${data[0]?.store?.formatedName}.${process.env.hostName}/store/product/${productId}`
+      `${location.protocol}//${data[0]?.store?.formatedName}.${process.env.hostName}/store/product/${productId}`
     )
   }
 
@@ -185,7 +185,14 @@ const CarouselProducts = ({
                 {product.parcelAmount > 1 && (
                   <span>
                     Em até {product.parcelAmount}x sem juros ou{' '}
-                    <strong>{formatToBrl(product.price)}</strong> à vista
+                    <strong>
+                      {formatToBrl(
+                        product.discount
+                          ? getDiscount(product.price, product.discount)
+                          : product.price
+                      )}
+                    </strong>{' '}
+                    à vista
                   </span>
                 )}
               </div>

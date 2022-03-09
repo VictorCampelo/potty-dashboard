@@ -10,6 +10,7 @@ interface CartItem {
   price: number
   enabled?: boolean
   image?: string
+  discount: number
 }
 
 interface PaymentMethod {
