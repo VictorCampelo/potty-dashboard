@@ -29,7 +29,7 @@ const Landing = ({ products }: Landing) => {
   const [searchData, setSearchData] = useState('')
 
   function handleSubmit() {
-    console.log(searchData)
+    router.push(`/result?search=${searchData}`)
   }
 
   useEffect(() => {
@@ -79,13 +79,18 @@ const Landing = ({ products }: Landing) => {
           <div className="search-boxes">
             <Input
               type="text"
-              onClick={handleSubmit}
               placeholder="Pesquise por produto, serviço, estabelecimento ou cidade"
-              icon={<AiOutlineSearch size={25} type="submit" />}
               search
               value={searchData}
               onChange={(e) => setSearchData(e.target.value)}
             />
+            <div className="ContainerSearchButton">
+              <AiOutlineSearch
+                size={25}
+                type="submit"
+                onClick={() => handleSubmit()}
+              />
+            </div>
           </div>
 
           <CardServices />
@@ -159,6 +164,18 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
+
+  .ContainerSearchButton {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    background-color: var(--white);
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    cursor: pointer;
+  }
 
   .search-boxes {
     width: 100%;

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Header from 'components/molecules/HeaderShop'
 import { Input } from 'components/molecules/SearchInput'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaList } from 'react-icons/fa'
 import { IoGridSharp } from 'react-icons/io5'
+import { useRouter } from 'next/router'
 
 import {
   Container,
@@ -119,6 +120,12 @@ const Result = () => {
   const [search, setSearch] = useState('')
   const [searchTitle, setSearchTitle] = useState('')
   const [searchData, setSearchData] = useState<ISearchProps>({} as ISearchProps)
+  const router = useRouter()
+
+  useEffect(() => {
+    setSearch(router.query.search as string)
+    getData()
+  }, [])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -129,7 +136,6 @@ const Result = () => {
 
   async function getData() {
     const { data } = await api.get('/stores/search?parameter=' + search)
-    console.log(data)
     setSearchData(data)
   }
 
