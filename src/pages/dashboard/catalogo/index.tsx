@@ -217,6 +217,10 @@ const catalog = ({ storeId }: CatalogType) => {
     setValue('discount', product.discount)
     if (Number(product.discount) > 0) setEnableDiscount(true)
 
+    if (product.files[0]) setImageSrc(product.files[0].url)
+    if (product.files[1]) setImageSrc1(product.files[1].url)
+    if (product.files[2]) setImageSrc2(product.files[2].url)
+
     setProductEditValue(product.description)
     setInstallments({
       value: product.parcelAmount.toString(),
@@ -521,8 +525,6 @@ const catalog = ({ storeId }: CatalogType) => {
     values
   ) => {
     try {
-      const formData = new FormData()
-
       const body = {
         title: values.title,
         price: formatToNumber(values.price),
@@ -533,26 +535,7 @@ const catalog = ({ storeId }: CatalogType) => {
         parcelAmount: Number(installments.value)
       }
 
-      Object.entries(body).forEach(([key, value]) => {
-        formData.append(key, String(value))
-      })
-
-      // TODO: save image src as base64
-
-      // formData.append(
-      //   'files',
-      //   imageSrc ? dataURLtoFile(imageSrc, getFileName()) : null
-      // )
-      // formData.append(
-      //   'files',
-      //   imageSrc1 ? dataURLtoFile(imageSrc1, getFileName()) : null
-      // )
-      // formData.append(
-      //   'files',
-      //   imageSrc2 ? dataURLtoFile(imageSrc2, getFileName()) : null
-      // )
-
-      await updateProduct(editProductId, formData)
+      await updateProduct(editProductId, body)
 
       notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
@@ -1419,6 +1402,8 @@ const catalog = ({ storeId }: CatalogType) => {
                 className="addBtn"
                 onClick={() => {
                   reset()
+                  setSelectedCategories([])
+                  setInstallments(null)
                   setDiscount(0)
                   setPriceWithDiscount(formatToBrl(0))
                   if (toggleState == 1) handleOpenAddModal()
@@ -1465,16 +1450,10 @@ const catalog = ({ storeId }: CatalogType) => {
                             setDeleteProductId(product.id)
                           }}
                           editBtn={() => {
+                            editProductSelected(product)
                             setDiscount(product.discount)
                             setEditProductId(product.id)
                             setEditProduct(true)
-                            if (product.files[0])
-                              setImageSrc(product.files[0].url)
-                            if (product.files[1])
-                              setImageSrc1(product.files[1].url)
-                            if (product.files[2])
-                              setImageSrc2(product.files[2].url)
-                            editProductSelected(product)
                           }}
                           isRed={true}
                           isGreen={true}
