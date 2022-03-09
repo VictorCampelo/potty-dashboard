@@ -521,8 +521,6 @@ const catalog = ({ storeId }: CatalogType) => {
     values
   ) => {
     try {
-      const formData = new FormData()
-
       const body = {
         title: values.title,
         price: formatToNumber(values.price),
@@ -533,26 +531,7 @@ const catalog = ({ storeId }: CatalogType) => {
         parcelAmount: Number(installments.value)
       }
 
-      Object.entries(body).forEach(([key, value]) => {
-        formData.append(key, String(value))
-      })
-
-      // TODO: save image src as base64
-
-      // formData.append(
-      //   'files',
-      //   imageSrc ? dataURLtoFile(imageSrc, getFileName()) : null
-      // )
-      // formData.append(
-      //   'files',
-      //   imageSrc1 ? dataURLtoFile(imageSrc1, getFileName()) : null
-      // )
-      // formData.append(
-      //   'files',
-      //   imageSrc2 ? dataURLtoFile(imageSrc2, getFileName()) : null
-      // )
-
-      await updateProduct(editProductId, formData)
+      await updateProduct(editProductId, body)
 
       notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
