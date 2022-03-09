@@ -1,45 +1,42 @@
-import Header from '../../components/molecules/Header'
+import Header from 'components/molecules/Header'
 import Head from 'next/head'
-import { Container, Wrapper } from '../../styles/pages/preLogin'
+import { Container, Wrapper } from 'styles/pages/preLogin'
 
-import { Button } from '../../components/atoms/Button'
+import { Button } from 'components/atoms/Button'
 import router from 'next/router'
-import Link from 'next/link'
 import { Input } from 'components/molecules/Input'
 import { useEffect, useState } from 'react'
 import { PulseLoader } from 'react-spinners'
-import { HiOutlineKey } from 'react-icons/hi'
 import { api } from 'services/apiClient'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+
 type TokenFormData = {
   tokenDigits: string
 }
 const tokenFormSchema = yup.object().shape({
-  tokenDigits: yup.string().required('Token obrigatório').max(6)
+  tokenDigits: yup.string().required('Token obrigatório').max(6).nullable()
 })
 
 const BusinessRegisterConfirm = () => {
-  const [tokenDigits, setTokenDigits] = useState('')
   const [token, setToken] = useState('')
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    setValue,
+    formState: { errors }
   } = useForm({
     resolver: yupResolver(tokenFormSchema)
   })
 
-  const handleConfirmToken: SubmitHandler<TokenFormData> = async (
-    values,
-    event
-  ) => {
+  const handleConfirmToken: SubmitHandler<TokenFormData> = async (values) => {
     try {
       setLoading(true)
+
       if (token) {
         await api.patch(`/auth/token?tokenDigits=${token}`)
       }
@@ -50,43 +47,44 @@ const BusinessRegisterConfirm = () => {
         pathname: '/email-confirmation',
         query: { tokenDigits: values.tokenDigits }
       })
-    } catch (e) {
-      setError(true)
+    } catch ({ response }) {
+      toast.error(response.data.error)
     } finally {
       setLoading(false)
     }
   }
 
   async function sendConfirmation() {
-    const user = JSON.parse(sessionStorage.getItem('user'))
-    setLoading(true)
     try {
+      setLoading(true)
+
+      const user = JSON.parse(sessionStorage.getItem('user'))
+
       await api.patch('/auth/send-confirmation-email', { email: user?.email })
-    } catch (e) {
-      toast.error(`${e}`, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
+    } catch ({ response }) {
+      toast.error(response.data.error)
     } finally {
       setLoading(false)
     }
   }
-  function getToken() {
-    const data = JSON.parse(sessionStorage.getItem('AuthTokens'))
 
-    if (data) {
-      setToken(data.token)
+  async function getToken() {
+    try {
+      setLoading(true)
+
+      const data = JSON.parse(sessionStorage.getItem('AuthTokens'))
+
+      return data
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
+
   useEffect(() => {
-    getToken()
+    getToken().then((accessToken) => {
+      setToken(accessToken)
+      setValue('tokenDigits', accessToken)
+    })
   }, [])
 
   return (
@@ -105,8 +103,8 @@ const BusinessRegisterConfirm = () => {
           className="confirmationAuth"
           onSubmit={handleSubmit(handleConfirmToken)}
         >
-          <h2>Confirmação de cadastro</h2>
-          <p className="subtitle">
+          <h2 style={{ margin: '15px 0' }}>Confirmação de cadastro</h2>
+          <p className="subtitle" style={{ margin: '30px 0' }}>
             Insira o token de segurança que foi enviado para o seu email e
             verifique sua conta
           </p>
@@ -116,7 +114,7 @@ const BusinessRegisterConfirm = () => {
               placeholder="______"
               maxLength={6}
               {...register('tokenDigits')}
-              error={error || errors.tokenDigits}
+              error={errors.tokenDigits}
               textError={errors.tokenDigits?.message || 'Token inválido'}
             />
           </div>
@@ -127,14 +125,7 @@ const BusinessRegisterConfirm = () => {
           </span>
           <div className="buttonContainer" style={{ marginBottom: '1rem' }}>
             <div>
-              <Button
-                type="button"
-                title="CONTINUAR"
-                onClick={() => {
-                  sessionStorage.clear()
-                  router.push('/')
-                }}
-              />
+              <Button type="submit" title="CONTINUAR" />
             </div>
           </div>
         </form>

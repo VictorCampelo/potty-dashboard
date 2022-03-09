@@ -8,6 +8,7 @@ interface ContainerProp {
 export const Container = styled.button<ContainerProp>`
   height: 3.375rem;
   width: 100%;
+  min-width: max-content;
   border: none;
   border-radius: 30px;
   padding: 1rem 2rem;

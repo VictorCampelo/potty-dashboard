@@ -31,7 +31,6 @@ export const Container = styled.main`
     }
     span {
       text-decoration: underline;
-      margin-bottom: var(--spacing-lg);
       cursor: pointer;
     }
 
@@ -181,7 +180,7 @@ export const Container = styled.main`
     }
 
     .buttonContainer {
-      width: 10vw;
+      min-width: 10vw;
       margin-top: 2rem;
       display: flex;
       justify-content: space-between;

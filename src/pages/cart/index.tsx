@@ -83,6 +83,9 @@ const Cart = () => {
     }
   }
 
+  const getDiscount = (price: number, discount: number) =>
+    price - (price * discount) / 100
+
   useEffect(() => {
     if (items.length > 0) {
       localStorage.setItem('ultimo.cart.items', JSON.stringify(items))
@@ -191,10 +194,11 @@ const Cart = () => {
 
                         <section>
                           <strong>
-                            {new Intl.NumberFormat('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL'
-                            }).format(it.price * it.amount)}
+                            {formatToBrl(
+                              (it.discount
+                                ? getDiscount(it.price, it.discount)
+                                : it.price) * it.amount
+                            )}
                           </strong>
                         </section>
 
@@ -244,10 +248,11 @@ const Cart = () => {
                         >
                           <span>{it.title}</span>
                           <strong>
-                            {new Intl.NumberFormat('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL'
-                            }).format(it.price)}
+                            {formatToBrl(
+                              it.discount
+                                ? getDiscount(it.price, it.discount)
+                                : it.price
+                            )}
                           </strong>
                           <Counter id={it.productId} />
                         </section>
@@ -259,7 +264,11 @@ const Cart = () => {
                     <p className="subTotal">
                       Subtotal:{' '}
                       <strong style={{ color: 'var(--color-primary)' }}>
-                        {formatToBrl(it.price * it.amount)}
+                        {formatToBrl(
+                          (it.discount
+                            ? getDiscount(it.price, it.discount)
+                            : it.price) * it.amount
+                        )}
                       </strong>
                     </p>
                   )}

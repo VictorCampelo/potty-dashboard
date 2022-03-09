@@ -21,15 +21,19 @@ export const Container = styled.div<ContainerProps>`
 
   .labelContent {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding-right: 6px;
     margin-bottom: 0.5rem;
 
     label {
       font-size: 1rem;
       color: var(--black-800);
-      ${(props) => props.error && 'color: var(--red);'}
+
+      .text-error {
+        ${(props) => props.error && 'color: var(--red);'}
+      }
     }
 
     span {

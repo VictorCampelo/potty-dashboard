@@ -517,19 +517,39 @@ const catalog = ({ storeId }: CatalogType) => {
   const handleUpdateProduct: SubmitHandler<CreateProductFormData> = async (
     values
   ) => {
-    const body = {
-      title: values.title,
-      price: formatToNumber(values.price),
-      description: productEditValue,
-      inventory: Number(values.inventory || '0'),
-      discount: Number(values.discount),
-      categoriesIds: selectedCategories.map((cat) => cat.value),
-      // files: [imageSrc, imageSrc1, imageSrc2],
-      parcelAmount: Number(installments.value)
-    }
-
     try {
-      await updateProduct(editProductId, body)
+      const formData = new FormData()
+
+      const body = {
+        title: values.title,
+        price: formatToNumber(values.price),
+        description: productEditValue,
+        inventory: Number(values.inventory || '0'),
+        discount: Number(values.discount),
+        categoriesIds: selectedCategories.map((cat) => cat.value),
+        parcelAmount: Number(installments.value)
+      }
+
+      Object.entries(body).forEach(([key, value]) => {
+        formData.append(key, String(value))
+      })
+
+      // TODO: save image src as base64
+
+      // formData.append(
+      //   'files',
+      //   imageSrc ? dataURLtoFile(imageSrc, getFileName()) : null
+      // )
+      // formData.append(
+      //   'files',
+      //   imageSrc1 ? dataURLtoFile(imageSrc1, getFileName()) : null
+      // )
+      // formData.append(
+      //   'files',
+      //   imageSrc2 ? dataURLtoFile(imageSrc2, getFileName()) : null
+      // )
+
+      await updateProduct(editProductId, formData)
 
       notifySuccess('Produto atualizado com sucesso!')
     } catch (e) {
@@ -549,7 +569,6 @@ const catalog = ({ storeId }: CatalogType) => {
   const loadData = async () => {
     try {
       const { data } = await getProducts(storeId)
-      console.log(data)
 
       const formatedData = data.map((it) => ({
         ...it,
@@ -585,7 +604,7 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const updatePriceWithDiscount = () => {
     const values = Array.from(getValues(['price', 'discount']))
-    const price = formatToNumber(values[0])
+    const price = formatToNumber(values[0] || 0)
     const discount = Number(values[1])
     const newPrice = price - price * (discount / 100)
     setPriceWithDiscount(formatToBrl(newPrice < 0 ? 0 : newPrice))
@@ -1431,6 +1450,12 @@ const catalog = ({ storeId }: CatalogType) => {
                           editBtn={() => {
                             setEditProductId(product.id)
                             setEditProduct(true)
+                            if (product.files[0])
+                              setImageSrc(product.files[0].url)
+                            if (product.files[1])
+                              setImageSrc1(product.files[1].url)
+                            if (product.files[2])
+                              setImageSrc2(product.files[2].url)
                             editProductSelected(product)
                           }}
                           isRed={true}
