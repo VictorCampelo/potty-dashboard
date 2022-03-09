@@ -217,6 +217,10 @@ const catalog = ({ storeId }: CatalogType) => {
     setValue('discount', product.discount)
     if (Number(product.discount) > 0) setEnableDiscount(true)
 
+    if (product.files[0]) setImageSrc(product.files[0].url)
+    if (product.files[1]) setImageSrc1(product.files[1].url)
+    if (product.files[2]) setImageSrc2(product.files[2].url)
+
     setProductEditValue(product.description)
     setInstallments({
       value: product.parcelAmount.toString(),
@@ -1444,16 +1448,10 @@ const catalog = ({ storeId }: CatalogType) => {
                             setDeleteProductId(product.id)
                           }}
                           editBtn={() => {
+                            editProductSelected(product)
                             setDiscount(product.discount)
                             setEditProductId(product.id)
                             setEditProduct(true)
-                            if (product.files[0])
-                              setImageSrc(product.files[0].url)
-                            if (product.files[1])
-                              setImageSrc1(product.files[1].url)
-                            if (product.files[2])
-                              setImageSrc2(product.files[2].url)
-                            editProductSelected(product)
                           }}
                           isRed={true}
                           isGreen={true}
