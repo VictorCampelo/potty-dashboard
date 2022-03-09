@@ -207,14 +207,17 @@ const Result = () => {
             <div className="wrap-cards-products">
               {searchData.productsFound &&
                 searchData.productsFound.map((product, i) => (
-                  <CardProductSearch
-                    description={product.description}
-                    price={product.price}
-                    stars={product.avgStars}
-                    imgUrl={product.files[0]?.url}
-                    key={i}
-                    storeName={product.title}
-                  />
+                  <>
+                    {console.log(product)}
+                    <CardProductSearch
+                      description={product?.title}
+                      price={product.price}
+                      stars={product.avgStars}
+                      imgUrl={product.files[0]?.url}
+                      key={i}
+                      storeName={product?.name}
+                    />
+                  </>
                 ))}
             </div>
           </MainContent>

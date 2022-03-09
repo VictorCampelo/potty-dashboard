@@ -61,6 +61,7 @@ import { dataURLtoFile, getFileName } from 'functions/imageFileFunctions'
 import { Checkbox } from 'components/atoms/Checkbox'
 import formatToBrl from 'utils/formatToBrl'
 import formatToNumber from 'utils/formatToNumber'
+import PulseLoader from 'react-spinners/PulseLoader'
 
 type CategoryType = {
   name: string
@@ -169,6 +170,8 @@ const catalog = ({ storeId }: CatalogType) => {
 
   const [category, setCategory] = useState('')
   const [products, setProducts] = useState<ProductType[]>([])
+
+  const [loadingProducts, setLoadingProducts] = useState(true)
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [installments, setInstallments] = useState({
@@ -570,14 +573,16 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       const { data } = await getProducts(storeId)
 
-      const formatedData = data.map((it) => ({
+      const formattedData = data.map((it) => ({
         ...it,
         categories: it.categories.map((cat: CategoryType) => cat.name)
       }))
 
-      setProducts(formatedData)
+      setProducts(formattedData)
     } catch (e) {
       notify('Erro ao buscar produtos')
+    } finally {
+      setLoadingProducts(false)
     }
 
     try {
@@ -601,14 +606,13 @@ const catalog = ({ storeId }: CatalogType) => {
   const [ilimitedCupom, setIlimitedCupom] = useState(false)
 
   const [priceWithDiscount, setPriceWithDiscount] = useState(formatToBrl(0))
+  const [discount, setDiscount] = useState(0)
 
-  const updatePriceWithDiscount = () => {
-    const values = Array.from(getValues(['price', 'discount']))
-    const price = formatToNumber(values[0] || 0)
-    const discount = Number(values[1])
+  useEffect(() => {
+    const price = formatToNumber(String(getValues(['price'])[0] || 0))
     const newPrice = price - price * (discount / 100)
     setPriceWithDiscount(formatToBrl(newPrice < 0 ? 0 : newPrice))
-  }
+  }, [discount])
 
   useEffect(() => {
     loadData()
@@ -825,10 +829,12 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaPercentage />}
                   mask="number"
                   placeholder="0.0%"
+                  value={discount}
                   {...register('discount')}
+                  onChange={(e) => setDiscount(Number(e.target.value))}
                 />
 
-                <div className="arrows" onClick={updatePriceWithDiscount}>
+                <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
@@ -1035,10 +1041,12 @@ const catalog = ({ storeId }: CatalogType) => {
                   icon={<FaPercentage />}
                   mask="number"
                   placeholder="0.0%"
+                  value={discount}
                   {...register('discount')}
+                  onChange={(e) => setDiscount(Number(e.target.value))}
                 />
 
-                <div className="arrows" onClick={updatePriceWithDiscount}>
+                <div className="arrows">
                   <GoArrowRight size={20} />
                   <GoArrowLeft size={20} className="left-arrow" />
                 </div>
@@ -1411,6 +1419,8 @@ const catalog = ({ storeId }: CatalogType) => {
                 className="addBtn"
                 onClick={() => {
                   reset()
+                  setDiscount(0)
+                  setPriceWithDiscount(formatToBrl(0))
                   if (toggleState == 1) handleOpenAddModal()
                   else {
                     if (toggleState == 2) toggleAddCategoryModal()
@@ -1455,6 +1465,7 @@ const catalog = ({ storeId }: CatalogType) => {
                             setDeleteProductId(product.id)
                           }}
                           editBtn={() => {
+                            setDiscount(product.discount)
                             setEditProductId(product.id)
                             setEditProduct(true)
                             if (product.files[0])
@@ -1471,14 +1482,31 @@ const catalog = ({ storeId }: CatalogType) => {
                       ))
                     ) : (
                       <EmptyContainer>
-                        <div>
-                          <img src="/images/emptyProducts.svg" />
-                          <p>Nenhum produto cadastrado</p>
-                          <Button
-                            title="Cadastrar"
-                            onClick={handleOpenAddModal}
-                          />
-                        </div>
+                        {loadingProducts ? (
+                          <div
+                            style={{
+                              width: '100%',
+                              height: '200px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <PulseLoader
+                              size={14}
+                              color="var(--color-primary)"
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <img src="/images/emptyProducts.svg" />
+                            <p>Nenhum produto cadastrado</p>
+                            <Button
+                              title="Cadastrar"
+                              onClick={handleOpenAddModal}
+                            />
+                          </div>
+                        )}
                       </EmptyContainer>
                     )}
                   </div>

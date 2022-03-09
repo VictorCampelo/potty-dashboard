@@ -139,7 +139,7 @@ export const CardProduct = styled.div`
   justify-content: left;
 
   width: 100%;
-  height: 548px;
+  height: auto;
 
   background: var(--white);
 
