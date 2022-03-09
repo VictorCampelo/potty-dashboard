@@ -23,9 +23,7 @@ import CatalogTabs from 'components/molecules/CatalogTabs'
 import CardFeedback from 'components/molecules/CardFeedback'
 
 import {
-  AiFillFacebook,
   AiFillPhone,
-  AiFillStar,
   AiOutlineWhatsApp,
   AiOutlineUp,
   AiOutlineDown,
@@ -35,22 +33,19 @@ import {
   AiOutlineArrowLeft
 } from 'react-icons/ai'
 import { BsShareFill } from 'react-icons/bs'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import formatToBrl from 'utils/formatToBrl'
 import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
-import HeaderShop from 'components/molecules/HeaderShop'
 import { getProduct } from 'services/bussiness.services'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { CartContext } from 'contexts/CartContext'
 import { IoIosClose } from 'react-icons/io'
-import { getStoreId } from 'services/bussiness.services'
 import Carousel from 'components/atoms/Carousel'
 import { CartButton } from 'components/atoms/CartButton'
 import { PulseLoader } from 'react-spinners'
 import useMedia from 'use-media'
 import CustomModal from 'components/molecules/CustomModal'
-import { AuthContext } from 'contexts/AuthContext'
 import getNumberArray from 'utils/getNumberArray'
 
 const fakeFeedBack = [
@@ -293,7 +288,7 @@ const ProductShow = () => {
       const { data } = await getProduct(`${id}`)
 
       setTitle(data?.title)
-      setDesc(data?.description)
+      setDesc(data?.description || '')
       setAvgStars(data?.avgStars)
       setSumFeedbacks(data?.sumFeedbacks)
       setSumOrders(data?.sumOrders)
@@ -543,7 +538,7 @@ const ProductShow = () => {
                 {discount ? (
                   <>
                     <div className="discount">
-                      <h4>De: {formatToBrl(price)}</h4>
+                      <h4>De: {formatToBrl(priceWithDiscount)}</h4>
                       <div>-{discount}%</div>
                     </div>
                     <div className="price">
@@ -570,10 +565,7 @@ const ProductShow = () => {
                     </div>
                     <p style={!widthScreen ? { display: 'none' } : undefined}>
                       Em até {parcelAmount}x sem juros ou{' '}
-                      <strong>
-                        {formatToBrl(getDiscount(priceWithDiscount, 10))}
-                      </strong>{' '}
-                      à vista
+                      <strong>{formatToBrl(priceWithDiscount)}</strong> à vista
                     </p>
                   </>
                 ) : (
@@ -583,7 +575,7 @@ const ProductShow = () => {
                         <h1>
                           {formatToBrl(price)} <small>à prazo</small>
                         </h1>
-                        <p>Ou {formatToBrl(getDiscount(price, 10))} à vista</p>
+                        <p>Ou {formatToBrl(price)} à vista</p>
                       </div>
                     </div>
                   </>
