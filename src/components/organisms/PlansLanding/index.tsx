@@ -16,7 +16,7 @@ const PlansLanding = ({
   }
 }: Props) => {
   return (
-    <Container color={colors.secondary}>
+    <Container color={colors.secondary} id="planos">
       <h1>Planos da Boa de Venda</h1>
 
       <div className="cards">

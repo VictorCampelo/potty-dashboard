@@ -9,7 +9,7 @@ export default function ModalNonSubscribe() {
 
   const redirectToLanding = () => {
     toggleModal()
-    Router.push('/landing')
+    Router.push('/plans')
   }
 
   return (

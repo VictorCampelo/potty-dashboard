@@ -1,10 +1,8 @@
 import { Button } from 'components/atoms/Button'
 
 import { Banner } from './styles'
-import { useRouter } from 'next/router'
 
 const BannerLanding = () => {
-  const router = useRouter()
   return (
     <Banner>
       <img
@@ -26,7 +24,7 @@ const BannerLanding = () => {
 
         <Button
           title="Ver planos"
-          onClick={() => router.push('/cadastro/lojista')}
+          onClick={() => (window.location.hash = '#planos')}
         />
       </div>
     </Banner>
