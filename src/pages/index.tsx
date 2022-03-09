@@ -14,7 +14,7 @@ import sizes from 'utils/sizes'
 import { CartButton } from 'components/atoms/CartButton'
 import useMedia from 'use-media'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { useEffect, useState } from 'react'
+import React, { ReactEventHandler, useEffect, useState } from 'react'
 import { Drawer } from 'styles/pages/Store'
 import { IoIosClose } from 'react-icons/io'
 import router from 'next/router'
@@ -26,6 +26,11 @@ const Landing = ({ products }: Landing) => {
   const widthScreen = useMedia({ minWidth: '426px' })
   const [drawerActive, setDrawerActive] = useState(false)
   const [stores, setStores] = useState()
+  const [searchData, setSearchData] = useState('')
+
+  function handleSubmit() {
+    router.push(`/result?search=${searchData}`)
+  }
 
   useEffect(() => {
     api.get('/stores').then((result) => {
@@ -75,9 +80,17 @@ const Landing = ({ products }: Landing) => {
             <Input
               type="text"
               placeholder="Pesquise por produto, serviço, estabelecimento ou cidade"
-              icon={<AiOutlineSearch size={25} />}
               search
+              value={searchData}
+              onChange={(e) => setSearchData(e.target.value)}
             />
+            <div className="ContainerSearchButton">
+              <AiOutlineSearch
+                size={25}
+                type="submit"
+                onClick={() => handleSubmit()}
+              />
+            </div>
           </div>
 
           <CardServices />
@@ -151,6 +164,18 @@ export const Content = styled.section`
   max-width: 1420px;
   height: 100%;
   width: 100%;
+
+  .ContainerSearchButton {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    background-color: var(--white);
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    cursor: pointer;
+  }
 
   .search-boxes {
     width: 100%;
