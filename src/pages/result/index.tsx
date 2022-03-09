@@ -47,6 +47,7 @@ interface ISearchProps {
       sumStars: number
       tags: string | null
       title: string
+      name: string
     }
   ]
   storesFound: [
