@@ -34,6 +34,7 @@ import { IoPencilOutline } from 'react-icons/io5'
 import getNumberArray from 'utils/getNumberArray'
 import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
 import _ from 'lodash'
+import { PulseLoader } from 'react-spinners'
 
 interface PaymentMethod {
   id: string
@@ -659,11 +660,21 @@ const CartContinue = () => {
 
               <ProductsContainer>
                 {loadingStores ? (
-                  <h1>Carregando...</h1>
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '200px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <PulseLoader size={8} color="var(--color-primary)" />
+                  </div>
                 ) : (
-                  stores.map((store) => {
+                  stores.map((store, i) => {
                     return (
-                      <div key={store.id}>
+                      <div key={i}>
                         <h1>{store.name}</h1>
 
                         <div className="products-container">
@@ -913,10 +924,10 @@ const ProductsContainer = styled.section`
     display: none;
   }
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 500;
-    text-align: center;
-    padding: 0.5rem 0;
+    padding: 0.6rem;
+    padding-left: 1.2rem;
   }
 
   .products-container {

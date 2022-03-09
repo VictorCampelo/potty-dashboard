@@ -55,13 +55,15 @@ export function CartProvider({ children }: CartContext) {
     setItems(products)
   }
 
-  useEffect(() => {
+  async function loadData() {
     const cartItems = localStorage.getItem('ultimo.cart.items')
 
     if (cartItems) {
       const storedItems = JSON.parse(cartItems)
+      setItems(storedItems)
+      setLoadingItems(false)
 
-      Promise.all(
+      const newStores = await Promise.all(
         Object.entries(_.groupBy(storedItems, 'storeId')).map(
           async ([id, items]) => {
             const {
@@ -77,12 +79,13 @@ export function CartProvider({ children }: CartContext) {
           }
         )
       )
-        .then(setStores)
-        .finally(() => setLoadingStores(false))
-
-      setItems(storedItems)
-      setLoadingItems(false)
+      setStores(newStores)
+      setLoadingStores(false)
     }
+  }
+
+  useEffect(() => {
+    loadData()
   }, [])
 
   return (

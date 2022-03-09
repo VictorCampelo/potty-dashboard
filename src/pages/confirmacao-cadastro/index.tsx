@@ -21,7 +21,6 @@ const tokenFormSchema = yup.object().shape({
 })
 
 const BusinessRegisterConfirm = () => {
-  const [token, setToken] = useState('')
   const [loading, setLoading] = useState(true)
 
   const {
@@ -35,17 +34,8 @@ const BusinessRegisterConfirm = () => {
 
   const handleConfirmToken: SubmitHandler<TokenFormData> = async (values) => {
     try {
-      setLoading(true)
-
-      if (token) {
-        await api.patch(`/auth/token?tokenDigits=${token}`)
-      }
-
-      await api.patch(`/auth/token?tokenDigits=${values.tokenDigits}`)
-
-      router.push({
-        pathname: '/email-confirmation',
-        query: { tokenDigits: values.tokenDigits }
+      api.patch(`/auth/token?tokenDigits=${values.tokenDigits}`).then((res) => {
+        router.push('/login')
       })
     } catch ({ response }) {
       toast.error(response.data.error)
@@ -67,25 +57,6 @@ const BusinessRegisterConfirm = () => {
       setLoading(false)
     }
   }
-
-  async function getToken() {
-    try {
-      setLoading(true)
-
-      const data = JSON.parse(sessionStorage.getItem('AuthTokens'))
-
-      return data
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    getToken().then((accessToken) => {
-      setToken(accessToken)
-      setValue('tokenDigits', accessToken)
-    })
-  }, [])
 
   return (
     <Wrapper>
