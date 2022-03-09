@@ -427,7 +427,7 @@ const catalog = ({ storeId }: CatalogType) => {
     setEditCategoryModal(false)
   }
 
-  const { register, handleSubmit, getValues, setValue } = useForm({
+  const { register, handleSubmit, getValues, setValue, reset } = useForm({
     resolver: yupResolver(createProductFormSchema)
   })
 
@@ -1409,13 +1409,14 @@ const catalog = ({ storeId }: CatalogType) => {
 
               <button
                 className="addBtn"
-                onClick={
-                  toggleState == 1
-                    ? handleOpenAddModal
-                    : toggleState == 2
-                    ? toggleAddCategoryModal
-                    : toggleAddCupomModal
-                }
+                onClick={() => {
+                  reset()
+                  if (toggleState == 1) handleOpenAddModal()
+                  else {
+                    if (toggleState == 2) toggleAddCategoryModal()
+                    else toggleAddCupomModal()
+                  }
+                }}
               >
                 <FiPlus size={20} color="var(--white)" />
                 Adicionar
