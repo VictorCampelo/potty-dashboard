@@ -3,7 +3,6 @@ import DrawerLateral from 'components/molecules/DrawerLateral'
 import { Container } from 'styles/pages/shopkeeper'
 import Head from 'next/head'
 import styled from 'styled-components'
-
 import { withSSRAuth } from 'services/withSSRAuth'
 import { setupApiClient } from 'services/api'
 import { Pagination } from 'components/molecules/Pagination'
@@ -15,6 +14,10 @@ import { ModalContainer, Product } from 'styles/components/Modal'
 import { Button } from 'components/atoms/Button'
 import { ellipsis } from 'functions/ellipsis'
 import { PulseLoader } from 'react-spinners'
+import formatToBrl from 'utils/formatToBrl'
+import moment from 'moment'
+import { MultiSelect } from 'components/molecules/Select'
+import { toast } from 'react-toastify'
 
 type File = {
   id: string
@@ -22,7 +25,7 @@ type File = {
   filename: string
   url: string
 }
-type OrderHistorics = {
+type OrderHistoric = {
   product: {
     title: string
     description: string
@@ -48,21 +51,25 @@ type OrdersListProps = {
 
 interface OrderProps extends OrdersListProps {
   customerAddress: string
-  orderHistorics: OrderHistorics[]
+  orderHistorics: OrderHistoric[]
 }
+
 const Pedidos = () => {
   const [ordersList, setOrdersList] = useState<OrdersListProps[]>([])
   const [modalVisible, setModalVisible] = useState(false)
   const [order, setOrder] = useState<OrderProps>({} as OrderProps)
-  const [classButton, setClassButton] = useState('')
+  const [productStatusOption, setProductStatusOption] = useState<any>(null)
   const [date, setDate] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [totalOrders, setTotalOrders] = useState(0)
   const [page, setPage] = useState(1)
 
-  useEffect(() => {
-    loadData(ordersList.length * (page - 1))
-  }, [page])
+  const productStatusOptions = [
+    { label: 'Recebido', value: 'Recebido' },
+    { label: 'Processando', value: 'Processando' },
+    { label: 'Concluído', value: 'Concluído' },
+    { label: 'Cancelado', value: 'Cancelado' }
+  ]
 
   function toggleModalOrder(order: OrderProps) {
     setIsLoading(true)
@@ -75,7 +82,7 @@ const Pedidos = () => {
       const { data } = await api.get(`/orders/store/order?id=${id}`)
       setOrder(data)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setIsLoading(false)
     }
@@ -85,8 +92,7 @@ const Pedidos = () => {
     setModalVisible(!modalVisible)
   }
 
-  //recebe um texto: string, e inclui um format: string a cada position: number
-  function formatText(text: string, format: string, position = 3) {
+  function formatTextEachPosition(text: string, format: string, position = 3) {
     const len = text.length
 
     let jump = position
@@ -104,45 +110,25 @@ const Pedidos = () => {
   }
 
   function classDefine(situation: string): string {
-    const recived = situation === 'Recebido' ? 'recived' : ''
+    const received = situation === 'Recebido' ? 'received' : ''
     const confirm = situation === 'Concluído' ? 'confirm' : ''
     const refused = situation === 'Cancelado' ? 'refused' : ''
-    const buttonClasses = `statusButton ${recived} ${confirm} ${refused}`
+    const processing = situation === 'Processando' ? 'processing' : ''
+    const buttonClasses = `statusButton ${received} ${confirm} ${refused} ${processing}`
 
     return buttonClasses
   }
 
-  function percurArray(arr: OrderHistorics[]) {
-    let qtd = 0
+  function getQuantityAndPrice(orders: OrderHistoric[]) {
+    let productQtd = 0
     let price = 0
-    for (let x = 0; x < arr.length; x++) {
-      qtd += arr[x].productQtd
-      price += arr[x].product.price * arr[x].productQtd
-    }
 
-    return { productQtd: qtd, price }
-  }
+    orders.forEach((order) => {
+      productQtd += order.productQtd
+      price += order.product.price * order.productQtd
+    })
 
-  function cutStrDate(date: string, limit: string) {
-    let newDate = ''
-
-    for (let x = 0; x < date.length; x++) {
-      if (date[x] === limit) {
-        break
-      }
-      newDate += date[x]
-    }
-
-    return newDate
-  }
-
-  function convertDate(date: string) {
-    const day = `${date[8]}${date[9]}`
-    const month = `${date[5]}${date[6]}`
-    const year = `${date[0]}${date[1]}${date[2]}${date[3]}`
-    const newDate = `${day}/${month}/${year}`
-
-    return newDate
+    return { productQtd, price }
   }
 
   async function loadData(off: number) {
@@ -153,15 +139,37 @@ const Pedidos = () => {
       setOrdersList(data.results)
       setTotalOrders(data.totalOrders)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  async function handleSubmit() {
+    try {
+      const situation = productStatusOption.value
+
+      if (situation !== order.situation) {
+        await api.patch('/orders/update', {
+          orderId: order.id,
+          situation
+        })
+      }
+
+      toast.success('Status atualizado com sucesso!')
+      toggleModalVisible()
+    } catch {
+      toast.error('Não foi possível alterar status!')
     }
   }
 
   useEffect(() => {
     loadData(0)
   }, [])
+
+  useEffect(() => {
+    loadData(ordersList.length * (page - 1))
+  }, [page])
 
   return (
     <>
@@ -175,13 +183,11 @@ const Pedidos = () => {
             <header>
               <h1>Pedidos</h1>
 
-              {ordersList.length > 0 ? (
+              {ordersList.length && (
                 <>
                   <SearchButton placeholder="Pesquisar pedido" />
                   <AiOutlineSearch size={24} />
                 </>
-              ) : (
-                <> </>
               )}
             </header>
 
@@ -198,7 +204,7 @@ const Pedidos = () => {
               </div>
             ) : (
               <>
-                {ordersList.length <= 0 ? (
+                {!ordersList.length ? (
                   <EmptyContainer>
                     <div>
                       <img src="/images/emptyCategories.svg" />
@@ -229,29 +235,39 @@ const Pedidos = () => {
                       </section>
                     </OrderHead>
                     {ordersList?.map((order: OrderProps) => {
-                      const oldDate = cutStrDate(order.createdAt, 'T')
-                      const newDate = convertDate(oldDate)
+                      const createdAt = moment(order.createdAt).format(
+                        'DD/MM/YYYY'
+                      )
 
                       const buttonClasses = classDefine(order?.situation)
 
                       return (
                         <OrderBody key={order.id}>
                           <section style={{ flex: 0.5 }}>
-                            <span>{newDate}</span>
+                            <span>{createdAt}</span>
                           </section>
                           <section style={{ flex: 0.75 }}>
-                            <span>{formatText(order.orderNumber, ' ', 3)}</span>
+                            <span>
+                              {formatTextEachPosition(
+                                order.orderNumber,
+                                ' ',
+                                3
+                              )}
+                            </span>
                           </section>
                           <section style={{ flex: 0.35 }}>
-                            <span>R$ {order.amount.toFixed(2)}</span>
+                            <span>{formatToBrl(order.amount)}</span>
                           </section>
                           <section className="center" style={{ flex: 0.75 }}>
                             <AiFillEye
                               size={24}
                               onClick={() => {
+                                setProductStatusOption({
+                                  label: order.situation,
+                                  value: order.situation
+                                })
                                 toggleModalOrder(order)
-                                setClassButton(buttonClasses)
-                                setDate(newDate)
+                                setDate(createdAt)
                               }}
                             />
                           </section>
@@ -268,7 +284,7 @@ const Pedidos = () => {
                 )}
               </>
             )}
-            {ordersList.length > 0 ? (
+            {ordersList.length && (
               <footer>
                 <Pagination
                   onPageChange={setPage}
@@ -277,8 +293,6 @@ const Pedidos = () => {
                   registersPerPage={8}
                 />
               </footer>
-            ) : (
-              <></>
             )}
           </MainArea>
         </Content>
@@ -294,7 +308,8 @@ const Pedidos = () => {
                 <div className="information">
                   <h2>Dados do pedido</h2>
                   <span>
-                    Nº do pedido: {formatText(order.orderNumber, '-')}
+                    Nº do pedido:{' '}
+                    {formatTextEachPosition(order.orderNumber, '-')}
                   </span>
                 </div>
                 <div className="close">
@@ -308,7 +323,6 @@ const Pedidos = () => {
                       <Product key={item.productId}>
                         <div className="productInformation">
                           <div className="imageArea">
-                            {/* <img src="https://a-static.mlcdn.com.br/1500x1500/geladeira-brastemp-frost-free-bre57-443l-220v-branco/madeiramadeira-openapi/311837/d583f95f19ffbab9ee844a469909052a.jpg" /> */}
                             <img
                               src={
                                 item?.product?.files[0]?.url ||
@@ -325,14 +339,14 @@ const Pedidos = () => {
                             </div>
                             <div className="price">
                               <span>{item.productQtd}x</span>
-                              <span>R$ {item.product.price.toFixed(2)}</span>
+                              <span>{formatToBrl(item.product.price)}</span>
                             </div>
                           </div>
                         </div>
                         <div className="totalPrice">
                           <span>
-                            Subtotal: R${' '}
-                            {(item.productQtd * item.product.price).toFixed(2)}
+                            Subtotal:{' '}
+                            {formatToBrl(item.productQtd * item.product.price)}
                           </span>
                         </div>
                       </Product>
@@ -341,10 +355,14 @@ const Pedidos = () => {
                 </div>
                 <div className="rightContainer">
                   <div className="status">
-                    <span>Status:</span>
-                    <button className={classButton} style={{ flex: 0.75 }}>
-                      {order?.situation}
-                    </button>
+                    <MultiSelect
+                      name="Status:"
+                      options={productStatusOptions}
+                      selectedValue={productStatusOption}
+                      setSelectedValue={setProductStatusOption}
+                      placeholder="Selecione um status"
+                      loading={false}
+                    />
                   </div>
                   <div className="gradient" />
                   <div className="informationOrder">
@@ -358,14 +376,16 @@ const Pedidos = () => {
                       </div>
                       <div>
                         <span>Quantidade:</span>
-                        {/* <span>{order?.orderHistorics[0]?.productQtd}</span> */}
                         <span>
-                          {percurArray(order?.orderHistorics).productQtd}
+                          {
+                            getQuantityAndPrice(order?.orderHistorics)
+                              .productQtd
+                          }
                         </span>
                       </div>
                       <div>
                         <span>Cupons:</span>
-                        <span>- R$ 0,00</span>
+                        <span>- {formatToBrl(0)}</span>
                       </div>
                     </div>
 
@@ -387,9 +407,8 @@ const Pedidos = () => {
                         </span>
                         <span>
                           <strong>
-                            R${' '}
-                            {percurArray(order?.orderHistorics).price.toFixed(
-                              2
+                            {formatToBrl(
+                              getQuantityAndPrice(order?.orderHistorics).price
                             )}
                           </strong>
                         </span>
@@ -408,8 +427,8 @@ const Pedidos = () => {
               </div>
               <div className="buttonsContainer">
                 <div>
-                  <Button title="VOLTAR" border />
-                  <Button title="SALVAR" />
+                  <Button title="VOLTAR" border onClick={toggleModalVisible} />
+                  <Button title="SALVAR" onClick={handleSubmit} />
                 </div>
               </div>
             </ModalContainer>
@@ -489,21 +508,26 @@ const OrderBody = styled.div`
     font-weight: bold;
     border: none;
     height: 38px;
+  }
 
-    &.confirm {
-      background: var(--confirmation);
-      color: white;
-    }
+  .confirm {
+    background: var(--confirmation) !important;
+    color: white !important;
+  }
 
-    &.refused {
-      background: var(--red);
-      color: white;
-    }
+  .processing {
+    background: var(--yellow) !important;
+    color: white !important;
+  }
 
-    &.recived {
-      background: var(--gray-700);
-      color: white;
-    }
+  .refused {
+    background: var(--red) !important;
+    color: white !important;
+  }
+
+  .received {
+    background: var(--gray-700) !important;
+    color: white !important;
   }
 `
 

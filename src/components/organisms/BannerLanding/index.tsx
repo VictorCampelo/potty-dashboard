@@ -25,7 +25,7 @@ const BannerLanding = () => {
         </p>
 
         <Button
-          title="Cadastrar Loja"
+          title="Ver planos"
           onClick={() => router.push('/cadastro/lojista')}
         />
       </div>

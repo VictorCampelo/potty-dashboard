@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 const Header = ({ isMain }: HeaderProps) => {
   const { user } = useContext(AuthContext)
-  const firstName = user?.firstName.split(' ')[0]
+  const firstName = user?.firstName?.split(' ')[0]
 
   return (
     <Container isMain={isMain}>
