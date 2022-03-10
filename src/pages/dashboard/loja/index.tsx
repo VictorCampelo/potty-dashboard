@@ -474,9 +474,21 @@ const Shop = ({ storeId, id }: Shop) => {
       await api.patch('/stores', formData)
 
       setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+
+      toast.success('Informações salva(s) com sucesso!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+
       setCurrency('')
       loadData()
     } catch (error) {
+      notify('Erro interno favor tentar novamente mais tarde!')
       console.log(error)
     }
   }
