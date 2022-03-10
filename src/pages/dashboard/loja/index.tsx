@@ -3,7 +3,13 @@ import DrawerBottom from 'components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 import { PaymentContext } from 'contexts/PaymentContext'
 
-import React, { useCallback, useContext, useState } from 'react'
+import React, {
+  FormEvent,
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useState
+} from 'react'
 import { ConfigButton, Container, ModalContainer } from 'styles/pages/Shop'
 
 import DescriptionCard from 'components/molecules/DescriptionCard'
@@ -436,8 +442,44 @@ const Shop = ({ storeId, id }: Shop) => {
     IPaymentesOptions[] | []
   >([])
   const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
+  const [currency, setCurrency] = useState('')
 
   const [dataStore, setDataStore] = useState(null)
+
+  function handleCurrency(e: FormEvent<HTMLInputElement>) {
+    const valueTyped = e.currentTarget.value.replace(/\D/g, '')
+    setCurrency(formatCurrency(valueTyped))
+  }
+
+  function formatCurrency(valueTyped: string) {
+    let value = valueTyped.toString().replace(/\D/g, '')
+
+    value = (+value / 100).toFixed(2) + ''
+    value = value.replace('.', ',')
+    value = value.replace(/(\d)(\d{3})(\d{3}),/g, '$1.$2.$3,')
+    value = value.replace(/(\d)(\d{3}),/g, '$1.$2,')
+    return value
+  }
+
+  async function handleSubmitCurrency() {
+    const formData = new FormData()
+    formData.append(
+      'storeDto',
+      JSON.stringify({
+        deliveryFee: currency.replace(/\D/g, '')
+      })
+    )
+
+    try {
+      await api.patch('/stores', formData)
+
+      setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+      setCurrency('')
+      loadData()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
@@ -613,6 +655,8 @@ const Shop = ({ storeId, id }: Shop) => {
       const { data } = await getStore(String(storeId))
 
       setDataStore(data)
+
+      setCurrency(data.deliveryFee)
 
       setCategoriesOption(
         data?.categories?.map(({ id, name }) => {
@@ -1134,12 +1178,14 @@ const Shop = ({ storeId, id }: Shop) => {
               </div>
               <div className="wrap-opts">
                 <a
-                  onClick={() =>
+                  onClick={() => {
                     handleChangeModalOpen(
                       setConfigModal,
                       setModalDeliveryIsOpen
                     )
-                  }
+
+                    setCurrency(formatCurrency(currency))
+                  }}
                 >
                   Opções de entrega
                 </a>
@@ -1257,7 +1303,12 @@ const Shop = ({ storeId, id }: Shop) => {
 
               <label className="label-input-frete">
                 <span>Taxa de frete fixa</span>
-                <input type="number" />
+                <input
+                  type="text"
+                  value={currency}
+                  onChange={handleCurrency}
+                  placeholder="0,00"
+                />
               </label>
             </div>
 
@@ -1275,7 +1326,10 @@ const Shop = ({ storeId, id }: Shop) => {
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton title="Confirmar" />
+                <ConfigButton
+                  title="Confirmar"
+                  onClick={handleSubmitCurrency}
+                />
               </div>
             </div>
           </ModalContainer>
