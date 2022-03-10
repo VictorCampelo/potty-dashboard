@@ -288,7 +288,7 @@ const Shop = ({ storeId, id }: Shop) => {
         phone: values.phone,
         facebookLink: values.facebook,
         instagramLink: values.instagram,
-        whatsappLink: values.whatsapp
+        whatsappLink: whatsApp
       }
     }
     const formData = new FormData()
@@ -1012,6 +1012,8 @@ const Shop = ({ storeId, id }: Shop) => {
                     type="text"
                     icon={<IoLogoWhatsapp size={20} color="var(--black-800)" />}
                     {...register('whatsApp')}
+                    value={whatsApp}
+                    onChange={(e) => setWhatsApp(e.currentTarget.value)}
                   />
                 </div>
               </div>
