@@ -3,7 +3,13 @@ import DrawerBottom from 'components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 import { PaymentContext } from 'contexts/PaymentContext'
 
-import React, { useCallback, useContext, useState } from 'react'
+import React, {
+  FormEvent,
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useState
+} from 'react'
 import { ConfigButton, Container, ModalContainer } from 'styles/pages/Shop'
 
 import DescriptionCard from 'components/molecules/DescriptionCard'
@@ -436,8 +442,19 @@ const Shop = ({ storeId, id }: Shop) => {
     IPaymentesOptions[] | []
   >([])
   const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
+  const [currency, setCurrency] = useState('')
 
   const [dataStore, setDataStore] = useState(null)
+
+  function handleCurrency(e: FormEvent<HTMLInputElement>) {
+    let valueTyped = e.currentTarget.value.replace(/\D/g, '')
+
+    valueTyped = (+valueTyped / 100).toFixed(2) + ''
+    valueTyped = valueTyped.replace('.', ',')
+    valueTyped = valueTyped.replace(/(\d)(\d{3})(\d{3}),/g, '$1.$2.$3,')
+    valueTyped = valueTyped.replace(/(\d)(\d{3}),/g, '$1.$2,')
+    setCurrency(valueTyped)
+  }
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
@@ -1257,7 +1274,7 @@ const Shop = ({ storeId, id }: Shop) => {
 
               <label className="label-input-frete">
                 <span>Taxa de frete fixa</span>
-                <input type="number" />
+                <input type="text" value={currency} onChange={handleCurrency} />
               </label>
             </div>
 
