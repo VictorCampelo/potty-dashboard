@@ -53,11 +53,25 @@ interface UserAddress {
   logradouro: string
 }
 
-interface User extends UserAddress {
+interface User extends UserAddress, Store {
   id: string
   email: string
   firstName: string
   lastName: string
+  phone: string
+}
+
+interface Store {
+  store: {
+    addressNumber: 2456
+    city: 'Teresina'
+    neighborhood: 'Ininga'
+    phone: '(86) 99523-3237'
+    state: 'PI'
+    street: 'Rua 31 de março'
+    zipcode: '64049-700'
+    uf: string
+  }
 }
 
 interface Option {
@@ -343,6 +357,7 @@ const CartContinue = () => {
   const loadUserData = async () => {
     try {
       const { data, status } = await getUser()
+      console.log(data)
 
       if (status === 200) setUser(data)
     } catch (e) {
@@ -579,12 +594,17 @@ const CartContinue = () => {
 
                       <span>
                         <strong>Endereço: </strong>
-                        {user.street} {user.addressNumber}, {user.neighborhood},{' '}
-                        {user.city}, {user.uf}, {user.zipcode}, Brasil
+                        {user.street || user.store.street}{' '}
+                        {user.addressNumber || user.store.addressNumber},{' '}
+                        {user.neighborhood || user.store.neighborhood},{' '}
+                        {user.city || user.store.city},{' '}
+                        {user.uf || user.store.uf},{' '}
+                        {user.zipcode || user.store.zipcode}, Brasil
                       </span>
 
                       <span>
-                        <strong>Telefone: </strong> {formatPhone('00000000000')}
+                        <strong>Telefone: </strong>{' '}
+                        {formatPhone(user.phone || user.store.phone)}
                       </span>
                     </>
                   ) : (
