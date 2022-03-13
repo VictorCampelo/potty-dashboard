@@ -647,14 +647,10 @@ const CartContinue = () => {
                 <div className="paymentContainer">
                   <Select
                     name="Forma de pagamento"
-                    options={
-                      paymentMethods?.length > 0
-                        ? paymentMethods?.map(({ methodName }) => ({
-                            value: methodName,
-                            label: capitalizeFirstLetter(methodName)
-                          }))
-                        : []
-                    }
+                    options={paymentMethods?.map(({ methodName }) => ({
+                      value: methodName,
+                      label: capitalizeFirstLetter(methodName)
+                    }))}
                     selectedValue={paymentMethodOption}
                     setSelectedValue={onSelectPaymentMethod}
                     loading={false}
@@ -731,7 +727,11 @@ const CartContinue = () => {
                               </div>
 
                               <div className="info-container">
-                                <h4>{product.title}</h4>
+                                <h4>
+                                  {product.title.length > 40
+                                    ? product.title.slice(0, 40) + ' ...'
+                                    : product.title}
+                                </h4>
 
                                 <span>{product.amount}x</span>
                               </div>
@@ -1076,14 +1076,15 @@ export const ProductItem = styled.div<{ active: boolean }>`
 
   .img-container {
     display: flex;
-    width: 81px;
-    height: 81px;
+
     border-radius: 8px;
     background: #f3f3f3;
     object-fit: contain;
 
     img {
       border-radius: 8px;
+      width: 81px;
+      height: 81px;
     }
   }
 
