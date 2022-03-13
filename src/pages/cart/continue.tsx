@@ -109,23 +109,18 @@ const CartContinue = () => {
 
   //Fix checkout
 
-  interface IItemsCart {
-    amount: number
-    enabled: boolean
-    image: string
-    paymentMethods: [{ id: string; methodName: string; allowParcels: boolean }]
-    paymentMethodSelected: {
-      id: string
-      methodName: string
-      allowParcels: boolean
-    }
-    price: number
+  interface IProduct {
     productId: string
-    storeId: string
-    title: string
+    amount: number
+    parcels: number
   }
 
-  const [itemCart, setitemsCart] = useState<IItemsCart[]>([{} as IItemsCart])
+  interface IOrder {
+    storeId: string
+    orderProducts: IProduct[]
+  }
+
+  const [products, setProducts] = useState<IOrder[]>([{} as IOrder])
 
   const [deliveryMethod, setDeliveryMethod] =
     useState<'house' | 'store'>('house')
@@ -228,9 +223,8 @@ const CartContinue = () => {
 
   const handleSelectProduct = (product: any) => {
     setSelectedProduct(product)
-
+    console.log(getStore(product.storeId).paymentMethods)
     setPaymentMethods(getStore(product.storeId).paymentMethods)
-    console.log(paymentMethods)
 
     const method = itemsPaymentMethod[product.productId]
 
@@ -389,8 +383,6 @@ const CartContinue = () => {
   useEffect(() => {
     if (!loadingItems && !loadingStores && items.length && stores.length) {
       const firstItem = items[0]
-
-      console.log(items)
 
       setSelectedProduct(firstItem)
       setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
@@ -655,10 +647,14 @@ const CartContinue = () => {
                 <div className="paymentContainer">
                   <Select
                     name="Forma de pagamento"
-                    options={paymentMethods?.map(({ methodName }) => ({
-                      value: methodName,
-                      label: capitalizeFirstLetter(methodName)
-                    }))}
+                    options={
+                      paymentMethods?.length > 0
+                        ? paymentMethods?.map(({ methodName }) => ({
+                            value: methodName,
+                            label: capitalizeFirstLetter(methodName)
+                          }))
+                        : []
+                    }
                     selectedValue={paymentMethodOption}
                     setSelectedValue={onSelectPaymentMethod}
                     loading={false}
