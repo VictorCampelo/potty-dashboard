@@ -107,6 +107,26 @@ const CartContinue = () => {
   const [addressModalActive, setAddressModalActive] = useState(false)
   const [clearModalActive, setClearModalActive] = useState(false)
 
+  //Fix checkout
+
+  interface IItemsCart {
+    amount: number
+    enabled: boolean
+    image: string
+    paymentMethods: [{ id: string; methodName: string; allowParcels: boolean }]
+    paymentMethodSelected: {
+      id: string
+      methodName: string
+      allowParcels: boolean
+    }
+    price: number
+    productId: string
+    storeId: string
+    title: string
+  }
+
+  const [itemCart, setitemsCart] = useState<IItemsCart[]>([{} as IItemsCart])
+
   const [deliveryMethod, setDeliveryMethod] =
     useState<'house' | 'store'>('house')
   const [parcelCheckbox, setParcelCheckbox] = useState(false)
@@ -155,7 +175,7 @@ const CartContinue = () => {
     }
     if (
       !paymentMethods.find((methods) => methods.methodName === methodName)
-        .allowParcels
+        ?.allowParcels
     ) {
       updated.parcels = undefined
 
@@ -210,6 +230,7 @@ const CartContinue = () => {
     setSelectedProduct(product)
 
     setPaymentMethods(getStore(product.storeId).paymentMethods)
+    console.log(paymentMethods)
 
     const method = itemsPaymentMethod[product.productId]
 
@@ -222,7 +243,7 @@ const CartContinue = () => {
       setAllowParcels(
         paymentMethods.find(
           ({ methodName }) => methodName === method.methodName
-        ).allowParcels
+        )?.allowParcels
       )
 
       if (Number(method.parcels) > 0) {
@@ -357,7 +378,6 @@ const CartContinue = () => {
   const loadUserData = async () => {
     try {
       const { data, status } = await getUser()
-      console.log(data)
 
       if (status === 200) setUser(data)
     } catch (e) {
@@ -370,8 +390,9 @@ const CartContinue = () => {
     if (!loadingItems && !loadingStores && items.length && stores.length) {
       const firstItem = items[0]
 
-      setSelectedProduct(firstItem)
+      console.log(items)
 
+      setSelectedProduct(firstItem)
       setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
     }
   }, [loadingItems, loadingStores])
