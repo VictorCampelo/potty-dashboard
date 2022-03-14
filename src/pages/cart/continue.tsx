@@ -823,10 +823,10 @@ export default CartContinue
 const CardsContainer = styled.section`
   width: 100%;
   height: 100%;
+  padding-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 1.5rem;
 
   .top-container {
     display: grid;
@@ -840,10 +840,9 @@ const CardsContainer = styled.section`
 const AddressCard = styled.section`
   grid-column: span 2 / span 3;
   width: 100%;
-  max-height: 580px;
   background: white;
   border-radius: 30px;
-  padding: 1.5rem 2rem 3.5rem 2rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
   .paymentContainer {
@@ -949,7 +948,6 @@ const UpdateAddressButton = styled.button`
 
 const ProductsContainer = styled.section`
   width: 100%;
-  max-height: 580px;
   background: white;
   border-radius: 30px;
 
