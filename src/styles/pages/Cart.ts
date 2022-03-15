@@ -304,7 +304,7 @@ export const CartProduct = styled.div`
       width: 90px;
       height: 90px;
       border-radius: 5px;
-      background: var(--gray-300);
+      /* background: var(--gray-300); */
       margin-right: 1rem;
       justify-content: center;
       align-items: center;
