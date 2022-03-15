@@ -3,7 +3,13 @@ import DrawerBottom from 'components/molecules/DrawerBottom'
 import { IoIosClose } from 'react-icons/io'
 import { PaymentContext } from 'contexts/PaymentContext'
 
-import React, { useCallback, useContext, useState } from 'react'
+import React, {
+  FormEvent,
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useState
+} from 'react'
 import { ConfigButton, Container, ModalContainer } from 'styles/pages/Shop'
 
 import DescriptionCard from 'components/molecules/DescriptionCard'
@@ -288,7 +294,7 @@ const Shop = ({ storeId, id }: Shop) => {
         phone: values.phone,
         facebookLink: values.facebook,
         instagramLink: values.instagram,
-        whatsappLink: values.whatsapp
+        whatsappLink: whatsApp
       }
     }
     const formData = new FormData()
@@ -436,8 +442,56 @@ const Shop = ({ storeId, id }: Shop) => {
     IPaymentesOptions[] | []
   >([])
   const { inputPaymentValue, setInputPaymentValue } = useContext(PaymentContext)
+  const [currency, setCurrency] = useState('')
 
   const [dataStore, setDataStore] = useState(null)
+
+  function handleCurrency(e: FormEvent<HTMLInputElement>) {
+    const valueTyped = e.currentTarget.value.replace(/\D/g, '')
+    setCurrency(formatCurrency(valueTyped))
+  }
+
+  function formatCurrency(valueTyped: string) {
+    let value = valueTyped.toString().replace(/\D/g, '')
+
+    value = (+value / 100).toFixed(2) + ''
+    value = value.replace('.', ',')
+    value = value.replace(/(\d)(\d{3})(\d{3}),/g, '$1.$2.$3,')
+    value = value.replace(/(\d)(\d{3}),/g, '$1.$2,')
+    return value
+  }
+
+  async function handleSubmitCurrency() {
+    const formData = new FormData()
+    formData.append(
+      'storeDto',
+      JSON.stringify({
+        deliveryFee: currency.replace(/\D/g, '')
+      })
+    )
+
+    try {
+      await api.patch('/stores', formData)
+
+      setModalDeliveryIsOpen(!modalDeliveryOptionsIsOpen)
+
+      toast.success('Informações salva(s) com sucesso!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+
+      setCurrency('')
+      loadData()
+    } catch (error) {
+      notify('Erro interno favor tentar novamente mais tarde!')
+      console.log(error)
+    }
+  }
 
   function handleChangeModalOpen(funcModalClose, funcModalOpen) {
     funcModalClose(false)
@@ -613,6 +667,8 @@ const Shop = ({ storeId, id }: Shop) => {
       const { data } = await getStore(String(storeId))
 
       setDataStore(data)
+
+      setCurrency(data.deliveryFee)
 
       setCategoriesOption(
         data?.categories?.map(({ id, name }) => {
@@ -1012,6 +1068,8 @@ const Shop = ({ storeId, id }: Shop) => {
                     type="text"
                     icon={<IoLogoWhatsapp size={20} color="var(--black-800)" />}
                     {...register('whatsApp')}
+                    value={whatsApp}
+                    onChange={(e) => setWhatsApp(e.currentTarget.value)}
                   />
                 </div>
               </div>
@@ -1134,12 +1192,14 @@ const Shop = ({ storeId, id }: Shop) => {
               </div>
               <div className="wrap-opts">
                 <a
-                  onClick={() =>
+                  onClick={() => {
                     handleChangeModalOpen(
                       setConfigModal,
                       setModalDeliveryIsOpen
                     )
-                  }
+
+                    setCurrency(formatCurrency(currency))
+                  }}
                 >
                   Opções de entrega
                 </a>
@@ -1257,7 +1317,12 @@ const Shop = ({ storeId, id }: Shop) => {
 
               <label className="label-input-frete">
                 <span>Taxa de frete fixa</span>
-                <input type="number" />
+                <input
+                  type="text"
+                  value={currency}
+                  onChange={handleCurrency}
+                  placeholder="0,00"
+                />
               </label>
             </div>
 
@@ -1275,7 +1340,10 @@ const Shop = ({ storeId, id }: Shop) => {
                 />
               </div>
               <div className="wrap-btn-confirm">
-                <ConfigButton title="Confirmar" />
+                <ConfigButton
+                  title="Confirmar"
+                  onClick={handleSubmitCurrency}
+                />
               </div>
             </div>
           </ModalContainer>
