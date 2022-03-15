@@ -32,7 +32,6 @@ const SendTokenRegister = () => {
     try {
       const res = await recoverPasswordConfirmation(body)
 
-      console.log(res)
       // router.push('/login')
     } catch (e) {
       console.error(e)

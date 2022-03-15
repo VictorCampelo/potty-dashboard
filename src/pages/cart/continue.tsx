@@ -223,7 +223,7 @@ const CartContinue = () => {
 
   const handleSelectProduct = (product: any) => {
     setSelectedProduct(product)
-    console.log(getStore(product.storeId).paymentMethods)
+
     setPaymentMethods(getStore(product.storeId).paymentMethods)
 
     const method = itemsPaymentMethod[product.productId]
