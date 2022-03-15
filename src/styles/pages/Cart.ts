@@ -42,6 +42,28 @@ export const Content = styled.section`
   height: 100%;
   width: 100%;
   padding-top: 1.5rem;
+  position: relative;
+
+  .wrap-header {
+    position: fixed;
+    background-color: white;
+    min-width: 100vw;
+    margin-top: -90px;
+    padding: 15px 0;
+
+    ::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0) 0%,
+        rgba(108, 112, 121, 0.26) 48.44%,
+        rgba(108, 112, 121, 0) 100%
+      );
+    }
+  }
 
   h1 {
     font-size: var(--font-size-lg);

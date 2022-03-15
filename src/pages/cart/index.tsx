@@ -101,40 +101,48 @@ const Cart = () => {
       <HeaderProducts />
 
       <Container>
-        <Content>
-          <div className="header" onClick={() => router.push('/')}>
-            {!widthScreen && <FiArrowLeft size={25} color="var(--black-800)" />}
-            <h1>Meu carrinho</h1>
-          </div>
-
-          <div
-            className="checkbox"
-            style={
-              widthScreen || !items.length ? { display: 'none' } : undefined
-            }
-          >
-            <div className="check">
-              <button
-                type="button"
-                id="btn"
-                className="btn"
-                onClick={handleSelectAll}
-              >
-                {selectAll && <FaCheck color="var(--gray-800)" />}
-              </button>
-              <label htmlFor="btn">Selecionar Todos</label>
+        <Content
+          style={{
+            paddingTop: !widthScreen ? 90 : 0
+          }}
+        >
+          <div className={!widthScreen && 'wrap-header'}>
+            <div className="header" onClick={() => router.push('/')}>
+              {!widthScreen && (
+                <FiArrowLeft size={25} color="var(--black-800)" />
+              )}
+              <h1>Meu carrinho</h1>
             </div>
-            <div className="cupomContainer">
-              <img src="/images/ticket.svg" alt="Adicionar Cupom" />
-              <p
-                style={{
-                  color: 'var(--color-secondary)',
-                  marginRight: '1rem',
-                  fontWeight: 'bold'
-                }}
-              >
-                Adicionar cupom
-              </p>
+
+            <div
+              className="checkbox"
+              style={
+                widthScreen || !items.length ? { display: 'none' } : undefined
+              }
+            >
+              <div className="check">
+                <button
+                  type="button"
+                  id="btn"
+                  className="btn"
+                  onClick={handleSelectAll}
+                >
+                  {selectAll && <FaCheck color="var(--gray-800)" />}
+                </button>
+                <label htmlFor="btn">Selecionar Todos</label>
+              </div>
+              <div className="cupomContainer">
+                <img src="/images/ticket.svg" alt="Adicionar Cupom" />
+                <p
+                  style={{
+                    color: 'var(--color-secondary)',
+                    marginRight: '1rem',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Adicionar cupom
+                </p>
+              </div>
             </div>
           </div>
 
