@@ -56,6 +56,8 @@ export const Content = styled.section`
       display: block;
       width: 100%;
       height: 2px;
+      position: absolute;
+      bottom: 0;
       background: linear-gradient(
         90deg,
         rgba(108, 112, 121, 0) 0%,
@@ -136,6 +138,10 @@ export const CartContainer = styled.section`
 
   .subTotal {
     padding-left: 1rem;
+  }
+
+  .subTotal:last-child {
+    margin-bottom: 100px;
   }
 
   ${[sizes.down('lgMob')]} {

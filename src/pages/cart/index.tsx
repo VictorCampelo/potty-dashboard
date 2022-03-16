@@ -195,7 +195,11 @@ const Cart = () => {
                             <img src={it?.image} />
                           </div>
 
-                          <span>{it.title}</span>
+                          <span>
+                            {it.title.length > 70
+                              ? it.title.slice(0, 70) + '...'
+                              : it.title}
+                          </span>
                         </section>
 
                         <Counter id={it.productId} />
@@ -244,17 +248,25 @@ const Cart = () => {
 
                         <section
                           className="sectionImg"
-                          style={{ flexGrow: 1, height: '100%' }}
+                          style={{
+                            flexGrow: 1,
+                            height: '100%'
+                          }}
                         >
                           <div className="imgContainer">
-                            <AiFillCamera size={28} color="white" />
+                            {/* <AiFillCamera size={28} color="white" /> */}
+                            <img src={it.image} alt="" />
                           </div>
                         </section>
                         <section
                           className="spanProductInformation"
                           style={{ flexGrow: 2 }}
                         >
-                          <span>{it.title}</span>
+                          <span style={{ fontSize: 18, padding: 5 }}>
+                            {it.title.length > 40
+                              ? it.title.slice(0, 40) + '...'
+                              : it.title}
+                          </span>
                           <strong>
                             {formatToBrl(
                               it.discount
