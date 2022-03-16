@@ -36,6 +36,14 @@ import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
 import _ from 'lodash'
 import { PulseLoader } from 'react-spinners'
 
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation } from 'swiper'
+
+import 'swiper/css/bundle'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+
 interface PaymentMethod {
   id: string
   methodName: string
@@ -130,7 +138,7 @@ const CartContinue = () => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
 
-  const parcelsOptions = getNumberArray({
+  let parcelsOptions = getNumberArray({
     size: 11,
     startAt: 2
   }).map((parcel) => {
@@ -149,7 +157,7 @@ const CartContinue = () => {
   const [allowParcels, setAllowParcels] = useState(false)
 
   const [itemsPaymentMethod, setItemsPaymentMethod] = useState<{
-    [productId: string]: { methodName: string; parcels?: string }
+    [productId: string]: { methodName: string; parcelAmount?: string }
   }>({})
 
   const finallyPurchase =
@@ -158,21 +166,21 @@ const CartContinue = () => {
   const updateItemPaymentMethod = ({
     productId,
     methodName,
-    parcels
+    parcelAmount
   }: {
     productId: string
     methodName: string
-    parcels: string
+    parcelAmount: string
   }) => {
     const updated = {
       methodName,
-      parcels
+      parcelAmount
     }
     if (
       !paymentMethods.find((methods) => methods.methodName === methodName)
         ?.allowParcels
     ) {
-      updated.parcels = undefined
+      updated.parcelAmount = undefined
 
       setParcelOption({
         value: '1',
@@ -196,7 +204,7 @@ const CartContinue = () => {
     updateItemPaymentMethod({
       productId: selectedProduct.productId,
       methodName: option.value,
-      parcels: parcelOption?.value
+      parcelAmount: parcelOption?.value
     })
   }
 
@@ -234,22 +242,32 @@ const CartContinue = () => {
         label: method.methodName
       })
 
+      console.log(method)
+
       setAllowParcels(
         paymentMethods.find(
           ({ methodName }) => methodName === method.methodName
         )?.allowParcels
       )
 
-      if (Number(method.parcels) > 0) {
+      if (Number(method.parcelAmount) > 0) {
         setParcelOption({
-          value: method.parcels,
-          label: `${method.parcels}x`
+          value: method.parcelAmount,
+          label: `${method.parcelAmount}x`
         })
+
+        parcelsOptions = getNumberArray({
+          size: +method.parcelAmount,
+          startAt: 1
+        }).map((parcel) => {
+          return {
+            value: `${parcel}`,
+            label: `${parcel}x`
+          }
+        })
+
         setAllowParcels(true)
         setParcelCheckbox(true)
-      } else {
-        setParcelOption(null)
-        setParcelCheckbox(false)
       }
     }
   }
@@ -289,7 +307,7 @@ const CartContinue = () => {
         updateItemPaymentMethod({
           productId: nextItem.productId,
           methodName: paymentMethodOption.value,
-          parcels: parcelOption?.value
+          parcelAmount: parcelOption?.value
         })
 
         return
@@ -302,7 +320,7 @@ const CartContinue = () => {
               productId: item.productId,
               amount: Number(item.amount),
               paymentMethod: itemsPaymentMethod[item.productId].methodName,
-              parcels: Number(itemsPaymentMethod[item.productId].parcels)
+              parcels: Number(itemsPaymentMethod[item.productId].parcelAmount)
             }
             if (!order.parcels) delete order.parcels
             return order
@@ -383,6 +401,8 @@ const CartContinue = () => {
   useEffect(() => {
     if (!loadingItems && !loadingStores && items.length && stores.length) {
       const firstItem = items[0]
+
+      console.log(items)
 
       setSelectedProduct(firstItem)
       setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
@@ -578,7 +598,7 @@ const CartContinue = () => {
           <CardsContainer>
             <div className="top-container">
               <AddressCard>
-                <h2> {selectedProduct?.title}</h2>
+                {widthScreen && <h2> {selectedProduct?.title}</h2>}
 
                 <DeliveryMethod>
                   <span>Escolha a forma que deseja receber seus pedidos</span>
@@ -667,7 +687,7 @@ const CartContinue = () => {
                         updateItemPaymentMethod({
                           productId: selectedProduct.productId,
                           methodName: paymentMethodOption.value,
-                          parcels: option.value
+                          parcelAmount: option.value
                         })
                       }}
                       loading={false}
@@ -684,65 +704,121 @@ const CartContinue = () => {
                     updateItemPaymentMethod({
                       productId: selectedProduct.productId,
                       methodName: paymentMethodOption?.value,
-                      parcels: !parcelCheckbox ? parcelOption?.value : '0'
+                      parcelAmount: !parcelCheckbox ? parcelOption?.value : '0'
                     })
                   }}
                   label="Parcelar Compra"
                 />
               </AddressCard>
 
-              <ProductsContainer>
-                {loadingStores ? (
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '200px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <PulseLoader size={8} color="var(--color-primary)" />
+              {!widthScreen ? (
+                <>
+                  <div className="wrap-products-mobile">
+                    <div className="wrap-products-title">
+                      <h3>Produtos</h3>
+                      <p>3/3</p>
+                    </div>
+                    <Swiper
+                      pagination={{
+                        type: 'fraction'
+                      }}
+                      spaceBetween={120}
+                      navigation={true}
+                      modules={[Pagination, Navigation]}
+                      className="mySwiper"
+                    >
+                      {stores.map((store) => {
+                        return (
+                          <>
+                            {store.items.map((product, i) => (
+                              <SwiperSlide key={i}>
+                                <ProductItem
+                                  key={product.productId}
+                                  active={
+                                    selectedProduct?.productId ===
+                                    product.productId
+                                  }
+                                  onClick={() => handleSelectProduct(product)}
+                                >
+                                  <div className="img-container">
+                                    <img
+                                      src={product?.image}
+                                      alt="Foto do produto"
+                                    />
+                                  </div>
+
+                                  <div className="info-container">
+                                    <h4>
+                                      {product.title.length > 40
+                                        ? product.title.slice(0, 40) + ' ...'
+                                        : product.title}
+                                    </h4>
+                                    <span>{product.amount}x</span>
+                                  </div>
+                                </ProductItem>
+                              </SwiperSlide>
+                            ))}
+                          </>
+                        )
+                      })}
+                    </Swiper>
                   </div>
-                ) : (
-                  stores.map((store, i) => {
-                    return (
-                      <div key={i}>
-                        <h1>{store.name}</h1>
+                </>
+              ) : (
+                <ProductsContainer>
+                  {loadingStores ? (
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '200px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <PulseLoader size={8} color="var(--color-primary)" />
+                    </div>
+                  ) : (
+                    stores.map((store, i) => {
+                      return (
+                        <div key={i}>
+                          <h1>{store.name}</h1>
 
-                        <div className="products-container">
-                          {store.items.map((product) => (
-                            <ProductItem
-                              key={product.productId}
-                              active={
-                                selectedProduct?.productId === product.productId
-                              }
-                              onClick={() => handleSelectProduct(product)}
-                            >
-                              <div className="img-container">
-                                <img
-                                  src={product?.image}
-                                  alt="Foto do produto"
-                                />
-                              </div>
+                          <div className="products-container">
+                            {store.items.map((product) => (
+                              <ProductItem
+                                key={product.productId}
+                                active={
+                                  selectedProduct?.productId ===
+                                  product.productId
+                                }
+                                onClick={() => handleSelectProduct(product)}
+                              >
+                                <div className="img-container">
+                                  <img
+                                    src={product?.image}
+                                    alt="Foto do produto"
+                                  />
+                                </div>
 
-                              <div className="info-container">
-                                <h4>
-                                  {product.title.length > 40
-                                    ? product.title.slice(0, 40) + ' ...'
-                                    : product.title}
-                                </h4>
+                                <div className="info-container">
+                                  <h4>
+                                    {product.title.length > 40
+                                      ? product.title.slice(0, 40) + ' ...'
+                                      : product.title}
+                                  </h4>
 
-                                <span>{product.amount}x</span>
-                              </div>
-                            </ProductItem>
-                          ))}
+                                  <span>{product.amount}x</span>
+                                </div>
+                              </ProductItem>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )
-                  })
-                )}
-              </ProductsContainer>
+                      )
+                    })
+                  )}
+                </ProductsContainer>
+              )}
             </div>
 
             {widthScreen ? (
@@ -834,6 +910,68 @@ const CardsContainer = styled.section`
     height: 80%;
     gap: 2rem;
     min-height: 350px;
+  }
+
+  @media (max-width: 430px) {
+    .top-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 100%;
+
+      border: 1px solid red;
+    }
+
+    .wrap-products-mobile {
+      order: -1;
+      width: 350px;
+      margin: 0 auto;
+
+      .wrap-products-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 25px 0;
+      }
+
+      h4 {
+        font-size: 14px;
+        color: #5d1a82;
+      }
+
+      .swiper {
+        width: 100%;
+
+        min-height: 135px;
+        box-sizing: border-box;
+      }
+
+      .swiper-slide {
+        box-sizing: border-box;
+        text-align: center;
+        min-height: 130pxpx;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        object-fit: cover;
+      }
+    }
   }
 `
 
@@ -1064,6 +1202,25 @@ export const ProductItem = styled.div<{ active: boolean }>`
 
   &:hover {
     background: var(--gray-150);
+  }
+
+  @media (max-width: 430px) {
+    border: 2px solid #5d1a82;
+    box-sizing: border-box;
+    border-radius: 8px;
+    min-height: 130px;
+    width: 350px;
+
+    .img-container {
+      width: 115px;
+      height: 115px;
+      display: flex;
+      align-items: center;
+
+      img {
+        display: block;
+      }
+    }
   }
 
   ${(props) =>
