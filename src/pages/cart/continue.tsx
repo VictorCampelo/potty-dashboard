@@ -611,17 +611,17 @@ const CartContinue = () => {
 
                         <span>
                           <strong>Endereço: </strong>
-                          {user.street || user.store.street}{' '}
-                          {user.addressNumber || user.store.addressNumber},{' '}
-                          {user.neighborhood || user.store.neighborhood},{' '}
-                          {user.city || user.store.city},{' '}
-                          {user.uf || user.store.uf},{' '}
-                          {user.zipcode || user.store.zipcode}, Brasil
+                          {user.street || user.store?.street}{' '}
+                          {user.addressNumber || user.store?.addressNumber},{' '}
+                          {user.neighborhood || user.store?.neighborhood},{' '}
+                          {user.city || user.store?.city},{' '}
+                          {user.uf || user.store?.uf},{' '}
+                          {user.zipcode || user.store?.zipcode}, Brasil
                         </span>
 
                         <span>
                           <strong>Telefone: </strong>{' '}
-                          {formatPhone(user.phone || user.store.phone)}
+                          {formatPhone(user.phone || user.store?.phone || '')}
                         </span>
                       </div>
                     ) : (
@@ -862,7 +862,13 @@ const CartContinue = () => {
                       ? items.length + ' item'
                       : items.length + ' itens'}
                     {!widthScreen && (
-                      <a onClick={toggleClearModal}>Esvaziar Carrinho</a>
+                      <a
+                        onClick={toggleClearModal}
+                        className="
+                      empty-cart"
+                      >
+                        Esvaziar Carrinho
+                      </a>
                     )}
                   </span>
                 </div>
@@ -987,7 +993,7 @@ const CardsContainer = styled.section`
 
       .swiper-slide {
         box-sizing: border-box;
-        text-align: center;
+        /* text-align: center; */
         min-height: 130pxpx;
         font-size: 18px;
         background: #fff;

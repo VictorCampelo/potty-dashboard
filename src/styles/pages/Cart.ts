@@ -222,6 +222,15 @@ export const CartContainerFooter = styled(
         a {
           color: var(--red);
           text-decoration: underline;
+          font-weight: 500;
+
+          ::before {
+            content: '';
+            margin: 0 5px -3px 5px;
+            display: inline-block;
+            height: 14px;
+            border-left: 2px solid #b2b5ba;
+          }
         }
       }
     }
