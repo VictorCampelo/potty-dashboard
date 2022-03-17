@@ -506,6 +506,7 @@ const CartContinue = () => {
                 label="Número"
                 placeholder="0000"
                 mask="number"
+                className="input-logradouro-number"
                 flex={1}
                 type="numeric"
                 maxLength={6}
@@ -1388,9 +1389,17 @@ export const ModalContainer = styled.div`
         flex-direction: row;
       }
     }
+
     .row {
       display: flex;
       gap: 1rem;
+
+      @media (max-width: 430px) {
+        .input-logradouro-number {
+          padding-left: 0px;
+          margin-left: -10px;
+        }
+      }
     }
   }
 
