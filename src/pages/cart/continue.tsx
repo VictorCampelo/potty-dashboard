@@ -587,7 +587,7 @@ const CartContinue = () => {
               <AddressCard>
                 {widthScreen && <h2> {selectedProduct?.title}</h2>}
 
-                <DeliveryMethod>
+                <DeliveryMethod className="delivery-method">
                   <span>Escolha a forma que deseja receber seus pedidos</span>
 
                   <Checkbox
@@ -604,98 +604,104 @@ const CartContinue = () => {
                   />
                 </DeliveryMethod>
 
-                <AddressInfo>
-                  {user ? (
-                    <>
-                      <span>
-                        <strong>Nome do usuário:</strong> {user.firstName}{' '}
-                        {user.lastName}
-                      </span>
+                <div className="address-infos">
+                  <AddressInfo>
+                    {user ? (
+                      <div className="wrap-dados">
+                        <span>
+                          <strong>Nome do usuário:</strong> {user.firstName}{' '}
+                          {user.lastName}
+                        </span>
 
-                      <span>
-                        <strong>Endereço: </strong>
-                        {user.street || user.store.street}{' '}
-                        {user.addressNumber || user.store.addressNumber},{' '}
-                        {user.neighborhood || user.store.neighborhood},{' '}
-                        {user.city || user.store.city},{' '}
-                        {user.uf || user.store.uf},{' '}
-                        {user.zipcode || user.store.zipcode}, Brasil
-                      </span>
+                        <span>
+                          <strong>Endereço: </strong>
+                          {user.street || user.store.street}{' '}
+                          {user.addressNumber || user.store.addressNumber},{' '}
+                          {user.neighborhood || user.store.neighborhood},{' '}
+                          {user.city || user.store.city},{' '}
+                          {user.uf || user.store.uf},{' '}
+                          {user.zipcode || user.store.zipcode}, Brasil
+                        </span>
 
-                      <span>
-                        <strong>Telefone: </strong>{' '}
-                        {formatPhone(user.phone || user.store.phone)}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span>
-                        <strong>Nome do usuário:</strong> Carregando...
-                      </span>
+                        <span>
+                          <strong>Telefone: </strong>{' '}
+                          {formatPhone(user.phone || user.store.phone)}
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <span>
+                          <strong>Nome do usuário:</strong> Carregando...
+                        </span>
 
-                      <span>
-                        <strong>Endereço: </strong> Carregando...
-                      </span>
+                        <span>
+                          <strong>Endereço: </strong> Carregando...
+                        </span>
 
-                      <span>
-                        <strong>Telefone: </strong> Carregando...
-                      </span>
-                    </>
-                  )}
-                </AddressInfo>
+                        <span>
+                          <strong>Telefone: </strong> Carregando...
+                        </span>
+                      </>
+                    )}
+                  </AddressInfo>
 
-                <UpdateAddressButton onClick={openAddressModal}>
-                  <IoPencilOutline size={24} />
-                  Atualizar endereço
-                </UpdateAddressButton>
-
-                <h3>Forma de pagamento</h3>
-
-                <div className="paymentContainer">
-                  <Select
-                    name="Forma de pagamento"
-                    options={paymentMethods?.map(({ methodName }) => ({
-                      value: methodName,
-                      label: capitalizeFirstLetter(methodName)
-                    }))}
-                    selectedValue={paymentMethodOption}
-                    setSelectedValue={onSelectPaymentMethod}
-                    loading={false}
-                    placeholder="Selecione sua forma de pagamento"
-                  />
-
-                  {parcelCheckbox && (
-                    <Select
-                      name="Parcelamento"
-                      options={parcelsOptions}
-                      selectedValue={parcelOption}
-                      setSelectedValue={(option) => {
-                        setParcelOption(option)
-                        updateItemPaymentMethod({
-                          productId: selectedProduct.productId,
-                          methodName: paymentMethodOption.value,
-                          parcelAmount: option.value
-                        })
-                      }}
-                      loading={false}
-                      placeholder="Selecione o número de parcelas"
-                    />
-                  )}
+                  <UpdateAddressButton onClick={openAddressModal}>
+                    <IoPencilOutline size={24} />
+                    Atualizar endereço
+                  </UpdateAddressButton>
                 </div>
 
-                <Checkbox
-                  disabled={!allowParcels}
-                  confirm={parcelCheckbox}
-                  toggleConfirm={() => {
-                    toggleParcelCheckbox()
-                    updateItemPaymentMethod({
-                      productId: selectedProduct.productId,
-                      methodName: paymentMethodOption?.value,
-                      parcelAmount: !parcelCheckbox ? parcelOption?.value : '0'
-                    })
-                  }}
-                  label="Parcelar Compra"
-                />
+                <div className="wrap-paymentsMethods">
+                  <h3>Forma de pagamento</h3>
+
+                  <div className="paymentContainer">
+                    <Select
+                      name="Forma de pagamento"
+                      options={paymentMethods?.map(({ methodName }) => ({
+                        value: methodName,
+                        label: capitalizeFirstLetter(methodName)
+                      }))}
+                      selectedValue={paymentMethodOption}
+                      setSelectedValue={onSelectPaymentMethod}
+                      loading={false}
+                      placeholder="Selecione sua forma de pagamento"
+                    />
+
+                    {parcelCheckbox && (
+                      <Select
+                        name="Parcelamento"
+                        options={parcelsOptions}
+                        selectedValue={parcelOption}
+                        setSelectedValue={(option) => {
+                          setParcelOption(option)
+                          updateItemPaymentMethod({
+                            productId: selectedProduct.productId,
+                            methodName: paymentMethodOption.value,
+                            parcelAmount: option.value
+                          })
+                        }}
+                        loading={false}
+                        placeholder="Selecione o número de parcelas"
+                      />
+                    )}
+                  </div>
+
+                  <Checkbox
+                    disabled={!allowParcels}
+                    confirm={parcelCheckbox}
+                    toggleConfirm={() => {
+                      toggleParcelCheckbox()
+                      updateItemPaymentMethod({
+                        productId: selectedProduct.productId,
+                        methodName: paymentMethodOption?.value,
+                        parcelAmount: !parcelCheckbox
+                          ? parcelOption?.value
+                          : '0'
+                      })
+                    }}
+                    label="Parcelar Compra"
+                  />
+                </div>
               </AddressCard>
 
               {!widthScreen ? (
@@ -708,7 +714,7 @@ const CartContinue = () => {
                       pagination={{
                         type: 'fraction'
                       }}
-                      spaceBetween={120}
+                      spaceBetween={45}
                       navigation={true}
                       modules={[Pagination, Navigation]}
                       className="mySwiper"
@@ -903,8 +909,6 @@ const CardsContainer = styled.section`
       display: grid;
       grid-template-columns: 1fr;
       max-width: 100%;
-
-      border: 1px solid red;
     }
 
     .wrap-products-mobile {
@@ -1024,6 +1028,28 @@ const AddressCard = styled.section`
   .paymentContainer {
     display: flex;
     gap: 16px;
+  }
+
+  @media (max-width: 430px) {
+    display: grid;
+
+    .delivery-method {
+      order: 0;
+    }
+
+    .wrap-paymentsMethods {
+      order: 1;
+      margin-top: 20px;
+      h3 {
+        display: none;
+      }
+    }
+
+    .address-infos {
+      order: 2;
+
+      margin-bottom: 50px;
+    }
   }
 
   ${[sizes.down('lgMob')]} {
