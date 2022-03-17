@@ -229,8 +229,6 @@ const CartContinue = () => {
         label: method.methodName
       })
 
-      console.log(method)
-
       setAllowParcels(
         paymentMethods.find(
           ({ methodName }) => methodName === method.methodName
@@ -388,8 +386,6 @@ const CartContinue = () => {
   useEffect(() => {
     if (!loadingItems && !loadingStores && items.length && stores.length) {
       const firstItem = items[0]
-
-      console.log(items)
 
       setSelectedProduct(firstItem)
       setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
