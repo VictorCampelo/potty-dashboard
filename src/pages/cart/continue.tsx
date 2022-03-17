@@ -1333,6 +1333,10 @@ export const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  @media (max-width: 430px) {
+    padding-bottom: 170px;
+  }
+
   ${[sizes.down('lgMob')]} {
     width: 100%;
   }
@@ -1342,9 +1346,12 @@ export const ModalContainer = styled.div`
   .exit-container {
     width: 100%;
     display: flex;
-    justify-content: space-between;
     margin-bottom: 2rem;
     align-items: center;
+
+    @media (max-width: 430px) {
+      justify-content: space-around;
+    }
 
     h1 {
       font-family: 'Poppins';
@@ -1352,6 +1359,10 @@ export const ModalContainer = styled.div`
       font-size: 24px;
 
       color: var(--gray-700);
+
+      @media (max-width: 430px) {
+        font-size: 18px;
+      }
     }
 
     svg {
