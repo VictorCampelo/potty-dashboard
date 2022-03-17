@@ -117,19 +117,6 @@ const CartContinue = () => {
 
   //Fix checkout
 
-  interface IProduct {
-    productId: string
-    amount: number
-    parcels: number
-  }
-
-  interface IOrder {
-    storeId: string
-    orderProducts: IProduct[]
-  }
-
-  const [products, setProducts] = useState<IOrder[]>([{} as IOrder])
-
   const [deliveryMethod, setDeliveryMethod] =
     useState<'house' | 'store'>('house')
   const [parcelCheckbox, setParcelCheckbox] = useState(false)
@@ -716,7 +703,6 @@ const CartContinue = () => {
                   <div className="wrap-products-mobile">
                     <div className="wrap-products-title">
                       <h3>Produtos</h3>
-                      <p>3/3</p>
                     </div>
                     <Swiper
                       pagination={{
@@ -940,9 +926,61 @@ const CardsContainer = styled.section`
 
       .swiper {
         width: 100%;
+        position: relative;
+        overflow: visible;
 
         min-height: 135px;
         box-sizing: border-box;
+
+        .swiper-pagination {
+          position: absolute;
+          top: -47px;
+          left: 325px;
+          height: 20px;
+          width: fit-content;
+        }
+
+        .swiper-button-next {
+          position: absolute;
+          bottom: -20px;
+          width: fit-content;
+          height: 20px;
+          color: #ff7a00;
+        }
+
+        .swiper-button-next::after {
+          display: none;
+        }
+
+        .swiper-button-next::before {
+          width: max-content;
+          content: 'Próximo item ' url('/images/next.png');
+          display: block;
+          position: absolute;
+          bottom: -100px;
+          right: 0;
+        }
+
+        .swiper-button-prev {
+          position: absolute;
+          bottom: -20px;
+          width: fit-content;
+          height: 20px;
+          color: #ff7a00;
+        }
+
+        .swiper-button-prev::after {
+          display: none;
+        }
+
+        .swiper-button-prev::before {
+          width: max-content;
+          content: url('/images/prev.png') ' Item anterior';
+          display: block;
+          position: absolute;
+          bottom: -100px;
+          left: 0;
+        }
       }
 
       .swiper-slide {
