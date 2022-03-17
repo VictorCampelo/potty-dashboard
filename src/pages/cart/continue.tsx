@@ -714,7 +714,7 @@ const CartContinue = () => {
                       pagination={{
                         type: 'fraction'
                       }}
-                      spaceBetween={45}
+                      spaceBetween={38}
                       navigation={true}
                       modules={[Pagination, Navigation]}
                       className="mySwiper"
@@ -931,6 +931,8 @@ const CardsContainer = styled.section`
       .swiper {
         width: 100%;
         position: relative;
+        margin-left: 15px;
+
         overflow: visible;
 
         min-height: 135px;
@@ -994,7 +996,7 @@ const CardsContainer = styled.section`
         font-size: 18px;
         background: #fff;
 
-        /* Center slide text vertically */
+        /* Center slide text vertically; */
         display: -webkit-box;
         display: -ms-flexbox;
         display: -webkit-flex;
@@ -1002,7 +1004,7 @@ const CardsContainer = styled.section`
         -webkit-box-pack: center;
         -ms-flex-pack: center;
         -webkit-justify-content: center;
-        justify-content: center;
+        justify-content: space-around;
         -webkit-box-align: center;
         -ms-flex-align: center;
         -webkit-align-items: center;
