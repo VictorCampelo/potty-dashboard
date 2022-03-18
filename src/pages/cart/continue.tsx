@@ -121,6 +121,7 @@ const CartContinue = () => {
   //Fix checkout
 
   const [openModalEmpty, setOpenModalEmpty] = useState(false)
+  const [activeProductIndex, setActiveProductIndex] = useState(0)
 
   const [deliveryMethod, setDeliveryMethod] =
     useState<'house' | 'store'>('house')
@@ -720,6 +721,9 @@ const CartContinue = () => {
                         }}
                         spaceBetween={38}
                         navigation={true}
+                        onActiveIndexChange={(index) =>
+                          setActiveProductIndex(+index)
+                        }
                         modules={[Pagination, Navigation]}
                         className="mySwiper"
                       >
