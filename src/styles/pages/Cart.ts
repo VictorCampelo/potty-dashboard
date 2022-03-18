@@ -129,6 +129,7 @@ export const Content = styled.section`
 
 export const CartContainer = styled.section`
   background: white;
+
   width: 100%;
   border-radius: 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

@@ -26,40 +26,69 @@ import { Player } from '@lottiefiles/react-lottie-player'
 import formatToBrl from 'utils/formatToBrl'
 
 const Cart = () => {
-  const widthScreen = useMedia({ minWidth: '426px' })
+  const widthScreen = useMedia({ minWidth: '430px' })
 
   const { items, setItems } = useContext(CartContext)
   const [selectAll, setSelectAll] = useState(true)
+  const [itemsSelecteds, setItemsSelecteds] = useState<IItemsSelecteds[]>([
+    {} as IItemsSelecteds
+  ])
 
-  const total = items.reduce((prev, curr) => {
+  const total = itemsSelecteds.reduce((prev, curr) => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
 
   function handleSelectAll() {
     setSelectAll(!selectAll)
-    setItems(
-      items.map((it) => {
-        return {
-          ...it,
-          enabled: !selectAll
-        }
-      })
-    )
+
+    if (!selectAll) {
+      setItemsSelecteds(items)
+      return
+    }
+    setItemsSelecteds([])
   }
 
-  function handleToggleEnabledProduct(productId) {
-    const copyItems = [...items]
+  useEffect(() => {
+    setItemsSelecteds(items)
+  }, [])
 
-    const isEnabled = copyItems.find((it) => it.productId === productId).enabled
+  interface IItemsSelecteds {
+    storeId: string
+    productId: string
+    amount: number
+    title: string
+    price: number
+    enabled?: boolean
+    image?: string
+    discount?: number
+    parcelAmount?: number
+  }
 
-    copyItems.find((it) => it.productId === productId).enabled = !isEnabled
+  function handleToggleEnabledProduct(productId: string) {
+    const isSelected = itemsSelecteds.some(
+      (item) => item.productId === productId
+    )
 
-    setItems(copyItems)
+    if (isSelected) {
+      const filteredItems = itemsSelecteds.filter(
+        (item) => item.productId !== productId
+      )
 
-    if (copyItems.filter((it) => it.enabled).length === copyItems.length) {
-      setSelectAll(true)
-    } else {
+      console.log(filteredItems)
+      setItemsSelecteds(filteredItems)
       setSelectAll(false)
+
+      console.log(itemsSelecteds)
+      return
+    }
+
+    setItemsSelecteds([
+      ...itemsSelecteds,
+      ...items.filter((item) => item.productId === productId)
+    ])
+
+    if (itemsSelecteds.length == items.length - 1) {
+      setSelectAll(true)
     }
   }
 
@@ -72,10 +101,12 @@ const Cart = () => {
   }
 
   async function handleMakeCheckout() {
+    if (itemsSelecteds.length === 0) return
     try {
       await api.get('users/me')
-
       router.push('cart/continue')
+      localStorage.setItem('ultimo.cart.items', JSON.stringify(itemsSelecteds))
+      setItems(itemsSelecteds)
     } catch (e) {
       if (e.response.status === 401) {
         router.push('/login')
@@ -239,9 +270,9 @@ const Cart = () => {
                                 handleToggleEnabledProduct(it.productId)
                               }
                             >
-                              {it.enabled && (
-                                <FaCheck color="var(--gray-800)" />
-                              )}
+                              {itemsSelecteds.some(
+                                (item) => item.productId == it.productId
+                              ) && <FaCheck color="var(--gray-800)" />}
                             </button>
                           </div>
                         </div>
@@ -298,18 +329,16 @@ const Cart = () => {
           )}
 
           {items.length && (
-            <CartContainerFooter
-              disabled={items.filter((it) => it.enabled).length === 0}
-            >
+            <CartContainerFooter disabled={itemsSelecteds.length === 0}>
               <div className="info">
                 <div>
                   <span>Total: </span>
                   <strong>{formatToBrl(total)}</strong>
                 </div>
                 <span className="spanBottom">
-                  {items.filter((it) => it.enabled).length <= 1
-                    ? items.length + ' item'
-                    : items.length + ' itens'}
+                  {itemsSelecteds.length <= 1
+                    ? itemsSelecteds.length + ' item'
+                    : itemsSelecteds.length + ' itens'}
                   {!widthScreen && (
                     <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
                   )}
