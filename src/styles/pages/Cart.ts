@@ -301,6 +301,7 @@ export const CartProduct = styled.div`
     .spanProductInformation {
       flex-direction: column;
       gap: 1rem;
+      padding-left: 10px;
     }
   }
 
