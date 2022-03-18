@@ -388,7 +388,7 @@ const CartContinue = () => {
       const firstItem = items[0]
 
       setSelectedProduct(firstItem)
-      setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
+      setPaymentMethods(getStore(firstItem.storeId)?.paymentMethods)
     }
   }, [loadingItems, loadingStores])
 
@@ -431,6 +431,8 @@ const CartContinue = () => {
               title="ESVAZIAR"
               onClick={() => {
                 setItems([])
+                localStorage.setItem('ultimo.cart.items', '[]')
+                router.push('/')
                 toggleClearModal()
               }}
               style={{ marginBottom: 'var(--spacing-xxs)' }}
@@ -1338,10 +1340,6 @@ export const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 430px) {
-    padding-bottom: 170px;
-  }
-
   ${[sizes.down('lgMob')]} {
     width: 100%;
   }
@@ -1380,6 +1378,11 @@ export const ModalContainer = styled.div`
     flex-direction: column;
     gap: 1rem;
     width: 100%;
+
+    @media (max-width: 430px) {
+      margin-bottom: 170px;
+    }
+
     ${[sizes.down('lgMob')]} {
       .row {
         flex-direction: column;

@@ -83,6 +83,11 @@ const Cart = () => {
     }
   }
 
+  function handleCleanCart() {
+    localStorage.setItem('ultimo.cart.items', JSON.stringify([]))
+    setItems([])
+  }
+
   const getDiscount = (price: number, discount: number) =>
     price - (price * discount) / 100
 
@@ -297,6 +302,34 @@ const Cart = () => {
             </CartContainer>
           )}
 
+          {/* <CustomModal
+            buttons={false}
+            modalVisible={clearModalActive}
+            setModalOpen={toggleClearModal}
+          >
+            <ModalContainer>
+              <div className="title" style={{ textAlign: 'center' }}>
+                <span>
+                  Realmente deseja <strong>esvaziar</strong> o carrinho?
+                </span>
+              </div>
+              <div
+                className="buttonsContainer"
+                style={{ textAlign: 'center', marginTop: 'var(--spacing-xs)' }}
+              >
+                <Button
+                  title="ESVAZIAR"
+                  onClick={() => {
+                    setItems([])
+                    toggleClearModal()
+                  }}
+                  style={{ marginBottom: 'var(--spacing-xxs)' }}
+                />
+                <span onClick={toggleClearModal}>CANCELAR</span>
+              </div>
+            </ModalContainer>
+          </CustomModal> */}
+
           {items.length && (
             <CartContainerFooter
               disabled={items.filter((it) => it.enabled).length === 0}
@@ -311,7 +344,7 @@ const Cart = () => {
                     ? items.length + ' item'
                     : items.length + ' itens'}
                   {!widthScreen && (
-                    <a onClick={() => setItems([])}>Esvaziar Carrinho</a>
+                    <a onClick={handleCleanCart}>Esvaziar Carrinho</a>
                   )}
                 </span>
               </div>
