@@ -119,9 +119,27 @@ const CartContinue = () => {
   const [clearModalActive, setClearModalActive] = useState(false)
 
   //Fix checkout
+  interface ICartItem {
+    storeId: string
+    productId: string
+    amount: number
+    title: string
+    price: number
+    enabled?: boolean
+    image?: string
+    discount?: number
+    parcelAmount?: number
+  }
 
   const [openModalEmpty, setOpenModalEmpty] = useState(false)
   const [activeProductIndex, setActiveProductIndex] = useState(0)
+  const [finishedProducts, setFinishedProducts] = useState<ICartItem[]>([])
+  const [formOfPayment, setFormOfPayment] = useState('')
+  const [numberOfInstallments, setnumberOfInstallments] = useState(0)
+
+  useEffect(() => {
+    setFinishedProducts(items)
+  }, [])
 
   const [deliveryMethod, setDeliveryMethod] =
     useState<'house' | 'store'>('house')
@@ -719,7 +737,7 @@ const CartContinue = () => {
                         pagination={{
                           type: 'fraction'
                         }}
-                        spaceBetween={38}
+                        spaceBetween={40}
                         navigation={true}
                         onActiveIndexChange={(index) =>
                           setActiveProductIndex(+index)
@@ -727,40 +745,39 @@ const CartContinue = () => {
                         modules={[Pagination, Navigation]}
                         className="mySwiper"
                       >
-                        {stores.map((store) => {
-                          return (
-                            <>
-                              {store.items.map((product, i) => (
-                                <SwiperSlide key={i}>
-                                  <ProductItem
-                                    key={product.productId}
-                                    active={
-                                      selectedProduct?.productId ===
-                                      product.productId
+                        <>
+                          {finishedProducts.map((product, i) => (
+                            <SwiperSlide key={i}>
+                              <ProductItem
+                                key={product.productId}
+                                active={
+                                  selectedProduct?.productId ===
+                                  product.productId
+                                }
+                                onClick={() => handleSelectProduct(product)}
+                              >
+                                <div className="img-container">
+                                  <img
+                                    src={
+                                      product.image ||
+                                      '/images/emptyProducts.svg'
                                     }
-                                    onClick={() => handleSelectProduct(product)}
-                                  >
-                                    <div className="img-container">
-                                      <img
-                                        src={product?.image}
-                                        alt="Foto do produto"
-                                      />
-                                    </div>
+                                    alt="Foto do produto"
+                                  />
+                                </div>
 
-                                    <div className="info-container">
-                                      <h4>
-                                        {product.title.length > 40
-                                          ? product.title.slice(0, 40) + ' ...'
-                                          : product.title}
-                                      </h4>
-                                      <span>{product.amount}x</span>
-                                    </div>
-                                  </ProductItem>
-                                </SwiperSlide>
-                              ))}
-                            </>
-                          )
-                        })}
+                                <div className="info-container">
+                                  <h4>
+                                    {product.title.length > 40
+                                      ? product.title.slice(0, 40) + ' ...'
+                                      : product.title}
+                                  </h4>
+                                  <span>{product.amount}x</span>
+                                </div>
+                              </ProductItem>
+                            </SwiperSlide>
+                          ))}
+                        </>
                       </Swiper>
                     </div>
                   </>
@@ -955,6 +972,7 @@ const CardsContainer = styled.section`
         justify-content: space-between;
         align-items: center;
         margin: 25px 0;
+        padding-left: 10px;
       }
 
       h4 {
@@ -975,7 +993,7 @@ const CardsContainer = styled.section`
         .swiper-pagination {
           position: absolute;
           top: -47px;
-          left: 325px;
+          left: 320px;
           height: 20px;
           width: fit-content;
         }
