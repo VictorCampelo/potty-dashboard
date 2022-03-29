@@ -24,7 +24,9 @@ import { Button } from 'components/atoms/Button'
 import {
   Container,
   Content,
-  CartContainerFooter as ContainerFooterMobile
+  CartContainerFooter as ContainerFooterMobile,
+  EmptyCartContainer,
+  SeeProductsButton
 } from 'styles/pages/Cart'
 import sizes from 'utils/sizes'
 import { Checkbox } from 'components/atoms/Checkbox'
@@ -35,6 +37,15 @@ import getNumberArray from 'utils/getNumberArray'
 import capitalizeFirstLetter from 'utils/capitalizeFirstLetter'
 import _ from 'lodash'
 import { PulseLoader } from 'react-spinners'
+
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation } from 'swiper'
+
+import 'swiper/css/bundle'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+import { Player } from '@lottiefiles/react-lottie-player'
 
 interface PaymentMethod {
   id: string
@@ -53,11 +64,25 @@ interface UserAddress {
   logradouro: string
 }
 
-interface User extends UserAddress {
+interface User extends UserAddress, Store {
   id: string
   email: string
   firstName: string
   lastName: string
+  phone: string
+}
+
+interface Store {
+  store: {
+    addressNumber: 2456
+    city: 'Teresina'
+    neighborhood: 'Ininga'
+    phone: '(86) 99523-3237'
+    state: 'PI'
+    street: 'Rua 31 de março'
+    zipcode: '64049-700'
+    uf: string
+  }
 }
 
 interface Option {
@@ -78,7 +103,7 @@ const addressRegisterFormSchema = yup.object().shape({
 })
 
 const CartContinue = () => {
-  const widthScreen = useMedia({ minWidth: '426px' })
+  const widthScreen = useMedia({ minWidth: '430px' })
 
   const { stores, loadingStores, items, loadingItems, setItems } =
     useContext(CartContext)
@@ -93,6 +118,29 @@ const CartContinue = () => {
   const [addressModalActive, setAddressModalActive] = useState(false)
   const [clearModalActive, setClearModalActive] = useState(false)
 
+  //Fix checkout
+  interface ICartItem {
+    storeId: string
+    productId: string
+    amount: number
+    title: string
+    price: number
+    enabled?: boolean
+    image?: string
+    discount?: number
+    parcelAmount?: number
+  }
+
+  const [openModalEmpty, setOpenModalEmpty] = useState(false)
+  const [activeProductIndex, setActiveProductIndex] = useState(0)
+  const [finishedProducts, setFinishedProducts] = useState<ICartItem[]>([])
+  const [formOfPayment, setFormOfPayment] = useState('')
+  const [numberOfInstallments, setnumberOfInstallments] = useState(0)
+
+  useEffect(() => {
+    setFinishedProducts(items)
+  }, [])
+
   const [deliveryMethod, setDeliveryMethod] =
     useState<'house' | 'store'>('house')
   const [parcelCheckbox, setParcelCheckbox] = useState(false)
@@ -101,7 +149,7 @@ const CartContinue = () => {
     return prev + Number(curr.price) * Number(curr.amount)
   }, 0)
 
-  const parcelsOptions = getNumberArray({
+  let parcelsOptions = getNumberArray({
     size: 11,
     startAt: 2
   }).map((parcel) => {
@@ -120,7 +168,7 @@ const CartContinue = () => {
   const [allowParcels, setAllowParcels] = useState(false)
 
   const [itemsPaymentMethod, setItemsPaymentMethod] = useState<{
-    [productId: string]: { methodName: string; parcels?: string }
+    [productId: string]: { methodName: string; parcelAmount?: string }
   }>({})
 
   const finallyPurchase =
@@ -129,21 +177,21 @@ const CartContinue = () => {
   const updateItemPaymentMethod = ({
     productId,
     methodName,
-    parcels
+    parcelAmount
   }: {
     productId: string
     methodName: string
-    parcels: string
+    parcelAmount: string
   }) => {
     const updated = {
       methodName,
-      parcels
+      parcelAmount
     }
     if (
       !paymentMethods.find((methods) => methods.methodName === methodName)
-        .allowParcels
+        ?.allowParcels
     ) {
-      updated.parcels = undefined
+      updated.parcelAmount = undefined
 
       setParcelOption({
         value: '1',
@@ -167,7 +215,7 @@ const CartContinue = () => {
     updateItemPaymentMethod({
       productId: selectedProduct.productId,
       methodName: option.value,
-      parcels: parcelOption?.value
+      parcelAmount: parcelOption?.value
     })
   }
 
@@ -208,19 +256,27 @@ const CartContinue = () => {
       setAllowParcels(
         paymentMethods.find(
           ({ methodName }) => methodName === method.methodName
-        ).allowParcels
+        )?.allowParcels
       )
 
-      if (Number(method.parcels) > 0) {
+      if (Number(method.parcelAmount) > 0) {
         setParcelOption({
-          value: method.parcels,
-          label: `${method.parcels}x`
+          value: method.parcelAmount,
+          label: `${method.parcelAmount}x`
         })
+
+        parcelsOptions = getNumberArray({
+          size: +method.parcelAmount,
+          startAt: 1
+        }).map((parcel) => {
+          return {
+            value: `${parcel}`,
+            label: `${parcel}x`
+          }
+        })
+
         setAllowParcels(true)
         setParcelCheckbox(true)
-      } else {
-        setParcelOption(null)
-        setParcelCheckbox(false)
       }
     }
   }
@@ -260,7 +316,7 @@ const CartContinue = () => {
         updateItemPaymentMethod({
           productId: nextItem.productId,
           methodName: paymentMethodOption.value,
-          parcels: parcelOption?.value
+          parcelAmount: parcelOption?.value
         })
 
         return
@@ -273,7 +329,7 @@ const CartContinue = () => {
               productId: item.productId,
               amount: Number(item.amount),
               paymentMethod: itemsPaymentMethod[item.productId].methodName,
-              parcels: Number(itemsPaymentMethod[item.productId].parcels)
+              parcels: Number(itemsPaymentMethod[item.productId].parcelAmount)
             }
             if (!order.parcels) delete order.parcels
             return order
@@ -356,8 +412,7 @@ const CartContinue = () => {
       const firstItem = items[0]
 
       setSelectedProduct(firstItem)
-
-      setPaymentMethods(getStore(firstItem.storeId).paymentMethods)
+      setPaymentMethods(getStore(firstItem.storeId)?.paymentMethods)
     }
   }, [loadingItems, loadingStores])
 
@@ -400,6 +455,8 @@ const CartContinue = () => {
               title="ESVAZIAR"
               onClick={() => {
                 setItems([])
+                localStorage.setItem('ultimo.cart.items', '[]')
+                router.push('/')
                 toggleClearModal()
               }}
               style={{ marginBottom: 'var(--spacing-xxs)' }}
@@ -475,6 +532,7 @@ const CartContinue = () => {
                 label="Número"
                 placeholder="0000"
                 mask="number"
+                className="input-logradouro-number"
                 flex={1}
                 type="numeric"
                 maxLength={6}
@@ -538,7 +596,7 @@ const CartContinue = () => {
       <Container>
         <Content>
           {!widthScreen && (
-            <div className="header" onClick={() => router.push('/')}>
+            <div className="header" onClick={() => router.push('/cart')}>
               <FiArrowLeft size={25} color="var(--black-800)" />
               <h1>Meu carrinho</h1>
             </div>
@@ -546,235 +604,333 @@ const CartContinue = () => {
           <h1 style={widthScreen ? undefined : { display: 'none' }}>
             Finalizar compra
           </h1>
+          {items.length > 0 ? (
+            <CardsContainer>
+              <div className="top-container">
+                <AddressCard>
+                  {widthScreen && <h2> {selectedProduct?.title}</h2>}
 
-          <CardsContainer>
-            <div className="top-container">
-              <AddressCard>
-                <h2> {selectedProduct?.title}</h2>
+                  <DeliveryMethod className="delivery-method">
+                    <span>Escolha a forma que deseja receber seus pedidos</span>
 
-                <DeliveryMethod>
-                  <span>Escolha a forma que deseja receber seus pedidos</span>
+                    <Checkbox
+                      confirm={deliveryMethod === 'house'}
+                      toggleConfirm={() => setDeliveryMethod('house')}
+                      size="small"
+                      label="Receber em domicílio"
+                    />
+                    <Checkbox
+                      confirm={deliveryMethod === 'store'}
+                      toggleConfirm={() => setDeliveryMethod('store')}
+                      size="small"
+                      label="Retirar na loja"
+                    />
+                  </DeliveryMethod>
 
-                  <Checkbox
-                    confirm={deliveryMethod === 'house'}
-                    toggleConfirm={() => setDeliveryMethod('house')}
-                    size="small"
-                    label="Receber em domicílio"
-                  />
-                  <Checkbox
-                    confirm={deliveryMethod === 'store'}
-                    toggleConfirm={() => setDeliveryMethod('store')}
-                    size="small"
-                    label="Retirar na loja"
-                  />
-                </DeliveryMethod>
+                  <div className="address-infos">
+                    <AddressInfo>
+                      {user ? (
+                        <div className="wrap-dados">
+                          <span>
+                            <strong>Nome do usuário:</strong> {user.firstName}{' '}
+                            {user.lastName}
+                          </span>
 
-                <AddressInfo>
-                  {user ? (
-                    <>
-                      <span>
-                        <strong>Nome do usuário:</strong> {user.firstName}{' '}
-                        {user.lastName}
-                      </span>
+                          <span>
+                            <strong>Endereço: </strong>
+                            {user.street || user.store?.street}{' '}
+                            {user.addressNumber || user.store?.addressNumber},{' '}
+                            {user.neighborhood || user.store?.neighborhood},{' '}
+                            {user.city || user.store?.city},{' '}
+                            {user.uf || user.store?.uf},{' '}
+                            {user.zipcode || user.store?.zipcode}, Brasil
+                          </span>
 
-                      <span>
-                        <strong>Endereço: </strong>
-                        {user.street} {user.addressNumber}, {user.neighborhood},{' '}
-                        {user.city}, {user.uf}, {user.zipcode}, Brasil
-                      </span>
+                          <span>
+                            <strong>Telefone: </strong>{' '}
+                            {formatPhone(user.phone || user.store?.phone || '')}
+                          </span>
+                        </div>
+                      ) : (
+                        <>
+                          <span>
+                            <strong>Nome do usuário:</strong> Carregando...
+                          </span>
 
-                      <span>
-                        <strong>Telefone: </strong> {formatPhone('00000000000')}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span>
-                        <strong>Nome do usuário:</strong> Carregando...
-                      </span>
+                          <span>
+                            <strong>Endereço: </strong> Carregando...
+                          </span>
 
-                      <span>
-                        <strong>Endereço: </strong> Carregando...
-                      </span>
+                          <span>
+                            <strong>Telefone: </strong> Carregando...
+                          </span>
+                        </>
+                      )}
+                    </AddressInfo>
 
-                      <span>
-                        <strong>Telefone: </strong> Carregando...
-                      </span>
-                    </>
-                  )}
-                </AddressInfo>
+                    <UpdateAddressButton onClick={openAddressModal}>
+                      <IoPencilOutline size={24} />
+                      Atualizar endereço
+                    </UpdateAddressButton>
+                  </div>
 
-                <UpdateAddressButton onClick={openAddressModal}>
-                  <IoPencilOutline size={24} />
-                  Atualizar endereço
-                </UpdateAddressButton>
+                  <div className="wrap-paymentsMethods">
+                    <h3>Forma de pagamento</h3>
 
-                <h3>Forma de pagamento</h3>
+                    <div className="paymentContainer">
+                      <Select
+                        name="Forma de pagamento"
+                        options={paymentMethods?.map(({ methodName }) => ({
+                          value: methodName,
+                          label: capitalizeFirstLetter(methodName)
+                        }))}
+                        selectedValue={paymentMethodOption}
+                        setSelectedValue={onSelectPaymentMethod}
+                        loading={false}
+                        placeholder="Selecione sua forma de pagamento"
+                      />
 
-                <div className="paymentContainer">
-                  <Select
-                    name="Forma de pagamento"
-                    options={paymentMethods?.map(({ methodName }) => ({
-                      value: methodName,
-                      label: capitalizeFirstLetter(methodName)
-                    }))}
-                    selectedValue={paymentMethodOption}
-                    setSelectedValue={onSelectPaymentMethod}
-                    loading={false}
-                    placeholder="Selecione sua forma de pagamento"
-                  />
+                      {parcelCheckbox && (
+                        <Select
+                          name="Parcelamento"
+                          options={parcelsOptions}
+                          selectedValue={parcelOption}
+                          setSelectedValue={(option) => {
+                            setParcelOption(option)
+                            updateItemPaymentMethod({
+                              productId: selectedProduct.productId,
+                              methodName: paymentMethodOption.value,
+                              parcelAmount: option.value
+                            })
+                          }}
+                          loading={false}
+                          placeholder="Selecione o número de parcelas"
+                        />
+                      )}
+                    </div>
 
-                  {parcelCheckbox && (
-                    <Select
-                      name="Parcelamento"
-                      options={parcelsOptions}
-                      selectedValue={parcelOption}
-                      setSelectedValue={(option) => {
-                        setParcelOption(option)
+                    <Checkbox
+                      disabled={!allowParcels}
+                      confirm={parcelCheckbox}
+                      toggleConfirm={() => {
+                        toggleParcelCheckbox()
                         updateItemPaymentMethod({
                           productId: selectedProduct.productId,
-                          methodName: paymentMethodOption.value,
-                          parcels: option.value
+                          methodName: paymentMethodOption?.value,
+                          parcelAmount: !parcelCheckbox
+                            ? parcelOption?.value
+                            : '0'
                         })
                       }}
-                      loading={false}
-                      placeholder="Selecione o número de parcelas"
+                      label="Parcelar Compra"
                     />
-                  )}
-                </div>
-
-                <Checkbox
-                  disabled={!allowParcels}
-                  confirm={parcelCheckbox}
-                  toggleConfirm={() => {
-                    toggleParcelCheckbox()
-                    updateItemPaymentMethod({
-                      productId: selectedProduct.productId,
-                      methodName: paymentMethodOption?.value,
-                      parcels: !parcelCheckbox ? parcelOption?.value : '0'
-                    })
-                  }}
-                  label="Parcelar Compra"
-                />
-              </AddressCard>
-
-              <ProductsContainer>
-                {loadingStores ? (
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '200px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <PulseLoader size={8} color="var(--color-primary)" />
                   </div>
-                ) : (
-                  stores.map((store, i) => {
-                    return (
-                      <div key={i}>
-                        <h1>{store.name}</h1>
+                </AddressCard>
 
-                        <div className="products-container">
-                          {store.items.map((product) => (
-                            <ProductItem
-                              key={product.productId}
-                              active={
-                                selectedProduct?.productId === product.productId
-                              }
-                              onClick={() => handleSelectProduct(product)}
-                            >
-                              <div className="img-container">
-                                <img
-                                  src={product?.image}
-                                  alt="Foto do produto"
-                                />
-                              </div>
-
-                              <div className="info-container">
-                                <h4>{product.title}</h4>
-
-                                <span>{product.amount}x</span>
-                              </div>
-                            </ProductItem>
-                          ))}
-                        </div>
+                {!widthScreen ? (
+                  <>
+                    <div className="wrap-products-mobile">
+                      <div className="wrap-products-title">
+                        <h3>Produtos</h3>
                       </div>
-                    )
-                  })
-                )}
-              </ProductsContainer>
-            </div>
+                      <Swiper
+                        pagination={{
+                          type: 'fraction'
+                        }}
+                        spaceBetween={40}
+                        navigation={true}
+                        onActiveIndexChange={(index) =>
+                          setActiveProductIndex(+index)
+                        }
+                        modules={[Pagination, Navigation]}
+                        className="mySwiper"
+                      >
+                        <>
+                          {finishedProducts.map((product, i) => (
+                            <SwiperSlide key={i}>
+                              <ProductItem
+                                key={product.productId}
+                                active={
+                                  selectedProduct?.productId ===
+                                  product.productId
+                                }
+                                onClick={() => handleSelectProduct(product)}
+                              >
+                                <div className="img-container">
+                                  <img
+                                    src={
+                                      product.image ||
+                                      '/images/emptyProducts.svg'
+                                    }
+                                    alt="Foto do produto"
+                                  />
+                                </div>
 
-            {widthScreen ? (
-              <CartContainerFooter>
-                <div className="buttonContainer">
-                  <button
-                    className="finish goback"
-                    onClick={() => {
-                      router.push('/cart')
-                    }}
-                  >
-                    <FiChevronLeft size={24} color="var(--color-primary)" />
-                    Voltar para o carrinho
-                  </button>
-                </div>
-
-                <div className="info">
-                  <div>
-                    <span>Total: </span>
-                    <strong>{formatToBrl(total)}</strong>
-                  </div>
-                  <span className="spanBottom"></span>
-                </div>
-
-                <div className="buttonContainer">
-                  <button
-                    className="finish"
-                    onClick={handleFinishPurchase}
-                    disabled={!paymentMethodOption?.value}
-                  >
-                    {finallyPurchase ? (
-                      <>
-                        <BsWhatsapp size={24} color="white" />
-                        FINALIZAR COMPRAR
-                      </>
+                                <div className="info-container">
+                                  <h4>
+                                    {product.title.length > 40
+                                      ? product.title.slice(0, 40) + ' ...'
+                                      : product.title}
+                                  </h4>
+                                  <span>{product.amount}x</span>
+                                </div>
+                              </ProductItem>
+                            </SwiperSlide>
+                          ))}
+                        </>
+                      </Swiper>
+                    </div>
+                  </>
+                ) : (
+                  <ProductsContainer>
+                    {loadingStores ? (
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '200px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <PulseLoader size={8} color="var(--color-primary)" />
+                      </div>
                     ) : (
-                      <>PRÓXIMO PRODUTO</>
+                      stores.map((store, i) => {
+                        return (
+                          <div key={i}>
+                            <h1>{store.name}</h1>
+
+                            <div className="products-container">
+                              {store.items.map((product) => (
+                                <ProductItem
+                                  key={product.productId}
+                                  active={
+                                    selectedProduct?.productId ===
+                                    product.productId
+                                  }
+                                  onClick={() => handleSelectProduct(product)}
+                                >
+                                  <div className="img-container">
+                                    <img
+                                      src={product?.image}
+                                      alt="Foto do produto"
+                                    />
+                                  </div>
+
+                                  <div className="info-container">
+                                    <h4>
+                                      {product.title.length > 40
+                                        ? product.title.slice(0, 40) + ' ...'
+                                        : product.title}
+                                    </h4>
+
+                                    <span>{product.amount}x</span>
+                                  </div>
+                                </ProductItem>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })
                     )}
-                  </button>
-                </div>
-              </CartContainerFooter>
-            ) : (
-              <ContainerFooterMobile
-                disabled={items.filter((it) => it.enabled).length === 0}
-              >
-                <div className="info">
-                  <div>
-                    <span>Total: </span>
-                    <strong>{formatToBrl(total)}</strong>
+                  </ProductsContainer>
+                )}
+              </div>
+
+              {widthScreen ? (
+                <CartContainerFooter>
+                  <div className="buttonContainer">
+                    <button
+                      className="finish goback"
+                      onClick={() => {
+                        router.push('/cart')
+                      }}
+                    >
+                      <FiChevronLeft size={24} color="var(--color-primary)" />
+                      Voltar para o carrinho
+                    </button>
                   </div>
-                  <span className="spanBottom">
-                    {items.filter((it) => it.enabled).length <= 1
-                      ? items.length + ' item'
-                      : items.length + ' itens'}
-                    {!widthScreen && (
-                      <a onClick={toggleClearModal}>Esvaziar Carrinho</a>
-                    )}
-                  </span>
-                </div>
-                <div className="buttonContainerMob">
-                  <button className="finish" onClick={handleFinishPurchase}>
-                    {' '}
-                    <BsWhatsapp size={24} color="white" />
-                    <p>FINALIZAR</p>
-                  </button>
-                </div>
-              </ContainerFooterMobile>
-            )}
-          </CardsContainer>
+
+                  <div className="info">
+                    <div>
+                      <span>Total: </span>
+                      <strong>{formatToBrl(total)}</strong>
+                    </div>
+                    <span className="spanBottom"></span>
+                  </div>
+
+                  <div className="buttonContainer">
+                    <button
+                      className="finish"
+                      onClick={handleFinishPurchase}
+                      disabled={!paymentMethodOption?.value}
+                    >
+                      {finallyPurchase ? (
+                        <>
+                          <BsWhatsapp size={24} color="white" />
+                          FINALIZAR COMPRAR
+                        </>
+                      ) : (
+                        <>PRÓXIMO PRODUTO</>
+                      )}
+                    </button>
+                  </div>
+                </CartContainerFooter>
+              ) : (
+                <ContainerFooterMobile
+                  disabled={items.filter((it) => it.enabled).length === 0}
+                >
+                  <div className="info">
+                    <div>
+                      <span>Total: </span>
+                      <strong>{formatToBrl(total)}</strong>
+                    </div>
+                    <span className="spanBottom">
+                      {items.filter((it) => it.enabled).length <= 1
+                        ? items.length + ' item'
+                        : items.length + ' itens'}
+                      {!widthScreen && (
+                        <a
+                          onClick={toggleClearModal}
+                          className="
+                      empty-cart"
+                        >
+                          Esvaziar Carrinho
+                        </a>
+                      )}
+                    </span>
+                  </div>
+                  <div className="buttonContainerMob">
+                    <button className="finish" onClick={handleFinishPurchase}>
+                      {' '}
+                      <BsWhatsapp size={24} color="white" />
+                      <p>FINALIZAR</p>
+                    </button>
+                  </div>
+                </ContainerFooterMobile>
+              )}
+            </CardsContainer>
+          ) : (
+            <EmptyCartContainer>
+              <Player
+                autoplay
+                loop
+                src="/animations/cart-animation.json"
+                style={{ width: '250px', marginBottom: '40px' }}
+              />
+              <h1>Carrinho vazio!</h1>
+
+              <p>
+                Você ainda não possui itens no seu <br /> carrinho
+              </p>
+
+              <SeeProductsButton
+                title="Ver produtos"
+                onClick={() => router.push('/')}
+              />
+            </EmptyCartContainer>
+          )}
         </Content>
       </Container>
     </>
@@ -786,10 +942,10 @@ export default CartContinue
 const CardsContainer = styled.section`
   width: 100%;
   height: 100%;
+  padding-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 1.5rem;
 
   .top-container {
     display: grid;
@@ -798,20 +954,156 @@ const CardsContainer = styled.section`
     gap: 2rem;
     min-height: 350px;
   }
+
+  @media (max-width: 426px) {
+    .top-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 100%;
+    }
+
+    .wrap-products-mobile {
+      order: -1;
+      width: 350px;
+      margin: 0 auto;
+
+      .wrap-products-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 25px 0;
+        padding-left: 10px;
+      }
+
+      h4 {
+        font-size: 14px;
+        color: #5d1a82;
+      }
+
+      .swiper {
+        width: 100%;
+        position: relative;
+        margin-left: 15px;
+
+        overflow: visible;
+
+        min-height: 135px;
+        box-sizing: border-box;
+
+        .swiper-pagination {
+          position: absolute;
+          top: -47px;
+          left: 320px;
+          height: 20px;
+          width: fit-content;
+        }
+
+        .swiper-button-next {
+          position: absolute;
+          bottom: -20px;
+          width: fit-content;
+          height: 20px;
+          color: #ff7a00;
+        }
+
+        .swiper-button-next::after {
+          display: none;
+        }
+
+        .swiper-button-next::before {
+          width: max-content;
+          content: 'Próximo item ' url('/images/next.png');
+          display: block;
+          position: absolute;
+          bottom: -100px;
+          right: 0;
+        }
+
+        .swiper-button-prev {
+          position: absolute;
+          bottom: -20px;
+          width: fit-content;
+          height: 20px;
+          color: #ff7a00;
+        }
+
+        .swiper-button-prev::after {
+          display: none;
+        }
+
+        .swiper-button-prev::before {
+          width: max-content;
+          content: url('/images/prev.png') ' Item anterior';
+          display: block;
+          position: absolute;
+          bottom: -100px;
+          left: 0;
+        }
+      }
+
+      .swiper-slide {
+        box-sizing: border-box;
+        /* text-align: center; */
+        min-height: 130pxpx;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically; */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: space-around;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        object-fit: cover;
+      }
+    }
+  }
 `
 
 const AddressCard = styled.section`
   grid-column: span 2 / span 3;
   width: 100%;
-  max-height: 580px;
   background: white;
   border-radius: 30px;
-  padding: 1.5rem 2rem 3.5rem 2rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
   .paymentContainer {
     display: flex;
     gap: 16px;
+  }
+
+  @media (max-width: 426px) {
+    display: grid;
+
+    .delivery-method {
+      order: 0;
+    }
+
+    .wrap-paymentsMethods {
+      order: 1;
+      margin-top: 20px;
+      h3 {
+        display: none;
+      }
+    }
+
+    .address-infos {
+      order: 2;
+
+      margin-bottom: 50px;
+    }
   }
 
   ${[sizes.down('lgMob')]} {
@@ -912,7 +1204,6 @@ const UpdateAddressButton = styled.button`
 
 const ProductsContainer = styled.section`
   width: 100%;
-  max-height: 580px;
   background: white;
   border-radius: 30px;
 
@@ -1031,6 +1322,25 @@ export const ProductItem = styled.div<{ active: boolean }>`
     background: var(--gray-150);
   }
 
+  @media (max-width: 426px) {
+    border: 2px solid #5d1a82;
+    box-sizing: border-box;
+    border-radius: 8px;
+    min-height: 130px;
+    width: 350px;
+
+    .img-container {
+      width: 115px;
+      height: 115px;
+      display: flex;
+      align-items: center;
+
+      img {
+        display: block;
+      }
+    }
+  }
+
   ${(props) =>
     props.active &&
     `
@@ -1039,14 +1349,15 @@ export const ProductItem = styled.div<{ active: boolean }>`
 
   .img-container {
     display: flex;
-    width: 81px;
-    height: 81px;
+
     border-radius: 8px;
     background: #f3f3f3;
     object-fit: contain;
 
     img {
       border-radius: 8px;
+      width: 81px;
+      height: 81px;
     }
   }
 
@@ -1085,9 +1396,12 @@ export const ModalContainer = styled.div`
   .exit-container {
     width: 100%;
     display: flex;
-    justify-content: space-between;
     margin-bottom: 2rem;
     align-items: center;
+
+    @media (max-width: 426px) {
+      justify-content: space-around;
+    }
 
     h1 {
       font-family: 'Poppins';
@@ -1095,6 +1409,10 @@ export const ModalContainer = styled.div`
       font-size: 24px;
 
       color: var(--gray-700);
+
+      @media (max-width: 426px) {
+        font-size: 18px;
+      }
     }
 
     svg {
@@ -1107,6 +1425,11 @@ export const ModalContainer = styled.div`
     flex-direction: column;
     gap: 1rem;
     width: 100%;
+
+    @media (max-width: 430px) {
+      margin-bottom: 170px;
+    }
+
     ${[sizes.down('lgMob')]} {
       .row {
         flex-direction: column;
@@ -1116,9 +1439,17 @@ export const ModalContainer = styled.div`
         flex-direction: row;
       }
     }
+
     .row {
       display: flex;
       gap: 1rem;
+
+      @media (max-width: 430px) {
+        .input-logradouro-number {
+          padding-left: 0px;
+          margin-left: -10px;
+        }
+      }
     }
   }
 
