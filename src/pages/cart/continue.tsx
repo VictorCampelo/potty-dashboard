@@ -150,7 +150,7 @@ const CartContinue = () => {
   }, 0)
 
   let parcelsOptions = getNumberArray({
-    size: 11,
+    size: selectedProduct?.parcelAmount - 1,
     startAt: 2
   }).map((parcel) => {
     return {
@@ -165,6 +165,7 @@ const CartContinue = () => {
     value: '2',
     label: '2x'
   })
+
   const [allowParcels, setAllowParcels] = useState(false)
 
   const [itemsPaymentMethod, setItemsPaymentMethod] = useState<{
@@ -825,7 +826,7 @@ const CartContinue = () => {
                                         : product.title}
                                     </h4>
 
-                                    <span>{product.amount}x</span>
+                                    <span>Em até {product.parcelAmount}x</span>
                                   </div>
                                 </ProductItem>
                               ))}

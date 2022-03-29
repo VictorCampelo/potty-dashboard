@@ -720,7 +720,10 @@ const ProductShow = () => {
                               />
                             </Button>
                           </div>
-                          <img src={actualFileDesc.url} alt="Foto do produto" />
+                          <img
+                            src={actualFileDesc?.url || '/images/capa.png'}
+                            alt="Foto do produto"
+                          />
                         </div>
                       </div>
                       <div className="right-container">
