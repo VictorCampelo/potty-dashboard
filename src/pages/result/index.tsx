@@ -209,7 +209,6 @@ const Result = () => {
               {searchData.productsFound &&
                 searchData.productsFound.map((product, i) => (
                   <>
-                    {console.log(product)}
                     <CardProductSearch
                       description={product?.title}
                       price={product.price}

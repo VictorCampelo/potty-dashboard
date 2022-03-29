@@ -210,7 +210,6 @@ const CarouselProducts = ({
                   >
                     <BiChevronRight size={15} color="black" />
                   </ButtonProduct>
-                  {console.log(product)}
                 </>
               )}
               {promo && widthScreen && (

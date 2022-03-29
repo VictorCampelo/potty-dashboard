@@ -668,6 +668,8 @@ const Shop = ({ storeId, id }: Shop) => {
 
       setDataStore(data)
 
+      console.log(data)
+
       setCurrency(data.deliveryFee)
 
       setCategoriesOption(

@@ -71,7 +71,6 @@ interface IStoresFoundProps {
 }
 
 export const CarouselStore = ({ stores }: { stores: IStoresFoundProps[] }) => {
-  console.log(stores)
   return (
     <Container>
       <Swiper spaceBetween={30} slidesPerView={3}>

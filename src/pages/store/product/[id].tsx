@@ -365,6 +365,7 @@ const ProductShow = () => {
           price: discount ? getDiscount(price, discount) : price,
           productId,
           storeId,
+          parcelAmount,
           title,
           enabled: true,
           image: actualFile?.url
@@ -382,6 +383,7 @@ const ProductShow = () => {
             storeId,
             title,
             enabled: true,
+            parcelAmount,
             image: actualFile?.url
           }
         ])
@@ -407,7 +409,8 @@ const ProductShow = () => {
           storeId,
           title,
           enabled: true,
-          image: actualFile?.url
+          image: actualFile?.url,
+          parcelAmount
         }
       ])
 
@@ -422,7 +425,8 @@ const ProductShow = () => {
             storeId,
             title,
             enabled: true,
-            image: actualFile?.url
+            image: actualFile?.url,
+            parcelAmount
           }
         ])
       )
@@ -716,7 +720,10 @@ const ProductShow = () => {
                               />
                             </Button>
                           </div>
-                          <img src={actualFileDesc.url} alt="Foto do produto" />
+                          <img
+                            src={actualFileDesc?.url || '/images/capa.png'}
+                            alt="Foto do produto"
+                          />
                         </div>
                       </div>
                       <div className="right-container">

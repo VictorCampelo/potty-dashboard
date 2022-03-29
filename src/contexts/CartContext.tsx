@@ -11,6 +11,7 @@ interface CartItem {
   enabled?: boolean
   image?: string
   discount?: number
+  parcelAmount?: number
 }
 
 interface PaymentMethod {

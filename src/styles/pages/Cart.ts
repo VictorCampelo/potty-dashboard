@@ -42,6 +42,30 @@ export const Content = styled.section`
   height: 100%;
   width: 100%;
   padding-top: 1.5rem;
+  position: relative;
+
+  .wrap-header {
+    position: fixed;
+    background-color: white;
+    min-width: 100vw;
+    margin-top: -90px;
+    padding: 15px 0;
+
+    ::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      position: absolute;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(108, 112, 121, 0) 0%,
+        rgba(108, 112, 121, 0.26) 48.44%,
+        rgba(108, 112, 121, 0) 100%
+      );
+    }
+  }
 
   h1 {
     font-size: var(--font-size-lg);
@@ -105,6 +129,7 @@ export const Content = styled.section`
 
 export const CartContainer = styled.section`
   background: white;
+
   width: 100%;
   border-radius: 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -114,6 +139,10 @@ export const CartContainer = styled.section`
 
   .subTotal {
     padding-left: 1rem;
+  }
+
+  .subTotal:last-child {
+    margin-bottom: 100px;
   }
 
   ${[sizes.down('lgMob')]} {
@@ -194,6 +223,15 @@ export const CartContainerFooter = styled(
         a {
           color: var(--red);
           text-decoration: underline;
+          font-weight: 500;
+
+          ::before {
+            content: '';
+            margin: 0 5px -3px 5px;
+            display: inline-block;
+            height: 14px;
+            border-left: 2px solid #b2b5ba;
+          }
         }
       }
     }
@@ -263,6 +301,7 @@ export const CartProduct = styled.div`
     .spanProductInformation {
       flex-direction: column;
       gap: 1rem;
+      padding-left: 10px;
     }
   }
 
@@ -304,7 +343,7 @@ export const CartProduct = styled.div`
       width: 90px;
       height: 90px;
       border-radius: 5px;
-      background: var(--gray-300);
+      /* background: var(--gray-300); */
       margin-right: 1rem;
       justify-content: center;
       align-items: center;
