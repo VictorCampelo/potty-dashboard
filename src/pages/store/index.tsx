@@ -2,10 +2,7 @@ import HeaderShop from 'components/molecules/HeaderShop'
 import Head from 'next/head'
 import { CheckboxFilter } from 'components/atoms/CheckboxFilter'
 import {
-  AiFillFacebook,
-  AiFillPhone,
   AiFillStar,
-  AiOutlineWhatsApp,
   AiOutlineSearch,
   AiOutlineStar,
   AiOutlineLeft,
@@ -20,7 +17,6 @@ import {
   DescriptionShop,
   FilterCard,
   FilterCardSecondary,
-  Footer,
   InfoSerch,
   Page,
   ProductCard,
@@ -33,6 +29,7 @@ import {
   ProductWrapper,
   Button
 } from 'styles/pages/Store'
+import FooterContact from 'components/organisms/FooterContact'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -103,6 +100,8 @@ const Products = () => {
   const [favorite, setFavorite] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  const [store, setStore] = useState<any>(null)
+
   const widthScreen = useMedia({ minWidth: '426px' })
 
   function handleFavorite() {
@@ -117,6 +116,7 @@ const Products = () => {
     try {
       const id = await getStoreId(`${name}`)
       const { data } = await getStore(`${id}`)
+      setStore(data)
       const products = await getProducts(`${id}`)
       setImageIcon(data?.avatar)
       setImageBanner(data?.background)
@@ -667,38 +667,19 @@ const Products = () => {
               />
             </footer>
           )}
-          {widthScreen && (
-            <Footer>
-              <div>
-                <h1>Contato</h1>
-
-                {telefone && (
-                  <span>
-                    <AiFillPhone size={24} color="var(--gray-700)" />
-                    {telefone}
-                  </span>
-                )}
-
-                {whatsApp && (
-                  <span>
-                    <AiOutlineWhatsApp size={24} color="var(--gray-700)" />
-                    {whatsApp}
-                  </span>
-                )}
-
-                {facebook && (
-                  <a href="facebook.com">
-                    <AiFillFacebook size={24} color="var(--gray-700)" />
-                    {facebook}
-                  </a>
-                )}
-              </div>
-              <div className="mapContainer">
-                <img src="/images/map.svg" />
-              </div>
-            </Footer>
-          )}
         </Container>
+        {widthScreen && store !== null && (
+          <FooterContact
+            title={store.name}
+            cnpj={store.CNPJ}
+            address={store.formattedAddress}
+            phone={store.phone}
+            whatsappLink={store.whatsappLink}
+            instagramLink={store.instagramLink}
+            facebookLink={store.facebookLink}
+            cep={store.zipcode}
+          />
+        )}
       </Page>
 
       <CartButton />
