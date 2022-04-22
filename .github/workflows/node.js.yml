@@ -37,6 +37,7 @@ jobs:
           cd /var/www/ultimo-app &&
           git pull origin staging &&
           npm i &&
+          NODE_OPTIONS="--max-old-space-size=1024" npm run build &&
           pm2 delete bdv-app &&
           pm2 start npm --name "bdv-app" -- start
           '
