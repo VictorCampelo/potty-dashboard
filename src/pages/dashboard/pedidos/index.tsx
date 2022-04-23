@@ -134,7 +134,7 @@ const Pedidos = () => {
   async function loadData(off: number) {
     try {
       const { data } = await api.get(
-        `/orders/store?confirmed=false&offset=${off}&limit=8`
+        `/orders/store?confirmed=false&offset=${off}&take=8`
       )
       setOrdersList(data.results)
       setTotalOrders(data.totalOrders)

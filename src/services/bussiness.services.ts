@@ -36,7 +36,7 @@ export async function getStoreId(name: string) {
 
 export async function getProducts(id: string) {
   const res = await api.get(
-    `/products/store/${id}?limit=10&offset=0&loadRelations=true&loadLastSolds=false`
+    `/products/store/${id}?take=10&page=1&loadRelations=true&loadLastSolds=false`
   )
   return res
 }
@@ -48,7 +48,7 @@ export async function getProduct(id: string) {
 
 export async function getRecommends(id: string) {
   const res = await api.get(
-    `/products/store/${id}?limit=6&offset=0&loadRelations=true&loadLastSolds=false`
+    `/products/store/${id}?take=6&page=1&loadRelations=true&loadLastSolds=false`
   )
   return res
 }
