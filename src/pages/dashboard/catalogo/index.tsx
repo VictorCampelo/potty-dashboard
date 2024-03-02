@@ -556,13 +556,14 @@ const catalog = ({ storeId }: CatalogType) => {
     try {
       const { data } = await getProducts(storeId)
 
-      const formattedData = data.map((it) => ({
+      const formattedData = data?.data?.map((it) => ({
         ...it,
         categories: it.categories.map((cat: CategoryType) => cat.name)
       }))
 
       setProducts(formattedData)
     } catch (e) {
+      console.error(e)
       notify('Erro ao buscar produtos')
     } finally {
       setLoadingProducts(false)
